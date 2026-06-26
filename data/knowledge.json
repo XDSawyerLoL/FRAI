@@ -1,0 +1,110 @@
+{
+  "ateliers": [
+    {
+      "code": "R01",
+      "axe": "Choisir un métier",
+      "titre": "Construire et affiner mon projet professionnel au regard du marché du travail",
+      "duree": "1 journée",
+      "objectif": "Identifier les éléments clés de son profil, découvrir les opportunités d’emploi et construire des pistes professionnelles réalistes."
+    },
+    {
+      "code": "R04",
+      "axe": "Se former",
+      "titre": "Mes démarches en ligne avec France Travail",
+      "duree": "1/2 journée",
+      "objectif": "Découvrir son espace personnel, gagner en autonomie, transmettre ses documents et contacter son conseiller en ligne."
+    },
+    {
+      "code": "R02",
+      "axe": "Préparer sa candidature",
+      "titre": "Faire le point sur mes compétences professionnelles et concevoir un CV percutant",
+      "duree": "1 journée",
+      "objectif": "Faire le point sur ses compétences et concevoir un CV clair, structuré et adapté au marché."
+    },
+    {
+      "code": "R03",
+      "axe": "Préparer sa candidature",
+      "titre": "Réaliser mon CV en langue étrangère : anglais, allemand, espagnol",
+      "duree": "1/2 journée",
+      "objectif": "Adapter son CV aux standards internationaux et valoriser ses compétences dans une autre langue."
+    },
+    {
+      "code": "R05",
+      "axe": "Préparer sa candidature",
+      "titre": "Organiser et optimiser ma recherche d’emploi",
+      "duree": "1 journée",
+      "objectif": "Structurer sa recherche, utiliser les bons outils et mobiliser son réseau."
+    },
+    {
+      "code": "R06",
+      "axe": "Créer une entreprise",
+      "titre": "M’imaginer créateur d’entreprise",
+      "duree": "1/2 journée",
+      "objectif": "Explorer l’entrepreneuriat comme piste d’emploi et évaluer sa motivation."
+    },
+    {
+      "code": "R07",
+      "axe": "Créer une entreprise",
+      "titre": "Structurer mon projet de création d’entreprise",
+      "duree": "1 journée",
+      "objectif": "Identifier les ressources, sécuriser les étapes et structurer le projet."
+    }
+  ],
+  "prestations": [
+    {
+      "code": "AP3",
+      "titre": "Activ’Projet",
+      "duree": "8 à 12 semaines",
+      "objectif": "Définir ou confirmer un projet professionnel réaliste."
+    },
+    {
+      "code": "GCO",
+      "titre": "Prépa Compétences",
+      "duree": "2 à 8 semaines",
+      "objectif": "Sécuriser un parcours de formation et vérifier l’adéquation entre projet, compétences et formation."
+    },
+    {
+      "code": "VS2",
+      "titre": "Valoriser son image professionnelle",
+      "duree": "2 à 3 semaines",
+      "objectif": "Valoriser ses compétences, améliorer sa communication et mieux se présenter aux recruteurs."
+    },
+    {
+      "code": "UES",
+      "titre": "Un Emploi Stable",
+      "duree": "8 à 12 semaines",
+      "objectif": "Améliorer ses techniques de recherche d’emploi pour décrocher un emploi stable."
+    },
+    {
+      "code": "AGC",
+      "titre": "Agil’Cadres",
+      "duree": "9 mois max",
+      "objectif": "Favoriser le retour à l’emploi durable des cadres."
+    },
+    {
+      "code": "EMG",
+      "titre": "Activ’Créa Émergence",
+      "duree": "8 semaines",
+      "objectif": "Explorer la création ou reprise d’entreprise comme solution de retour à l’emploi."
+    },
+    {
+      "code": "DES",
+      "titre": "Défi Santé Emploi",
+      "duree": "jusqu’à 7 mois",
+      "objectif": "Prendre en compte la santé comme frein au retour à l’emploi."
+    },
+    {
+      "code": "AIN",
+      "titre": "Activ’International",
+      "duree": "8 à 12 semaines",
+      "objectif": "Étudier la piste du retour à l’emploi à l’étranger et préparer les démarches."
+    }
+  ],
+  "dispositifs": {
+    "mes_evenements": "Mes Événements Emploi permet de trouver des salons, job datings, ateliers, conférences, visites d’entreprise et réunions d’information selon une zone et un objectif.",
+    "pmsmp": "La PMSMP / immersion facilitée sert à tester un métier ou une entreprise sur une courte période, pour confirmer un projet, découvrir un secteur ou préparer une reconversion.",
+    "poe": "La POE, Préparation Opérationnelle à l’Emploi, sert à financer une formation avant embauche quand il manque des compétences pour un poste identifié.",
+    "bonne_boite": "La Bonne Boîte aide à cibler les entreprises qui ont statistiquement le plus de chances de recruter autour d’un métier et d’un lieu.",
+    "bonne_alternance": "La Bonne Alternance permet de chercher des offres, des formations et des entreprises à potentiel pour l’apprentissage ou la professionnalisation."
+  }
+}

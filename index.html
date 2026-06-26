@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f172a" />
+  <meta name="description" content="Assistant Emploi IA - Chat d'orientation France Travail compatible GitHub Pages." />
+  <title>Assistant Emploi IA</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">AE</div>
+        <div>
+          <h1>Assistant Emploi IA</h1>
+          <p id="statusLine">Mode GitHub Pages · base locale</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button id="importEventsBtn" class="ghost" title="Importer un fichier événements CSV ou JSON">Importer</button>
+        <button id="settingsBtn" class="icon-btn" aria-label="Réglages">⚙</button>
+      </div>
+    </header>
+
+    <main id="messages" class="messages" aria-live="polite"></main>
+
+    <section id="quickActions" class="quick-actions" aria-label="Suggestions rapides">
+      <button data-prompt="Quels ateliers sont disponibles ?">Ateliers</button>
+      <button data-prompt="Trouve les événements emploi dans ma ville">Événements</button>
+      <button data-prompt="Je veux tester un métier en immersion">Immersion</button>
+      <button data-prompt="Je cherche une alternance">Alternance</button>
+      <button data-prompt="Je veux envoyer des candidatures spontanées">Entreprises</button>
+    </section>
+
+    <form id="composer" class="composer">
+      <button type="button" id="voiceBtn" class="icon-btn" aria-label="Dictée vocale">🎙️</button>
+      <textarea id="userInput" rows="1" autocomplete="off" placeholder="Écris ta demande : événements à Boulogne, atelier CV, alternance..." required></textarea>
+      <button id="sendBtn" type="submit" aria-label="Envoyer">➤</button>
+    </form>
+  </div>
+
+  <dialog id="settingsDialog" class="settings-dialog">
+    <form method="dialog" class="settings-card">
+      <div class="settings-head">
+        <div>
+          <h2>Réglages</h2>
+          <p>Cette version tourne sur GitHub Pages sans serveur.</p>
+        </div>
+        <button value="close" class="icon-btn">✕</button>
+      </div>
+
+      <label>
+        Ville par défaut
+        <input id="defaultCityInput" type="text" placeholder="Ex : Boulogne-Billancourt" />
+      </label>
+
+      <label>
+        URL API intranet optionnelle
+        <input id="apiUrlInput" type="url" placeholder="https://intranet/api/evenements?ville={city}&q={keyword}" />
+        <small>Fonctionne seulement si l'API autorise CORS et HTTPS.</small>
+      </label>
+
+      <label>
+        Moteur de réponse
+        <select id="engineSelect">
+          <option value="local">Local gratuit, sans clé API</option>
+          <option value="gemini">Gemini direct navigateur, clé personnelle</option>
+        </select>
+        <small>Ne mets jamais une clé dans le code GitHub. Elle reste dans le navigateur.</small>
+      </label>
+
+      <label id="geminiKeyBlock" class="hidden">
+        Clé Gemini personnelle
+        <input id="geminiKeyInput" type="password" placeholder="AIza..." />
+        <small>À utiliser seulement pour test. Pour production, il faut un proxy serveur.</small>
+      </label>
+
+      <div class="settings-actions">
+        <button id="clearDataBtn" type="button" class="danger">Réinitialiser</button>
+        <button id="saveSettingsBtn" value="save" class="primary">Enregistrer</button>
+      </div>
+    </form>
+  </dialog>
+
+  <input id="eventsFileInput" type="file" accept=".csv,.json,application/json,text/csv" hidden />
+
+  <noscript>
+    <div class="noscript">Active JavaScript pour utiliser l'assistant.</div>
+  </noscript>
+
+  <script src="assets/app.js" type="module"></script>
+</body>
+</html>
