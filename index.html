@@ -482,7 +482,7 @@ const els = {
   quickActions: $('quickActions'),
 };
 
-const STORAGE_KEY = 'assistant_france_travail_github_v3';
+const STORAGE_KEY = 'assistant_france_travail_github_v4';
 const DEFAULT_SETTINGS = {
   defaultCity: '',
   apiUrl: '',
@@ -662,6 +662,118 @@ function mapEvent(raw = {}) {
   };
 }
 
+
+function firstText(...values) {
+  for (const value of values) {
+    if (value === undefined || value === null) continue;
+    if (typeof value === 'string' && value.trim()) return value.trim();
+    if (typeof value === 'number') return String(value);
+    if (typeof value === 'object') {
+      const candidate = value.fr || value.en || value.name || value.label || value.value || '';
+      if (typeof candidate === 'string' && candidate.trim()) return candidate.trim();
+    }
+  }
+  return '';
+}
+
+function stripHtml(value = '') {
+  return String(value).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+function readFirstTiming(raw = {}) {
+  let timings = raw.timings || raw.timing || raw.daterange || raw.date_range || '';
+  if (typeof timings === 'string') {
+    try { timings = JSON.parse(timings); } catch (_) {}
+  }
+  if (Array.isArray(timings) && timings.length) {
+    const t = timings[0] || {};
+    return firstText(t.begin, t.start, t.startDate, t.date);
+  }
+  return firstText(raw.firstdate_begin, raw.firsttiming_begin, raw.date_first, raw.date_debut, raw.startDate, raw.date);
+}
+
+function mapOpenAgendaRecord(record = {}) {
+  const raw = record.fields || record.record || record;
+  const timing = readFirstTiming(raw);
+  let date = '', heure = '';
+  if (timing) {
+    const d = new Date(timing);
+    if (!Number.isNaN(d.getTime())) {
+      date = d.toISOString().slice(0, 10);
+      heure = d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+    } else date = timing;
+  }
+  const description = stripHtml(firstText(raw.description_fr, raw.longdescription_fr, raw.description, raw.longDescription, raw.summary_fr, raw.summary));
+  const title = firstText(raw.title_fr, raw.title, raw.nom, raw.name);
+  const city = firstText(raw.location_city, raw.city, raw['location.city'], raw.adminLevel4, raw.commune);
+  const place = firstText(raw.location_name, raw.location_address, raw.location, raw['location.name'], raw.place, raw.lieu);
+  const link = firstText(raw.canonicalurl, raw.canonicalUrl, raw.url, raw.link, raw.registration_url, raw.registrationUrl);
+  const sector = firstText(raw.secteur_d_activite, raw.secteur_activite, raw.secteur, raw.keywords_fr, raw.keywords);
+  const type = firstText(raw.type, raw.objectifs, raw.category, raw.categorie);
+  return {
+    titre: title || 'Événement emploi',
+    date,
+    heure,
+    ville: city,
+    lieu: place,
+    type: type || 'Événement emploi',
+    modalite: firstText(raw.attendance_mode, raw.onlineaccesslink, raw.modalite, raw.mode) || 'À vérifier sur la fiche',
+    secteur: Array.isArray(sector) ? sector.join(', ') : String(sector || '').split(',').slice(0, 2).join(', '),
+    lien: link || (raw.uid ? `https://openagenda.com/francetravail/events/${raw.slug || raw.uid}` : ''),
+    description: description.slice(0, 520),
+    source: 'OpenAgenda'
+  };
+}
+
+function looksLikeFranceTravailRecord(record = {}) {
+  const raw = record.fields || record.record || record;
+  const text = normalize(JSON.stringify(raw));
+  return text.includes('francetravail') || text.includes('france travail') || text.includes('pole emploi') || text.includes('pôle emploi') || text.includes('mes evenements emploi') || text.includes('mes événements emploi');
+}
+
+async function fetchWithTimeout(url, options = {}, timeoutMs = 5500) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, { ...options, signal: controller.signal });
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function fetchPublicOpenAgenda(city, keyword) {
+  if (!city) return [];
+  const base = 'https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/evenements-publics-openagenda/records';
+  const terms = ['France Travail', city, keyword].filter(Boolean).join(' ');
+  const cities = [city, city.replace(/-/g, ' ')].filter((v, i, arr) => v && arr.indexOf(v) === i);
+  const urls = [
+    `${base}?limit=80&search=${encodeURIComponent(terms)}`,
+    ...cities.map(c => `${base}?limit=80&where=${encodeURIComponent(`location_city = "${c.replace(/"/g, '')}"`)}`),
+    ...cities.map(c => `${base}?limit=80&where=${encodeURIComponent(`location_city = '${c.replace(/'/g, " ")}'`)}`)
+  ];
+  const out = [];
+  for (const url of urls) {
+    try {
+      const res = await fetchWithTimeout(url, {}, 4500);
+      if (!res.ok) continue;
+      const data = await res.json();
+      const rows = Array.isArray(data.results) ? data.results : (Array.isArray(data.records) ? data.records : []);
+      rows.forEach(row => {
+        if (!looksLikeFranceTravailRecord(row)) return;
+        const ev = mapOpenAgendaRecord(row);
+        if (ev.titre) out.push(ev);
+      });
+      if (out.length) break;
+    } catch (_) {}
+  }
+  const cityN = normalize(city);
+  const keyN = normalize(keyword || '');
+  return out
+    .filter(e => !cityN || normalize(`${e.ville} ${e.lieu} ${e.description}`).includes(cityN) || normalize(e.lien).includes(cityN.replace(/\s+/g, '-')))
+    .filter(e => !keyN || normalize(`${e.titre} ${e.type} ${e.secteur} ${e.description}`).includes(keyN) || keyN.split(' ').some(k => normalize(`${e.titre} ${e.type} ${e.secteur} ${e.description}`).includes(k)))
+    .slice(0, 10);
+}
+
 function mapLbi(raw = {}) {
   if (typeof raw === 'string') {
     return { titre: raw.slice(0, 80), categorie: 'Import texte', contenu: raw, motsCles: [] };
@@ -693,28 +805,71 @@ function fallbackKnowledge() {
 }
 
 function wantsEvents(q) {
-  return /\b(evenement|événement|evenements|événements|job dating|forum|salon|atelier|reunion|réunion|agenda)\b/i.test(q);
+  const n = normalize(q);
+  // Priorité absolue : tout ce qui ressemble à une demande d'agenda doit partir vers le moteur événements,
+  // même avec des fautes fréquentes : evennement, évènement, evenement, "que se passe-t-il", "dans ma ville".
+  return /\b(evenement|evennements?|evenements?|événement|évènements?|événements?|agenda|job\s*dating|forum|salon|reunion|réunion|webinaire|portes? ouvertes?|visite d'entreprise)\b/i.test(q)
+    || n.includes('que se passe')
+    || n.includes('quoi se passe')
+    || n.includes('qu est ce qu il y a')
+    || n.includes('dans ma ville')
+    || n.includes('autour de moi')
+    || n.includes('pres de moi')
+    || n.includes('près de moi');
 }
 function wantsLbi(q) {
+  // Ne pas détourner les demandes d'événements vers La Bonne Info.
+  if (wantsEvents(q)) return false;
   return /\b(la bonne info|bonne info|fiche info|actualisation|allocation|indemnisation|droit|demarche|démarche|espace personnel)\b/i.test(q);
 }
 function wantsListAteliers(q) {
   return /\b(atelier|prestation|dispositif|accompagnement)\b/i.test(q) && !wantsEvents(q);
 }
 
-function extractCity(q) {
+function cleanCityName(value = '') {
+  return String(value)
+    .trim()
+    .replace(/\s+(et|pour|avec|concernant|sur|en|du|de|des|le|la|les|s'il|svp|stp)\s.*$/i, '')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+}
+
+function captureDefaultCity(q) {
   const text = String(q).replace(/[?!.]/g, ' ');
   const patterns = [
-    /(?:à|a|sur|dans|autour de|près de|proche de)\s+([A-Za-zÀ-ÿ' -]{2,45})/i,
-    /ville\s*:?\s*([A-Za-zÀ-ÿ' -]{2,45})/i,
+    /(?:ma ville|ville par défaut)\s*(?:est|:|=)?\s*([A-Za-zÀ-ÿ' -]{2,45})/i,
+    /(?:je suis|je travaille|j'habite|je recherche)\s+(?:à|a|sur|dans)\s+([A-Za-zÀ-ÿ' -]{2,45})/i,
   ];
   for (const p of patterns) {
     const m = text.match(p);
     if (m && m[1]) {
-      return m[1].trim().replace(/\s+(et|pour|avec|en|du|de|des|le|la|les)\s.*$/i, '').trim();
+      const city = cleanCityName(m[1]);
+      if (city && !/^(dans|sur|autour|ma ville|chez moi)$/i.test(city)) {
+        state.settings.defaultCity = city;
+        saveStored();
+        setStatus();
+        return city;
+      }
     }
   }
-  if (/ma ville|chez moi|autour de moi/i.test(text)) return state.settings.defaultCity || '';
+  return '';
+}
+
+function extractCity(q) {
+  const text = String(q).replace(/[?!.]/g, ' ');
+  if (/\b(ma ville|chez moi|autour de moi|près de moi|pres de moi)\b/i.test(text)) return state.settings.defaultCity || '';
+  const patterns = [
+    /(?:autour de|près de|proche de)\s+([A-Za-zÀ-ÿ' -]{2,45})/i,
+    /(?:à|a|sur|dans)\s+([A-Za-zÀ-ÿ' -]{2,45})/i,
+    /ville\s*:?[\s]+([A-Za-zÀ-ÿ' -]{2,45})/i,
+  ];
+  for (const p of patterns) {
+    const m = text.match(p);
+    if (m && m[1]) {
+      const city = cleanCityName(m[1]);
+      if (city && !/^(ma ville|chez moi|moi)$/i.test(city)) return city;
+    }
+  }
   return state.settings.defaultCity || '';
 }
 
@@ -734,21 +889,31 @@ async function getEvents(city, keyword) {
       .replaceAll('{city}', encodeURIComponent(city || ''))
       .replaceAll('{keyword}', encodeURIComponent(keyword || ''));
     try {
-      const res = await fetch(url, { credentials: 'include' });
+      const res = await fetchWithTimeout(url, { credentials: 'include' }, 6000);
       if (res.ok) {
         const data = await res.json();
-        const arr = Array.isArray(data) ? data : (data.items || data.results || data.evenements || []);
+        const arr = Array.isArray(data) ? data : (data.items || data.results || data.evenements || data.events || []);
         apiEvents = arr.map(mapEvent).filter(e => e.titre);
       }
     } catch (_) {}
   }
-  const all = [...apiEvents, ...state.events];
+  let publicEvents = [];
+  if (!apiEvents.length) {
+    publicEvents = await fetchPublicOpenAgenda(city, keyword);
+  }
+  const all = [...apiEvents, ...publicEvents, ...state.events];
   const cityN = normalize(city || '');
   const keyN = normalize(keyword || '');
-  let filtered = all;
-  if (cityN) filtered = filtered.filter(e => normalize(`${e.ville} ${e.lieu}`).includes(cityN));
+  const seen = new Set();
+  let filtered = all.filter(e => {
+    const id = normalize(`${e.titre}|${e.date}|${e.ville}|${e.lien}`);
+    if (seen.has(id)) return false;
+    seen.add(id);
+    return true;
+  });
+  if (cityN) filtered = filtered.filter(e => normalize(`${e.ville} ${e.lieu} ${e.description} ${e.lien}`).includes(cityN) || normalize(`${e.ville} ${e.lieu}`).includes(cityN.replace(/-/g, ' ')));
   if (keyN) filtered = filtered.filter(e => normalize(`${e.titre} ${e.type} ${e.secteur} ${e.description}`).includes(keyN) || keyN.split(' ').some(k => normalize(`${e.titre} ${e.type} ${e.secteur} ${e.description}`).includes(k)));
-  filtered.sort((a,b) => String(a.date || '').localeCompare(String(b.date || '')));
+  filtered.sort((a,b) => String(a.date || '9999').localeCompare(String(b.date || '9999')));
   return filtered.slice(0, 8);
 }
 
@@ -829,7 +994,11 @@ function infoCards(items) {
 
 function emptyEvents(city) {
   const cityLabel = city ? ` pour <strong>${escapeHtml(city)}</strong>` : '';
-  return `<div class="empty-state"><p><strong>Aucun événement disponible${cityLabel} dans les sources chargées.</strong></p><p>Pour une réponse fiable au demandeur d’emploi, l’agenda doit provenir d’un export CSV/JSON ou d’une API interne autorisée. L’assistant ne crée pas de résultat fictif.</p><p>Vous pouvez poursuivre l’orientation avec les ateliers, prestations, PMSMP, POE, La Bonne Boîte ou La Bonne Alternance.</p><p><a class="inline-action" target="_blank" rel="noopener" href="${officialLinks.mee}">Consulter Mes Événements Emploi</a></p></div>`;
+  return `<div class="empty-state"><p><strong>Aucun événement trouvé${cityLabel} dans les sources accessibles.</strong></p><p>L’assistant a vérifié les sources chargées et, si possible, la source publique OpenAgenda. Il ne génère pas de faux événements.</p><p>Pour une réponse complète en environnement France Travail, branchez l’API Mes Événements Emploi ou importez l’export CSV/JSON de l’agenda local.</p><p><a class="inline-action" target="_blank" rel="noopener" href="${officialLinks.mee}">Consulter Mes Événements Emploi</a></p></div>`;
+}
+
+function missingCityEvents() {
+  return `<div class="empty-state"><p><strong>Quelle ville dois-je utiliser ?</strong></p><p>Pour afficher les événements locaux, indiquez une ville ou enregistrez une ville par défaut dans les paramètres.</p><p>Exemples : <strong>Événements emploi à Issy-les-Moulineaux</strong> ou <strong>ma ville est Boulogne-Billancourt</strong>.</p></div>`;
 }
 
 function emptyLbi() {
@@ -873,15 +1042,19 @@ function recommendationHtml(q) {
 }
 
 async function localAnswer(q) {
+  const capturedCity = captureDefaultCity(q);
   if (wantsEvents(q)) {
-    const city = extractCity(q);
+    const city = extractCity(q) || capturedCity;
     const keyword = extractKeyword(q);
     if (!city) {
-      return `<p>Pour chercher les événements, j’ai besoin d’une ville ou d’un département.</p><p>Exemple : <strong>événements emploi à Boulogne-Billancourt</strong>.</p>`;
+      return `<p>Je peux chercher les événements emploi, mais la ville n’est pas encore connue.</p>${missingCityEvents()}`;
     }
     const events = await getEvents(city, keyword);
-    if (!events.length) return `<p>J’ai cherché les événements emploi${city ? ` autour de <strong>${escapeHtml(city)}</strong>` : ''}${keyword ? ` avec le mot-clé <strong>${escapeHtml(keyword)}</strong>` : ''}.</p>${emptyEvents(city)}`;
-    return `<p>J’ai trouvé ${events.length} événement(s) correspondant(s)${city ? ` autour de <strong>${escapeHtml(city)}</strong>` : ''}.</p>${eventCards(events)}`;
+    if (!events.length) return `<p>J’ai cherché les événements emploi autour de <strong>${escapeHtml(city)}</strong>${keyword ? ` avec le mot-clé <strong>${escapeHtml(keyword)}</strong>` : ''}.</p>${emptyEvents(city)}`;
+    return `<p>Voici les événements emploi trouvés autour de <strong>${escapeHtml(city)}</strong>${keyword ? ` pour <strong>${escapeHtml(keyword)}</strong>` : ''}.</p>${eventCards(events)}<p>Vérifiez la fiche avant inscription : places disponibles, public concerné, prérequis et modalités peuvent évoluer.</p>`;
+  }
+  if (capturedCity) {
+    return `<p>Ville par défaut enregistrée : <strong>${escapeHtml(capturedCity)}</strong>.</p><p>Vous pouvez maintenant demander : <strong>Que se passe-t-il en événement dans ma ville ?</strong></p>`;
   }
   if (wantsLbi(q)) {
     const results = await getLbiResults(q);
@@ -914,7 +1087,8 @@ async function handleUser(q) {
   els.send.disabled = true;
   const typingId = showTyping();
   try {
-    const html = state.settings.engine === 'gemini' ? await geminiAnswer(q) : await localAnswer(q);
+    const forceLocal = wantsEvents(q) || wantsLbi(q) || wantsListAteliers(q) || /\b(ma ville|ville par défaut)\b/i.test(q);
+    const html = (!forceLocal && state.settings.engine === 'gemini') ? await geminiAnswer(q) : await localAnswer(q);
     removeTyping(typingId);
     addMessage('assistant', html, { html: true });
   } catch (e) {
