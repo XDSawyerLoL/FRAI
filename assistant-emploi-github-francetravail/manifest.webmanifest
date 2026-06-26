@@ -1,0 +1,13 @@
+{
+  "name": "Assistant parcours emploi",
+  "short_name": "Parcours emploi",
+  "description": "Prototype tchat d’orientation emploi compatible GitHub Pages.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f7fb",
+  "theme_color": "#273b99",
+  "icons": [
+    { "src": "assets/icon.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
