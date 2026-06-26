@@ -7,30 +7,261 @@
   <meta name="theme-color" content="#002f6c" />
   <style>
     :root{
-      --ft-blue:#002f6c; --ft-blue-2:#075ca8; --ft-light:#f4f7fb; --ft-border:#d9e2ef;
-      --ft-text:#1f2a37; --ft-muted:#5f6b7a; --ft-red:#e1000f; --ft-yellow:#ffd200;
-      --radius:18px; --shadow:0 16px 45px rgba(0,47,108,.12);
+      --ft-blue:#002f6c;
+      --ft-blue-2:#075ca8;
+      --ft-cyan:#19a0dc;
+      --ft-bg:#eef3f8;
+      --ft-surface:#ffffff;
+      --ft-soft:#f4f8ff;
+      --ft-border:#d9e2ef;
+      --ft-text:#1f2a37;
+      --ft-muted:#5f6b7a;
+      --ft-green:#067647;
+      --radius:18px;
+      --shadow:0 18px 55px rgba(0,47,108,.12);
     }
-    *{box-sizing:border-box} body{margin:0;font-family:Arial, Helvetica, sans-serif;color:var(--ft-text);background:#eef3f8;height:100vh;display:flex;flex-direction:column}
-    .topbar{background:white;border-bottom:1px solid var(--ft-border);padding:10px 18px;display:flex;align-items:center;gap:18px;position:sticky;top:0;z-index:5}
-    .rf-logo-img{height:54px;width:auto;object-fit:contain;background:white;flex:0 0 auto}.brand{display:flex;align-items:center;gap:12px;min-width:0}.ft-mark{width:42px;height:42px;border-radius:12px;background:#fff;border:1px solid var(--ft-border);position:relative;box-shadow:0 3px 10px rgba(0,0,0,.06);flex:0 0 auto}.ft-mark span{position:absolute;border-radius:50%}.ft-mark .b{background:#253b80;width:14px;height:14px;left:9px;top:8px}.ft-mark .c{background:#19a0dc;width:12px;height:12px;right:8px;top:11px}.ft-mark .r{background:#e84b5f;width:10px;height:10px;left:12px;bottom:8px}.ft-mark .y{background:#f5c542;width:9px;height:9px;right:12px;bottom:10px}.brand-title{font-weight:800;color:var(--ft-blue);font-size:18px;line-height:1}.brand-sub{font-size:12px;color:var(--ft-muted);margin-top:3px}.spacer{flex:1}.status{font-size:12px;padding:7px 10px;border-radius:999px;border:1px solid var(--ft-border);background:#f8fafc;color:var(--ft-muted)}.status.ok{background:#ecfdf5;color:#067647;border-color:#b7ebc6}.icon-btn{border:1px solid var(--ft-border);background:white;border-radius:12px;padding:9px 12px;cursor:pointer;color:var(--ft-blue);font-weight:700}
-    .layout{flex:1;display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:18px;padding:18px;min-height:0;max-width:1280px;width:100%;margin:0 auto}.chat{min-height:0;background:white;border:1px solid var(--ft-border);border-radius:var(--radius);box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden}.messages{flex:1;overflow:auto;padding:22px;display:flex;flex-direction:column;gap:14px;background:linear-gradient(#fff,#f8fbff)}.msg{display:flex;gap:10px;align-items:flex-start;max-width:92%}.msg.user{align-self:flex-end;flex-direction:row-reverse}.avatar{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px;flex:0 0 auto}.ai .avatar{background:#eaf2ff;color:var(--ft-blue)}.user .avatar{background:var(--ft-blue);color:white}.bubble{padding:13px 15px;border-radius:18px;line-height:1.48;font-size:15px;white-space:pre-wrap}.ai .bubble{background:white;border:1px solid var(--ft-border);border-top-left-radius:6px}.user .bubble{background:var(--ft-blue);color:white;border-top-right-radius:6px}.composer{border-top:1px solid var(--ft-border);padding:12px;background:white;display:flex;gap:10px;align-items:flex-end}.composer textarea{flex:1;resize:none;min-height:48px;max-height:130px;border:1px solid var(--ft-border);border-radius:16px;padding:14px;font:inherit;outline:none}.send{background:var(--ft-blue);color:white;border:0;border-radius:15px;padding:14px 18px;font-weight:800;cursor:pointer}.send:disabled{opacity:.55;cursor:wait}.side{display:flex;flex-direction:column;gap:14px;min-height:0}.panel{background:white;border:1px solid var(--ft-border);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}.panel h2{font-size:16px;margin:0 0 10px;color:var(--ft-blue)}.hint{font-size:13px;color:var(--ft-muted);line-height:1.42}.quick{display:flex;flex-wrap:wrap;gap:8px}.chip{border:1px solid var(--ft-border);background:#f8fbff;color:var(--ft-blue);border-radius:999px;padding:9px 10px;font-size:13px;cursor:pointer}.field{display:flex;flex-direction:column;gap:6px;margin:10px 0}.field label{font-size:12px;color:var(--ft-muted);font-weight:700}.field input,.field select{border:1px solid var(--ft-border);border-radius:12px;padding:11px;font:inherit}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.btn{border:1px solid var(--ft-blue);background:white;color:var(--ft-blue);border-radius:12px;padding:10px 12px;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px}.btn.primary{background:var(--ft-blue);color:white}.btn.soft{border-color:var(--ft-border);color:var(--ft-blue);background:#f8fbff}.result-card{border:1px solid var(--ft-border);border-radius:16px;background:white;margin-top:10px;padding:14px}.result-card h3{margin:0 0 8px;font-size:16px;color:var(--ft-blue)}.meta{font-size:13px;color:#415062;margin:4px 0}.tag{display:inline-block;background:#eaf2ff;color:var(--ft-blue);border-radius:999px;padding:4px 8px;font-size:12px;margin:3px 5px 3px 0}.notice{border-left:4px solid var(--ft-blue-2);background:#f4f8ff;padding:12px;border-radius:12px;color:#26374a}.hidden{display:none!important}.small{font-size:12px;color:var(--ft-muted)}
-    @media(max-width:900px){body{height:100dvh}.topbar{padding:9px 12px}.rf-logo-img{height:42px}.brand-title{font-size:16px}.brand-sub{display:none}.layout{grid-template-columns:1fr;padding:10px;gap:10px}.side{display:none}.side.open{display:flex;position:fixed;inset:70px 10px 10px;z-index:10;overflow:auto}.chat{height:calc(100dvh - 84px)}.messages{padding:14px}.msg{max-width:100%}.bubble{font-size:14px}.status{display:none}}
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Arial, Helvetica, sans-serif;
+      color:var(--ft-text);
+      background:var(--ft-bg);
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+    .topbar{
+      background:#fff;
+      border-bottom:1px solid var(--ft-border);
+      padding:10px 18px;
+      display:flex;
+      align-items:center;
+      gap:18px;
+      position:sticky;
+      top:0;
+      z-index:20;
+    }
+    .rf-logo-img{
+      height:54px;
+      width:auto;
+      object-fit:contain;
+      background:#fff;
+      flex:0 0 auto;
+    }
+    .ft-logo-img{
+      height:46px;
+      width:auto;
+      max-width:190px;
+      object-fit:contain;
+      flex:0 0 auto;
+    }
+    .brand-text{min-width:0;display:flex;flex-direction:column;gap:3px}
+    .brand-title{font-weight:800;color:var(--ft-blue);font-size:18px;line-height:1.05}
+    .brand-sub{font-size:12px;color:var(--ft-muted);line-height:1.2}
+    .spacer{flex:1}
+    .status{
+      font-size:12px;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid var(--ft-border);
+      background:#f8fafc;
+      color:var(--ft-muted);
+      white-space:nowrap;
+    }
+    .status.ok{background:#ecfdf5;color:var(--ft-green);border-color:#b7ebc6}
+    .icon-btn{
+      border:1px solid var(--ft-border);
+      background:#fff;
+      border-radius:12px;
+      padding:10px 13px;
+      cursor:pointer;
+      color:var(--ft-blue);
+      font-weight:800;
+    }
+    .app{
+      flex:1;
+      min-height:0;
+      display:flex;
+      justify-content:center;
+      padding:18px;
+    }
+    .chat{
+      width:min(980px,100%);
+      min-height:0;
+      background:#fff;
+      border:1px solid var(--ft-border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
+    }
+    .messages{
+      flex:1;
+      overflow:auto;
+      padding:24px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      background:linear-gradient(#fff,#f8fbff);
+    }
+    .msg{display:flex;gap:10px;align-items:flex-start;max-width:92%}
+    .msg.user{align-self:flex-end;flex-direction:row-reverse}
+    .avatar{
+      width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
+      font-weight:800;font-size:13px;flex:0 0 auto;
+    }
+    .ai .avatar{background:#eaf2ff;color:var(--ft-blue)}
+    .user .avatar{background:var(--ft-blue);color:#fff}
+    .bubble{
+      padding:13px 15px;
+      border-radius:18px;
+      line-height:1.48;
+      font-size:15px;
+      white-space:pre-wrap;
+    }
+    .ai .bubble{background:#fff;border:1px solid var(--ft-border);border-top-left-radius:6px}
+    .user .bubble{background:var(--ft-blue);color:#fff;border-top-right-radius:6px}
+    .composer{
+      border-top:1px solid var(--ft-border);
+      padding:12px;
+      background:#fff;
+      display:flex;
+      gap:10px;
+      align-items:flex-end;
+    }
+    .composer textarea{
+      flex:1;
+      resize:none;
+      min-height:48px;
+      max-height:130px;
+      border:1px solid var(--ft-border);
+      border-radius:16px;
+      padding:14px;
+      font:inherit;
+      outline:none;
+      line-height:1.35;
+    }
+    .composer textarea:focus{border-color:var(--ft-blue-2);box-shadow:0 0 0 3px rgba(7,92,168,.12)}
+    .send{
+      background:var(--ft-blue);
+      color:#fff;
+      border:0;
+      border-radius:15px;
+      padding:14px 18px;
+      font-weight:800;
+      cursor:pointer;
+    }
+    .send:disabled{opacity:.55;cursor:wait}
+    .result-card{
+      border:1px solid var(--ft-border);
+      border-radius:16px;
+      background:#fff;
+      margin-top:10px;
+      padding:14px;
+      white-space:normal;
+    }
+    .result-card h3{margin:0 0 8px;font-size:16px;color:var(--ft-blue)}
+    .meta{font-size:13px;color:#415062;margin:4px 0}
+    .tag{display:inline-block;background:#eaf2ff;color:var(--ft-blue);border-radius:999px;padding:4px 8px;font-size:12px;margin:3px 5px 3px 0}
+    .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .btn{
+      border:1px solid var(--ft-blue);
+      background:#fff;
+      color:var(--ft-blue);
+      border-radius:12px;
+      padding:10px 12px;
+      font-weight:800;
+      cursor:pointer;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      min-height:40px;
+    }
+    .btn.primary{background:var(--ft-blue);color:#fff}
+    .btn.soft{border-color:var(--ft-border);color:var(--ft-blue);background:#f8fbff}
+    .btn.danger{border-color:#c93535;color:#c93535;background:#fff}
+    .small{font-size:12px;color:var(--ft-muted);line-height:1.45}
+    .modal-backdrop{
+      position:fixed;
+      inset:0;
+      background:rgba(15,23,42,.42);
+      z-index:40;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+    }
+    .modal-backdrop.open{display:flex}
+    .modal{
+      width:min(720px,100%);
+      max-height:min(86vh,820px);
+      overflow:auto;
+      background:#fff;
+      border-radius:22px;
+      border:1px solid var(--ft-border);
+      box-shadow:0 22px 80px rgba(0,0,0,.24);
+    }
+    .modal-head{
+      position:sticky;
+      top:0;
+      background:#fff;
+      z-index:1;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:18px 20px;
+      border-bottom:1px solid var(--ft-border);
+    }
+    .modal-head h2{margin:0;color:var(--ft-blue);font-size:20px;line-height:1.15}
+    .modal-body{padding:18px 20px 22px;display:grid;gap:16px}
+    .settings-section{border:1px solid var(--ft-border);border-radius:18px;padding:15px;background:#fff}
+    .settings-section h3{margin:0 0 10px;color:var(--ft-blue);font-size:16px}
+    .hint{font-size:13px;color:var(--ft-muted);line-height:1.42;margin:0 0 10px}
+    .quick{display:flex;flex-wrap:wrap;gap:8px}
+    .chip{border:1px solid var(--ft-border);background:#f8fbff;color:var(--ft-blue);border-radius:999px;padding:9px 10px;font-size:13px;cursor:pointer;font-weight:700}
+    .field{display:flex;flex-direction:column;gap:6px;margin:10px 0}
+    .field label{font-size:12px;color:var(--ft-muted);font-weight:800}
+    .field input,.field select{border:1px solid var(--ft-border);border-radius:12px;padding:11px;font:inherit;min-width:0}
+    .field input:focus{outline:0;border-color:var(--ft-blue-2);box-shadow:0 0 0 3px rgba(7,92,168,.12)}
+    @media(max-width:760px){
+      body{height:100dvh}
+      .topbar{padding:8px 10px;gap:10px}
+      .rf-logo-img{height:38px}
+      .ft-logo-img{height:36px;max-width:140px}
+      .brand-text{display:none}
+      .status{display:none}
+      .app{padding:8px}
+      .chat{height:calc(100dvh - 72px);border-radius:16px}
+      .messages{padding:14px}
+      .msg{max-width:100%}
+      .bubble{font-size:14px}
+      .composer{padding:10px;gap:8px}
+      .send{padding:13px 14px}
+      .modal-backdrop{padding:8px;align-items:flex-end}
+      .modal{max-height:92vh;border-radius:20px 20px 0 0}
+      .modal-head{padding:14px 16px}
+      .modal-body{padding:14px 16px 18px}
+    }
   </style>
 </head>
 <body>
   <header class="topbar">
     <img class="rf-logo-img" src="https://cdn.francetravail.fr/studio/logos/marianne/Logo_Marianne_RVB_Coul_Positif.svg" alt="République Française - Liberté, Égalité, Fraternité" />
-    <div class="brand" aria-label="France Travail">
-      <div class="ft-mark" aria-hidden="true"><span class="b"></span><span class="c"></span><span class="r"></span><span class="y"></span></div>
-      <div><div class="brand-title">France Travail</div><div class="brand-sub">Assistant d’orientation emploi, événements et formation</div></div>
+    <img class="ft-logo-img" src="https://upload.wikimedia.org/wikipedia/commons/d/de/France_Travail_2024.svg" alt="France Travail" />
+    <div class="brand-text">
+      <div class="brand-title">Assistant emploi, événements et formation</div>
+      <div class="brand-sub">Recherche assistée via agent local et IA</div>
     </div>
     <div class="spacer"></div>
     <div id="agentStatus" class="status">Agent local non vérifié</div>
-    <button id="settingsBtn" class="icon-btn" type="button">⚙️ Réglages</button>
+    <button id="settingsBtn" class="icon-btn" type="button" aria-haspopup="dialog">⚙️ Réglages</button>
   </header>
 
-  <main class="layout">
+  <main class="app">
     <section class="chat" aria-label="Conversation">
       <div id="messages" class="messages"></div>
       <div class="composer">
@@ -38,49 +269,64 @@
         <button id="sendBtn" class="send" type="button">Envoyer</button>
       </div>
     </section>
-
-    <aside id="side" class="side">
-      <section class="panel">
-        <h2>Demandes rapides</h2>
-        <div class="quick">
-          <button class="chip" data-q="Que se passe-t-il en événement dans ma ville ?">Événements dans ma ville</button>
-          <button class="chip" data-q="Je suis agent administratif, trouve une formation financée par la Région ou France Travail">Formation financée</button>
-          <button class="chip" data-q="Trouve les job datings autour de ma ville">Job datings</button>
-          <button class="chip" data-q="Je veux me reconvertir, que me proposes-tu ?">Reconversion</button>
-        </div>
-      </section>
-      <section class="panel" id="settingsPanel">
-        <h2>Connexion agent et IA</h2>
-        <p class="hint">Pour que l’assistant aille chercher les informations sur Mes Événements Emploi et Se former, lance l’agent local sur le PC. La clé OpenAI reste côté navigateur et transite seulement vers l’agent local.</p>
-        <div class="field"><label for="city">Ville par défaut</label><input id="city" placeholder="Boulogne-Billancourt" /></div>
-        <div class="field"><label for="agentUrl">Adresse de l’agent local</label><input id="agentUrl" value="http://127.0.0.1:8798" /></div>
-        <div class="field"><label for="openaiKey">Clé API OpenAI</label><input id="openaiKey" type="password" placeholder="sk-..." autocomplete="off" /></div>
-        <div class="field"><label for="model">Modèle OpenAI</label><input id="model" value="gpt-4.1-mini" /></div>
-        <div class="actions"><button id="saveBtn" class="btn primary" type="button">Enregistrer</button><button id="testBtn" class="btn" type="button">Tester l’agent</button></div>
-        <p class="small">Ne publie jamais ta clé dans GitHub. Elle doit rester dans ton navigateur ou dans l’agent local.</p>
-      </section>
-      <section class="panel">
-        <h2>Liens officiels</h2>
-        <div class="actions">
-          <a class="btn soft" target="_blank" rel="noopener" href="https://mesevenementsemploi.francetravail.fr/mes-evenements-emploi/evenements">Mes Événements Emploi</a>
-          <a class="btn soft" target="_blank" rel="noopener" href="https://candidat.francetravail.fr/formations/recherche?filtreEstFormationEnCoursOuAVenir=formEnCours&filtreEstFormationTerminee=formEnCours&range=0-9&tri=0">Se former</a>
-          <a class="btn soft" target="_blank" rel="noopener" href="https://www.francetravail.fr/candidat/les-ateliers-francetravail.html">Ateliers</a>
-        </div>
-      </section>
-    </aside>
   </main>
+
+  <div id="settingsModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+    <div class="modal">
+      <div class="modal-head">
+        <h2 id="settingsTitle">Réglages et accès rapides</h2>
+        <div class="spacer"></div>
+        <button id="closeSettingsBtn" class="icon-btn" type="button" aria-label="Fermer les réglages">✕</button>
+      </div>
+      <div class="modal-body">
+        <section class="settings-section">
+          <h3>Connexion agent et IA</h3>
+          <p class="hint">Pour rechercher automatiquement dans Mes Événements Emploi et Se former, lance l’agent local sur le PC. La clé OpenAI reste côté navigateur et transite seulement vers l’agent local.</p>
+          <div class="field"><label for="city">Ville par défaut</label><input id="city" placeholder="Boulogne-Billancourt" /></div>
+          <div class="field"><label for="agentUrl">Adresse de l’agent local</label><input id="agentUrl" value="http://127.0.0.1:8798" /></div>
+          <div class="field"><label for="openaiKey">Clé API OpenAI</label><input id="openaiKey" type="password" placeholder="sk-..." autocomplete="off" /></div>
+          <div class="field"><label for="model">Modèle OpenAI</label><input id="model" value="gpt-4.1-mini" /></div>
+          <div class="actions"><button id="saveBtn" class="btn primary" type="button">Enregistrer</button><button id="testBtn" class="btn" type="button">Tester l’agent</button></div>
+          <p class="small">Ne publie jamais ta clé dans GitHub. Elle doit rester dans ton navigateur ou dans l’agent local.</p>
+        </section>
+
+        <section class="settings-section">
+          <h3>Demandes rapides</h3>
+          <div class="quick">
+            <button class="chip" data-q="Que se passe-t-il en événement dans ma ville ?">Événements dans ma ville</button>
+            <button class="chip" data-q="Je suis agent administratif, trouve une formation financée par la Région ou France Travail">Formation financée</button>
+            <button class="chip" data-q="Trouve les job datings autour de ma ville">Job datings</button>
+            <button class="chip" data-q="Je veux me reconvertir, que me proposes-tu ?">Reconversion</button>
+          </div>
+        </section>
+
+        <section class="settings-section">
+          <h3>Liens officiels</h3>
+          <div class="actions">
+            <a class="btn soft" target="_blank" rel="noopener" href="https://mesevenementsemploi.francetravail.fr/mes-evenements-emploi/evenements">Mes Événements Emploi</a>
+            <a class="btn soft" target="_blank" rel="noopener" href="https://candidat.francetravail.fr/formations/recherche?filtreEstFormationEnCoursOuAVenir=formEnCours&filtreEstFormationTerminee=formEnCours&range=0-9&tri=0">Se former</a>
+            <a class="btn soft" target="_blank" rel="noopener" href="https://www.francetravail.fr/candidat/les-ateliers-francetravail.html">Ateliers France Travail</a>
+            <a class="btn soft" target="_blank" rel="noopener" href="https://labonneboite.francetravail.fr/">La Bonne Boîte</a>
+            <a class="btn soft" target="_blank" rel="noopener" href="https://labonnealternance.apprentissage.beta.gouv.fr/">La Bonne Alternance</a>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
 
 <script>
 const el = id => document.getElementById(id);
 const messages = el('messages');
 const input = el('input');
 const sendBtn = el('sendBtn');
-const side = el('side');
+const modal = el('settingsModal');
 const defaults = { city:'', agentUrl:'http://127.0.0.1:8798', openaiKey:'', model:'gpt-4.1-mini' };
 let state = {...defaults, ...JSON.parse(localStorage.getItem('ftAssistantSettings')||'{}')};
 for (const k of ['city','agentUrl','openaiKey','model']) el(k).value = state[k] || '';
+function openSettings(){ modal.classList.add('open'); setTimeout(()=>el('city').focus(),50); }
+function closeSettings(){ modal.classList.remove('open'); }
 function save(){ state = {city:el('city').value.trim(), agentUrl:el('agentUrl').value.trim()||defaults.agentUrl, openaiKey:el('openaiKey').value.trim(), model:el('model').value.trim()||defaults.model}; localStorage.setItem('ftAssistantSettings', JSON.stringify(state)); }
-function escapeHtml(s){ return String(s||'').replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function escapeHtml(s){ return String(s||'').replace(/[&<>\"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 function addMessage(role, text, cards){
   const wrap = document.createElement('div'); wrap.className='msg '+(role==='user'?'user':'ai');
   wrap.innerHTML = `<div class="avatar">${role==='user'?'Vous':'IA'}</div><div class="bubble">${escapeHtml(text||'')}</div>`;
@@ -98,7 +344,7 @@ function localFallback(text){
   const city = state.city || 'votre ville';
   const low = text.toLowerCase();
   if(/év|even|agenda|job|forum|salon|que se passe/.test(low)){
-    return {answer:`Pour chercher les événements à ${city}, l’agent local doit être lancé. Sans lui, cette page GitHub ne peut pas piloter le site Mes Événements Emploi ni lire les résultats en direct. Lance agent-local/lancer-agent-local.bat, puis repose la question.`, cards:[{titre:'Mes Événements Emploi', description:'Calendrier officiel des salons, job datings, forums, ateliers et réunions d’information.', link:'https://mesevenementsemploi.francetravail.fr/mes-evenements-emploi/evenements', cta:'Ouvrir l’agenda officiel'}]};
+    return {answer:`Pour chercher les événements à ${city}, l’agent local doit être lancé. Sans lui, cette page GitHub ne peut pas piloter le site Mes Événements Emploi ni lire les résultats en direct. Lance agent-local/lancer_agent.bat, puis repose la question.`, cards:[{titre:'Mes Événements Emploi', description:'Calendrier officiel des salons, job datings, forums, ateliers et réunions d’information.', link:'https://mesevenementsemploi.francetravail.fr/mes-evenements-emploi/evenements', cta:'Ouvrir l’agenda officiel'}]};
   }
   if(/formation|former|financement|région|region|cpf|administratif/.test(low)){
     return {answer:`Pour trouver une formation et vérifier les financements possibles, l’agent local doit être lancé. Il ouvrira le moteur Se former, remplira les critères métier/ville et retournera les fiches trouvées.`, cards:[{titre:'Se former — France Travail', description:'Moteur officiel de recherche de formations.', link:'https://candidat.francetravail.fr/formations/recherche?filtreEstFormationEnCoursOuAVenir=formEnCours&filtreEstFormationTerminee=formEnCours&range=0-9&tri=0', cta:'Ouvrir la recherche formation'}]};
@@ -117,10 +363,21 @@ async function send(){
   catch(e){ pending.remove(); const data = localFallback(text); addMessage('ai', data.answer, data.cards||[]); }
   finally{ sendBtn.disabled=false; input.focus(); }
 }
-async function testAgent(){ save(); const badge=el('agentStatus'); try{ const r=await fetch((state.agentUrl||defaults.agentUrl).replace(/\/$/,'')+'/api/health'); const j=await r.json(); badge.textContent='Agent local connecté'; badge.classList.add('ok'); addMessage('ai', 'Agent local connecté. Je peux maintenant piloter les recherches événements et formations depuis le PC.'); }catch(e){ badge.textContent='Agent local non connecté'; badge.classList.remove('ok'); addMessage('ai','Agent local non connecté. Lance agent-local/lancer-agent-local.bat puis clique à nouveau sur Tester l’agent.'); }}
-sendBtn.addEventListener('click', send); input.addEventListener('keydown', e=>{ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}}); input.addEventListener('input',()=>{input.style.height='auto';input.style.height=Math.min(input.scrollHeight,130)+'px'});
-el('saveBtn').addEventListener('click',()=>{save(); addMessage('ai','Réglages enregistrés.');}); el('testBtn').addEventListener('click',testAgent); el('settingsBtn').addEventListener('click',()=>side.classList.toggle('open'));
-document.querySelectorAll('[data-q]').forEach(b=>b.addEventListener('click',()=>{input.value=b.dataset.q; input.focus(); if(innerWidth<900) side.classList.remove('open');}));
+async function testAgent(){
+  save(); const badge=el('agentStatus');
+  try{ const r=await fetch((state.agentUrl||defaults.agentUrl).replace(/\/$/,'')+'/api/health'); await r.json(); badge.textContent='Agent local connecté'; badge.classList.add('ok'); addMessage('ai', 'Agent local connecté. Je peux maintenant piloter les recherches événements et formations depuis le PC.'); }
+  catch(e){ badge.textContent='Agent local non connecté'; badge.classList.remove('ok'); addMessage('ai','Agent local non connecté. Lance agent-local/lancer_agent.bat puis clique à nouveau sur Tester l’agent dans les réglages.'); }
+}
+sendBtn.addEventListener('click', send);
+input.addEventListener('keydown', e=>{ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}});
+input.addEventListener('input',()=>{input.style.height='auto';input.style.height=Math.min(input.scrollHeight,130)+'px'});
+el('settingsBtn').addEventListener('click', openSettings);
+el('closeSettingsBtn').addEventListener('click', closeSettings);
+modal.addEventListener('click', e=>{ if(e.target===modal) closeSettings(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeSettings(); });
+el('saveBtn').addEventListener('click',()=>{save(); closeSettings(); addMessage('ai','Réglages enregistrés.');});
+el('testBtn').addEventListener('click',()=>{testAgent();});
+document.querySelectorAll('[data-q]').forEach(b=>b.addEventListener('click',()=>{input.value=b.dataset.q; closeSettings(); input.focus();}));
 addMessage('ai', 'Bonjour. Indiquez votre ville, votre métier ou votre besoin. Je peux chercher les événements emploi et les formations France Travail via l’agent local, puis structurer la réponse avec ChatGPT si une clé API est renseignée.');
 setTimeout(testAgent,500);
 </script>
