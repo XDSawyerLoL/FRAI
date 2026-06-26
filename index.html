@@ -379,6 +379,70 @@ input, select {
   line-height: 1.3;
 }
 
+
+.mee-dialog {
+  width: min(1120px, calc(100vw - 24px));
+  height: min(820px, calc(100dvh - 24px));
+  border: 1px solid var(--line-strong);
+  border-radius: 18px;
+  padding: 0;
+  box-shadow: var(--shadow);
+  background: #fff;
+}
+.mee-dialog::backdrop { background: rgba(17, 24, 39, .46); }
+.mee-shell { height: 100%; display: grid; grid-template-rows: auto 1fr auto; }
+.mee-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+  background: #f8faff;
+}
+.mee-head h2 { margin: 0; font-size: 18px; }
+.mee-head p { margin: 3px 0 0; color: var(--muted); font-size: 13px; }
+.mee-frame-wrap { min-height: 0; background: #fff; }
+.mee-frame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #fff;
+}
+.mee-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-top: 1px solid var(--line);
+  background: #fff;
+}
+.mee-foot small { color: var(--muted); }
+.official-mee-card {
+  border: 1px solid #cdd6f7;
+  border-left: 5px solid var(--ft-blue);
+  border-radius: 15px;
+  padding: 13px;
+  background: #f7f9ff;
+  margin-top: 12px;
+}
+.official-mee-card h3 { margin: 0 0 8px; font-size: 16px; }
+.official-mee-card p { margin: 0 0 10px; }
+.official-mee-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.official-mee-actions a, .official-mee-actions button {
+  min-height: 38px;
+  border-radius: 9px;
+  border: 1px solid var(--ft-blue);
+  color: var(--ft-blue);
+  background: #fff;
+  text-decoration: none;
+  font-weight: 800;
+  padding: 8px 11px;
+}
+.official-mee-actions .primary { background: var(--ft-blue); color: #fff; }
+
 @media (max-width: 720px) {
   .source-strip { padding-left: 10px; padding-right: 10px; }
   .event-header { align-items: flex-start; flex-direction: column; }
@@ -403,14 +467,14 @@ input, select {
         </div>
       </div>
       <div class="header-actions">
-        <button id="importEventsBtn" class="ft-btn secondary" type="button">Mettre à jour l’agenda</button>
+        <button id="importEventsBtn" class="ft-btn secondary" type="button">Importer un agenda</button>
         <button id="settingsBtn" class="icon-btn" type="button" aria-label="Paramètres">⚙</button>
       </div>
     </header>
 
     <section class="source-strip" aria-label="Sources disponibles">
       <span class="source-chip active">Ateliers & prestations</span>
-      <span class="source-chip" id="eventsSourceChip">Agenda à connecter</span>
+      <span class="source-chip active" id="eventsSourceChip">Mes Événements Emploi intégré</span>
       <span class="source-chip" id="lbiSourceChip">La Bonne Info à connecter</span>
       <span class="source-chip active">PMSMP · POE · Alternance · Entreprises</span>
     </section>
@@ -430,7 +494,7 @@ input, select {
     <form id="composer" class="composer" autocomplete="off">
       <button type="button" id="voiceBtn" class="icon-btn" aria-label="Dictée vocale">🎙️</button>
       <label for="userInput" class="sr-only">Votre demande</label>
-      <textarea id="userInput" rows="1" autocomplete="off" placeholder="Posez une question : événements dans ma ville, formation agent administratif financée, atelier CV…" required></textarea>
+      <textarea id="userInput" rows="1" autocomplete="off" placeholder="Posez une question : événements emploi à Paris, atelier CV, immersion, POE, alternance…" required></textarea>
       <button id="sendBtn" class="send-btn" type="submit" aria-label="Envoyer">Envoyer</button>
     </form>
   </div>
@@ -463,12 +527,6 @@ input, select {
       </label>
 
       <label>
-        Agent navigateur local, optionnel
-        <input id="agentUrlInput" type="url" placeholder="http://127.0.0.1:8798" />
-        <small>À utiliser pour que l’assistant ouvre les sites France Travail, remplisse les critères et restitue les résultats sans multiplier les sites.</small>
-      </label>
-
-      <label>
         Moteur de réponse
         <select id="engineSelect">
           <option value="local">Réponse locale sécurisée, sans clé API</option>
@@ -488,6 +546,26 @@ input, select {
         <button id="saveSettingsBtn" value="save" class="ft-btn primary">Enregistrer</button>
       </div>
     </form>
+  </dialog>
+
+
+  <dialog id="meeDialog" class="mee-dialog" aria-label="Mes Événements Emploi">
+    <div class="mee-shell">
+      <div class="mee-head">
+        <div>
+          <h2>Mes Événements Emploi</h2>
+          <p>Agenda officiel des salons, job datings, ateliers, forums et réunions d’information.</p>
+        </div>
+        <button id="closeMeeDialog" class="icon-btn" type="button" aria-label="Fermer">✕</button>
+      </div>
+      <div class="mee-frame-wrap">
+        <iframe id="meeFrame" class="mee-frame" title="Mes Événements Emploi" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+      <div class="mee-foot">
+        <small>Si l’affichage intégré est bloqué par le navigateur, ouvrez l’agenda dans un nouvel onglet.</small>
+        <a class="inline-action" target="_blank" rel="noopener" href="https://mesevenementsemploi.francetravail.fr/mes-evenements-emploi/evenements">Ouvrir dans un nouvel onglet</a>
+      </div>
+    </div>
   </dialog>
 
   <input id="eventsFileInput" type="file" accept=".csv,.json,application/json,text/csv" hidden />
@@ -514,7 +592,6 @@ const els = {
   defaultCity: $('defaultCityInput'),
   apiUrl: $('apiUrlInput'),
   lbiUrl: $('lbiUrlInput'),
-  agentUrl: $('agentUrlInput'),
   engine: $('engineSelect'),
   geminiKeyBlock: $('geminiKeyBlock'),
   geminiKey: $('geminiKeyInput'),
@@ -525,14 +602,16 @@ const els = {
   lbiSourceChip: $('lbiSourceChip'),
   voice: $('voiceBtn'),
   quickActions: $('quickActions'),
+  meeDialog: $('meeDialog'),
+  meeFrame: $('meeFrame'),
+  closeMeeDialog: $('closeMeeDialog'),
 };
 
-const STORAGE_KEY = 'assistant_france_travail_github_agent_v1';
+const STORAGE_KEY = 'assistant_france_travail_github_v5';
 const DEFAULT_SETTINGS = {
   defaultCity: '',
   apiUrl: '',
   lbiUrl: '',
-  agentUrl: 'http://127.0.0.1:8798',
   engine: 'local',
   geminiKey: '',
 };
@@ -547,12 +626,11 @@ let state = {
 };
 
 const officialLinks = {
-  mee: 'https://mesevenementsemploi.francetravail.fr/mes-evenements-emploi/',
+  mee: 'https://mesevenementsemploi.francetravail.fr/mes-evenements-emploi/evenements',
   bonneBoite: 'https://labonneboite.francetravail.fr/',
   bonneAlternance: 'https://labonnealternance.apprentissage.beta.gouv.fr/',
   immersion: 'https://immersion-facile.beta.gouv.fr/',
   laBonneInfo: 'https://la-bonne-info.francetravail.net/',
-  formations: 'https://candidat.francetravail.fr/formations/recherche?filtreEstFormationEnCoursOuAVenir=formEnCours&filtreEstFormationTerminee=formEnCours&range=0-9&tri=0',
   espacePersonnel: 'https://candidat.francetravail.fr/',
   ateliers: 'https://www.francetravail.fr/candidat/les-ateliers-francetravail.html',
   ateliersChoisirMetier: 'https://www.francetravail.fr/candidat/les-ateliers-francetravail/ateliers-conseils-choisir-un-met.html',
@@ -619,11 +697,11 @@ function addMessage(role, content, options = {}) {
 
 function setStatus() {
   const city = state.settings.defaultCity ? ` · territoire : ${state.settings.defaultCity}` : '';
-  const ev = state.events.length ? `${state.events.length} événement(s) chargé(s)` : (state.settings.apiUrl ? 'agenda API configuré' : 'agenda à connecter');
+  const ev = state.events.length ? `${state.events.length} événement(s) chargé(s)` : (state.settings.apiUrl ? 'agenda API configuré' : 'agenda officiel intégré');
   const lbi = state.lbi.length ? `${state.lbi.length} fiche(s) La Bonne Info` : (state.settings.lbiUrl ? 'La Bonne Info API configurée' : 'La Bonne Info à connecter');
   els.status.textContent = `${ev} · ${lbi}${city}`;
   if (els.eventsSourceChip) {
-    els.eventsSourceChip.textContent = state.events.length ? `Agenda chargé : ${state.events.length}` : (state.settings.apiUrl ? 'Agenda connecté par API' : 'Agenda à connecter');
+    els.eventsSourceChip.textContent = state.events.length ? `Agenda chargé : ${state.events.length}` : (state.settings.apiUrl ? 'Agenda connecté par API' : 'Mes Événements Emploi intégré');
     els.eventsSourceChip.classList.toggle('active', Boolean(state.events.length || state.settings.apiUrl));
   }
   if (els.lbiSourceChip) {
@@ -859,89 +937,6 @@ function fallbackKnowledge() {
   return {"ateliers":[{"code":"R01","axe":"Choisir un métier","titre":"Construire et affiner mon projet professionnel au regard du marché du travail","duree":"1 journée","objectif":"Identifier les éléments clés de son profil, confronter ses pistes au marché du travail et construire un projet professionnel réaliste.","lien":"https://www.francetravail.fr/candidat/les-ateliers-francetravail/ateliers-conseils-choisir-un-met.html","declencheurs":["projet","reconversion","métier","orientation","choisir"]},{"code":"R04","axe":"Se former","titre":"Mes démarches en ligne avec France Travail","duree":"1/2 journée","objectif":"Gagner en autonomie sur l’espace personnel, les documents, les échanges avec France Travail et les démarches en ligne.","lien":"https://www.francetravail.fr/candidat/les-ateliers-francetravail/ateliers-conseils-se-former.html","declencheurs":["espace personnel","démarches","document","actualisation","internet"]},{"code":"R02","axe":"Préparer sa candidature","titre":"Faire le point sur mes compétences professionnelles et concevoir un CV percutant","duree":"1 journée","objectif":"Identifier ses compétences, structurer son parcours et produire un CV clair, ciblé et exploitable par un recruteur.","lien":"https://www.francetravail.fr/candidat/les-ateliers-francetravail/ateliers-sur-les-techniques-de-r.html","declencheurs":["cv","compétence","candidature","profil"]},{"code":"R03","axe":"S’ouvrir à l’international","titre":"Réaliser mon CV en langue étrangère : anglais, allemand, espagnol","duree":"1/2 journée","objectif":"Adapter son CV aux codes d’une candidature internationale et valoriser ses compétences dans une autre langue.","lien":"https://www.francetravail.fr/candidat/les-ateliers-francetravail/ateliers-conseils-souvrir-a-lint.html","declencheurs":["anglais","allemand","espagnol","étranger","international","cv langue"]},{"code":"R05","axe":"Préparer sa candidature","titre":"Organiser et optimiser ma recherche d’emploi","duree":"1 journée","objectif":"Structurer sa recherche, planifier les actions, cibler les bons outils et suivre ses candidatures.","lien":"https://www.francetravail.fr/candidat/les-ateliers-francetravail/ateliers-sur-les-techniques-de-r.html","declencheurs":["recherche","organisation","candidature spontanée","réseau","emploi"]},{"code":"R06","axe":"Créer une entreprise","titre":"M’imaginer créateur d’entreprise","duree":"1/2 journée","objectif":"Explorer l’entrepreneuriat comme piste de retour à l’emploi et vérifier son envie de créer ou reprendre une activité.","lien":"https://www.francetravail.fr/candidat/les-ateliers-francetravail/ateliers-conseils-creer-une-entr.html","declencheurs":["création","entreprise","indépendant","projet entreprise"]},{"code":"R07","axe":"Créer une entreprise","titre":"Structurer mon projet de création d’entreprise","duree":"1 journée","objectif":"Clarifier les étapes, ressources, risques et points de validation d’un projet de création d’entreprise.","lien":"https://www.francetravail.fr/candidat/les-ateliers-francetravail/ateliers-conseils-creer-une-entr.html","declencheurs":["business plan","statut","création","entreprise","structurer"]},{"code":"AJ","axe":"Trouver un emploi","titre":"Atout jeunes","duree":"selon orientation","objectif":"Proposer un atelier de stratégie de recherche d’emploi adapté aux jeunes, avec une orientation vers la page officielle France Travail.","lien":"https://www.francetravail.fr/candidat/les-ateliers-francetravail/ateliers-sur-la-strategie-de-rec.html","declencheurs":["jeune","atout jeune","trouver emploi","recherche emploi"]}],"prestations":[{"code":"AP3","titre":"Activ’Projet","axe":"Choisir un métier","duree":"8 à 12 semaines","objectif":"Définir ou confirmer un projet professionnel réaliste.","declencheurs":["projet","orientation","reconversion","métier"]},{"code":"GCO","titre":"Prépa Compétences","axe":"Se former","duree":"2 à 8 semaines","objectif":"Sécuriser l’entrée en formation et vérifier l’adéquation entre le projet, les compétences et la formation visée.","declencheurs":["formation","préparer formation","compétences"]},{"code":"VS2","titre":"Valoriser son image professionnelle","axe":"Préparer sa candidature","duree":"2 à 3 semaines","objectif":"Améliorer sa présentation, sa posture professionnelle, sa communication et sa confiance dans les échanges avec les recruteurs.","declencheurs":["image","entretien","présentation","recruteur","posture"]},{"code":"UES","titre":"Un Emploi Stable","axe":"Trouver un emploi","duree":"8 à 12 semaines","objectif":"Renforcer les techniques de recherche d’emploi pour viser un retour durable à l’emploi.","declencheurs":["emploi stable","trouver emploi","retour emploi","recherche emploi"]},{"code":"AGC","titre":"Agil’Cadres","axe":"Trouver un emploi","duree":"9 mois maximum","objectif":"Accompagner le retour à l’emploi durable des cadres.","declencheurs":["cadre","manager","agil cadre"]},{"code":"EMG","titre":"Activ’Créa Émergence","axe":"Créer une entreprise","duree":"8 semaines","objectif":"Explorer la création ou reprise d’entreprise comme solution de retour à l’emploi.","declencheurs":["création","reprise entreprise","entreprendre"]},{"code":"DES","titre":"Défi Santé Emploi","axe":"Lever les freins périphériques","duree":"jusqu’à 7 mois","objectif":"Prendre en compte la santé comme frein potentiel au retour à l’emploi et sécuriser le parcours.","declencheurs":["santé","frein","handicap","difficulté"]},{"code":"AIN","titre":"Activ’International","axe":"International","duree":"8 à 12 semaines","objectif":"Étudier une piste d’emploi à l’étranger et préparer les démarches liées à la mobilité internationale.","declencheurs":["international","étranger","europe","mobilité"]}],"dispositifs":[{"id":"pmsmp","titre":"PMSMP / Immersion facilitée","lien":"https://immersion-facile.beta.gouv.fr/","motsCles":["pmsmp","immersion","tester métier","découvrir métier","stage"],"resume":"La PMSMP permet de découvrir un métier, confirmer un projet professionnel ou initier une démarche de recrutement en situation réelle. Elle nécessite une convention et un cadre sécurisé.","orientation":"À proposer quand la personne veut tester un métier avant de se former ou de candidater."},{"id":"poe","titre":"Préparation opérationnelle à l’emploi - POE","lien":"https://www.francetravail.fr/candidat/en-formation/mes-aides-financieres/la-preparation-operationnelle-a.html","motsCles":["poe","formation avant embauche","compétence manquante","employeur intéressé"],"resume":"La POE sert à financer ou organiser une formation avant embauche quand un écart existe entre les compétences de la personne et celles attendues sur le poste.","orientation":"À proposer quand une entreprise est intéressée mais qu’une compétence manque pour accéder au poste."},{"id":"labonneboite","titre":"La Bonne Boîte","lien":"https://labonneboite.francetravail.fr/","motsCles":["bonne boite","entreprises","candidature spontanée","recrutent","prospection"],"resume":"La Bonne Boîte aide à cibler des entreprises à fort potentiel d’embauche pour envoyer des candidatures spontanées plus pertinentes.","orientation":"À proposer quand la personne ne sait pas quelles entreprises contacter."},{"id":"labonnealternance","titre":"La Bonne Alternance","lien":"https://labonnealternance.apprentissage.beta.gouv.fr/","motsCles":["bonne alternance","alternance","apprentissage","cfa","contrat apprentissage"],"resume":"La Bonne Alternance permet de chercher des offres, des formations et des entreprises susceptibles de recruter en alternance.","orientation":"À proposer quand la personne cherche un contrat d’apprentissage, de professionnalisation ou une formation en alternance."},{"id":"mesevenements","titre":"Mes Événements Emploi","lien":"https://mesevenementsemploi.francetravail.fr/mes-evenements-emploi/","motsCles":["événement","evenement","job dating","atelier","forum","salon","réunion information"],"resume":"Mes Événements Emploi centralise des salons, forums, job datings, ateliers, visites, conférences et réunions d’information selon le territoire, le secteur et le besoin.","orientation":"À proposer pour orienter vers une action datée et territorialisée."},{"id":"labonneinfo","titre":"La Bonne Info","lien":"https://la-bonne-info.francetravail.net/","motsCles":["la bonne info","bonne info","information","actualisation","allocation","démarche","espace personnel"],"resume":"Module de recherche dans La Bonne Info via export/import ou API intranet autorisée.","orientation":"À utiliser pour répondre sur les démarches, droits, informations de service et consignes internes disponibles dans la source chargée."}],"intentions":[{"intention":"cv","mots":["cv","curriculum","compétences","candidature"],"recommandations":["R02","R05","VS2"]},{"intention":"emploi","mots":["emploi","trouver un emploi","recrutement","job dating","forum"],"recommandations":["R05","UES","mesevenements","labonneboite"]},{"intention":"alternance","mots":["alternance","apprentissage","cfa"],"recommandations":["labonnealternance","R05","R02"]},{"intention":"immersion","mots":["immersion","pmsmp","tester","découvrir un métier"],"recommandations":["pmsmp","R01","AP3"]},{"intention":"formation","mots":["formation","me former","entrer en formation"],"recommandations":["GCO","R04","R01"]},{"intention":"création","mots":["créer","entreprise","indépendant","micro entreprise"],"recommandations":["R06","R07","EMG"]},{"intention":"santé","mots":["santé","frein","handicap","difficulté"],"recommandations":["DES"]},{"intention":"international","mots":["international","étranger","europe"],"recommandations":["AIN","R03"]}]};
 }
 
-
-function wantsFormations(q) {
-  const n = normalize(q);
-  return /\b(formation|formations|financement|financée|financee|financer|cpf|region|région|conseil regional|conseil régional|se former|trouver une formation|catalogue formation)\b/.test(n)
-    || (/\b(agent administratif|secretaire|secrétaire|assistant administratif)\b/.test(n) && /\b(financement|formation|région|region|france travail)\b/.test(n));
-}
-
-function extractTrainingQuery(q) {
-  const n = q.replace(/[?!.]/g, ' ');
-  const direct = n.match(/(?:formation|formations|former|financement|financée|financee)\s+(?:pour|sur|en|de|d['’])?\s*([^,;]+)/i);
-  const job = n.match(/(?:comme|pour devenir|métier de|metier de|poste de|un|une)\s+([^,;?]+?)(?:\s+(?:à|a|sur|dans|financ|région|region|france travail|cpf)|$)/i);
-  let raw = (direct?.[1] || job?.[1] || n).trim();
-  raw = raw.replace(/\b(je cherche|cherche|trouve moi|trouver|une|un|des|les|formation|formations|financement|financée|financee|region|région|france travail|cpf|dans ma ville|ma ville|autour de|à distance|en cours|a venir|à venir)\b/gi, ' ')
-    .replace(/\s+/g, ' ').trim();
-  if (!raw || raw.length < 3) raw = 'formation';
-  return raw;
-}
-
-function extractFunding(q) {
-  const n = normalize(q);
-  const values = [];
-  if (/\b(france travail|pole emploi|pôle emploi)\b/.test(n)) values.push('France Travail');
-  if (/\b(region|région|conseil regional|conseil régional)\b/.test(n)) values.push('Région');
-  if (/\bcpf\b/.test(n)) values.push('CPF');
-  return values.join(', ');
-}
-
-async function callAgent(path, payload = {}) {
-  const base = (state.settings.agentUrl || '').replace(/\/$/, '');
-  if (!base) return null;
-  try {
-    const res = await fetchWithTimeout(`${base}${path}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    }, 22000);
-    if (!res.ok) return null;
-    return await res.json();
-  } catch (_) {
-    return null;
-  }
-}
-
-function formationCards(items, fallbackUrl) {
-  return `<div class="cards">${items.map(f => {
-    const title = escapeHtml(f.titre || f.title || 'Formation');
-    const org = f.organisme ? `<span class="pill primary">${escapeHtml(f.organisme)}</span>` : '';
-    const lieu = f.lieu ? `<span class="pill">${escapeHtml(f.lieu)}</span>` : '';
-    const date = f.date ? `<span class="pill green">${escapeHtml(f.date)}</span>` : '';
-    const financement = f.financement ? `<span class="pill yellow">Financement : ${escapeHtml(f.financement)}</span>` : '';
-    const desc = f.description ? escapeHtml(f.description).slice(0, 800) : 'Consultez la fiche pour vérifier le programme, les prérequis, les dates, les modalités et les financements possibles.';
-    const href = f.lien || fallbackUrl || officialLinks.formations;
-    return `<article class="event-card">
-      <div class="event-header"><span class="event-label">Formation France Travail</span><span class="pill primary">Catalogue formation</span></div>
-      <div class="card-top">
-        <h3>${title}</h3>
-        <div class="meta">${org}${lieu}${date}${financement}</div>
-        <p class="card-desc">${desc}</p>
-      </div>
-      <div class="card-actions"><a class="primary" target="_blank" rel="noopener" href="${escapeHtml(href)}">Consulter la fiche formation</a></div>
-    </article>`;
-  }).join('')}</div>`;
-}
-
-function localAgentRequiredHtml(kind, q, city) {
-  const url = kind === 'formation' ? officialLinks.formations : officialLinks.mee;
-  return `<div class="empty-state"><p><strong>L’assistant doit utiliser l’agent navigateur local pour faire cette recherche automatiquement.</strong></p><p>Depuis GitHub Pages seul, le navigateur n’a pas le droit de piloter un autre site ni de remplir des formulaires France Travail à votre place. Lancez <code>agent-local/lancer-agent-local.bat</code>, puis relancez la demande.</p><p><strong>Demande préparée :</strong> ${escapeHtml(q)}${city ? ` · territoire : ${escapeHtml(city)}` : ''}</p><p><a class="inline-action" target="_blank" rel="noopener" href="${escapeHtml(url)}">Ouvrir le service officiel manuellement</a></p></div>`;
-}
-
-async function getFormations(q) {
-  const city = extractCity(q) || state.settings.defaultCity || '';
-  const metier = extractTrainingQuery(q);
-  const financement = extractFunding(q);
-  const agent = await callAgent('/api/formations', { query: q, metier, ville: city, financement });
-  if (agent?.items?.length) {
-    return `<p>J’ai recherché dans le catalogue des formations France Travail pour <strong>${escapeHtml(metier)}</strong>${city ? ` autour de <strong>${escapeHtml(city)}</strong>` : ''}${financement ? ` avec le financement demandé : <strong>${escapeHtml(financement)}</strong>` : ''}.</p>${formationCards(agent.items, agent.openedUrl || officialLinks.formations)}<p>À vérifier sur chaque fiche : prérequis, organisme, dates, information collective, possibilité de financement et contact conseiller.</p>`;
-  }
-  if (agent?.openedUrl) {
-    return `<p>J’ai ouvert le site France Travail et préparé la recherche pour <strong>${escapeHtml(metier)}</strong>${city ? ` autour de <strong>${escapeHtml(city)}</strong>` : ''}. Je n’ai pas pu extraire automatiquement des cartes exploitables, mais les résultats sont visibles dans le navigateur ouvert par l’agent.</p><p><a class="inline-action" target="_blank" rel="noopener" href="${escapeHtml(agent.openedUrl)}">Reprendre la recherche ouverte</a></p>`;
-  }
-  return `<p>Pour cette demande, il faut une recherche active dans le catalogue de formation France Travail.</p>${localAgentRequiredHtml('formation', q, city)}`;
-}
-
 function wantsEvents(q) {
   const n = normalize(q);
   // Priorité absolue : tout ce qui ressemble à une demande d'agenda doit partir vers le moteur événements,
@@ -1130,13 +1125,38 @@ function infoCards(items) {
   }).join('')}</div>`;
 }
 
-function emptyEvents(city) {
-  const cityLabel = city ? ` pour <strong>${escapeHtml(city)}</strong>` : '';
-  return `<div class="empty-state"><p><strong>Aucun événement trouvé${cityLabel} dans les sources accessibles.</strong></p><p>L’assistant n’invente pas d’événements. Pour obtenir l’agenda complet, ouvrez Mes Événements Emploi ou connectez l’API/export interne.</p><p><a class="inline-action" target="_blank" rel="noopener" href="${officialLinks.mee}">Ouvrir Mes Événements Emploi</a></p></div>`;
+
+function buildMeeUrl(city = '', keyword = '') {
+  const url = new URL(officialLinks.mee);
+  // Le site officiel peut ignorer ces paramètres selon son fonctionnement,
+  // mais ils permettent de garder une trace lisible de la demande côté URL.
+  if (city) url.searchParams.set('ville', city);
+  if (keyword) url.searchParams.set('recherche', keyword);
+  return url.toString();
+}
+
+function officialEventsCard(city = '', keyword = '') {
+  const url = buildMeeUrl(city, keyword);
+  const cityLine = city ? `<p><strong>Ville à utiliser dans le filtre :</strong> ${escapeHtml(city)}</p>` : '';
+  const keywordLine = keyword ? `<p><strong>Mot-clé conseillé :</strong> ${escapeHtml(keyword)}</p>` : '';
+  return `<div class="official-mee-card">
+    <h3>Consulter l’agenda officiel Mes Événements Emploi</h3>
+    <p>L’agenda officiel permet de filtrer les événements par lieu, date, type d’événement et besoin : salon, job dating, atelier, forum, réunion d’information.</p>
+    ${cityLine}${keywordLine}
+    <div class="official-mee-actions">
+      <button type="button" class="primary open-mee" data-url="${escapeHtml(url)}">Ouvrir l’agenda intégré</button>
+      <a target="_blank" rel="noopener" href="${escapeHtml(url)}">Ouvrir dans un nouvel onglet</a>
+    </div>
+  </div>`;
+}
+
+function emptyEvents(city, keyword = '') {
+  const cityLabel = city ? ` autour de <strong>${escapeHtml(city)}</strong>` : '';
+  return `<div class="empty-state"><p><strong>Je n’ai pas de liste locale chargée${cityLabel}.</strong></p><p>Je vous oriente vers l’agenda officiel intégré pour consulter les événements et finaliser l’inscription.</p></div>${officialEventsCard(city, keyword)}`;
 }
 
 function missingCityEvents() {
-  return `<div class="empty-state"><p><strong>Quelle ville dois-je utiliser ?</strong></p><p>Pour afficher les événements locaux, indiquez une ville ou enregistrez une ville par défaut dans les paramètres.</p><p>Exemples : <strong>Événements emploi à Issy-les-Moulineaux</strong> ou <strong>ma ville est Boulogne-Billancourt</strong>.</p></div>`;
+  return `<div class="empty-state"><p><strong>Quelle ville dois-je utiliser ?</strong></p><p>Indiquez une ville, puis j’ouvrirai l’agenda officiel Mes Événements Emploi avec le bon contexte.</p><p>Exemples : <strong>Événements emploi à Issy-les-Moulineaux</strong> ou <strong>ma ville est Boulogne-Billancourt</strong>.</p></div>${officialEventsCard()}`;
 }
 
 function emptyLbi() {
@@ -1210,12 +1230,9 @@ async function localAnswer(q) {
     if (!city) {
       return `<p>Je peux chercher les événements emploi, mais la ville n’est pas encore connue.</p>${missingCityEvents()}`;
     }
-    const events = await getEvents(city, keyword, q);
-    if (!events.length) return `<p>J’ai cherché les événements emploi autour de <strong>${escapeHtml(city)}</strong>${keyword ? ` avec le mot-clé <strong>${escapeHtml(keyword)}</strong>` : ''}.</p>${emptyEvents(city)}`;
-    return `<p>Voici les événements emploi trouvés autour de <strong>${escapeHtml(city)}</strong>${keyword ? ` pour <strong>${escapeHtml(keyword)}</strong>` : ''}.</p>${eventCards(events)}<p>Vérifiez la fiche avant inscription : places disponibles, public concerné, prérequis et modalités peuvent évoluer.</p>`;
-  }
-  if (wantsFormations(q)) {
-    return await getFormations(q);
+    const events = await getEvents(city, keyword);
+    if (!events.length) return `<p>J’ai préparé la recherche d’événements emploi autour de <strong>${escapeHtml(city)}</strong>${keyword ? ` avec le mot-clé <strong>${escapeHtml(keyword)}</strong>` : ''}.</p>${emptyEvents(city, keyword)}`;
+    return `<p>Voici les événements emploi trouvés autour de <strong>${escapeHtml(city)}</strong>${keyword ? ` pour <strong>${escapeHtml(keyword)}</strong>` : ''}.</p>${eventCards(events)}${officialEventsCard(city, keyword)}<p>Vérifiez la fiche avant inscription : places disponibles, public concerné, prérequis et modalités peuvent évoluer.</p>`;
   }
   if (capturedCity) {
     return `<p>Ville par défaut enregistrée : <strong>${escapeHtml(capturedCity)}</strong>.</p><p>Vous pouvez maintenant demander : <strong>Que se passe-t-il en événement dans ma ville ?</strong></p>`;
@@ -1251,7 +1268,7 @@ async function handleUser(q) {
   els.send.disabled = true;
   const typingId = showTyping();
   try {
-    const forceLocal = wantsEvents(q) || wantsFormations(q) || wantsLbi(q) || wantsListAteliers(q) || /\b(ma ville|ville par défaut)\b/i.test(q);
+    const forceLocal = wantsEvents(q) || wantsLbi(q) || wantsListAteliers(q) || /\b(ma ville|ville par défaut)\b/i.test(q);
     const html = (!forceLocal && state.settings.engine === 'gemini') ? await geminiAnswer(q) : await localAnswer(q);
     removeTyping(typingId);
     addMessage('assistant', html, { html: true });
@@ -1320,11 +1337,22 @@ function initSettingsUi() {
   els.defaultCity.value = state.settings.defaultCity;
   els.apiUrl.value = state.settings.apiUrl;
   els.lbiUrl.value = state.settings.lbiUrl;
-  els.agentUrl.value = state.settings.agentUrl || 'http://127.0.0.1:8798';
   els.engine.value = state.settings.engine;
   els.geminiKey.value = state.settings.geminiKey;
   els.geminiKeyBlock.classList.toggle('hidden', els.engine.value !== 'gemini');
 }
+
+
+function openMeeDialog(url = officialLinks.mee) {
+  if (!els.meeDialog || !els.meeFrame) {
+    window.open(url, '_blank', 'noopener');
+    return;
+  }
+  els.meeFrame.src = url || officialLinks.mee;
+  if (typeof els.meeDialog.showModal === 'function') els.meeDialog.showModal();
+  else window.open(url, '_blank', 'noopener');
+}
+window.openMeeDialog = openMeeDialog;
 
 function bindEvents() {
   els.composer.addEventListener('submit', (e) => {
@@ -1346,6 +1374,14 @@ function bindEvents() {
     resizeTextarea();
     els.composer.requestSubmit();
   });
+
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.open-mee');
+    if (!btn) return;
+    e.preventDefault();
+    openMeeDialog(btn.getAttribute('data-url') || officialLinks.mee);
+  });
+  if (els.closeMeeDialog) els.closeMeeDialog.addEventListener('click', () => els.meeDialog.close());
   els.settingsBtn.addEventListener('click', () => { initSettingsUi(); els.settingsDialog.showModal(); });
   els.engine.addEventListener('change', () => els.geminiKeyBlock.classList.toggle('hidden', els.engine.value !== 'gemini'));
   els.saveSettings.addEventListener('click', () => {
@@ -1353,7 +1389,6 @@ function bindEvents() {
       defaultCity: els.defaultCity.value.trim(),
       apiUrl: els.apiUrl.value.trim(),
       lbiUrl: els.lbiUrl.value.trim(),
-      agentUrl: els.agentUrl.value.trim() || 'http://127.0.0.1:8798',
       engine: els.engine.value,
       geminiKey: els.geminiKey.value.trim(),
     };
@@ -1404,7 +1439,7 @@ function startVoice() {
 }
 
 function welcome() {
-  addMessage('assistant', `<p>Bonjour. Je peux orienter vers les événements emploi, ateliers conseil, prestations, PMSMP, POE, La Bonne Boîte, La Bonne Alternance et La Bonne Info.</p><p>Indiquez une ville, un métier ou un besoin. Les événements affichés proviennent uniquement d’une source chargée ou d’une API configurée.</p>`, { html: true });
+  addMessage('assistant', `<p>Bonjour. Je peux orienter vers les événements emploi, ateliers conseil, prestations, PMSMP, POE, La Bonne Boîte, La Bonne Alternance et La Bonne Info.</p><p>Indiquez une ville, un métier ou un besoin. Pour les événements, j’ouvre aussi l’agenda officiel Mes Événements Emploi directement depuis l’assistant.</p>`, { html: true });
 }
 
 async function init() {
@@ -1413,7 +1448,6 @@ async function init() {
   initSettingsUi();
   await loadBaseData();
   welcome();
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(() => null);
 }
 
 init();
