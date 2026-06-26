@@ -1,28 +1,93 @@
-# Assistant France Travail — GitHub Pages
+# Assistant France Travail — version GitHub + agent navigateur local
 
-Version statique prête à publier sur GitHub Pages.
+Cette version garde l’interface web publiable sur GitHub Pages, mais ajoute un **agent navigateur local** pour faire les recherches à la place de l’utilisateur sur les services France Travail.
 
-## Publication
+## Pourquoi un agent local ?
 
-Placez `index.html` à la racine du dépôt GitHub, puis activez GitHub Pages :
+Une page GitHub Pages seule ne peut pas :
 
-- Source : Deploy from a branch
-- Branch : main
-- Folder : /root
+- contrôler un autre site web ;
+- remplir automatiquement des formulaires sur `francetravail.fr` ;
+- accéder à une session SSO/intranet ;
+- contourner CORS ou les protections navigateur.
 
-## Évolutions intégrées
+Pour que l’assistant fasse réellement le travail, il faut lancer un petit agent local sur le PC. Cet agent ouvre un navigateur Chromium, renseigne les critères, déclenche la recherche et renvoie ce qu’il arrive à extraire à l’interface.
 
-- En-tête avec France Travail et bloc République Française.
-- Liens officiels intégrés pour les ateliers France Travail.
-- Boutons d’accès direct aux fiches officielles et à l’espace personnel.
-- Événements affichés sous forme de cartes avec bouton de consultation / inscription.
-- Aucune donnée fictive générée : l’agenda doit venir d’un import CSV/JSON, d’OpenAgenda si accessible ou d’une API intranet autorisée.
-- La Bonne Info reste alimentable par import ou API intranet.
+## Déploiement GitHub Pages
 
-## Données événements
+À la racine du dépôt GitHub, mettre :
 
-Le format CSV/JSON peut contenir :
+```text
+index.html
+agent-local/
+README.md
+```
 
-`titre,date,heure,ville,lieu,type,modalite,secteur,description,lien`
+Dans GitHub :
 
-Si `lien` est renseigné, le bouton ouvre directement la fiche événement. Sinon le bouton renvoie vers Mes Événements Emploi.
+```text
+Settings → Pages → Deploy from a branch → main → /root
+```
+
+Ouvrir ensuite :
+
+```text
+https://votre-compte.github.io/votre-repo/
+```
+
+## Lancer le mode agent
+
+Sur le PC France Travail ou le PC de test :
+
+1. Installer Node.js LTS si nécessaire.
+2. Aller dans :
+
+```text
+agent-local/
+```
+
+3. Double-cliquer :
+
+```text
+lancer-agent-local.bat
+```
+
+4. Laisser la fenêtre ouverte.
+
+L’agent écoute sur :
+
+```text
+http://127.0.0.1:8798
+```
+
+Dans l’interface, paramètres → **Agent navigateur local** :
+
+```text
+http://127.0.0.1:8798
+```
+
+## Exemples à tester
+
+```text
+Ma ville est Boulogne-Billancourt
+```
+
+```text
+Que se passe-t-il en événement dans ma ville ?
+```
+
+```text
+Je suis agent administratif, je cherche une formation financée par la région ou France Travail
+```
+
+```text
+Trouve une formation secrétaire administratif à Paris avec financement France Travail
+```
+
+## Limites assumées
+
+L’agent ne stocke pas les identifiants. Si un service demande une connexion, l’utilisateur se connecte dans le navigateur ouvert par l’agent. Le profil navigateur est conservé dans `agent-local/.browser-profile` pour éviter de se reconnecter à chaque lancement.
+
+Les pages France Travail peuvent changer. Si les noms de champs évoluent, il faudra ajuster `agent-local/server.js`.
+
+Pour une version industrialisable, la meilleure voie reste l’API officielle France Travail quand elle est disponible et autorisée, puis l’agent navigateur seulement en secours.
