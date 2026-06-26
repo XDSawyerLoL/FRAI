@@ -1,0 +1,12 @@
+name = "assistant-france-travail-cloud-agent"
+main = "cloudflare-worker.js"
+compatibility_date = "2026-06-26"
+
+[vars]
+OPENAI_MODEL = "gpt-4.1-mini"
+DEFAULT_CITY = "Boulogne-Billancourt"
+OPENAI_REWRITE = "true"
+# FT_MEE_SEARCH_URL = "https://api.francetravail.io/xxxx/evenements?quoi={query}&ou={city}&range={range}"
+# FT_FORMATION_SEARCH_URL = "https://api.francetravail.io/xxxx/formations?quoi={query}&ou={city}&range={range}"
+# FT_SCOPE = ""
+# FT_OAUTH_TOKEN_URL = "https://entreprise.francetravail.fr/connexion/oauth2/access_token?realm=/partenaire"
