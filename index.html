@@ -1187,8 +1187,8 @@
       </header>
 
       <section class="intro">
-        <h1>Construire le bon parcours, pas seulement donner un lien.</h1>
-        <p>L’assistant qualifie le besoin, propose une direction claire, explique les services utiles puis affiche les liens ou événements adaptés.</p>
+        <h1>Construire le bon parcours avec les bons conseils.</h1>
+        <p>L’assistant analyse la situation, explique les options utiles et propose une prochaine étape adaptée au besoin.</p>
         <div class="chips" aria-label="Exemples de demandes">
           <button class="chip" type="button" data-prompt="Je manque de confiance en moi">Je manque de confiance en moi</button>
           <button class="chip" type="button" data-prompt="J’ai besoin d’améliorer mes compétences">Améliorer mes compétences</button>
@@ -1215,14 +1215,9 @@
   <div id="settingsModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
     <div class="modal">
       <h2 id="settingsTitle">Réglages</h2>
-      <p>La clé Gemini ou GPT doit rester dans Cloudflare, pas dans cette page. Ici on règle seulement l’URL de l’agent et la ville par défaut.</p>
+      <p>La connexion à l’assistant est intégrée. Vous pouvez seulement modifier la ville utilisée par défaut pour adapter les recherches locales.</p>
 
       <div class="form-grid">
-        <label>
-          URL de l’agent Cloudflare
-          <input id="workerUrlInput" type="url" inputmode="url" autocomplete="off" />
-        </label>
-
         <label>
           Ville par défaut
           <input id="cityInput" type="text" autocomplete="address-level2" />
@@ -1231,13 +1226,12 @@
 
       <div class="modal-actions">
         <button id="saveSettingsBtn" class="primary-btn" type="button">Enregistrer</button>
-        <button id="testAgentBtn" class="secondary-btn" type="button">Tester l’agent</button>
         <button id="clearChatBtn" class="danger-btn" type="button">Vider le tchat</button>
         <button id="closeSettingsBtn" class="secondary-btn" type="button">Fermer</button>
       </div>
 
       <div class="small-note" id="settingsNote">
-        URL conseillée : https://assistant-frai-api.vnhz.workers.dev
+        La ville sert à personnaliser les événements, formations et actions locales proposées.
       </div>
     </div>
   </div>
@@ -1257,9 +1251,7 @@
       settingsModal: document.getElementById("settingsModal"),
       closeSettingsBtn: document.getElementById("closeSettingsBtn"),
       saveSettingsBtn: document.getElementById("saveSettingsBtn"),
-      testAgentBtn: document.getElementById("testAgentBtn"),
       clearChatBtn: document.getElementById("clearChatBtn"),
-      workerUrlInput: document.getElementById("workerUrlInput"),
       cityInput: document.getElementById("cityInput"),
       settingsNote: document.getElementById("settingsNote"),
       statusText: document.getElementById("statusText"),
@@ -1267,13 +1259,12 @@
     };
 
     const state = {
-      workerUrl: localStorage.getItem("frai_worker_url") || DEFAULT_WORKER_URL,
+      workerUrl: DEFAULT_WORKER_URL,
       city: localStorage.getItem("frai_city") || DEFAULT_CITY,
       busy: false
     };
 
     function init() {
-      els.workerUrlInput.value = state.workerUrl;
       els.cityInput.value = state.city;
 
       const saved = localStorage.getItem("frai_messages");
@@ -1322,7 +1313,6 @@
         if (event.target === els.settingsModal) closeSettings();
       });
       els.saveSettingsBtn.addEventListener("click", saveSettings);
-      els.testAgentBtn.addEventListener("click", testAgent);
       els.clearChatBtn.addEventListener("click", clearChat);
     }
 
@@ -1388,12 +1378,10 @@
         const meta = document.createElement("div");
         meta.className = "meta";
 
-        if (extra.provider) {
-          const badge = document.createElement("span");
-          badge.className = "meta-badge";
-          badge.textContent = extra.provider;
-          meta.appendChild(badge);
-        }
+        const badge = document.createElement("span");
+        badge.className = "meta-badge";
+        badge.textContent = "Assistant parcours";
+        meta.appendChild(badge);
 
         if (extra.intent) {
           const badge = document.createElement("span");
@@ -1520,7 +1508,6 @@
     }
 
     function openSettings() {
-      els.workerUrlInput.value = state.workerUrl;
       els.cityInput.value = state.city;
       els.settingsModal.classList.add("open");
     }
@@ -1530,29 +1517,16 @@
     }
 
     function saveSettings() {
-      const worker = cleanWorkerUrl(els.workerUrlInput.value.trim() || DEFAULT_WORKER_URL);
       const city = els.cityInput.value.trim() || DEFAULT_CITY;
 
-      state.workerUrl = worker;
+      state.workerUrl = DEFAULT_WORKER_URL;
       state.city = city;
 
-      localStorage.setItem("frai_worker_url", worker);
+      localStorage.removeItem("frai_worker_url");
       localStorage.setItem("frai_city", city);
 
-      showToast("Réglages enregistrés");
+      showToast("Ville enregistrée");
       closeSettings();
-    }
-
-    async function testAgent() {
-      saveSettings();
-      try {
-        const response = await fetch(`${cleanWorkerUrl(state.workerUrl)}/health`, { method: "GET" });
-        const data = await response.json().catch(() => null);
-        if (!response.ok || !data?.ok) throw new Error("Réponse /health invalide");
-        showToast("Agent joignable : " + (data.mode || "OK"));
-      } catch (error) {
-        showToast("Agent non joignable");
-      }
     }
 
     function clearChat() {
