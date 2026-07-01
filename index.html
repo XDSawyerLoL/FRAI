@@ -3,24 +3,29 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#0a6b3f" />
+  <meta name="theme-color" content="#273b99" />
   <meta name="description" content="Assistant d'accompagnement France Travail" />
   <title>Assistant France Travail</title>
 
   <style>
     :root {
-      --ft-green: #0a6b3f;
-      --ft-green-dark: #064f2f;
+      --ft-blue: #273b99;
+      --ft-blue-dark: #1d2b73;
+      --ft-blue-soft: #eef2ff;
+      --ft-cyan: #00a3e0;
+      --ft-red: #e94256;
+      --ft-yellow: #ffd43b;
+      --ft-pink: #ef6ca8;
+      --ft-green: #14855f;
+      --ft-green-dark: #0f6548;
       --ft-green-soft: #e8f5ee;
-      --ft-blue: #1b5cff;
-      --ft-blue-soft: #eef4ff;
-      --text: #17201b;
-      --muted: #64736b;
-      --line: #dbe5df;
-      --bg: #f4f8f6;
+      --text: #111827;
+      --muted: #5b6472;
+      --line: #d9deea;
+      --bg: #f5f7fb;
       --card: #ffffff;
       --danger: #b42318;
-      --shadow: 0 14px 45px rgba(10, 42, 25, 0.12);
+      --shadow: 0 18px 44px rgba(17, 24, 39, 0.12);
       --radius-xl: 26px;
       --radius-lg: 18px;
       --radius-md: 14px;
@@ -794,7 +799,7 @@
       }
 
       .marianne {
-        display: none;
+        display: block;
       }
 
       .brand-title {
@@ -809,6 +814,357 @@
         padding: 0 12px;
       }
     }
+
+
+    /* =========================================================
+       CHARTE FRANCE TRAVAIL + MOBILE STRICT
+       Identité visuelle : bleu institutionnel, accents cyan/jaune/rouge,
+       Marianne + logo France Travail visibles, zéro débordement mobile.
+    ========================================================= */
+
+    body {
+      background:
+        radial-gradient(circle at 8% 0%, rgba(0, 163, 224, .16), transparent 28%),
+        radial-gradient(circle at 92% 0%, rgba(255, 212, 59, .20), transparent 32%),
+        linear-gradient(180deg, #f8faff 0%, var(--bg) 100%) !important;
+      color: var(--text) !important;
+      font-family: Arial, "Helvetica Neue", Helvetica, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+    }
+
+    .shell {
+      border: 1px solid rgba(39, 59, 153, .16) !important;
+      box-shadow: var(--shadow) !important;
+      background: rgba(255, 255, 255, .96) !important;
+    }
+
+    .topbar {
+      position: relative !important;
+      background: rgba(255,255,255,.98) !important;
+      border-bottom: 4px solid var(--ft-blue) !important;
+      box-shadow: 0 8px 24px rgba(17,24,39,.06) !important;
+      overflow: visible !important;
+    }
+
+    .topbar::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -4px;
+      height: 4px;
+      background: linear-gradient(90deg,
+        var(--ft-blue) 0 40%,
+        var(--ft-cyan) 40% 58%,
+        var(--ft-yellow) 58% 74%,
+        var(--ft-red) 74% 88%,
+        var(--ft-pink) 88% 100%);
+      pointer-events: none;
+    }
+
+    .brand {
+      align-items: center !important;
+    }
+
+    .marianne {
+      display: block !important;
+      width: 92px !important;
+      height: auto !important;
+      max-width: 24vw !important;
+      background: #fff !important;
+      padding: 2px !important;
+      border-radius: 2px !important;
+      object-fit: contain !important;
+      flex: 0 0 auto !important;
+    }
+
+    .brand-logo {
+      width: 142px !important;
+      max-width: 34vw !important;
+      height: auto !important;
+      object-fit: contain !important;
+      flex: 0 0 auto !important;
+    }
+
+    .brand-title {
+      color: var(--ft-blue-dark) !important;
+      font-weight: 800 !important;
+      letter-spacing: -.02em !important;
+    }
+
+    .brand-subtitle {
+      color: var(--muted) !important;
+    }
+
+    .status-pill {
+      background: var(--ft-blue-soft) !important;
+      color: var(--ft-blue-dark) !important;
+      border: 1px solid #d7dcfb !important;
+    }
+
+    .dot {
+      background: var(--ft-green) !important;
+      box-shadow: 0 0 0 3px rgba(20, 133, 95, .12) !important;
+    }
+
+    .icon-btn,
+    .secondary-btn,
+    .danger-btn {
+      border-color: var(--ft-blue) !important;
+      color: var(--ft-blue) !important;
+      background: #fff !important;
+    }
+
+    .primary-btn,
+    .send-btn {
+      background: var(--ft-blue) !important;
+      border-color: var(--ft-blue) !important;
+      color: #fff !important;
+      box-shadow: 0 10px 20px rgba(39, 59, 153, .18) !important;
+    }
+
+    .intro {
+      background:
+        linear-gradient(90deg, rgba(39,59,153,.08), rgba(255,255,255,0) 55%),
+        #fff !important;
+      border-bottom: 1px solid var(--line) !important;
+      position: relative !important;
+    }
+
+    .intro::before {
+      content: "";
+      position: absolute;
+      top: 14px;
+      bottom: 14px;
+      left: 0;
+      width: 5px;
+      border-radius: 0 999px 999px 0;
+      background: linear-gradient(180deg, var(--ft-blue), var(--ft-cyan), var(--ft-yellow), var(--ft-red));
+    }
+
+    .intro h1 {
+      color: var(--ft-blue-dark) !important;
+    }
+
+    .chip {
+      background: #fff !important;
+      border: 1px solid #cdd6f7 !important;
+      color: var(--ft-blue) !important;
+      box-shadow: 0 6px 14px rgba(39, 59, 153, .07) !important;
+    }
+
+    .chip:hover,
+    .chip:focus-visible {
+      background: var(--ft-blue-soft) !important;
+      border-color: var(--ft-blue) !important;
+    }
+
+    .message.assistant .bubble,
+    .message-row.assistant .bubble,
+    .assistant-message,
+    .bot-message {
+      border-left: 5px solid var(--ft-blue) !important;
+      background: #fff !important;
+    }
+
+    .message.user .bubble,
+    .message-row.user .bubble,
+    .user-message {
+      background: var(--ft-blue) !important;
+      border-color: var(--ft-blue) !important;
+      color: #fff !important;
+    }
+
+    .avatar,
+    .assistant-avatar {
+      background: var(--ft-blue-soft) !important;
+      color: var(--ft-blue) !important;
+      border-color: #d7dcfb !important;
+    }
+
+    .message-row.user .avatar,
+    .user-avatar {
+      background: var(--ft-blue) !important;
+      color: #fff !important;
+      border-color: var(--ft-blue) !important;
+    }
+
+    .link-card,
+    .official-link,
+    .official-links a,
+    .quick-links a {
+      border: 1px solid #cdd6f7 !important;
+      background: #fff !important;
+      color: var(--ft-blue) !important;
+      border-left: 5px solid var(--ft-blue) !important;
+    }
+
+    .link-card:hover,
+    .official-links a:hover,
+    .quick-links a:hover {
+      background: var(--ft-blue-soft) !important;
+    }
+
+    textarea,
+    input {
+      border-color: #c8cfdd !important;
+    }
+
+    textarea:focus,
+    input:focus {
+      border-color: var(--ft-blue) !important;
+      box-shadow: 0 0 0 3px rgba(39, 59, 153, .22) !important;
+      outline: none !important;
+    }
+
+    .composer-wrap,
+    .composer {
+      background: rgba(255,255,255,.98) !important;
+    }
+
+    .toast {
+      background: var(--ft-blue-dark) !important;
+      color: #fff !important;
+    }
+
+    .modal {
+      border-top: 5px solid var(--ft-blue) !important;
+    }
+
+    .small-note {
+      border-left: 4px solid var(--ft-cyan) !important;
+      background: var(--ft-blue-soft) !important;
+    }
+
+    /* anti-débordement renforcé */
+    .app, .shell, .topbar, .brand, .intro, .chat-area, .messages,
+    .composer-wrap, .composer, .modal, .official-links, .links, .quick-links,
+    .message, .bubble, .assistant-message, .user-message, .bot-message {
+      max-width: 100% !important;
+      min-width: 0 !important;
+      overflow-wrap: anywhere !important;
+    }
+
+    @media (max-width: 720px) {
+      .app {
+        padding: 8px !important;
+      }
+
+      .shell {
+        max-width: calc(100vw - 16px) !important;
+        min-height: calc(100dvh - 16px) !important;
+        border-radius: 18px !important;
+      }
+
+      .topbar {
+        padding: 12px !important;
+        align-items: flex-start !important;
+      }
+
+      .brand {
+        gap: 8px !important;
+        flex-wrap: wrap !important;
+      }
+
+      .marianne {
+        width: 76px !important;
+        max-width: 30vw !important;
+        display: block !important;
+      }
+
+      .brand-logo {
+        width: 116px !important;
+        max-width: 42vw !important;
+      }
+
+      .brand-text {
+        flex: 1 1 100% !important;
+        width: 100% !important;
+      }
+
+      .brand-title,
+      .brand-subtitle {
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
+      }
+
+      .top-actions {
+        align-self: flex-start !important;
+      }
+
+      .status-pill {
+        display: none !important;
+      }
+
+      .intro {
+        padding: 14px 14px 12px 18px !important;
+      }
+
+      .chips,
+      .official-links,
+      .quick-links,
+      .links {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+      }
+
+      .chip,
+      .official-links a,
+      .quick-links a,
+      .link-card {
+        width: 100% !important;
+        justify-content: flex-start !important;
+        text-align: left !important;
+      }
+
+      .messages {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+      }
+
+      .bubble,
+      .assistant-message,
+      .user-message,
+      .bot-message {
+        max-width: calc(100vw - 48px) !important;
+        width: auto !important;
+        font-size: 15.5px !important;
+        line-height: 1.52 !important;
+      }
+
+      .composer {
+        gap: 8px !important;
+      }
+    }
+
+    @media (max-width: 390px) {
+      .app {
+        padding: 4px !important;
+      }
+
+      .shell {
+        max-width: calc(100vw - 8px) !important;
+      }
+
+      .topbar {
+        padding: 10px !important;
+      }
+
+      .marianne {
+        width: 64px !important;
+        display: block !important;
+      }
+
+      .brand-logo {
+        width: 102px !important;
+      }
+
+      .icon-btn span {
+        display: none !important;
+      }
+    }
+
   </style>
 </head>
 
