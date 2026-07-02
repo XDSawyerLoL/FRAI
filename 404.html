@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#273b99" />
   <meta name="description" content="Assistant d'accompagnement France Travail" />
-  <title>Assistant France Travail · v7.9</title>
+  <title>Assistant France Travail · v7.10</title>
 
   <style>
     :root {
@@ -1191,7 +1191,7 @@
           </div>
         </div>
         <div class="top-actions">
-          <div class="status-pill"><span class="dot"></span><span id="statusText">Prêt · v7.9</span></div>
+          <div class="status-pill"><span class="dot"></span><span id="statusText">Prêt · v7.10</span></div>
           <button class="icon-btn" id="settingsBtn" type="button" aria-label="Ouvrir les réglages">⚙️ <span>Réglages</span></button>
         </div>
       </header>
@@ -1203,9 +1203,8 @@
           <button class="chip" type="button" data-prompt="Quels événements à Issy-les-Moulineaux en juillet ?">Événements emploi</button>
           <button class="chip" type="button" data-prompt="Je cherche une offre d'emploi de boulanger en France">Offres d’emploi</button>
           <button class="chip" type="button" data-prompt="Je veux faire un stage en entreprise pour découvrir un métier">Immersion facilitée</button>
-          <button class="chip" type="button" data-prompt="Je cherche une PMSMP pour tester un métier">PMSMP</button>
-          <button class="chip" type="button" data-prompt="Je cherche une POEI pour me former avant une embauche">POEI</button>
-          <button class="chip" type="button" data-prompt="Quels ateliers France Travail peuvent m'aider ?">Liste des ateliers</button>
+          <button class="chip" type="button" data-prompt="Je cherche une POEI (Préparation opérationnelle à l’emploi) pour me former avant une embauche">POEI (Préparation opérationnelle à l’emploi)</button>
+          <button class="chip" type="button" data-prompt="Explique tous les ateliers France Travail possibles">Liste des ateliers</button>
           <button class="chip" type="button" data-prompt="Quels ateliers pour améliorer mon CV ?">Atelier CV</button>
           <button class="chip" type="button" data-prompt="Je veux préparer un entretien d'embauche">Atelier entretien</button>
         </div>
@@ -1372,7 +1371,8 @@
           offres: data.offres || [],
           formations: data.formations || [],
           services: data.services || [],
-          events: data.events || []
+          events: data.events || [],
+          atelierCategories: data.atelierCategories || []
         });
 
       } catch (error) {
@@ -1405,7 +1405,7 @@
         if (extra.intent) {
           const badge = document.createElement("span");
           badge.className = "meta-badge";
-          badge.textContent = "Parcours : " + extra.intent;
+          badge.textContent = "Parcours : " + formatIntentLabel(extra.intent);
           meta.appendChild(badge);
         }
 
@@ -1422,6 +1422,10 @@
 
       if (role === "assistant" && Array.isArray(extra.formations) && extra.formations.length) {
         bubble.appendChild(renderFormations(extra.formations));
+      }
+
+      if (role === "assistant" && Array.isArray(extra.atelierCategories) && extra.atelierCategories.length) {
+        bubble.appendChild(renderAtelierCategories(extra.atelierCategories));
       }
 
       if (role === "assistant" && Array.isArray(extra.services) && extra.services.length) {
@@ -1442,6 +1446,20 @@
 
       if (save) saveMessage(role, content, extra);
       return row.dataset.id;
+    }
+
+
+    function formatIntentLabel(intent) {
+      const labels = {
+        pmsmp: "immersion facilitée",
+        poe: "POEI (Préparation opérationnelle à l’emploi)",
+        ateliers: "ateliers France Travail",
+        recherche_emploi: "recherche d’emploi",
+        candidature_cv: "CV / candidature",
+        activ_projet: "projet professionnel",
+        image_professionnelle: "image professionnelle"
+      };
+      return labels[intent] || intent;
     }
 
     function renderLoading() {
@@ -1547,6 +1565,33 @@
           link.innerHTML = "<span>Voir la formation</span><strong>↗</strong>";
           card.appendChild(link);
         }
+
+        grid.appendChild(card);
+      });
+
+      wrap.appendChild(grid);
+      return wrap;
+    }
+
+
+    function renderAtelierCategories(items) {
+      const wrap = document.createElement("div");
+      wrap.appendChild(sectionTitle("Ateliers possibles"));
+
+      const grid = document.createElement("div");
+      grid.className = "event-grid";
+
+      items.slice(0, 12).forEach(item => {
+        const card = document.createElement("article");
+        card.className = "event-card";
+
+        const title = document.createElement("h3");
+        title.textContent = item.title || "Atelier";
+        card.appendChild(title);
+
+        const desc = document.createElement("p");
+        desc.textContent = item.description || "Atelier France Travail selon le besoin.";
+        card.appendChild(desc);
 
         grid.appendChild(card);
       });
