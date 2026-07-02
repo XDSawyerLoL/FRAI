@@ -2,17 +2,568 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Page non trouvée - Assistant France Travail</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Assistant parcours France Travail</title>
+  <meta name="theme-color" content="#263f99" />
   <style>
-    body{font-family:Arial,system-ui,sans-serif;margin:0;background:#f5f7fb;color:#111827;display:grid;min-height:100vh;place-items:center;padding:24px}main{max-width:560px;background:#fff;border:1px solid #d7deea;border-radius:18px;padding:28px;box-shadow:0 10px 30px rgba(17,24,39,.08)}a{color:#273b99;font-weight:700}
+    :root {
+      --blue: #263f99;
+      --blue2: #1f347f;
+      --soft: #eef4ff;
+      --greenSoft: #e8f6ef;
+      --green: #13734a;
+      --border: #d8deea;
+      --text: #172033;
+      --muted: #657083;
+      --bg: #f6f8fc;
+      --card: #ffffff;
+      --danger: #9d1c1c;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .app {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      max-width: 860px;
+      margin: 0 auto;
+      background: #fff;
+    }
+
+    header {
+      padding: 18px 18px 12px;
+      border-bottom: 1px solid var(--border);
+      background: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    h1 {
+      font-size: 20px;
+      line-height: 1.15;
+      margin: 0;
+      color: var(--blue2);
+    }
+
+    .version {
+      font-size: 12px;
+      color: var(--green);
+      background: var(--greenSoft);
+      padding: 7px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+      font-weight: 700;
+    }
+
+    .status {
+      margin-top: 8px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    main {
+      flex: 1;
+      overflow: auto;
+      padding: 18px 14px 120px;
+    }
+
+    .msg {
+      max-width: 92%;
+      margin: 0 0 16px;
+      border-radius: 24px;
+      line-height: 1.42;
+      font-size: 17px;
+    }
+
+    .user {
+      margin-left: auto;
+      background: var(--blue);
+      color: #fff;
+      padding: 17px 20px;
+      border-bottom-right-radius: 7px;
+    }
+
+    .bot {
+      margin-right: auto;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 7px solid var(--blue);
+      padding: 18px 18px;
+      box-shadow: 0 12px 30px rgba(15, 32, 80, .08);
+      border-bottom-left-radius: 7px;
+    }
+
+    .pill {
+      display: inline-block;
+      background: var(--greenSoft);
+      color: var(--green);
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .reply {
+      white-space: pre-wrap;
+      font-size: 17px;
+    }
+
+    .reply strong {
+      color: var(--blue2);
+    }
+
+    .section-title {
+      margin: 18px 0 10px;
+      font-size: 15px;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      color: var(--blue2);
+      font-weight: 900;
+    }
+
+    .cards {
+      display: grid;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .item-card {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 14px;
+      background: #fff;
+    }
+
+    .item-title {
+      font-weight: 900;
+      font-size: 16px;
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .desc {
+      color: #3c4658;
+      font-size: 14px;
+      line-height: 1.35;
+      margin-bottom: 12px;
+    }
+
+    .actions {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    a.btn, button.btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      border: 1px solid #cbd5ee;
+      background: #fff;
+      color: var(--blue);
+      padding: 13px 16px;
+      border-radius: 17px;
+      font-weight: 900;
+      font-size: 15px;
+      cursor: pointer;
+      min-height: 48px;
+    }
+
+    a.btn.primary, button.btn.primary {
+      background: var(--blue);
+      color: #fff;
+      border-color: var(--blue);
+    }
+
+    .error {
+      color: var(--danger);
+      font-weight: 800;
+      margin-top: 8px;
+    }
+
+    .composer {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,.96);
+      border-top: 1px solid var(--border);
+      padding: 12px;
+      z-index: 20;
+    }
+
+    .composer-inner {
+      display: flex;
+      gap: 10px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    textarea {
+      flex: 1;
+      min-height: 58px;
+      max-height: 130px;
+      resize: none;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 14px 15px;
+      font: inherit;
+      font-size: 16px;
+      outline: none;
+    }
+
+    textarea:focus {
+      border-color: var(--blue);
+    }
+
+    .send {
+      min-width: 112px;
+      border: none;
+      border-radius: 18px;
+      background: var(--blue);
+      color: #fff;
+      font-weight: 900;
+      font-size: 16px;
+      cursor: pointer;
+      padding: 0 16px;
+    }
+
+    .send:disabled {
+      opacity: .55;
+      cursor: wait;
+    }
+
+    .quick {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 10px 0 0;
+    }
+
+    .chip {
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--blue2);
+      border-radius: 999px;
+      padding: 9px 12px;
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    @media (max-width: 520px) {
+      h1 { font-size: 17px; }
+      .msg { max-width: 96%; font-size: 16px; }
+      main { padding-left: 10px; padding-right: 10px; }
+      .composer-inner { gap: 8px; }
+      .send { min-width: 92px; }
+    }
   </style>
 </head>
 <body>
-  <main>
-    <h1>Page non trouvée</h1>
-    <p>La ressource demandée n’existe pas à cette adresse.</p>
-    <p><a href="./">Retour à l’assistant</a></p>
-  </main>
+  <div class="app">
+    <header>
+      <div class="title">
+        <h1>Assistant parcours France Travail</h1>
+        <div class="version">Prêt · v7.8</div>
+      </div>
+      <div class="status" id="status">Worker direct : assistant-frai-api.vnhz.workers.dev</div>
+      <div class="quick">
+        <button class="chip" data-q="Quels événements à Issy-les-Moulineaux en juillet ?">Événements Issy</button>
+        <button class="chip" data-q="Je cherche une offre d'emploi de boulanger en France">Offres boulanger</button>
+        <button class="chip" data-q="Je veux améliorer mon CV">CV</button>
+        <button class="chip" data-q="Je veux faire une formation">Formation</button>
+      </div>
+    </header>
+
+    <main id="chat">
+      <article class="msg bot">
+        <div class="pill">Assistant parcours</div>
+        <div class="reply">Décrivez la situation du demandeur d’emploi. Je construis un parcours court, puis j’affiche les événements, offres ou liens utiles quand ils existent.</div>
+      </article>
+    </main>
+
+    <div class="composer">
+      <div class="composer-inner">
+        <textarea id="input" placeholder="Écrivez la situation du demandeur d’emploi..."></textarea>
+        <button class="send" id="send">Envoyer</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Front v7.8 : appel direct au Worker, sans settings, sans service worker.
+    // Content-Type text/plain => évite le preflight CORS OPTIONS dans les navigateurs.
+    const API_AGENT = "https://assistant-frai-api.vnhz.workers.dev/api/agent";
+    const API_HEALTH = "https://assistant-frai-api.vnhz.workers.dev/health";
+
+    const chat = document.getElementById("chat");
+    const input = document.getElementById("input");
+    const send = document.getElementById("send");
+    const statusEl = document.getElementById("status");
+
+    document.querySelectorAll(".chip").forEach(btn => {
+      btn.addEventListener("click", () => {
+        input.value = btn.dataset.q || "";
+        input.focus();
+      });
+    });
+
+    send.addEventListener("click", submit);
+    input.addEventListener("keydown", e => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        submit();
+      }
+    });
+
+    async function bootHealthCheck() {
+      try {
+        const res = await fetch(API_HEALTH + "?_=" + Date.now(), {
+          method: "GET",
+          cache: "no-store",
+          mode: "cors"
+        });
+        const data = await res.json();
+        if (data && data.ok) {
+          statusEl.textContent = "Worker OK · " + (data.mode || "online");
+        } else {
+          statusEl.textContent = "Worker joignable, réponse health inattendue";
+        }
+      } catch (err) {
+        statusEl.textContent = "Worker non joignable depuis ce navigateur : " + (err.message || err);
+      }
+    }
+
+    bootHealthCheck();
+
+    async function submit() {
+      const message = input.value.trim();
+      if (!message || send.disabled) return;
+
+      addUser(message);
+      input.value = "";
+      send.disabled = true;
+      statusEl.textContent = "Analyse en cours...";
+
+      const loading = addBot("Analyse de la situation en cours...");
+
+      try {
+        const payload = {
+          message,
+          city: extractCity(message) || "Issy-les-Moulineaux"
+        };
+
+        const res = await fetch(API_AGENT + "?_=" + Date.now(), {
+          method: "POST",
+          mode: "cors",
+          cache: "no-store",
+          // text/plain évite l'OPTIONS preflight. Le Worker lit quand même request.json().
+          headers: {
+            "content-type": "text/plain;charset=UTF-8"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const raw = await res.text();
+        let data;
+        try {
+          data = JSON.parse(raw);
+        } catch (_) {
+          throw new Error("Réponse non JSON. HTTP " + res.status + " : " + raw.slice(0, 220));
+        }
+
+        if (!res.ok || !data || data.ok === false) {
+          throw new Error("HTTP " + res.status + " : " + (data.error || data.message || raw.slice(0, 220)));
+        }
+
+        renderBotData(loading, data);
+        statusEl.textContent = "Réponse reçue · " + (data.mode || data.provider || "agent");
+      } catch (err) {
+        loading.innerHTML = `
+          <div class="pill">Assistant parcours</div>
+          <div class="reply">
+Agent cloud non joignable ou réponse invalide.
+
+Détail : ${escapeHtml(err.message || String(err))}
+
+Test rapide : ouvrez directement /health dans un nouvel onglet. Si /health marche mais pas ici, videz le cache du site ou ouvrez en navigation privée.
+          </div>
+        `;
+        statusEl.textContent = "Erreur : " + (err.message || err);
+      } finally {
+        send.disabled = false;
+        scrollBottom();
+      }
+    }
+
+    function renderBotData(container, data) {
+      const reply = data.reply || "Voici le chemin le plus logique à suivre.";
+      const intent = data.intent ? `<div class="pill">Parcours : ${escapeHtml(data.intent)}</div>` : "";
+      let html = `
+        <div class="pill">Assistant parcours</div>
+        ${intent}
+        <div class="reply">${formatReply(reply)}</div>
+      `;
+
+      const events = Array.isArray(data.events) ? data.events.slice(0, 5) : [];
+      if (events.length) {
+        html += `<div class="section-title">Événements utiles</div><div class="cards">`;
+        for (const e of events) html += renderEventCard(e);
+        html += `</div>`;
+      }
+
+      const offres = Array.isArray(data.offres) ? data.offres.slice(0, 5) : [];
+      if (offres.length) {
+        html += `<div class="section-title">Offres utiles</div><div class="cards">`;
+        for (const o of offres) html += renderOffreCard(o);
+        html += `</div>`;
+      }
+
+      const formations = Array.isArray(data.formations) ? data.formations.slice(0, 3) : [];
+      if (formations.length) {
+        html += `<div class="section-title">Formations utiles</div><div class="cards">`;
+        for (const f of formations) html += renderFormationCard(f);
+        html += `</div>`;
+      }
+
+      const links = Array.isArray(data.officialLinks) ? data.officialLinks.slice(0, 2) : [];
+      if (links.length) {
+        html += `<div class="section-title">Action conseillée</div><div class="actions">`;
+        links.forEach((l, i) => {
+          if (!l.url) return;
+          html += `<a class="btn ${i === 0 ? "primary" : ""}" href="${escapeAttr(l.url)}" target="_blank" rel="noopener">${escapeHtml(l.title || "Ouvrir")}</a>`;
+        });
+        html += `</div>`;
+      }
+
+      container.innerHTML = html;
+    }
+
+    function renderEventCard(e) {
+      const date = formatDate(e.dateEvenement);
+      const meta = [date, e.heureDebut, e.ville, e.type].filter(Boolean).join(" · ");
+      const desc = e.description || e.deroulement || "";
+      return `
+        <div class="item-card">
+          <div class="item-title">${escapeHtml(e.titre || "Événement emploi")}</div>
+          <div class="meta">${escapeHtml(meta)}</div>
+          ${desc ? `<div class="desc">${escapeHtml(trim(desc, 220))}</div>` : ""}
+          ${e.url ? `<a class="btn primary" href="${escapeAttr(e.url)}" target="_blank" rel="noopener">Voir l’événement</a>` : ""}
+        </div>
+      `;
+    }
+
+    function renderOffreCard(o) {
+      const meta = [o.entreprise, o.lieu, o.typeContrat, o.salaire].filter(Boolean).join(" · ");
+      return `
+        <div class="item-card">
+          <div class="item-title">${escapeHtml(o.titre || o.intitule || "Offre d’emploi")}</div>
+          <div class="meta">${escapeHtml(meta)}</div>
+          ${o.description ? `<div class="desc">${escapeHtml(trim(o.description, 220))}</div>` : ""}
+          ${o.url ? `<a class="btn primary" href="${escapeAttr(o.url)}" target="_blank" rel="noopener">Voir l’offre</a>` : ""}
+        </div>
+      `;
+    }
+
+    function renderFormationCard(f) {
+      const meta = [f.organisme, f.ville, f.dateDebut].filter(Boolean).join(" · ");
+      return `
+        <div class="item-card">
+          <div class="item-title">${escapeHtml(f.titre || "Formation")}</div>
+          <div class="meta">${escapeHtml(meta)}</div>
+          ${f.url ? `<a class="btn primary" href="${escapeAttr(f.url)}" target="_blank" rel="noopener">Voir la formation</a>` : ""}
+        </div>
+      `;
+    }
+
+    function addUser(text) {
+      const el = document.createElement("article");
+      el.className = "msg user";
+      el.textContent = text;
+      chat.appendChild(el);
+      scrollBottom();
+    }
+
+    function addBot(text) {
+      const el = document.createElement("article");
+      el.className = "msg bot";
+      el.innerHTML = `<div class="pill">Assistant parcours</div><div class="reply">${escapeHtml(text)}</div>`;
+      chat.appendChild(el);
+      scrollBottom();
+      return el;
+    }
+
+    function formatReply(text) {
+      return escapeHtml(String(text || ""))
+        .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+    }
+
+    function extractCity(text) {
+      const m = String(text || "").match(/\b(?:à|a|sur|près de|pres de)\s+([A-Za-zÀ-ÿ' -]{3,60})/i);
+      if (!m) return "";
+      return m[1].replace(/[?.!,;:].*$/, "").trim();
+    }
+
+    function formatDate(value) {
+      if (!value) return "";
+      try {
+        const d = new Date(value);
+        if (Number.isNaN(d.getTime())) return "";
+        return d.toLocaleDateString("fr-FR", { weekday: "short", day: "2-digit", month: "short" });
+      } catch (_) {
+        return "";
+      }
+    }
+
+    function trim(text, max) {
+      const s = String(text || "").replace(/\s+/g, " ").trim();
+      return s.length > max ? s.slice(0, max - 1) + "…" : s;
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function escapeAttr(value) {
+      return escapeHtml(value);
+    }
+
+    function scrollBottom() {
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+      });
+    }
+  </script>
 </body>
 </html>
