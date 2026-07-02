@@ -1,0 +1,10 @@
+name = "assistant-frai-api"
+main = "cloudflare-worker.js"
+compatibility_date = "2025-08-01"
+
+# Pour un Worker autonome, déploie seulement cloudflare-worker.js avec ce fichier.
+# Pour Cloudflare Pages, utilise le dossier functions/ fourni dans cette archive.
+
+[vars]
+GEMINI_MODEL = "gemini-2.5-flash-lite"
+OPENAI_MODEL = "gpt-4.1-mini"
