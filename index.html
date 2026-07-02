@@ -402,6 +402,16 @@
       overflow-wrap: anywhere;
     }
 
+    .section-title {
+      margin-top: 14px;
+      margin-bottom: 8px;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--ft-blue);
+    }
+
     .composer-wrap {
       flex: 0 0 auto;
       width: 100%;
@@ -1353,6 +1363,9 @@
           provider: data.provider,
           intent: data.intent,
           officialLinks: data.officialLinks || [],
+          offres: data.offres || [],
+          formations: data.formations || [],
+          services: data.services || [],
           events: data.events || []
         });
 
@@ -1397,6 +1410,18 @@
       text.textContent = content || "";
       bubble.appendChild(text);
 
+      if (role === "assistant" && Array.isArray(extra.offres) && extra.offres.length) {
+        bubble.appendChild(renderOffres(extra.offres));
+      }
+
+      if (role === "assistant" && Array.isArray(extra.formations) && extra.formations.length) {
+        bubble.appendChild(renderFormations(extra.formations));
+      }
+
+      if (role === "assistant" && Array.isArray(extra.services) && extra.services.length) {
+        bubble.appendChild(renderServices(extra.services));
+      }
+
       if (role === "assistant" && Array.isArray(extra.officialLinks) && extra.officialLinks.length) {
         bubble.appendChild(renderLinks(extra.officialLinks));
       }
@@ -1431,6 +1456,135 @@
     function removeMessageById(id) {
       const item = els.messages.querySelector(`[data-id="${CSS.escape(id)}"]`);
       if (item) item.remove();
+    }
+
+    function sectionTitle(label) {
+      const title = document.createElement("div");
+      title.className = "section-title";
+      title.textContent = label;
+      return title;
+    }
+
+    function renderOffres(offres) {
+      const wrap = document.createElement("div");
+      wrap.appendChild(sectionTitle("Offres remontées"));
+
+      const grid = document.createElement("div");
+      grid.className = "event-grid";
+
+      offres.slice(0, 5).forEach(offre => {
+        const card = document.createElement("article");
+        card.className = "event-card";
+
+        const title = document.createElement("h3");
+        title.textContent = offre.titre || "Offre";
+        card.appendChild(title);
+
+        const meta = document.createElement("p");
+        meta.textContent = [offre.entreprise, offre.lieu, offre.typeContrat, offre.dureeTravail].filter(Boolean).join(" — ");
+        card.appendChild(meta);
+
+        if (offre.salaire) {
+          const salary = document.createElement("p");
+          salary.textContent = "Salaire : " + offre.salaire;
+          card.appendChild(salary);
+        }
+
+        if (offre.url) {
+          const link = document.createElement("a");
+          link.className = "link-card";
+          link.href = offre.url;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          link.style.marginTop = "10px";
+          link.innerHTML = "<span>Voir l’offre</span><strong>↗</strong>";
+          card.appendChild(link);
+        }
+
+        grid.appendChild(card);
+      });
+
+      wrap.appendChild(grid);
+      return wrap;
+    }
+
+    function renderFormations(formations) {
+      const wrap = document.createElement("div");
+      wrap.appendChild(sectionTitle("Formations utiles"));
+
+      const grid = document.createElement("div");
+      grid.className = "event-grid";
+
+      formations.slice(0, 4).forEach(formation => {
+        const card = document.createElement("article");
+        card.className = "event-card";
+
+        const title = document.createElement("h3");
+        title.textContent = formation.titre || "Formation";
+        card.appendChild(title);
+
+        const meta = document.createElement("p");
+        meta.textContent = [formation.organisme, formation.ville, formation.financement].filter(Boolean).join(" — ");
+        card.appendChild(meta);
+
+        const dates = document.createElement("p");
+        dates.textContent = [formation.dateDebut, formation.dateFin].filter(Boolean).join(" → ");
+        if (dates.textContent) card.appendChild(dates);
+
+        if (formation.url) {
+          const link = document.createElement("a");
+          link.className = "link-card";
+          link.href = formation.url;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          link.style.marginTop = "10px";
+          link.innerHTML = "<span>Voir la formation</span><strong>↗</strong>";
+          card.appendChild(link);
+        }
+
+        grid.appendChild(card);
+      });
+
+      wrap.appendChild(grid);
+      return wrap;
+    }
+
+    function renderServices(services) {
+      const wrap = document.createElement("div");
+      wrap.appendChild(sectionTitle("Services pertinents"));
+
+      const grid = document.createElement("div");
+      grid.className = "event-grid";
+
+      services.slice(0, 6).forEach(service => {
+        if (!service || !service.url) return;
+        const card = document.createElement("article");
+        card.className = "event-card";
+
+        const title = document.createElement("h3");
+        title.textContent = service.label || "Service France Travail";
+        card.appendChild(title);
+
+        if (service.why) {
+          const why = document.createElement("p");
+          why.textContent = service.why;
+          card.appendChild(why);
+        }
+
+        const link = document.createElement("a");
+        link.className = "link-card";
+        link.href = service.url;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.style.marginTop = "10px";
+        link.innerHTML = "<span>Ouvrir le service</span><strong>↗</strong>";
+        card.appendChild(link);
+
+        grid.appendChild(card);
+      });
+
+      wrap.appendChild(grid);
+      return wrap;
     }
 
     function renderLinks(links) {
