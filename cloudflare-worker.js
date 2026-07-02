@@ -1,3 +1,4 @@
+// @ts-nocheck
 /*
   Assistant FRAI — Cloudflare Worker v6.4
   Orchestrateur API France Travail + Gemini/GPT
@@ -39,7 +40,7 @@
 
 const TOKEN_CACHE = new Map();
 
-const WORKER_MODE = "v6.6-action-results-no-duplicate-links";
+const WORKER_MODE = "v7.3-worker-direct-scope-fix";
 const PUBLIC_ENDPOINTS = ["/health", "/api/agent", "/debug-intent", "/debug-plan", "/debug-run", "/debug-offres", "/debug-diagnostic", "/debug-events"];
 
 const DEFAULT_CITY = "Issy-les-Moulineaux";
@@ -80,7 +81,25 @@ const RATE_LIMIT_MS = {
 };
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env = {}, ctx) {
+    try {
+      return await handleRequest(request, env || {}, ctx);
+    } catch (error) {
+      const headers = safeJsonHeaders();
+      return json({
+        ok: false,
+        service: "assistant-frai-api",
+        status: "worker_exception",
+        mode: WORKER_MODE,
+        message: "Le Worker a intercepté une erreur au lieu de renvoyer une page Cloudflare 1101.",
+        error: String(error?.message || error),
+        stack: String(error?.stack || "").slice(0, 1800)
+      }, headers, 500);
+    }
+  }
+};
+
+async function handleRequest(request, env = {}, ctx) {
     const url = new URL(request.url);
     const path = normalizePath(url.pathname);
 
@@ -309,16 +328,25 @@ export default {
       apiContext: summarizeApiContextForFrontend(apiContext),
       officialLinks: buildOfficialLinks(analysis.intent, apiContext)
     }, headers);
-  }
-};
+
+}
 
 function normalizePath(pathname) {
   const clean = String(pathname || "/").replace(/\/+$/g, "");
   return clean || "/";
 }
 
-function json(data, headers) {
-  return new Response(JSON.stringify(data), { headers });
+function safeJsonHeaders() {
+  return {
+    "content-type": "application/json; charset=utf-8",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": "GET, POST, OPTIONS",
+    "access-control-allow-headers": "content-type, authorization"
+  };
+}
+
+function json(data, headers = safeJsonHeaders(), status = 200) {
+  return new Response(JSON.stringify(data), { status, headers });
 }
 
 /* =========================================================
@@ -1019,25 +1047,29 @@ async function getFranceTravailToken(env, apiName = "default") {
 }
 
 function scopeForApi(env, apiName = "default") {
-  const globalScope = env.FRANCE_TRAVAIL_SCOPE || env.FT_SCOPE || "api_evenementsv1 evenements";
+  const globalScope = env.FRANCE_TRAVAIL_SCOPE || env.FT_SCOPE || "";
 
+  // Important : ne pas réutiliser un scope global géant pour chaque API.
+  // Si une seule valeur du scope global est invalide, France Travail renvoie invalid_scope
+  // et bloque même les API qui auraient pu fonctionner. On privilégie donc un scope court
+  // par API, soit via variable FT_SCOPE_*, soit via valeur par défaut connue.
   const scoped = {
-    offres: env.FT_SCOPE_OFFRES,
-    events: env.FT_SCOPE_EVENTS || env.FT_SCOPE_EVENEMENTS,
-    formations: env.FT_SCOPE_FORMATIONS,
-    marcheTravail: env.FT_SCOPE_MARCHE_TRAVAIL,
-    accesEmploi: env.FT_SCOPE_ACCES_EMPLOI,
-    agences: env.FT_SCOPE_AGENCES,
-    cadreVie: env.FT_SCOPE_CADRE_VIE,
-    bonneBoite: env.FT_SCOPE_BONNE_BOITE,
-    romeo: env.FT_SCOPE_ROMEO,
-    romeMetiers: env.FT_SCOPE_ROME_METIERS,
-    romeCompetences: env.FT_SCOPE_ROME_COMPETENCES,
-    romeFiches: env.FT_SCOPE_ROME_FICHES,
-    romeContextes: env.FT_SCOPE_ROME_CONTEXTES
+    offres: env.FT_SCOPE_OFFRES || "api_offresdemploiv2 o2dsoffre",
+    events: env.FT_SCOPE_EVENTS || env.FT_SCOPE_EVENEMENTS || "api_evenementsv1 evenements",
+    formations: env.FT_SCOPE_FORMATIONS || "api_openformationv1",
+    marcheTravail: env.FT_SCOPE_MARCHE_TRAVAIL || "api_marche-travailv1",
+    accesEmploi: env.FT_SCOPE_ACCES_EMPLOI || "api_acces-emploi-demandeursv1",
+    agences: env.FT_SCOPE_AGENCES || "api_referentielagencesv1",
+    cadreVie: env.FT_SCOPE_CADRE_VIE || "api_cadredeviecommunesv1",
+    bonneBoite: env.FT_SCOPE_BONNE_BOITE || "api_labonneboitev2",
+    romeo: env.FT_SCOPE_ROMEO || "api_romeov2",
+    romeMetiers: env.FT_SCOPE_ROME_METIERS || "api_rome-metiersv1 nomenclatureRome",
+    romeCompetences: env.FT_SCOPE_ROME_COMPETENCES || "api_rome-competencesv1 nomenclatureRome",
+    romeFiches: env.FT_SCOPE_ROME_FICHES || "api_rome-fiches-metiersv1 nomenclatureRome",
+    romeContextes: env.FT_SCOPE_ROME_CONTEXTES || "api_rome-contextes-travailv1 nomenclatureRome"
   };
 
-  return String(scoped[apiName] || globalScope).trim();
+  return String(scoped[apiName] || globalScope || scoped.events).trim();
 }
 
 async function callFranceTravail(env, apiName, url, options = {}, timeoutMs = 9000) {
@@ -1983,6 +2015,84 @@ const SERVICE_CATALOG = {
   }
 };
 
+function selectBestLinks(intent, apiContext = {}) {
+  const i = String(intent || "diagnostic");
+  const ctx = apiContext || {};
+  const links = [];
+
+  // Résultats concrets d'abord : événements réels, offres réelles, formations réelles.
+  if (i === "events") {
+    links.push(...buildEventLinks(ctx?.events?.items || ctx?.events?.events || []));
+    if (links.length < 2) links.push(serviceToLink(SERVICE_CATALOG.events));
+    return dedupeLinks(links).slice(0, 2);
+  }
+
+  if (["recherche_emploi", "ues", "candidature_cv", "poe", "international"].includes(i)) {
+    const entities = ctx?.meta?.entities || {};
+    const ville = ctx?.meta?.ville || DEFAULT_CITY;
+    const metier = entities.metier || entities.keywords || "";
+
+    for (const offre of (ctx?.offres?.items || []).slice(0, 2)) {
+      if (!offre?.url) continue;
+      links.push({
+        label: `Offre — ${truncate(offre.titre || "poste", 60)}`,
+        title: `Offre — ${truncate(offre.titre || "poste", 60)}`,
+        description: [offre.entreprise, offre.lieu, offre.typeContrat].filter(Boolean).join(" — "),
+        why: "offre concrète correspondant à la recherche.",
+        url: offre.url
+      });
+    }
+
+    if (links.length < 2) {
+      const searchUrl = buildOffresSearchUrl(metier, ville);
+      if (searchUrl) links.push({
+        label: metier ? `Rechercher des offres — ${metier}` : "Rechercher des offres",
+        title: metier ? `Rechercher des offres — ${metier}` : "Rechercher des offres",
+        description: "ouvrir la recherche France Travail avec le métier ciblé.",
+        why: "utile pour vérifier les offres disponibles et postuler rapidement.",
+        url: searchUrl
+      });
+    }
+
+    if (links.length < 2) links.push(serviceToLink(SERVICE_CATALOG.bonneBoite));
+    if (links.length < 2) links.push(serviceToLink(SERVICE_CATALOG.events));
+    return dedupeLinks(links).slice(0, 2);
+  }
+
+  if (i === "formation" || i === "competences") {
+    for (const formation of (ctx?.formations?.items || []).slice(0, 2)) {
+      if (!formation?.url) continue;
+      links.push({
+        label: `Formation — ${truncate(formation.titre || "formation", 60)}`,
+        title: `Formation — ${truncate(formation.titre || "formation", 60)}`,
+        description: [formation.organisme, formation.ville].filter(Boolean).join(" — "),
+        why: "formation concrète liée au besoin détecté.",
+        url: formation.url
+      });
+    }
+    if (links.length < 2) links.push(serviceToLink(SERVICE_CATALOG.formations));
+    if (links.length < 2) links.push(serviceToLink(SERVICE_CATALOG.competences));
+    return dedupeLinks(links).slice(0, 2);
+  }
+
+  const mapping = {
+    confiance: [SERVICE_CATALOG.vsi, SERVICE_CATALOG.entretien],
+    image_professionnelle: [SERVICE_CATALOG.vsi, SERVICE_CATALOG.entretien],
+    entretien: [SERVICE_CATALOG.entretien, SERVICE_CATALOG.vsi],
+    candidature_cv: [SERVICE_CATALOG.candidature, SERVICE_CATALOG.bonneBoite],
+    activ_projet: [SERVICE_CATALOG.activProjet, SERVICE_CATALOG.pmsmp],
+    pmsmp: [SERVICE_CATALOG.pmsmp, SERVICE_CATALOG.activProjet],
+    poe: [SERVICE_CATALOG.offres, SERVICE_CATALOG.formations],
+    creation: [SERVICE_CATALOG.activCrea, SERVICE_CATALOG.ateliers],
+    international: [SERVICE_CATALOG.international, SERVICE_CATALOG.offres],
+    territoire: [SERVICE_CATALOG.offres, SERVICE_CATALOG.bonneBoite],
+    sante: [SERVICE_CATALOG.ateliers, SERVICE_CATALOG.pmsmp],
+    diagnostic: [SERVICE_CATALOG.ateliers, SERVICE_CATALOG.servicesTrouver]
+  };
+
+  return dedupeLinks((mapping[i] || mapping.diagnostic).map(serviceToLink)).slice(0, 2);
+}
+
 function chooseRelevantServices(intent, apiContext, entities = {}) {
   return selectBestLinks(intent, apiContext)
     .map(link => ({
@@ -2438,27 +2548,27 @@ function parsePeriod(input) {
   const now = new Date();
 
   const months = [
-    ["janvier", 0],
-    ["fevrier", 1],
-    ["février", 1],
-    ["mars", 2],
-    ["avril", 3],
-    ["mai", 4],
-    ["juin", 5],
-    ["juillet", 6],
-    ["aout", 7],
-    ["août", 7],
-    ["septembre", 8],
-    ["octobre", 9],
-    ["novembre", 10],
-    ["decembre", 11],
-    ["décembre", 11]
+    { name: "janvier", index: 0 },
+    { name: "fevrier", index: 1 },
+    { name: "février", index: 1 },
+    { name: "mars", index: 2 },
+    { name: "avril", index: 3 },
+    { name: "mai", index: 4 },
+    { name: "juin", index: 5 },
+    { name: "juillet", index: 6 },
+    { name: "aout", index: 7 },
+    { name: "août", index: 7 },
+    { name: "septembre", index: 8 },
+    { name: "octobre", index: 9 },
+    { name: "novembre", index: 10 },
+    { name: "decembre", index: 11 },
+    { name: "décembre", index: 11 }
   ];
 
   let monthIndex = null;
   let explicit = false;
 
-  for (const [name, index] of months) {
+  for (const { name, index } of months) {
     const month = normalize(name);
 
     // Mot entier uniquement : "mai" est accepté, "mais" est ignoré.
