@@ -368,6 +368,33 @@
       word-break: break-word;
     }
 
+
+    .action-block {
+      width: 100%;
+      margin-top: 6px;
+    }
+
+    .action-links {
+      grid-template-columns: 1fr;
+    }
+
+    .link-card small {
+      display: block;
+      margin-top: 4px;
+      font-weight: 600;
+      color: var(--muted);
+      line-height: 1.25;
+    }
+
+    .primary-action {
+      min-height: 58px;
+      border-left-width: 7px !important;
+    }
+
+    .secondary-action {
+      opacity: .92;
+    }
+
     .event-grid {
       width: 100%;
       display: grid;
@@ -1249,7 +1276,7 @@
   <div id="toast" class="toast"></div>
 
   <script>
-    const DEFAULT_WORKER_URL = "https://assistant-frai-api.vnhz.workers.dev";
+    const DEFAULT_WORKER_URL = ""; // vide = appelle /api/agent sur le même domaine Cloudflare
     const DEFAULT_CITY = "Issy-les-Moulineaux";
 
     const els = {
@@ -1341,12 +1368,14 @@
       const loadingId = renderLoading();
 
       try {
-        const response = await fetch(`${cleanWorkerUrl(state.workerUrl)}/api/agent`, {
+        const apiBase = cleanWorkerUrl(state.workerUrl);
+        const response = await fetch(`${apiBase}/api/agent`, {
           method: "POST",
           headers: { "content-type": "application/json" },
           body: JSON.stringify({
             message: text,
             city: state.city,
+            ville: state.city,
             useLLM: true
           })
         });
@@ -1410,24 +1439,23 @@
       text.textContent = content || "";
       bubble.appendChild(text);
 
-      if (role === "assistant" && Array.isArray(extra.offres) && extra.offres.length) {
-        bubble.appendChild(renderOffres(extra.offres));
-      }
+      const hasEvents = role === "assistant" && Array.isArray(extra.events) && extra.events.length;
+      const hasOffres = role === "assistant" && Array.isArray(extra.offres) && extra.offres.length;
+      const hasFormations = role === "assistant" && Array.isArray(extra.formations) && extra.formations.length;
 
-      if (role === "assistant" && Array.isArray(extra.formations) && extra.formations.length) {
-        bubble.appendChild(renderFormations(extra.formations));
-      }
+      if (hasEvents) bubble.appendChild(renderEvents(extra.events));
+      if (hasOffres) bubble.appendChild(renderOffres(extra.offres));
+      if (hasFormations) bubble.appendChild(renderFormations(extra.formations));
 
-      if (role === "assistant" && Array.isArray(extra.services) && extra.services.length) {
-        bubble.appendChild(renderServices(extra.services));
-      }
+      // Plus de pile “Services pertinents”. Le Worker renvoie déjà services: [].
+      // Les liens restants sont les actions conseillées, limitées à 2.
+      const shouldShowActionLinks = role === "assistant"
+        && Array.isArray(extra.officialLinks)
+        && extra.officialLinks.length
+        && !(extra.intent === "events" && hasEvents);
 
-      if (role === "assistant" && Array.isArray(extra.officialLinks) && extra.officialLinks.length) {
+      if (shouldShowActionLinks) {
         bubble.appendChild(renderLinks(extra.officialLinks));
-      }
-
-      if (role === "assistant" && Array.isArray(extra.events) && extra.events.length) {
-        bubble.appendChild(renderEvents(extra.events));
       }
 
       row.appendChild(bubble);
@@ -1467,12 +1495,12 @@
 
     function renderOffres(offres) {
       const wrap = document.createElement("div");
-      wrap.appendChild(sectionTitle("Offres remontées"));
+      wrap.appendChild(sectionTitle("Offres trouvées"));
 
       const grid = document.createElement("div");
       grid.className = "event-grid";
 
-      offres.slice(0, 5).forEach(offre => {
+      offres.slice(0, 3).forEach(offre => {
         const card = document.createElement("article");
         card.className = "event-card";
 
@@ -1515,7 +1543,7 @@
       const grid = document.createElement("div");
       grid.className = "event-grid";
 
-      formations.slice(0, 4).forEach(formation => {
+      formations.slice(0, 3).forEach(formation => {
         const card = document.createElement("article");
         card.className = "event-card";
 
@@ -1551,12 +1579,12 @@
 
     function renderServices(services) {
       const wrap = document.createElement("div");
-      wrap.appendChild(sectionTitle("Services pertinents"));
+      wrap.appendChild(sectionTitle("Action conseillée"));
 
       const grid = document.createElement("div");
       grid.className = "event-grid";
 
-      services.slice(0, 6).forEach(service => {
+      services.slice(0, 2).forEach(service => {
         if (!service || !service.url) return;
         const card = document.createElement("article");
         card.className = "event-card";
@@ -1589,27 +1617,38 @@
 
     function renderLinks(links) {
       const wrap = document.createElement("div");
-      wrap.className = "links-list";
+      wrap.className = "action-block";
+      wrap.appendChild(sectionTitle("Action conseillée"));
 
-      links.slice(0, 8).forEach(link => {
+      const list = document.createElement("div");
+      list.className = "links-list action-links";
+
+      links.slice(0, 2).forEach((link, index) => {
         if (!link || !link.url) return;
         const a = document.createElement("a");
-        a.className = "link-card";
+        a.className = index === 0 ? "link-card primary-action" : "link-card secondary-action";
         a.href = link.url;
         a.target = "_blank";
         a.rel = "noopener noreferrer";
-        a.innerHTML = `<span>${escapeHtml(link.label || "Ouvrir le lien")}</span><strong>↗</strong>`;
-        wrap.appendChild(a);
+
+        const label = link.label || link.title || "Ouvrir le lien";
+        const desc = link.description || link.why || "";
+        a.innerHTML = `<span><strong>${escapeHtml(label)}</strong>${desc ? `<small>${escapeHtml(desc)}</small>` : ""}</span><strong>↗</strong>`;
+        list.appendChild(a);
       });
 
+      wrap.appendChild(list);
       return wrap;
     }
 
     function renderEvents(events) {
+      const wrap = document.createElement("div");
+      wrap.appendChild(sectionTitle("Événements trouvés"));
+
       const grid = document.createElement("div");
       grid.className = "event-grid";
 
-      events.slice(0, 4).forEach(event => {
+      events.slice(0, 3).forEach(event => {
         const card = document.createElement("article");
         card.className = "event-card";
 
@@ -1639,7 +1678,8 @@
         grid.appendChild(card);
       });
 
-      return grid;
+      wrap.appendChild(grid);
+      return wrap;
     }
 
     function saveMessage(role, content, extra) {
@@ -1698,7 +1738,9 @@
     }
 
     function cleanWorkerUrl(url) {
-      return String(url || DEFAULT_WORKER_URL).replace(/\/+$/, "");
+      const value = String(url || DEFAULT_WORKER_URL || "").trim();
+      if (!value) return "";
+      return value.replace(/\/+$/, "");
     }
 
     function escapeHtml(value) {

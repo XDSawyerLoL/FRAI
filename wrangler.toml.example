@@ -1,12 +1,19 @@
-name = "assistant-france-travail-cloud-agent"
+name = "assistant-frai-api"
 main = "cloudflare-worker.js"
-compatibility_date = "2026-06-26"
+compatibility_date = "2026-07-02"
 
 [vars]
+GEMINI_MODEL = "gemini-2.5-flash-lite"
 OPENAI_MODEL = "gpt-4.1-mini"
-DEFAULT_CITY = "Boulogne-Billancourt"
-OPENAI_REWRITE = "true"
-# FT_MEE_SEARCH_URL = "https://api.francetravail.io/xxxx/evenements?quoi={query}&ou={city}&range={range}"
-# FT_FORMATION_SEARCH_URL = "https://api.francetravail.io/xxxx/formations?quoi={query}&ou={city}&range={range}"
-# FT_SCOPE = ""
-# FT_OAUTH_TOKEN_URL = "https://entreprise.francetravail.fr/connexion/oauth2/access_token?realm=/partenaire"
+DEFAULT_CITY = "Issy-les-Moulineaux"
+
+# À créer comme secrets/variables dans Cloudflare :
+# FRANCE_TRAVAIL_CLIENT_ID = "..."
+# FRANCE_TRAVAIL_CLIENT_SECRET = "..."
+# FRANCE_TRAVAIL_SCOPE = "..."
+# GEMINI_API_KEY = "..."
+# OPENAI_API_KEY = "..."
+# FT_SCOPE_EVENTS = "..."
+# FT_SCOPE_OFFRES = "..."
+# FT_EVENTS_URL = "..." # optionnel, endpoint événements si ton habilitation impose une URL différente
+# FT_OFFRES_URL = "..." # optionnel
