@@ -92,3 +92,7 @@ https://ton-domaine/debug-events?ville=Issy-les-Moulineaux&mois=juillet
 
 Si tu veux garder un Worker séparé, utilise `cloudflare-worker.js` comme fichier principal.
 Dans ce cas, le front devra pointer vers l’URL du Worker, mais la version recommandée reste Cloudflare Pages avec `_worker.js`.
+
+## Correctif 405
+
+Cette archive contient aussi `functions/[[path]].js`. C'est le branchement standard Cloudflare Pages quand le site vient de GitHub. Il évite que `/api/agent` soit traité comme un fichier statique, ce qui provoque l'erreur 405.
