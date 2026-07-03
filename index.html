@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#273b99" />
   <meta name="description" content="FRAI — Assistant parcours emploi pour pilote national" />
-  <title>Assistant France Travail · v8.3</title>
+  <title>Assistant France Travail · v8.4</title>
   <style>
     :root{
       --ft-blue:#273b99;--ft-blue-dark:#1d2b73;--ft-blue-soft:#eef2ff;
@@ -353,6 +353,122 @@
       }
     }
 
+  
+    /* v8.4 — service public clair : compact, mais contexte toujours visible */
+    .mission-card{
+      margin-top:10px;
+      display:grid;
+      gap:4px;
+      border:1px solid #d9deea;
+      background:#fff;
+      border-left:6px solid var(--ft-blue);
+      border-radius:16px;
+      padding:10px 12px;
+      color:#172033;
+      max-width:760px;
+    }
+    .mission-card strong{
+      color:var(--ft-blue-dark);
+      font-size:14px;
+      line-height:1.2;
+    }
+    .mission-card span{
+      color:#5b6472;
+      font-size:14px;
+      line-height:1.35;
+    }
+    body.chat-started .intro h1{
+      display:block;
+      font-size:20px;
+      line-height:1.12;
+      margin-bottom:6px;
+    }
+    body.chat-started .intro p{
+      display:block;
+      font-size:14px;
+      line-height:1.32;
+      margin:0;
+      max-width:760px;
+    }
+    body.chat-started .mission-card{
+      display:grid;
+      margin-top:8px;
+      padding:9px 11px;
+    }
+    body.keyboard-open .intro{
+      display:block;
+      padding-top:8px;
+      padding-bottom:8px;
+    }
+    body.keyboard-open .intro h1,
+    body.keyboard-open .intro p,
+    body.keyboard-open .mission-card,
+    body.keyboard-open .pilot-pages{
+      display:none;
+    }
+    body.keyboard-open .chips{
+      display:none;
+    }
+    body.keyboard-open .mode-switch{
+      margin-top:0;
+    }
+    .pilot-pages{
+      margin-top:10px;
+    }
+    .pilot-pages summary{
+      background:#eef2ff;
+    }
+    @media(max-width:760px){
+      .intro{
+        padding:12px 12px;
+      }
+      h1{
+        font-size:23px;
+        line-height:1.08;
+        margin-bottom:8px;
+      }
+      .intro p{
+        font-size:15px;
+        line-height:1.34;
+      }
+      .mission-card{
+        padding:9px 10px;
+        border-radius:14px;
+      }
+      .mission-card strong{
+        font-size:13px;
+      }
+      .mission-card span{
+        font-size:13px;
+      }
+      body.chat-started .intro{
+        padding-top:9px;
+        padding-bottom:9px;
+      }
+      body.chat-started .intro h1{
+        font-size:18px;
+      }
+      body.chat-started .intro p{
+        font-size:13px;
+      }
+      body.chat-started .mission-card{
+        display:grid;
+      }
+      .chips{
+        gap:7px;
+      }
+      .chip{
+        font-size:13px;
+        padding:8px 11px;
+      }
+      .mode-switch{
+        margin-top:8px;
+      }
+      .brand-title{
+        max-width:30vw;
+      }
+    }
+
   </style>
 </head>
 <body data-mode="demandeur">
@@ -368,7 +484,7 @@
           </div>
         </div>
         <div class="top-actions">
-          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v8.3</span></div>
+          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v8.4</span></div>
           <button class="icon-btn" id="resetBtn" type="button" title="Nouvelle conversation">↺ <span>Nouveau</span></button>
         </div>
       </header>
@@ -376,8 +492,12 @@
       <section class="intro">
         <div class="intro-grid">
           <div>
-            <h1>Construire le bon parcours, étape par étape.</h1>
-            <p>L’assistant analyse la situation, propose un parcours court et affiche les offres, événements, ateliers ou immersions utiles.</p>
+            <h1>Trouver la bonne action France Travail.</h1>
+            <p>Décrivez une situation : l’assistant propose une action claire, un parcours court et les services utiles — atelier, immersion, offre, événement ou formation.</p>
+            <div class="mission-card" aria-label="Rôle de l'assistant">
+              <strong>À quoi sert cet outil ?</strong>
+              <span>Orienter rapidement vers le bon service France Travail, sans noyer l’usager dans une liste de liens.</span>
+            </div>
           </div>
           <div class="mode-switch" role="tablist" aria-label="Mode d'affichage">
             <button class="mode-btn active" data-mode="demandeur" type="button">Demandeur</button>
@@ -386,12 +506,12 @@
         </div>
 
         <div class="chips" aria-label="Exemples">
-          <button class="chip" type="button" data-prompt="Quels événements à Issy-les-Moulineaux en juillet ?">Événements emploi</button>
-          <button class="chip" type="button" data-prompt="Je cherche une offre d'emploi de boulanger en France">Offres d’emploi</button>
-          <button class="chip" type="button" data-prompt="Je veux faire un stage en entreprise pour découvrir un métier">Immersion facilitée</button>
-          <button class="chip" type="button" data-prompt="Je cherche une POEI (Préparation opérationnelle à l’emploi) pour me former avant une embauche">POEI</button>
           <button class="chip" type="button" data-prompt="Explique tous les ateliers France Travail possibles">Liste des ateliers</button>
           <button class="chip" type="button" data-prompt="Quels ateliers pour améliorer mon CV ?">Atelier CV</button>
+          <button class="chip" type="button" data-prompt="Je veux faire un stage en entreprise pour découvrir un métier">Immersion facilitée</button>
+          <button class="chip" type="button" data-prompt="Quels événements à Issy-les-Moulineaux en juillet ?">Événements emploi</button>
+          <button class="chip" type="button" data-prompt="Je cherche une offre d'emploi de boulanger en France">Offres d’emploi</button>
+          <button class="chip" type="button" data-prompt="Je cherche une POEI (Préparation opérationnelle à l’emploi) pour me former avant une embauche">POEI</button>
           <button class="chip" type="button" data-prompt="Je ne sais pas quel métier choisir">Projet flou</button>
         </div>
 
@@ -409,7 +529,7 @@
         <form id="composer" class="composer-wrap">
           <div class="composer">
             <div class="input-box">
-              <textarea id="messageInput" rows="1" placeholder="Écrivez la situation du demandeur d’emploi…"></textarea>
+              <textarea id="messageInput" rows="1" placeholder="Ex. Je veux faire un stage, trouver un atelier CV, chercher une offre…"></textarea>
             </div>
             <button id="sendBtn" class="send-btn" type="submit">Envoyer</button>
           </div>
@@ -514,7 +634,7 @@
     }
 
     function renderWelcome(){
-      renderMessage("assistant","Décrivez le besoin. Je vais produire une action prioritaire, 3 étapes maximum, puis les résultats utiles si disponibles.",{
+      renderMessage("assistant","Décrivez la situation. L’assistant indique la prochaine action utile, explique pourquoi, puis affiche les services France Travail adaptés.",{
         provider:"Assistant parcours", intent:"diagnostic", diagnosticLabel:"diagnostic", confidenceLabel:"à préciser",
         priorityAction:"Indiquer le métier, la ville et le blocage principal.",
         actionPlan:[
@@ -561,7 +681,7 @@
     // v8.3 — formulation plus humaine et explications lisibles
     function humanActionTitle(data, fallback) {
       const intent = data.intent || "";
-      if (intent === "diagnostic") return "Préciser ce que vous voulez faire";
+      if (intent === "diagnostic") return "Préciser la situation pour choisir le bon service";
       if (intent === "ateliers") return "Choisir l’atelier le plus adapté";
       if (intent === "pmsmp") return "Tester un métier avec une immersion";
       if (intent === "poe") return "Vérifier une POEI avant embauche";
@@ -733,7 +853,7 @@
     function sectionHead(t){ const h=document.createElement("div"); h.className="section-head"; h.innerHTML=`<h3 class="section-title">${escapeHtml(t)}</h3>`; return h; }
     function renderLoading(){ const row=document.createElement("div"); row.className="message-row assistant"; row.dataset.id="loading"; row.innerHTML=`<article class="bubble"><span class="typing"><i></i><i></i><i></i></span></article>`; els.messages.appendChild(row); scrollBottom(); return row.dataset.id; }
     function remove(id){ const el=els.messages.querySelector(`[data-id="${CSS.escape(id)}"]`); if(el) el.remove(); }
-    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v8.3"; }
+    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v8.4"; }
 
     function saveMessage(role,content,extra){ const arr=read("frai_messages",[]); arr.push({role,content,extra}); localStorage.setItem("frai_messages",JSON.stringify(arr.slice(-30))); }
     function recordUsage(data,message,ms,error){ const s=read("frai_stats",{total:0,errors:0,clicks:0,feedback:{},intents:{},times:[]}); s.total++; if(error)s.errors++; const it=data.intent||"diagnostic"; s.intents[it]=(s.intents[it]||0)+1; s.times.push(ms); s.times=s.times.slice(-100); localStorage.setItem("frai_stats",JSON.stringify(s)); }
