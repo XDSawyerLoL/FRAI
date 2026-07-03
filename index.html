@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#273b99" />
   <meta name="description" content="FRAI — Assistant parcours emploi pour pilote national" />
-  <title>Assistant France Travail · v8.5</title>
+  <title>Assistant France Travail · v8.6</title>
   <style>
     :root{
       --ft-blue:#273b99;--ft-blue-dark:#1d2b73;--ft-blue-soft:#eef2ff;
@@ -469,6 +469,177 @@
       }
     }
 
+  
+    /* v8.6 — tri rapide des offres */
+    .offer-swipe-box{
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:12px;
+      background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);
+      overflow:hidden;
+    }
+    .offer-swipe-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      margin-bottom:10px;
+    }
+    .offer-swipe-head strong{
+      color:var(--ft-blue-dark);
+      font-size:15px;
+    }
+    .offer-count{
+      background:var(--ft-blue-soft);
+      color:var(--ft-blue);
+      border-radius:999px;
+      padding:5px 9px;
+      font-size:12px;
+      font-weight:900;
+      white-space:nowrap;
+    }
+    .offer-swipe-help{
+      color:#5b6472;
+      font-size:13px;
+      margin:0 0 10px;
+      line-height:1.35;
+    }
+    .offer-card-swipe{
+      position:relative;
+      touch-action:pan-y;
+      user-select:none;
+      border:1px solid #d9deea;
+      border-radius:20px;
+      background:white;
+      padding:14px;
+      box-shadow:0 12px 28px rgba(17,24,39,.08);
+      transition:transform .22s ease, opacity .22s ease;
+      will-change:transform;
+    }
+    .offer-card-swipe h3{
+      margin:0 0 8px;
+      color:#111827;
+      font-size:17px;
+      line-height:1.2;
+    }
+    .offer-meta{
+      color:#5b6472;
+      font-size:13px;
+      margin-bottom:8px;
+      line-height:1.35;
+    }
+    .offer-tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin:8px 0 4px;
+    }
+    .offer-tag{
+      display:inline-flex;
+      border-radius:999px;
+      background:#eef2ff;
+      color:var(--ft-blue);
+      padding:5px 8px;
+      font-size:12px;
+      font-weight:900;
+    }
+    .offer-actions{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+      margin-top:12px;
+    }
+    .offer-actions button{
+      border:1px solid #d9deea;
+      border-radius:15px;
+      min-height:44px;
+      font-weight:900;
+      cursor:pointer;
+      background:#fff;
+      color:#172033;
+    }
+    .offer-actions .keep{
+      background:var(--ft-blue);
+      color:white;
+      border-color:var(--ft-blue);
+    }
+    .offer-actions .pass{
+      background:#fff;
+      color:#5b6472;
+    }
+    .selection-panel{
+      margin-top:10px;
+      border:1px solid #d9deea;
+      border-radius:16px;
+      background:white;
+      padding:10px 12px;
+    }
+    .selection-panel summary{
+      cursor:pointer;
+      font-weight:900;
+      color:var(--ft-blue);
+    }
+    .saved-offer{
+      border-top:1px solid #eef0f5;
+      padding:10px 0;
+      display:grid;
+      gap:5px;
+    }
+    .saved-offer:first-of-type{
+      border-top:0;
+    }
+    .saved-offer strong{
+      line-height:1.25;
+    }
+    .saved-offer small{
+      color:#5b6472;
+    }
+    .saved-actions{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:5px;
+    }
+    .saved-actions a,
+    .saved-actions button{
+      border:1px solid #d9deea;
+      background:white;
+      color:var(--ft-blue);
+      border-radius:999px;
+      padding:7px 10px;
+      font-weight:900;
+      font-size:13px;
+      cursor:pointer;
+      text-decoration:none;
+    }
+    .swipe-empty{
+      border:1px dashed #cdd5e5;
+      border-radius:16px;
+      padding:14px;
+      color:#5b6472;
+      background:#fff;
+      text-align:center;
+      font-weight:700;
+    }
+    @media(max-width:760px){
+      .offer-swipe-box{
+        padding:10px;
+        border-radius:18px;
+      }
+      .offer-card-swipe{
+        padding:13px;
+      }
+      .offer-card-swipe h3{
+        font-size:16px;
+      }
+      .offer-actions{
+        grid-template-columns:1fr;
+      }
+      .offer-actions button{
+        min-height:46px;
+      }
+    }
+
   </style>
 </head>
 <body data-mode="demandeur">
@@ -484,7 +655,7 @@
           </div>
         </div>
         <div class="top-actions">
-          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v8.5</span></div>
+          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v8.6</span></div>
           <button class="icon-btn" id="resetBtn" type="button" title="Nouvelle conversation">↺ <span>Nouveau</span></button>
         </div>
       </header>
@@ -814,31 +985,255 @@
     }
 
     function renderResults(wrap,data){
-      const items=[];
-      (data.events||[]).slice(0,4).forEach(e=>items.push({kind:"Événement",title:e.titre,meta:[formatDate(e.dateEvenement),e.heureDebut,e.ville,e.type].filter(Boolean).join(" · "),desc:e.description||e.deroulement,url:e.url,cta:"Voir l’événement"}));
-      (data.offres||[]).slice(0,4).forEach(o=>items.push({kind:"Offre",title:o.titre||o.intitule,meta:[o.entreprise,o.lieu,o.typeContrat,o.salaire].filter(Boolean).join(" · "),desc:o.description,url:o.url,cta:"Voir l’offre"}));
-      (data.formations||[]).slice(0,3).forEach(f=>items.push({kind:"Formation",title:f.titre,meta:[f.organisme,f.ville,f.dateDebut].filter(Boolean).join(" · "),desc:f.description,url:f.url,cta:"Voir la formation"}));
-      (data.atelierCategories||[]).slice(0,9).forEach(a=>items.push({kind:"Atelier",title:a.title,meta:"France Travail",desc:a.description,url:"",cta:""}));
+      const offres = Array.isArray(data.offres) ? data.offres.slice(0, 12) : [];
+      const otherItems=[];
 
-      if(!items.length) return;
-      wrap.appendChild(sectionHead("Résultats utiles"));
-      const list=document.createElement("div"); list.className="result-list";
-      items.slice(0,8).forEach(item=>{
-        const card=document.createElement("article"); card.className="result-card";
-        card.innerHTML=`<div class="result-meta">${escapeHtml(item.kind)} · ${escapeHtml(item.meta||"")}</div><h3>${escapeHtml(item.title||item.kind)}</h3>`;
-        if(item.desc){
-          const d=document.createElement("details");
-          d.innerHTML=`<summary>Pourquoi celui-ci ?</summary><div>${escapeHtml(trim(item.desc,500))}</div>`;
-          card.appendChild(d);
+      (data.events||[]).slice(0,4).forEach(e=>otherItems.push({kind:"Événement",title:e.titre,meta:[formatDate(e.dateEvenement),e.heureDebut,e.ville,e.type].filter(Boolean).join(" · "),desc:e.description||e.deroulement,url:e.url,cta:"Voir l’événement"}));
+      (data.formations||[]).slice(0,3).forEach(f=>otherItems.push({kind:"Formation",title:f.titre,meta:[f.organisme,f.ville,f.dateDebut].filter(Boolean).join(" · "),desc:f.description,url:f.url,cta:"Voir la formation"}));
+      (data.atelierCategories||[]).slice(0,9).forEach(a=>otherItems.push({kind:"Atelier",title:a.title,meta:"France Travail",desc:a.description,url:"",cta:""}));
+
+      if(offres.length){
+        wrap.appendChild(sectionHead("Tri rapide des offres"));
+        wrap.appendChild(renderOfferSwiper(offres, data));
+      }
+
+      if(otherItems.length){
+        wrap.appendChild(sectionHead("Résultats utiles"));
+        const list=document.createElement("div"); list.className="result-list";
+        otherItems.slice(0,8).forEach(item=>{
+          const card=document.createElement("article"); card.className="result-card";
+          card.innerHTML=`<div class="result-meta">${escapeHtml(item.kind)} · ${escapeHtml(item.meta||"")}</div><h3>${escapeHtml(item.title||item.kind)}</h3>`;
+          if(item.desc){
+            const d=document.createElement("details");
+            d.innerHTML=`<summary>Pourquoi celui-ci ?</summary><div>${escapeHtml(trim(item.desc,500))}</div>`;
+            card.appendChild(d);
+          }
+          if(item.url){
+            const a=document.createElement("a"); a.className="btn outline"; a.href=item.url; a.target="_blank"; a.rel="noopener noreferrer"; a.style.marginTop="9px"; a.textContent=item.cta||"Voir";
+            a.addEventListener("click",()=>recordClick(item.kind,item.title));
+            card.appendChild(a);
+          }
+          list.appendChild(card);
+        });
+        wrap.appendChild(list);
+      }
+    }
+
+    function renderOfferSwiper(offres, data){
+      let index = 0;
+      const box=document.createElement("section");
+      box.className="offer-swipe-box";
+      const head=document.createElement("div");
+      head.className="offer-swipe-head";
+      const title=document.createElement("strong");
+      title.textContent="Offres à trier";
+      const count=document.createElement("span");
+      count.className="offer-count";
+      head.append(title,count);
+
+      const help=document.createElement("p");
+      help.className="offer-swipe-help";
+      help.textContent="Balayez à gauche pour passer, à droite pour garder. Les boutons restent disponibles pour l’accessibilité.";
+
+      const holder=document.createElement("div");
+      const selection=renderSelectionPanel();
+
+      box.append(head,help,holder,selection);
+
+      function update(){
+        count.textContent = `${Math.min(index+1, offres.length)} / ${offres.length}`;
+        holder.innerHTML="";
+        if(index >= offres.length){
+          const done=document.createElement("div");
+          done.className="swipe-empty";
+          done.innerHTML=`Tri terminé. Vous pouvez consulter les offres gardées dans <b>Ma sélection</b>.`;
+          holder.appendChild(done);
+          refreshSelectionPanel(selection);
+          return;
         }
-        if(item.url){
-          const a=document.createElement("a"); a.className="btn outline"; a.href=item.url; a.target="_blank"; a.rel="noopener noreferrer"; a.style.marginTop="9px"; a.textContent=item.cta||"Voir";
-          a.addEventListener("click",()=>recordClick(item.kind,item.title));
-          card.appendChild(a);
-        }
-        list.appendChild(card);
+        const offre=normalizeOffer(offres[index]);
+        const card=document.createElement("article");
+        card.className="offer-card-swipe";
+        card.innerHTML=offerCardHtml(offre);
+        attachSwipe(card, () => passOffer(), () => keepOffer(offre));
+        holder.appendChild(card);
+        refreshSelectionPanel(selection);
+      }
+
+      function passOffer(){
+        recordClick("offre_pass", offres[index]?.titre || offres[index]?.intitule || "offre");
+        index += 1;
+        update();
+      }
+
+      function keepOffer(offre){
+        saveSelectedOffer(offre);
+        recordClick("offre_keep", offre.title || "offre");
+        toast("Offre ajoutée à votre sélection");
+        index += 1;
+        update();
+      }
+
+      box.addEventListener("click", (event)=>{
+        const action = event.target?.dataset?.offerAction;
+        if(!action) return;
+        const offre = normalizeOffer(offres[index]);
+        if(action === "pass") passOffer();
+        if(action === "keep") keepOffer(offre);
       });
-      wrap.appendChild(list);
+
+      update();
+      return box;
+    }
+
+    function normalizeOffer(o){
+      return {
+        id: o.id || o.url || `${o.titre||o.intitule||"offre"}-${o.entreprise||""}-${o.lieu||""}`,
+        title: o.titre || o.intitule || "Offre d’emploi",
+        company: o.entreprise || "",
+        location: o.lieu || o.ville || "",
+        contract: o.typeContrat || o.contrat || "",
+        salary: o.salaire || "",
+        description: o.description || "",
+        url: o.url || ""
+      };
+    }
+
+    function offerCardHtml(o){
+      const meta = [o.company, o.location, o.contract, o.salary].filter(Boolean).join(" · ");
+      const tags = [o.contract, o.location].filter(Boolean).slice(0,2).map(x=>`<span class="offer-tag">${escapeHtml(x)}</span>`).join("");
+      return `
+        <h3>${escapeHtml(o.title)}</h3>
+        <div class="offer-meta">${escapeHtml(meta || "Offre France Travail")}</div>
+        ${tags ? `<div class="offer-tags">${tags}</div>` : ""}
+        ${o.description ? `<details><summary>Pourquoi cette offre ?</summary><div>${escapeHtml(trim(o.description, 420))}</div></details>` : ""}
+        ${o.url ? `<a class="btn outline" href="${escapeHtml(o.url)}" target="_blank" rel="noopener" style="margin-top:9px">Voir l’offre</a>` : ""}
+        <div class="offer-actions">
+          <button class="pass" type="button" data-offer-action="pass">Pas adapté</button>
+          <button class="keep" type="button" data-offer-action="keep">Garder l’offre</button>
+        </div>
+      `;
+    }
+
+    function attachSwipe(card, onPass, onKeep){
+      let startX=0, currentX=0, dragging=false;
+      card.addEventListener("touchstart", e=>{
+        if(!e.touches || !e.touches.length) return;
+        startX=e.touches[0].clientX; currentX=startX; dragging=true;
+        card.style.transition="none";
+      }, {passive:true});
+      card.addEventListener("touchmove", e=>{
+        if(!dragging || !e.touches || !e.touches.length) return;
+        currentX=e.touches[0].clientX;
+        const dx=currentX-startX;
+        const rotate=Math.max(-8, Math.min(8, dx/22));
+        card.style.transform=`translateX(${dx}px) rotate(${rotate}deg)`;
+        card.style.opacity=String(Math.max(.72, 1-Math.abs(dx)/360));
+      }, {passive:true});
+      card.addEventListener("touchend", ()=>{
+        if(!dragging) return;
+        dragging=false;
+        const dx=currentX-startX;
+        card.style.transition="transform .22s ease, opacity .22s ease";
+        if(dx > 78){
+          card.style.transform="translateX(120%) rotate(10deg)";
+          card.style.opacity="0";
+          setTimeout(onKeep, 170);
+        } else if(dx < -78){
+          card.style.transform="translateX(-120%) rotate(-10deg)";
+          card.style.opacity="0";
+          setTimeout(onPass, 170);
+        } else {
+          card.style.transform="";
+          card.style.opacity="";
+        }
+      });
+    }
+
+    function selectedOfferKey(o){
+      return String(o.id || o.url || o.title || "").trim();
+    }
+
+    function readSelectedOffers(){
+      try { return JSON.parse(localStorage.getItem("frai_selected_offres") || "[]"); }
+      catch(_) { return []; }
+    }
+
+    function writeSelectedOffers(items){
+      localStorage.setItem("frai_selected_offres", JSON.stringify(items.slice(0, 50)));
+    }
+
+    function saveSelectedOffer(o){
+      const items=readSelectedOffers();
+      const key=selectedOfferKey(o);
+      if(!items.some(x=>selectedOfferKey(x)===key)){
+        items.unshift({...o, savedAt:new Date().toISOString()});
+        writeSelectedOffers(items);
+      }
+    }
+
+    function removeSelectedOffer(key){
+      writeSelectedOffers(readSelectedOffers().filter(x=>selectedOfferKey(x)!==key));
+      document.querySelectorAll(".selection-panel").forEach(refreshSelectionPanel);
+    }
+
+    function renderSelectionPanel(){
+      const panel=document.createElement("details");
+      panel.className="selection-panel";
+      refreshSelectionPanel(panel);
+      return panel;
+    }
+
+    function refreshSelectionPanel(panel){
+      const items=readSelectedOffers();
+      panel.innerHTML=`<summary>Ma sélection (${items.length})</summary>`;
+      if(!items.length){
+        const empty=document.createElement("div");
+        empty.className="swipe-empty";
+        empty.style.marginTop="10px";
+        empty.textContent="Aucune offre gardée pour le moment.";
+        panel.appendChild(empty);
+        return;
+      }
+
+      items.forEach(o=>{
+        const key=selectedOfferKey(o);
+        const row=document.createElement("div");
+        row.className="saved-offer";
+        row.innerHTML=`
+          <strong>${escapeHtml(o.title || "Offre d’emploi")}</strong>
+          <small>${escapeHtml([o.company,o.location,o.contract].filter(Boolean).join(" · "))}</small>
+          <div class="saved-actions">
+            ${o.url ? `<a href="${escapeHtml(o.url)}" target="_blank" rel="noopener">Voir l’offre</a>` : ""}
+            <button type="button" data-remove-offer="${escapeHtml(key)}">Retirer</button>
+          </div>
+        `;
+        panel.appendChild(row);
+      });
+
+      const actions=document.createElement("div");
+      actions.className="saved-actions";
+      const copy=document.createElement("button");
+      copy.type="button";
+      copy.textContent="Copier la sélection";
+      copy.onclick=()=>copySelectedOffers();
+      const clear=document.createElement("button");
+      clear.type="button";
+      clear.textContent="Vider";
+      clear.onclick=()=>{ writeSelectedOffers([]); refreshSelectionPanel(panel); toast("Sélection vidée"); };
+      actions.append(copy,clear);
+      panel.appendChild(actions);
+
+      panel.querySelectorAll("[data-remove-offer]").forEach(btn=>{
+        btn.addEventListener("click",()=>removeSelectedOffer(btn.dataset.removeOffer));
+      });
+    }
+
+    function copySelectedOffers(){
+      const items=readSelectedOffers();
+      const text = "Ma sélection d’offres FRAI\n\n" + items.map((o,i)=>`${i+1}. ${o.title}\n${[o.company,o.location,o.contract].filter(Boolean).join(" · ")}\n${o.url||""}`).join("\n\n");
+      navigator.clipboard?.writeText(text);
+      toast("Sélection copiée");
     }
 
     function renderAdvisorSummary(data){
@@ -872,7 +1267,7 @@
       const el = nodes.find(node => node.dataset.id === id);
       if(el) el.remove();
     }
-    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v8.5"; }
+    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v8.6"; }
 
     function saveMessage(role,content,extra){ const arr=read("frai_messages",[]); arr.push({role,content,extra}); localStorage.setItem("frai_messages",JSON.stringify(arr.slice(-30))); }
     function recordUsage(data,message,ms,error){ const s=read("frai_stats",{total:0,errors:0,clicks:0,feedback:{},intents:{},times:[]}); s.total++; if(error)s.errors++; const it=data.intent||"diagnostic"; s.intents[it]=(s.intents[it]||0)+1; s.times.push(ms); s.times=s.times.slice(-100); localStorage.setItem("frai_stats",JSON.stringify(s)); }

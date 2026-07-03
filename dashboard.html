@@ -21,17 +21,20 @@ pre{white-space:pre-wrap;background:#111827;color:#fff;padding:14px;border-radiu
 </div>
 <script>
 const stats = JSON.parse(localStorage.getItem("frai_stats")||'{"total":0,"errors":0,"clicks":0,"feedback":{},"intents":{},"times":[]}');
+const selectedOffers = JSON.parse(localStorage.getItem("frai_selected_offres")||'[]');
 const avg = stats.times?.length ? Math.round(stats.times.reduce((a,b)=>a+b,0)/stats.times.length) : 0;
 const cards = [
   ["Demandes", stats.total||0],
   ["Erreurs", stats.errors||0],
   ["Clics actions", stats.clicks||0],
+  ["Offres gardées", selectedOffers.length||0],
   ["Temps moyen", avg+" ms"],
   ["Feedback utile", stats.feedback?.Utile||0],
   ["Feedback partiel", stats.feedback?.Partiellement||0],
 ];
 document.getElementById("content").innerHTML = cards.map(([k,v])=>`<div class="card"><h2>${k}</h2><p style="font-size:32px;font-weight:900;color:#273b99">${v}</p></div>`).join("") +
-  `<div class="card" style="grid-column:1/-1"><h2>Intentions détectées</h2><pre>${JSON.stringify(stats.intents||{},null,2)}</pre></div>`;
+  `<div class="card" style="grid-column:1/-1"><h2>Intentions détectées</h2><pre>${JSON.stringify(stats.intents||{},null,2)}</pre></div>` +
+  `<div class="card" style="grid-column:1/-1"><h2>Offres gardées</h2><pre>${JSON.stringify(selectedOffers,null,2)}</pre></div>`;
 document.getElementById("raw").textContent = JSON.stringify(stats,null,2);
 document.getElementById("clear").onclick = e => { e.preventDefault(); localStorage.removeItem("frai_stats"); location.reload(); };
 </script>
