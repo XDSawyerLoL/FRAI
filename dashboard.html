@@ -1,0 +1,36 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>FRAI · Dashboard local</title><style>
+:root{--blue:#273b99;--green:#14855f;--text:#111827;--muted:#5d6675;--line:#d9deea;--bg:#f5f7fb}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);line-height:1.45}
+main{max-width:900px;margin:0 auto;padding:28px 18px 60px}a{color:var(--blue);font-weight:800;text-decoration:none}
+.card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:20px;margin:14px 0;box-shadow:0 10px 24px rgba(17,24,39,.07)}
+h1{color:#1d2b73;font-size:34px;line-height:1.05;margin:0 0 12px}h2{color:#1d2b73;margin-top:26px}.pill{display:inline-flex;background:#e8f5ee;color:#0f6548;border-radius:999px;padding:7px 11px;font-weight:900;font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.btn{display:inline-flex;background:var(--blue);color:#fff;padding:11px 14px;border-radius:14px;margin:6px 6px 6px 0}
+pre{white-space:pre-wrap;background:#111827;color:#fff;padding:14px;border-radius:16px;overflow:auto}
+</style></head><body><main>
+<p><a href="./index.html">← Retour FRAI</a></p>
+<span class="pill">Statistiques anonymisées locales</span>
+<h1>Dashboard d’usage prototype</h1>
+<p>Cette page lit uniquement le stockage local du navigateur. Aucune donnée nominative n’est nécessaire pour le prototype.</p>
+<div id="content" class="grid"></div>
+<div class="card">
+  <h2>Données brutes</h2>
+  <pre id="raw"></pre>
+  <a class="btn" href="#" id="clear">Réinitialiser</a>
+</div>
+<script>
+const stats = JSON.parse(localStorage.getItem("frai_stats")||'{"total":0,"errors":0,"clicks":0,"feedback":{},"intents":{},"times":[]}');
+const avg = stats.times?.length ? Math.round(stats.times.reduce((a,b)=>a+b,0)/stats.times.length) : 0;
+const cards = [
+  ["Demandes", stats.total||0],
+  ["Erreurs", stats.errors||0],
+  ["Clics actions", stats.clicks||0],
+  ["Temps moyen", avg+" ms"],
+  ["Feedback utile", stats.feedback?.Utile||0],
+  ["Feedback partiel", stats.feedback?.Partiellement||0],
+];
+document.getElementById("content").innerHTML = cards.map(([k,v])=>`<div class="card"><h2>${k}</h2><p style="font-size:32px;font-weight:900;color:#273b99">${v}</p></div>`).join("") +
+  `<div class="card" style="grid-column:1/-1"><h2>Intentions détectées</h2><pre>${JSON.stringify(stats.intents||{},null,2)}</pre></div>`;
+document.getElementById("raw").textContent = JSON.stringify(stats,null,2);
+document.getElementById("clear").onclick = e => { e.preventDefault(); localStorage.removeItem("frai_stats"); location.reload(); };
+</script>
+</main></body></html>
