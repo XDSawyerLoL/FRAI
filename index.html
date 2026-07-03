@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#273b99" />
   <meta name="description" content="FRAI — Assistant parcours emploi pour pilote national" />
-  <title>Assistant France Travail · v8.4</title>
+  <title>Assistant France Travail · v8.5</title>
   <style>
     :root{
       --ft-blue:#273b99;--ft-blue-dark:#1d2b73;--ft-blue-soft:#eef2ff;
@@ -484,7 +484,7 @@
           </div>
         </div>
         <div class="top-actions">
-          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v8.4</span></div>
+          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v8.5</span></div>
           <button class="icon-btn" id="resetBtn" type="button" title="Nouvelle conversation">↺ <span>Nouveau</span></button>
         </div>
       </header>
@@ -564,6 +564,14 @@
       window.visualViewport.addEventListener("resize", updateKeyboardOffset);
       window.visualViewport.addEventListener("scroll", updateKeyboardOffset);
     }
+
+
+    window.addEventListener("error", (event) => {
+      console.error("Erreur front FRAI", event.error || event.message);
+      const loading = document.querySelector('[data-id="loading"]');
+      if (loading) loading.remove();
+      if (els && els.status) els.status.textContent = "Erreur affichage · rechargez";
+    });
 
     init();
 
@@ -654,8 +662,15 @@
       b.className="bubble";
 
       if(role==="assistant"){
-        b.appendChild(meta(extra));
-        b.appendChild(renderAssistantAnswer(content, extra));
+        try {
+          b.appendChild(meta(extra));
+          b.appendChild(renderAssistantAnswer(content, extra));
+        } catch (renderError) {
+          console.error("Erreur rendu assistant", renderError);
+          b.innerHTML = '<div class="meta"><span class="badge blue">Assistant parcours</span></div><div class="reply"></div>';
+          const fallback = b.querySelector(".reply");
+          fallback.textContent = content || "Réponse reçue, mais l’affichage détaillé a rencontré une erreur.";
+        }
       }else{
         b.textContent=content;
       }
@@ -730,7 +745,7 @@
         lines.push(data.priorityAction || "Une action prioritaire a été proposée pour éviter de disperser le parcours.");
         lines.push("Le conseiller peut confirmer cette orientation avec la personne.");
       }
-      return `<details class="human-why"><summary>Pourquoi cette orientation ?</summary><ul>${lines.map(x => `<li>${fraiEscape(x)}</li>`).join("")}</ul></details>`;
+      return `<details class="human-why"><summary>Pourquoi cette orientation ?</summary><ul>${lines.map(x => `<li>${escapeHtml(x)}</li>`).join("")}</ul></details>`;
     }
 
     function renderAssistantAnswer(content, data){
@@ -852,8 +867,12 @@
 
     function sectionHead(t){ const h=document.createElement("div"); h.className="section-head"; h.innerHTML=`<h3 class="section-title">${escapeHtml(t)}</h3>`; return h; }
     function renderLoading(){ const row=document.createElement("div"); row.className="message-row assistant"; row.dataset.id="loading"; row.innerHTML=`<article class="bubble"><span class="typing"><i></i><i></i><i></i></span></article>`; els.messages.appendChild(row); scrollBottom(); return row.dataset.id; }
-    function remove(id){ const el=els.messages.querySelector(`[data-id="${CSS.escape(id)}"]`); if(el) el.remove(); }
-    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v8.4"; }
+    function remove(id){
+      const nodes = [...els.messages.querySelectorAll("[data-id]")];
+      const el = nodes.find(node => node.dataset.id === id);
+      if(el) el.remove();
+    }
+    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v8.5"; }
 
     function saveMessage(role,content,extra){ const arr=read("frai_messages",[]); arr.push({role,content,extra}); localStorage.setItem("frai_messages",JSON.stringify(arr.slice(-30))); }
     function recordUsage(data,message,ms,error){ const s=read("frai_stats",{total:0,errors:0,clicks:0,feedback:{},intents:{},times:[]}); s.total++; if(error)s.errors++; const it=data.intent||"diagnostic"; s.intents[it]=(s.intents[it]||0)+1; s.times.push(ms); s.times=s.times.slice(-100); localStorage.setItem("frai_stats",JSON.stringify(s)); }
