@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#273b99" />
   <meta name="description" content="FRAI — Assistant parcours emploi pour pilote national" />
-  <title>Assistant France Travail · v8.6</title>
+  <title>Assistant France Travail · v8.7</title>
   <style>
     :root{
       --ft-blue:#273b99;--ft-blue-dark:#1d2b73;--ft-blue-soft:#eef2ff;
@@ -470,7 +470,7 @@
     }
 
   
-    /* v8.6 — tri rapide des offres */
+    /* v8.7 — tri rapide des offres */
     .offer-swipe-box{
       border:1px solid var(--line);
       border-radius:20px;
@@ -655,7 +655,7 @@
           </div>
         </div>
         <div class="top-actions">
-          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v8.6</span></div>
+          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v8.7</span></div>
           <button class="icon-btn" id="resetBtn" type="button" title="Nouvelle conversation">↺ <span>Nouveau</span></button>
         </div>
       </header>
@@ -1267,7 +1267,7 @@
       const el = nodes.find(node => node.dataset.id === id);
       if(el) el.remove();
     }
-    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v8.6"; }
+    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v8.7"; }
 
     function saveMessage(role,content,extra){ const arr=read("frai_messages",[]); arr.push({role,content,extra}); localStorage.setItem("frai_messages",JSON.stringify(arr.slice(-30))); }
     function recordUsage(data,message,ms,error){ const s=read("frai_stats",{total:0,errors:0,clicks:0,feedback:{},intents:{},times:[]}); s.total++; if(error)s.errors++; const it=data.intent||"diagnostic"; s.intents[it]=(s.intents[it]||0)+1; s.times.push(ms); s.times=s.times.slice(-100); localStorage.setItem("frai_stats",JSON.stringify(s)); }
