@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#273b99" />
   <meta name="description" content="FRAI — Assistant parcours emploi pour pilote national" />
-  <title>Assistant France Travail · v8.2</title>
+  <title>Assistant France Travail · v8.3</title>
   <style>
     :root{
       --ft-blue:#273b99;--ft-blue-dark:#1d2b73;--ft-blue-soft:#eef2ff;
@@ -167,6 +167,192 @@
       .topbar{padding:10px}
     }
 
+  
+    /* v8.3 — mobile humain, sans changement de DA */
+    .brand-text{min-width:0}
+    .topbar{position:sticky;top:0;z-index:30}
+    .messages{padding-bottom:calc(128px + env(safe-area-inset-bottom,0px))}
+    .composer-wrap{
+      bottom:var(--keyboard-offset,0px);
+      transform:translateZ(0);
+    }
+    body.keyboard-open .intro{
+      display:none;
+    }
+    body.chat-started .intro h1,
+    body.chat-started .intro p{
+      display:none;
+    }
+    body.chat-started .intro{
+      padding-top:10px;
+      padding-bottom:10px;
+    }
+    body.chat-started .nav-line{
+      display:none;
+    }
+    .human-why{
+      margin-top:10px;
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:#fbfcff;
+      padding:11px 12px;
+    }
+    .human-why summary{
+      cursor:pointer;
+      font-weight:900;
+      color:var(--ft-blue);
+    }
+    .human-why ul{
+      margin:10px 0 0;
+      padding-left:20px;
+    }
+    .human-why li{
+      margin:6px 0;
+      line-height:1.38;
+    }
+    .priority-card{
+      padding:14px;
+      border-radius:20px;
+    }
+    .priority-card .kicker{
+      font-size:11px;
+      letter-spacing:.05em;
+    }
+    .priority-card h2{
+      font-size:19px;
+      line-height:1.12;
+    }
+    .priority-card p{
+      font-size:15px;
+    }
+    .primary-action{
+      gap:8px;
+    }
+    .primary-action .btn{
+      min-height:42px;
+      padding:9px 12px;
+      font-size:14px;
+    }
+    .pilot-pages{
+      margin-top:10px;
+      border:0;
+      background:transparent;
+      padding:0;
+    }
+    .pilot-pages summary{
+      display:inline-flex;
+      list-style:none;
+      cursor:pointer;
+      border-radius:999px;
+      background:var(--ft-blue-soft);
+      color:var(--ft-blue);
+      padding:8px 12px;
+      font-weight:900;
+      font-size:13px;
+    }
+    .pilot-pages summary::-webkit-details-marker{display:none}
+    .pilot-pages .nav-line{
+      margin-top:8px;
+    }
+    @media(max-width:760px){
+      .topbar{
+        display:grid;
+        grid-template-columns:1fr auto;
+        gap:8px;
+        align-items:center;
+      }
+      .brand{
+        min-width:0;
+        gap:8px;
+      }
+      .brand-title{
+        font-size:16px;
+        max-width:38vw;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+      .brand-subtitle{
+        display:none;
+      }
+      .status{
+        padding:7px 8px;
+        max-width:42px;
+        overflow:hidden;
+      }
+      .icon-btn{
+        width:46px;
+        height:46px;
+        border-radius:50%;
+        justify-content:center;
+        padding:0;
+      }
+      .icon-btn span{display:none}
+      .intro{
+        padding:14px 12px;
+      }
+      h1{
+        font-size:24px;
+        line-height:1.08;
+      }
+      .intro p{
+        font-size:16px;
+        line-height:1.35;
+      }
+      .mode-switch{
+        width:100%;
+      }
+      .mode-btn{
+        flex:1;
+        justify-content:center;
+      }
+      .chips{
+        padding-top:10px;
+      }
+      .chip{
+        font-size:13px;
+        padding:9px 12px;
+      }
+      .messages{
+        padding-left:10px;
+        padding-right:10px;
+        padding-bottom:calc(116px + env(safe-area-inset-bottom,0px));
+      }
+      .bubble{
+        max-width:96%;
+        font-size:15px;
+        padding:13px 14px;
+      }
+      .priority-card{
+        margin:8px 0;
+      }
+      .priority-card h2{
+        font-size:18px;
+      }
+      .composer-wrap{
+        padding:8px 8px calc(8px + env(safe-area-inset-bottom,0px));
+      }
+      .composer{
+        gap:8px;
+      }
+      .input-box{
+        border-radius:18px;
+        padding:9px 12px;
+      }
+      textarea{
+        min-height:36px;
+        max-height:92px;
+        font-size:16px;
+        line-height:1.25;
+      }
+      .send-btn{
+        min-width:96px;
+        min-height:54px;
+        border-radius:18px;
+        padding:0 14px;
+        font-size:16px;
+      }
+    }
+
   </style>
 </head>
 <body data-mode="demandeur">
@@ -182,7 +368,7 @@
           </div>
         </div>
         <div class="top-actions">
-          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v8.2</span></div>
+          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v8.3</span></div>
           <button class="icon-btn" id="resetBtn" type="button" title="Nouvelle conversation">↺ <span>Nouveau</span></button>
         </div>
       </header>
@@ -209,13 +395,13 @@
           <button class="chip" type="button" data-prompt="Je ne sais pas quel métier choisir">Projet flou</button>
         </div>
 
-        <div class="nav-line" aria-label="Pages de crédibilité produit">
+        <details class="pilot-pages"><summary>À propos du pilote</summary><div class="nav-line" aria-label="Pages de crédibilité produit">
           <a href="./demo.html">Démo nationale</a>
           <a href="./dashboard.html">Dashboard local</a>
           <a href="./confidentialite.html">Confidentialité</a>
           <a href="./accessibilite.html">Accessibilité</a>
           <a href="./gouvernance-ia.html">Gouvernance IA</a>
-        </div>
+        </div></details>
       </section>
 
       <section class="chat-area">
@@ -247,6 +433,18 @@
     };
     const state = { busy:false, city: localStorage.getItem("frai_city") || DEFAULT_CITY };
 
+
+    function updateKeyboardOffset(){
+      if(!window.visualViewport) return;
+      const offset = Math.max(0, window.innerHeight - window.visualViewport.height - window.visualViewport.offsetTop);
+      document.documentElement.style.setProperty("--keyboard-offset", offset + "px");
+      document.body.classList.toggle("keyboard-open", offset > 80 || document.activeElement === els.input);
+    }
+    if(window.visualViewport){
+      window.visualViewport.addEventListener("resize", updateKeyboardOffset);
+      window.visualViewport.addEventListener("scroll", updateKeyboardOffset);
+    }
+
     init();
 
     function init(){
@@ -262,8 +460,10 @@
     function bind(){
       els.form.addEventListener("submit", submit);
       els.input.addEventListener("input", autosize);
+      els.input.addEventListener("focus", () => { document.body.classList.add("keyboard-open"); updateKeyboardOffset(); setTimeout(scrollBottom, 120); });
+      els.input.addEventListener("blur", () => { setTimeout(() => { document.body.classList.remove("keyboard-open"); updateKeyboardOffset(); }, 160); });
       els.input.addEventListener("keydown", e => { if(e.key==="Enter" && !e.shiftKey){ e.preventDefault(); els.form.requestSubmit(); }});
-      els.reset.addEventListener("click", () => { localStorage.removeItem("frai_messages"); els.messages.innerHTML=""; renderWelcome(); toast("Nouvelle conversation"); });
+      els.reset.addEventListener("click", () => { localStorage.removeItem("frai_messages"); els.messages.innerHTML=""; document.body.classList.remove("chat-started"); renderWelcome(); toast("Nouvelle conversation"); });
       document.querySelectorAll(".chip").forEach(b => b.addEventListener("click",()=>{ els.input.value=b.dataset.prompt||""; autosize(); els.input.focus(); }));
       document.querySelectorAll(".mode-btn").forEach(b => b.addEventListener("click",()=>{
         document.body.dataset.mode=b.dataset.mode;
@@ -342,6 +542,7 @@
 
       row.appendChild(b);
       els.messages.appendChild(row);
+      if(role==="user" || role==="assistant") document.body.classList.add("chat-started");
       scrollBottom();
       if(save) saveMessage(role,content,extra);
       return row.dataset.id;
@@ -356,15 +557,73 @@
     }
     function badge(text, cls=""){ const s=document.createElement("span"); s.className="badge "+cls; s.textContent=text; return s; }
 
+
+    // v8.3 — formulation plus humaine et explications lisibles
+    function humanActionTitle(data, fallback) {
+      const intent = data.intent || "";
+      if (intent === "diagnostic") return "Préciser ce que vous voulez faire";
+      if (intent === "ateliers") return "Choisir l’atelier le plus adapté";
+      if (intent === "pmsmp") return "Tester un métier avec une immersion";
+      if (intent === "poe") return "Vérifier une POEI avant embauche";
+      if (intent === "events") return "S’inscrire à un événement utile";
+      if (intent === "recherche_emploi") return "Consulter les offres les plus proches";
+      if (intent === "candidature_cv") return "Améliorer la candidature";
+      if (intent === "formation") return "Vérifier la bonne formation";
+      return fallback || data.priorityAction || "Choisir la prochaine action";
+    }
+
+    function humanNeedText(data, fallback) {
+      const intent = data.intent || "";
+      if (intent === "diagnostic") return "Il manque une information pour choisir le bon parcours.";
+      if (intent === "ateliers") return "Les ateliers servent à travailler un point précis : CV, entretien, projet, numérique, formation ou création d’entreprise.";
+      if (intent === "pmsmp") return "L’objectif est de vérifier un métier en conditions réelles avant de s’engager.";
+      if (intent === "poe") return "La POEI prépare à une embauche quand un besoin de formation court est identifié.";
+      if (intent === "events") return "Un événement peut donner un contact direct, une information métier ou une opportunité de recrutement.";
+      return fallback || data.analysis?.need || data.compactReply || "";
+    }
+
+    function humanWhyHtml(data) {
+      const intent = data.intent || "";
+      const lines = [];
+      if (intent === "diagnostic") {
+        lines.push("La demande est encore trop générale pour recommander un dispositif précis.");
+        lines.push("La bonne première étape consiste à clarifier le métier, la ville ou le blocage principal.");
+        lines.push("Une fois cette précision donnée, l’assistant peut proposer une action concrète.");
+      } else if (intent === "ateliers") {
+        lines.push("Les ateliers France Travail répondent à des besoins différents : CV, entretien, projet, recherche, formation, numérique ou création.");
+        lines.push("Le bon atelier dépend du problème principal rencontré par la personne.");
+        lines.push("L’objectif n’est pas d’empiler les services, mais de choisir celui qui débloque la situation maintenant.");
+      } else if (intent === "pmsmp") {
+        lines.push("L’immersion permet de tester un métier en conditions réelles.");
+        lines.push("Elle aide à confirmer un projet avant une formation, une candidature ou une reconversion.");
+        lines.push("La prochaine étape est d’identifier le métier et une entreprise d’accueil.");
+      } else if (intent === "events") {
+        lines.push("Les événements emploi donnent accès à des informations ou recruteurs concrets.");
+        lines.push("La sélection dépend de la ville, de la date et du type d’événement.");
+        lines.push("Le plus utile est de s’inscrire à un événement proche de l’objectif professionnel.");
+      } else if (intent === "poe") {
+        lines.push("La POEI est utile quand une formation courte peut préparer une embauche.");
+        lines.push("Elle doit être liée à un besoin réel d’employeur ou à un poste ciblé.");
+        lines.push("Il faut vérifier le métier visé, la durée et les conditions d’entrée.");
+      } else {
+        lines.push(data.analysis?.need || "Le besoin a été analysé à partir de la demande exprimée.");
+        lines.push(data.priorityAction || "Une action prioritaire a été proposée pour éviter de disperser le parcours.");
+        lines.push("Le conseiller peut confirmer cette orientation avec la personne.");
+      }
+      return `<details class="human-why"><summary>Pourquoi cette orientation ?</summary><ul>${lines.map(x => `<li>${fraiEscape(x)}</li>`).join("")}</ul></details>`;
+    }
+
     function renderAssistantAnswer(content, data){
       const wrap=document.createElement("div"); wrap.className="answer-grid";
 
       const action=document.createElement("section");
       action.className="priority-card";
+      const humanTitle = humanActionTitle(data, firstLine(content));
+      const humanNeed = humanNeedText(data, data.analysis?.need || data.advisorSummary?.besoin || firstLine(content));
       action.innerHTML = `
-        <div class="kicker">Action recommandée</div>
-        <h2>${escapeHtml(data.priorityAction || firstLine(content) || "Clarifier le besoin")}</h2>
-        <p>${escapeHtml(data.analysis?.need || data.advisorSummary?.besoin || firstLine(content))}</p>
+        <div class="kicker">Prochaine action</div>
+        <h2>${escapeHtml(humanTitle)}</h2>
+        <p>${escapeHtml(humanNeed)}</p>
       `;
       const pa=document.createElement("div"); pa.className="primary-action";
       const firstLink=(data.officialLinks||data.actionLinks||[]).find(x=>x && x.url);
@@ -406,9 +665,9 @@
 
       renderResults(wrap, data);
 
-      const why=document.createElement("details");
-      why.innerHTML=`<summary>Pourquoi cette orientation ?</summary><div>${escapeHtml(data.reply || content || "")}</div>`;
-      wrap.appendChild(why);
+      const whyWrap=document.createElement("div");
+      whyWrap.innerHTML = humanWhyHtml(data);
+      wrap.appendChild(whyWrap.firstElementChild);
 
       const advisor=document.createElement("div"); advisor.className="advisor-panel";
       advisor.appendChild(sectionHead("Résumé conseiller"));
@@ -474,7 +733,7 @@
     function sectionHead(t){ const h=document.createElement("div"); h.className="section-head"; h.innerHTML=`<h3 class="section-title">${escapeHtml(t)}</h3>`; return h; }
     function renderLoading(){ const row=document.createElement("div"); row.className="message-row assistant"; row.dataset.id="loading"; row.innerHTML=`<article class="bubble"><span class="typing"><i></i><i></i><i></i></span></article>`; els.messages.appendChild(row); scrollBottom(); return row.dataset.id; }
     function remove(id){ const el=els.messages.querySelector(`[data-id="${CSS.escape(id)}"]`); if(el) el.remove(); }
-    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v8.2"; }
+    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v8.3"; }
 
     function saveMessage(role,content,extra){ const arr=read("frai_messages",[]); arr.push({role,content,extra}); localStorage.setItem("frai_messages",JSON.stringify(arr.slice(-30))); }
     function recordUsage(data,message,ms,error){ const s=read("frai_stats",{total:0,errors:0,clicks:0,feedback:{},intents:{},times:[]}); s.total++; if(error)s.errors++; const it=data.intent||"diagnostic"; s.intents[it]=(s.intents[it]||0)+1; s.times.push(ms); s.times=s.times.slice(-100); localStorage.setItem("frai_stats",JSON.stringify(s)); }
@@ -490,7 +749,7 @@
     function firstLine(s){ return String(s||"").split(/\n+/).find(Boolean)||""; }
     function trim(s,n){ s=String(s||"").replace(/\s+/g," ").trim(); return s.length>n?s.slice(0,n-1)+"…":s; }
     function formatDate(v){ if(!v)return""; const d=new Date(v); if(Number.isNaN(d.getTime()))return""; return d.toLocaleDateString("fr-FR",{weekday:"short",day:"2-digit",month:"short"}); }
-    function formatIntent(i){ return ({pmsmp:"immersion facilitée",poe:"POEI (Préparation opérationnelle à l’emploi)",ateliers:"ateliers France Travail",recherche_emploi:"recherche d’emploi",candidature_cv:"CV / candidature",activ_projet:"projet professionnel",events:"événements emploi"})[i]||i||"diagnostic"; }
+    function formatIntent(i){ return ({diagnostic:"besoin à préciser",pmsmp:"immersion facilitée",poe:"POEI (Préparation opérationnelle à l’emploi)",ateliers:"ateliers France Travail",recherche_emploi:"recherche d’emploi",candidature_cv:"CV / candidature",activ_projet:"projet professionnel",events:"événements emploi"})[i]||i||"diagnostic"; }
     function extractCity(t){ const m=String(t||"").match(/\b(?:à|a|sur|près de|pres de)\s+([A-Za-zÀ-ÿ' -]{3,60})/i); return m?m[1].replace(/[?.!,;:].*$/,"").trim():""; }
   </script>
 </body>
