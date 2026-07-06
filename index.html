@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#273b99" />
   <meta name="description" content="FRAI — Assistant parcours emploi pour pilote national" />
-  <title>Assistant France Travail · v8.8</title>
+  <title>Assistant France Travail · v8.9</title>
   <style>
     :root{
       --ft-blue:#273b99;--ft-blue-dark:#1d2b73;--ft-blue-soft:#eef2ff;
@@ -641,7 +641,7 @@
     }
 
   
-    /* v8.8 — offres plus nombreuses et cartes vraiment compactes */
+    /* v8.9 — offres plus nombreuses et cartes vraiment compactes */
     .offer-swipe-box{
       padding:10px;
       border-radius:18px;
@@ -739,6 +739,29 @@
       }
     }
 
+  
+    /* v8.9 — aide discrète et pistes élargies */
+    .path-help{margin-top:8px;border:1px solid #d9deea;border-radius:14px;background:#fbfcff;padding:8px 10px}
+    .path-help summary{cursor:pointer;color:var(--ft-blue);font-weight:900;font-size:13px;display:flex;align-items:center;gap:7px}
+    .path-help summary::before{content:"?";display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--ft-blue);color:#fff;font-weight:1000;font-size:13px}
+    .path-help ol{margin:9px 0 0;padding-left:22px}
+    .path-help li{margin:5px 0;line-height:1.35;color:#374151;font-size:13px}
+    .path-help b{color:var(--ft-blue-dark)}
+    .frai-feedback{margin-top:8px;gap:6px}
+    .frai-feedback::before{content:"Avis";align-self:center;color:#5b6472;font-size:12px;font-weight:900;margin-right:2px}
+    .frai-feedback button{padding:6px 9px;font-size:12px}
+    .broader-box{border:1px solid #d9deea;border-radius:16px;background:#fff;padding:10px 12px;margin-top:8px}
+    .broader-box h3{margin:0 0 6px;font-size:15px;color:var(--ft-blue-dark);line-height:1.2}
+    .broader-box p{margin:0 0 8px;color:#5b6472;font-size:13px;line-height:1.35}
+    .broader-list{display:grid;gap:7px}
+    .broader-item{border:1px solid #eef0f5;border-radius:13px;padding:9px;background:#fbfcff}
+    .broader-item strong{display:block;color:#172033;line-height:1.2;margin-bottom:4px}
+    .broader-item small{display:block;color:#5b6472;line-height:1.32;margin-bottom:7px}
+    .skill-tags{display:flex;flex-wrap:wrap;gap:5px}
+    .skill-tag{border-radius:999px;background:#eef2ff;color:var(--ft-blue);font-size:11px;font-weight:900;padding:4px 7px}
+    .broader-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}
+    .broader-actions button{border:1px solid #d9deea;background:#fff;color:var(--ft-blue);border-radius:999px;padding:7px 10px;font-size:12px;font-weight:900;cursor:pointer}
+
   </style>
 </head>
 <body data-mode="demandeur">
@@ -754,7 +777,7 @@
           </div>
         </div>
         <div class="top-actions">
-          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v8.8</span></div>
+          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v8.9</span></div>
           <button class="icon-btn" id="resetBtn" type="button" title="Nouvelle conversation">↺ <span>Nouveau</span></button>
         </div>
       </header>
@@ -912,7 +935,7 @@
     }
 
     function renderWelcome(){
-      renderMessage("assistant","Décrivez la situation. L’assistant indique la prochaine action utile, explique pourquoi, puis affiche les services France Travail adaptés.",{
+      renderMessage("assistant","Décrivez la situation. L’assistant indique l’action utile et propose des pistes proches si la recherche est trop étroite.",{
         provider:"Assistant parcours", intent:"diagnostic", diagnosticLabel:"diagnostic", confidenceLabel:"à préciser",
         priorityAction:"Indiquer le métier, la ville et le blocage principal.",
         actionPlan:[
@@ -1043,15 +1066,8 @@
       action.appendChild(pa);
       wrap.appendChild(action);
 
-      if(Array.isArray(data.actionPlan) && data.actionPlan.length){
-        wrap.appendChild(sectionHead("Parcours en 3 étapes"));
-        const steps=document.createElement("div"); steps.className="steps";
-        data.actionPlan.slice(0,3).forEach((s,i)=>{
-          const c=document.createElement("div"); c.className="step-card";
-          c.innerHTML=`<b>${i+1}. ${escapeHtml(s.title||"Étape")}</b><p>${escapeHtml(s.why||"")}</p>`;
-          steps.appendChild(c);
-        });
-        wrap.appendChild(steps);
+      if(shouldShowPathHelp(data)){
+        wrap.appendChild(renderPathHelp(data));
       }
 
       if(data.missingQuestion){
@@ -1079,9 +1095,81 @@
       advisor.appendChild(renderAdvisorSummary(data));
       wrap.appendChild(advisor);
 
+      const broaderBox=renderBroaderSuggestions(data);
+      if(broaderBox) wrap.appendChild(broaderBox);
+
       wrap.appendChild(renderFeedback(data));
       return wrap;
     }
+
+
+    function shouldShowPathHelp(data){
+      if(!data || data.intent === "diagnostic") return false;
+      const hasConcrete =
+        (Array.isArray(data.offres) && data.offres.length) ||
+        (Array.isArray(data.events) && data.events.length) ||
+        (Array.isArray(data.formations) && data.formations.length) ||
+        (Array.isArray(data.atelierCategories) && data.atelierCategories.length) ||
+        data.intent === "pmsmp" ||
+        data.intent === "poe";
+      return hasConcrete && Array.isArray(data.actionPlan) && data.actionPlan.length;
+    }
+
+    function renderPathHelp(data){
+      const details=document.createElement("details");
+      details.className="path-help";
+      details.innerHTML = `<summary>Pourquoi ce parcours ?</summary>`;
+      const ol=document.createElement("ol");
+      data.actionPlan.slice(0,3).forEach(s=>{
+        const li=document.createElement("li");
+        li.innerHTML = `<b>${escapeHtml(s.title || "Étape")}</b> — ${escapeHtml(s.why || "")}`;
+        ol.appendChild(li);
+      });
+      details.appendChild(ol);
+      return details;
+    }
+
+    function renderBroaderSuggestions(data){
+      const suggestions = Array.isArray(data.broaderSearch) ? data.broaderSearch.slice(0,3) : [];
+      if(!suggestions.length) return null;
+
+      const box=document.createElement("section");
+      box.className="broader-box";
+      box.innerHTML = `
+        <h3>Élargir sans repartir de zéro</h3>
+        <p>Si la recherche est trop limitée, ces pistes utilisent des compétences proches ou transférables.</p>
+      `;
+      const list=document.createElement("div");
+      list.className="broader-list";
+
+      suggestions.forEach(s=>{
+        const item=document.createElement("article");
+        item.className="broader-item";
+        const skills=(s.skills||[]).slice(0,4).map(x=>`<span class="skill-tag">${escapeHtml(x)}</span>`).join("");
+        item.innerHTML = `
+          <strong>${escapeHtml(s.title || "Piste proche")}</strong>
+          <small>${escapeHtml(s.why || "")}</small>
+          ${skills ? `<div class="skill-tags">${skills}</div>` : ""}
+          <div class="broader-actions">
+            <button type="button" data-broader-query="${escapeHtml(s.query || s.title || "")}">Chercher cette piste</button>
+          </div>
+        `;
+        list.appendChild(item);
+      });
+
+      box.appendChild(list);
+      box.addEventListener("click", e=>{
+        const q=e.target?.dataset?.broaderQuery;
+        if(!q) return;
+        els.input.value = "Je cherche une offre d'emploi : " + q;
+        autosize();
+        els.input.focus();
+        toast("Piste ajoutée dans la recherche");
+      });
+
+      return box;
+    }
+
 
     function renderResults(wrap,data){
       const offres = Array.isArray(data.offres) ? data.offres.slice(0, 30) : [];
@@ -1356,8 +1444,13 @@
     }
 
     function renderFeedback(data){
-      const f=document.createElement("div"); f.className="feedback";
-      ["Utile","Partiellement","Pas utile"].forEach(label=>{
+      const hasConcrete =
+        data && data.intent !== "diagnostic" &&
+        (((data.offres||[]).length) || ((data.events||[]).length) || ((data.formations||[]).length) || ((data.atelierCategories||[]).length) || data.intent === "pmsmp" || data.intent === "poe");
+      const f=document.createElement("div");
+      if(!hasConcrete) return f;
+      f.className="frai-feedback";
+      ["Utile","Partiel","Pas utile"].forEach(label=>{
         const b=document.createElement("button"); b.type="button"; b.textContent=label; b.onclick=()=>{ recordFeedback(data.intent,label); toast("Feedback enregistré localement"); };
         f.appendChild(b);
       });
@@ -1371,7 +1464,7 @@
       const el = nodes.find(node => node.dataset.id === id);
       if(el) el.remove();
     }
-    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v8.8"; }
+    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v8.9"; }
 
     function saveMessage(role,content,extra){ const arr=read("frai_messages",[]); arr.push({role,content,extra}); localStorage.setItem("frai_messages",JSON.stringify(arr.slice(-30))); }
     function recordUsage(data,message,ms,error){ const s=read("frai_stats",{total:0,errors:0,clicks:0,feedback:{},intents:{},times:[]}); s.total++; if(error)s.errors++; const it=data.intent||"diagnostic"; s.intents[it]=(s.intents[it]||0)+1; s.times.push(ms); s.times=s.times.slice(-100); localStorage.setItem("frai_stats",JSON.stringify(s)); }
