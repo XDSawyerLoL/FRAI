@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#273b99" />
   <meta name="description" content="FRAI — Assistant parcours emploi pour pilote national" />
-  <title>Assistant France Travail · v8.7</title>
+  <title>Assistant France Travail · v8.8</title>
   <style>
     :root{
       --ft-blue:#273b99;--ft-blue-dark:#1d2b73;--ft-blue-soft:#eef2ff;
@@ -640,6 +640,105 @@
       }
     }
 
+  
+    /* v8.8 — offres plus nombreuses et cartes vraiment compactes */
+    .offer-swipe-box{
+      padding:10px;
+      border-radius:18px;
+    }
+    .offer-swipe-head{
+      margin-bottom:6px;
+    }
+    .offer-swipe-help{
+      font-size:12px;
+      line-height:1.25;
+      margin-bottom:8px;
+    }
+    .offer-card-swipe{
+      min-height:0;
+      padding:12px;
+      border-radius:18px;
+      display:grid;
+      gap:8px;
+      box-shadow:0 8px 20px rgba(17,24,39,.07);
+    }
+    .offer-card-swipe h3{
+      font-size:16px;
+      line-height:1.15;
+      margin:0;
+      letter-spacing:-.01em;
+    }
+    .offer-meta{
+      font-size:13px;
+      line-height:1.28;
+      margin:0;
+    }
+    .offer-tags{
+      margin:0;
+      gap:5px;
+    }
+    .offer-tag{
+      font-size:11px;
+      padding:4px 7px;
+    }
+    .offer-card-swipe details{
+      margin:0;
+      padding:7px 9px;
+      border-radius:12px;
+    }
+    .offer-card-swipe details summary{
+      font-size:13px;
+    }
+    .offer-card-swipe details div{
+      font-size:12px;
+      line-height:1.3;
+      margin-top:6px;
+    }
+    .offer-card-swipe .btn.outline{
+      margin-top:0 !important;
+      min-height:38px;
+      font-size:13px;
+      border-radius:13px;
+      padding:8px 10px;
+    }
+    .offer-actions{
+      grid-template-columns:1fr 1fr;
+      margin-top:0;
+      gap:7px;
+    }
+    .offer-actions button{
+      min-height:40px;
+      border-radius:13px;
+      font-size:13px;
+      padding:7px 9px;
+    }
+    .selection-panel{
+      padding:8px 10px;
+      border-radius:14px;
+    }
+    .selection-panel summary{
+      font-size:13px;
+    }
+    @media(max-width:760px){
+      .offer-swipe-box{
+        padding:9px;
+      }
+      .offer-card-swipe{
+        padding:11px;
+        gap:7px;
+      }
+      .offer-card-swipe h3{
+        font-size:15px;
+      }
+      .offer-actions{
+        grid-template-columns:1fr 1fr;
+      }
+      .offer-actions button{
+        min-height:39px;
+        font-size:13px;
+      }
+    }
+
   </style>
 </head>
 <body data-mode="demandeur">
@@ -655,7 +754,7 @@
           </div>
         </div>
         <div class="top-actions">
-          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v8.7</span></div>
+          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v8.8</span></div>
           <button class="icon-btn" id="resetBtn" type="button" title="Nouvelle conversation">↺ <span>Nouveau</span></button>
         </div>
       </header>
@@ -985,7 +1084,7 @@
     }
 
     function renderResults(wrap,data){
-      const offres = Array.isArray(data.offres) ? data.offres.slice(0, 12) : [];
+      const offres = Array.isArray(data.offres) ? data.offres.slice(0, 30) : [];
       const otherItems=[];
 
       (data.events||[]).slice(0,4).forEach(e=>otherItems.push({kind:"Événement",title:e.titre,meta:[formatDate(e.dateEvenement),e.heureDebut,e.ville,e.type].filter(Boolean).join(" · "),desc:e.description||e.deroulement,url:e.url,cta:"Voir l’événement"}));
@@ -1033,7 +1132,7 @@
 
       const help=document.createElement("p");
       help.className="offer-swipe-help";
-      help.textContent="Balayez à gauche pour passer, à droite pour garder. Les boutons restent disponibles pour l’accessibilité.";
+      help.textContent="Balayez ou utilisez les boutons : passer à gauche, garder à droite.";
 
       const holder=document.createElement("div");
       const selection=renderSelectionPanel();
@@ -1100,19 +1199,24 @@
     }
 
     function offerCardHtml(o){
-      const meta = [o.company, o.location, o.contract, o.salary].filter(Boolean).join(" · ");
-      const tags = [o.contract, o.location].filter(Boolean).slice(0,2).map(x=>`<span class="offer-tag">${escapeHtml(x)}</span>`).join("");
+      const meta = [o.company, o.location].filter(Boolean).join(" · ");
+      const tags = [o.contract, o.salary].filter(Boolean).slice(0,2).map(x=>`<span class="offer-tag">${escapeHtml(shortOfferText(x, 34))}</span>`).join("");
       return `
-        <h3>${escapeHtml(o.title)}</h3>
+        <h3>${escapeHtml(shortOfferText(o.title, 58))}</h3>
         <div class="offer-meta">${escapeHtml(meta || "Offre France Travail")}</div>
         ${tags ? `<div class="offer-tags">${tags}</div>` : ""}
-        ${o.description ? `<details><summary>Pourquoi cette offre ?</summary><div>${escapeHtml(trim(o.description, 420))}</div></details>` : ""}
-        ${o.url ? `<a class="btn outline" href="${escapeHtml(o.url)}" target="_blank" rel="noopener" style="margin-top:9px">Voir l’offre</a>` : ""}
+        ${o.description ? `<details><summary>Pourquoi cette offre ?</summary><div>${escapeHtml(trim(o.description, 320))}</div></details>` : ""}
         <div class="offer-actions">
           <button class="pass" type="button" data-offer-action="pass">Pas adapté</button>
-          <button class="keep" type="button" data-offer-action="keep">Garder l’offre</button>
+          <button class="keep" type="button" data-offer-action="keep">Garder</button>
         </div>
+        ${o.url ? `<a class="btn outline" href="${escapeHtml(o.url)}" target="_blank" rel="noopener">Voir l’offre complète</a>` : ""}
       `;
+    }
+
+    function shortOfferText(value, max){
+      const clean = String(value || "").replace(/\s+/g, " ").trim();
+      return clean.length > max ? clean.slice(0, max - 1) + "…" : clean;
     }
 
     function attachSwipe(card, onPass, onKeep){
@@ -1267,7 +1371,7 @@
       const el = nodes.find(node => node.dataset.id === id);
       if(el) el.remove();
     }
-    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v8.7"; }
+    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v8.8"; }
 
     function saveMessage(role,content,extra){ const arr=read("frai_messages",[]); arr.push({role,content,extra}); localStorage.setItem("frai_messages",JSON.stringify(arr.slice(-30))); }
     function recordUsage(data,message,ms,error){ const s=read("frai_stats",{total:0,errors:0,clicks:0,feedback:{},intents:{},times:[]}); s.total++; if(error)s.errors++; const it=data.intent||"diagnostic"; s.intents[it]=(s.intents[it]||0)+1; s.times.push(ms); s.times=s.times.slice(-100); localStorage.setItem("frai_stats",JSON.stringify(s)); }
