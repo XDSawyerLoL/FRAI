@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#273b99" />
   <meta name="description" content="Mon compagnon Emploi — assistant France Travail pour orienter vers la bonne action" />
-  <title>Mon compagnon Emploi · France Travail · v9.9</title>
+  <title>Mon compagnon Emploi · France Travail · v9.10</title>
   <style>
     :root{
       --ft-blue:#273b99;--ft-blue-dark:#1d2b73;--ft-blue-soft:#eef2ff;
@@ -763,7 +763,7 @@
     .broader-actions button{border:1px solid #d9deea;background:#fff;color:var(--ft-blue);border-radius:999px;padding:7px 10px;font-size:12px;font-weight:900;cursor:pointer}
 
   
-    /* v9.9 — Mon compagnon Emploi */
+    /* v9.10 — Mon compagnon Emploi */
     .hero-flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px}
     .hero-flow span{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:7px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);color:var(--ft-blue-dark);font-weight:900;font-size:13px}
     .hero-flow b{color:var(--ft-blue);font-size:15px}
@@ -801,7 +801,7 @@
     }
     
   
-    /* v9.9 — pertinence + jauge marché */
+    /* v9.10 — pertinence + jauge marché */
     .gauge-card,.relevance-card{
       background:#fff;
       border:1px solid var(--line);
@@ -926,7 +926,7 @@
     }
 
   
-    /* v9.9 — simplification radicale + parcours guidé */
+    /* v9.10 — simplification radicale + parcours guidé */
     .brand-title{
       white-space:normal;
       line-height:1.05;
@@ -1097,7 +1097,7 @@
     }
 
   
-    /* v9.9 — patch stabilité parcours guidé */
+    /* v9.10 — patch stabilité parcours guidé */
     .guide-options{max-width:100%}
     .guide-btn{width:100%}
     .guide-btn div{min-width:0}
@@ -1118,7 +1118,7 @@
     }
 
   
-    /* v9.9 — boutons de suggestion guidés */
+    /* v9.10 — boutons de suggestion guidés */
     .guide-options{
       display:grid;
       gap:10px;
@@ -1211,7 +1211,7 @@
     }
 
   
-    /* v9.9 — vrai parcours guidé dans le carré bleu */
+    /* v9.10 — vrai parcours guidé dans le carré bleu */
     .guided-panel{
       margin-top:14px;
       border-radius:26px;
@@ -1258,7 +1258,7 @@
     }
 
   
-    /* v9.9 — actions guidées robustes */
+    /* v9.10 — actions guidées robustes */
     .guided-detail-form{
       display:grid;
       gap:10px;
@@ -1328,14 +1328,14 @@
     }
 
   
-    /* v9.9 — restauration du chat libre */
+    /* v9.10 — restauration du chat libre */
     .message-row.user .bubble{white-space:pre-wrap}
     .message-row.assistant .bubble{overflow:visible}
     .chat-fallback{display:grid;gap:10px;white-space:pre-wrap;line-height:1.45}
     .chat-fallback .small-btn{width:max-content}
 
   
-    /* v9.9 — pistes proches compactes + reset flottant */
+    /* v9.10 — pistes proches compactes + reset flottant */
     .broader-box{
       padding:10px 11px !important;
       border-radius:16px !important;
@@ -1457,7 +1457,7 @@
     }
 
   
-    /* v9.9 — pilotage réel des actions */
+    /* v9.10 — pilotage réel des actions */
     .guided-choice.direct{
       background:#ffffff;
       border-left:7px solid #20b486;
@@ -1495,6 +1495,38 @@
       background:rgba(255,255,255,.14);
     }
 
+  
+    /* v9.10 — pistes proches directes + saisie mobile stabilisée */
+    .composer{
+      z-index:44 !important;
+      transform:none !important;
+      will-change:auto !important;
+    }
+    .composer textarea{
+      max-height:118px !important;
+      overflow:auto !important;
+    }
+    body.keyboard-open .reset-fab,
+    body.keyboard-open .selection-fab{
+      display:none !important;
+    }
+    .broader-item .broader-actions button{
+      touch-action:manipulation;
+    }
+    .broader-item .broader-actions button[disabled]{
+      opacity:.55;
+      cursor:wait;
+    }
+    @media(max-width:760px){
+      .composer{
+        position:sticky !important;
+        bottom:0 !important;
+      }
+      .messages{
+        padding-bottom:18px !important;
+      }
+    }
+
   </style>
 </head>
 <body data-mode="demandeur">
@@ -1510,7 +1542,7 @@
           </div>
         </div>
         <div class="top-actions">
-          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v9.9</span></div>
+          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v9.10</span></div>
           <button class="icon-btn" id="resetBtn" type="button" title="Nouvelle conversation">↺ <span>Nouveau</span></button>
         </div>
       </header>
@@ -1681,7 +1713,7 @@ function bind(){
       try{
         const r=await fetch(WORKER+"/health?_="+Date.now(),{cache:"no-store"});
         const d=await r.json();
-        if(d.ok) els.status.textContent = "Prêt · " + (d.mode || "v9.9");
+        if(d.ok) els.status.textContent = "Prêt · " + (d.mode || "v9.10");
       }catch(e){ els.status.textContent = "Worker à vérifier"; }
     }
 
@@ -1958,10 +1990,7 @@ function renderWelcome(){
       }
     }
 
-    function runGuideQuery(prompt){
-      if(!prompt || !prompt.trim()) return;
-      submitPromptFromGuide(prompt.trim());
-    }
+    function runGuideQuery(prompt){ runImmediateQuery(prompt); }
 
     function renderGuidedActionDetails(action){
       if(!els.guidedPanel) return;
@@ -2089,16 +2118,7 @@ function renderWelcome(){
     }
 
     function submitPromptFromGuide(prompt){
-      els.input.value = prompt;
-      autosize();
-
-      if(state.busy){
-        toast("Une analyse est déjà en cours");
-        return;
-      }
-
-      const event = new Event("submit", { bubbles:true, cancelable:true });
-      els.form.dispatchEvent(event);
+      runImmediateQuery(prompt);
     }
 
     function personalizePromptFromContext(prompt){
@@ -2420,6 +2440,24 @@ function renderSelectionDrawer(){
       return details;
     }
 
+    function runImmediateQuery(prompt){
+      const clean = String(prompt || "").trim();
+      if(!clean) return;
+
+      if(state.busy){
+        toast("Une analyse est déjà en cours");
+        return;
+      }
+
+      // Ne pas focus le champ : évite l’ouverture du clavier mobile.
+      els.input.value = clean;
+      autosize();
+
+      const event = new Event("submit", { bubbles:true, cancelable:true });
+      els.form.dispatchEvent(event);
+    }
+
+
     function renderBroaderSuggestions(data){
       const suggestions = Array.isArray(data.broaderSearch) ? data.broaderSearch.slice(0,3) : [];
       if(!suggestions.length) return null;
@@ -2450,12 +2488,14 @@ function renderSelectionDrawer(){
 
       box.appendChild(list);
       box.addEventListener("click", e=>{
-        const q=e.target?.dataset?.broaderQuery;
+        const btn = e.target?.closest?.("[data-broader-query]");
+        const q = btn?.dataset?.broaderQuery;
         if(!q) return;
-        els.input.value = "Je cherche une offre d'emploi : " + q;
-        autosize();
-        els.input.focus();
-        toast("Piste ajoutée dans la recherche");
+        if(btn.disabled) return;
+        btn.disabled = true;
+        btn.setAttribute("aria-busy","true");
+        runImmediateQuery("Je cherche une offre d'emploi : " + q);
+        setTimeout(()=>{ btn.disabled=false; btn.removeAttribute("aria-busy"); }, 900);
       });
 
       return box;
@@ -2757,7 +2797,7 @@ function renderSelectionDrawer(){
       const el = nodes.find(node => node.dataset.id === id);
       if(el) el.remove();
     }
-    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v9.9"; }
+    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v9.10"; }
 
     function saveMessage(role,content,extra){ const arr=read("frai_messages",[]); arr.push({role,content,extra}); localStorage.setItem("frai_messages",JSON.stringify(arr.slice(-30))); }
     function recordUsage(data,message,ms,error){ const s=read("frai_stats",{total:0,errors:0,clicks:0,feedback:{},intents:{},times:[]}); s.total++; if(error)s.errors++; const it=data.intent||"diagnostic"; s.intents[it]=(s.intents[it]||0)+1; s.times.push(ms); s.times=s.times.slice(-100); localStorage.setItem("frai_stats",JSON.stringify(s)); }
