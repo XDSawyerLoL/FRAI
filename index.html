@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#273b99" />
   <meta name="description" content="Mon compagnon Emploi — assistant France Travail pour orienter vers la bonne action" />
-  <title>Mon compagnon Emploi · France Travail · v9.5</title>
+  <title>Mon compagnon Emploi · France Travail · v9.6</title>
   <style>
     :root{
       --ft-blue:#273b99;--ft-blue-dark:#1d2b73;--ft-blue-soft:#eef2ff;
@@ -763,7 +763,7 @@
     .broader-actions button{border:1px solid #d9deea;background:#fff;color:var(--ft-blue);border-radius:999px;padding:7px 10px;font-size:12px;font-weight:900;cursor:pointer}
 
   
-    /* v9.5 — Mon compagnon Emploi */
+    /* v9.6 — Mon compagnon Emploi */
     .hero-flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px}
     .hero-flow span{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:7px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);color:var(--ft-blue-dark);font-weight:900;font-size:13px}
     .hero-flow b{color:var(--ft-blue);font-size:15px}
@@ -801,7 +801,7 @@
     }
     
   
-    /* v9.5 — pertinence + jauge marché */
+    /* v9.6 — pertinence + jauge marché */
     .gauge-card,.relevance-card{
       background:#fff;
       border:1px solid var(--line);
@@ -926,7 +926,7 @@
     }
 
   
-    /* v9.5 — simplification radicale + parcours guidé */
+    /* v9.6 — simplification radicale + parcours guidé */
     .brand-title{
       white-space:normal;
       line-height:1.05;
@@ -1097,7 +1097,7 @@
     }
 
   
-    /* v9.5 — patch stabilité parcours guidé */
+    /* v9.6 — patch stabilité parcours guidé */
     .guide-options{max-width:100%}
     .guide-btn{width:100%}
     .guide-btn div{min-width:0}
@@ -1118,7 +1118,7 @@
     }
 
   
-    /* v9.5 — boutons de suggestion guidés */
+    /* v9.6 — boutons de suggestion guidés */
     .guide-options{
       display:grid;
       gap:10px;
@@ -1211,7 +1211,7 @@
     }
 
   
-    /* v9.5 — vrai parcours guidé dans le carré bleu */
+    /* v9.6 — vrai parcours guidé dans le carré bleu */
     .guided-panel{
       margin-top:14px;
       border-radius:26px;
@@ -1257,6 +1257,76 @@
       .brand-title{max-width:42vw !important;white-space:normal}
     }
 
+  
+    /* v9.6 — actions guidées robustes */
+    .guided-detail-form{
+      display:grid;
+      gap:10px;
+      margin-top:4px;
+      padding:12px;
+      border-radius:18px;
+      background:rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.28);
+    }
+    .guided-field{
+      display:grid;
+      gap:5px;
+    }
+    .guided-field label{
+      color:#fff;
+      font-size:12px;
+      font-weight:950;
+      letter-spacing:.03em;
+    }
+    .guided-field input{
+      width:100%;
+      border:0;
+      border-radius:14px;
+      padding:12px 13px;
+      font-size:16px;
+      color:#111827;
+      background:#fff;
+      outline:none;
+      box-shadow:0 6px 14px rgba(17,24,39,.10);
+    }
+    .guided-submit-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:2px;
+    }
+    .guided-submit-row button{
+      border:1px solid rgba(255,255,255,.38);
+      border-radius:999px;
+      padding:10px 13px;
+      font-size:13px;
+      font-weight:950;
+      cursor:pointer;
+    }
+    .guided-submit-primary{
+      background:#fff;
+      color:var(--ft-blue);
+      border-color:#fff !important;
+    }
+    .guided-submit-secondary{
+      background:rgba(255,255,255,.12);
+      color:#fff;
+    }
+    .guided-error{
+      display:none;
+      color:#fff;
+      background:rgba(233,66,86,.26);
+      border:1px solid rgba(255,255,255,.25);
+      border-radius:12px;
+      padding:8px 10px;
+      font-size:12px;
+      font-weight:900;
+      line-height:1.35;
+    }
+    .guided-error.show{
+      display:block;
+    }
+
   </style>
 </head>
 <body data-mode="demandeur">
@@ -1272,7 +1342,7 @@
           </div>
         </div>
         <div class="top-actions">
-          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v9.5</span></div>
+          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v9.6</span></div>
           <button class="icon-btn" id="resetBtn" type="button" title="Nouvelle conversation">↺ <span>Nouveau</span></button>
         </div>
       </header>
@@ -1423,7 +1493,7 @@ function bind(){
       try{
         const r=await fetch(WORKER+"/health?_="+Date.now(),{cache:"no-store"});
         const d=await r.json();
-        if(d.ok) els.status.textContent = "Prêt · " + (d.mode || "v9.5");
+        if(d.ok) els.status.textContent = "Prêt · " + (d.mode || "v9.6");
       }catch(e){ els.status.textContent = "Worker à vérifier"; }
     }
 
@@ -1561,10 +1631,10 @@ function renderWelcome(){
         {label:"Non, pas encore", help:"Projet, immersion, exploration métier", next:"unknownJob", context:{knowJob:"no"}}
       ];
       if(step === "knownJob") return [
-        {label:"Rechercher des offres", help:"Trouver et trier les offres adaptées", prompt:"Je cherche une offre d'emploi dans le métier que je vise"},
-        {label:"Améliorer mon CV", help:"Atelier CV ou candidature", prompt:"Quels ateliers pour améliorer mon CV ?"},
-        {label:"Préparer un entretien", help:"S’entraîner avant un recruteur", prompt:"Je veux préparer un entretien d'embauche"},
-        {label:"Voir les événements", help:"Rencontrer ou s’informer", prompt:"Quels événements emploi peuvent m'aider ?"}
+        {label:"Rechercher des offres", help:"Préciser métier et ville", detailAction:"offres"},
+        {label:"Améliorer mon CV", help:"Préciser le métier ciblé", detailAction:"cv"},
+        {label:"Préparer un entretien", help:"Préciser le métier ou le poste", detailAction:"entretien"},
+        {label:"Voir les événements", help:"Préciser ville et thème", detailAction:"events"}
       ];
       if(step === "unknownJob") return [
         {label:"Activ’Projet", help:"Clarifier un projet professionnel", prompt:"Je veux clarifier mon projet professionnel avec Activ'Projet"},
@@ -1588,8 +1658,160 @@ function renderWelcome(){
 
     function handlePanelOption(opt){
       state.guideContext = {...(state.guideContext||{}), ...(opt.context||{})};
-      if(opt.next){ renderGuidedPanel(opt.next); scrollToGuidedPanel(); return; }
-      if(opt.prompt){ els.input.value = personalizePromptFromContext(opt.prompt); autosize(); setTimeout(()=>els.form.requestSubmit(), 80); }
+
+      if(opt.next){
+        renderGuidedPanel(opt.next);
+        scrollToGuidedPanel();
+        return;
+      }
+
+      if(opt.detailAction){
+        renderGuidedActionDetails(opt.detailAction);
+        scrollToGuidedPanel();
+        return;
+      }
+
+      if(opt.prompt){
+        submitPromptFromGuide(personalizePromptFromContext(opt.prompt));
+      }
+    }
+
+    function renderGuidedActionDetails(action){
+      if(!els.guidedPanel) return;
+      state.guideStep = "details_" + action;
+
+      const cfg = {
+        offres:{
+          kicker:"Préciser l’action",
+          title:"Quel métier et quelle ville ?",
+          text:"Pour afficher des offres utiles, indiquez le métier recherché et la ville ou le secteur.",
+          fields:[
+            {id:"guidedJob", label:"Métier recherché", placeholder:"Ex. vendeur, boulanger, secrétaire"},
+            {id:"guidedCity", label:"Ville ou secteur", placeholder:"Ex. Paris, Issy-les-Moulineaux"}
+          ],
+          primary:"Rechercher les offres"
+        },
+        cv:{
+          kicker:"Atelier ou candidature",
+          title:"Quel CV voulez-vous améliorer ?",
+          text:"Indiquez le métier ou le poste visé pour proposer l’aide la plus adaptée.",
+          fields:[
+            {id:"guidedJob", label:"Métier ou poste visé", placeholder:"Ex. vendeur, agent d’accueil"}
+          ],
+          primary:"Trouver l’aide CV"
+        },
+        entretien:{
+          kicker:"Préparation entretien",
+          title:"Pour quel poste préparer l’entretien ?",
+          text:"Indiquez le métier ou le poste afin de proposer une préparation pertinente.",
+          fields:[
+            {id:"guidedJob", label:"Métier ou poste", placeholder:"Ex. vendeur, boulanger, assistant administratif"}
+          ],
+          primary:"Préparer l’entretien"
+        },
+        events:{
+          kicker:"Événements emploi",
+          title:"Où chercher les événements ?",
+          text:"Indiquez une ville et, si possible, un thème ou métier.",
+          fields:[
+            {id:"guidedCity", label:"Ville", placeholder:"Ex. Paris, Issy-les-Moulineaux"},
+            {id:"guidedJob", label:"Thème ou métier", placeholder:"Ex. vente, numérique, restauration"}
+          ],
+          primary:"Voir les événements"
+        }
+      }[action];
+
+      els.guidedPanel.innerHTML = "";
+
+      const head=document.createElement("div");
+      head.className="guided-panel-head";
+      head.innerHTML = `<div><div class="guided-kicker">${escapeHtml(cfg.kicker)}</div><h2>${escapeHtml(cfg.title)}</h2></div>`;
+      els.guidedPanel.appendChild(head);
+
+      const text=document.createElement("p");
+      text.textContent = cfg.text;
+      els.guidedPanel.appendChild(text);
+      els.guidedPanel.appendChild(renderPanelProgress("knownJob"));
+
+      const form=document.createElement("div");
+      form.className="guided-detail-form";
+      cfg.fields.forEach(field=>{
+        const wrap=document.createElement("div");
+        wrap.className="guided-field";
+        wrap.innerHTML = `<label for="${field.id}">${escapeHtml(field.label)}</label><input id="${field.id}" type="text" autocomplete="off" placeholder="${escapeHtml(field.placeholder)}">`;
+        form.appendChild(wrap);
+      });
+
+      const error=document.createElement("div");
+      error.className="guided-error";
+      error.textContent="Il manque une précision pour lancer cette action.";
+      form.appendChild(error);
+
+      const row=document.createElement("div");
+      row.className="guided-submit-row";
+
+      const primary=document.createElement("button");
+      primary.type="button";
+      primary.className="guided-submit-primary";
+      primary.textContent=cfg.primary;
+      primary.onclick=()=>submitGuidedAction(action, error);
+
+      const back=document.createElement("button");
+      back.type="button";
+      back.className="guided-submit-secondary";
+      back.textContent="← Retour aux actions";
+      back.onclick=()=>renderGuidedPanel("knownJob");
+
+      row.append(primary, back);
+      form.appendChild(row);
+      els.guidedPanel.appendChild(form);
+
+      setTimeout(()=>form.querySelector("input")?.focus(), 80);
+    }
+
+    function submitGuidedAction(action, errorEl){
+      const job = (document.getElementById("guidedJob")?.value || "").trim();
+      const city = (document.getElementById("guidedCity")?.value || "").trim();
+
+      let prompt = "";
+      if(action === "offres"){
+        if(!job){ showGuidedError(errorEl, "Indiquez au moins un métier pour chercher des offres."); return; }
+        prompt = "Je cherche une offre d'emploi de " + job + (city ? " à " + city : "");
+      } else if(action === "cv"){
+        if(!job){ showGuidedError(errorEl, "Indiquez le métier ou le poste visé pour le CV."); return; }
+        prompt = "Quels ateliers ou conseils pour améliorer mon CV pour un poste de " + job + " ?";
+      } else if(action === "entretien"){
+        if(!job){ showGuidedError(errorEl, "Indiquez le poste ou métier pour préparer l’entretien."); return; }
+        prompt = "Je veux préparer un entretien d'embauche pour un poste de " + job;
+      } else if(action === "events"){
+        if(!city && !job){ showGuidedError(errorEl, "Indiquez au moins une ville ou un thème."); return; }
+        prompt = "Quels événements emploi " + (job ? "sur " + job + " " : "") + (city ? "à " + city : "peuvent m'aider ?");
+      }
+
+      submitPromptFromGuide(personalizePromptFromContext(prompt));
+    }
+
+    function showGuidedError(errorEl, message){
+      if(!errorEl) return;
+      errorEl.textContent = message;
+      errorEl.classList.add("show");
+    }
+
+    function submitPromptFromGuide(prompt){
+      els.input.value = prompt;
+      autosize();
+
+      if(state.busy){
+        toast("Une analyse est déjà en cours");
+        return;
+      }
+
+      if(typeof els.form.requestSubmit === "function"){
+        els.form.requestSubmit();
+      }else{
+        const event = new Event("submit", { bubbles:true, cancelable:true });
+        els.form.dispatchEvent(event);
+      }
     }
 
     function personalizePromptFromContext(prompt){
@@ -2248,7 +2470,7 @@ function renderSelectionDrawer(){
       const el = nodes.find(node => node.dataset.id === id);
       if(el) el.remove();
     }
-    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v9.5"; }
+    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v9.6"; }
 
     function saveMessage(role,content,extra){ const arr=read("frai_messages",[]); arr.push({role,content,extra}); localStorage.setItem("frai_messages",JSON.stringify(arr.slice(-30))); }
     function recordUsage(data,message,ms,error){ const s=read("frai_stats",{total:0,errors:0,clicks:0,feedback:{},intents:{},times:[]}); s.total++; if(error)s.errors++; const it=data.intent||"diagnostic"; s.intents[it]=(s.intents[it]||0)+1; s.times.push(ms); s.times=s.times.slice(-100); localStorage.setItem("frai_stats",JSON.stringify(s)); }
