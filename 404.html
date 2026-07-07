@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#273b99" />
   <meta name="description" content="Mon compagnon Emploi — assistant France Travail pour orienter vers la bonne action" />
-  <title>Mon compagnon Emploi · France Travail · v9.8</title>
+  <title>Mon compagnon Emploi · France Travail · v9.9</title>
   <style>
     :root{
       --ft-blue:#273b99;--ft-blue-dark:#1d2b73;--ft-blue-soft:#eef2ff;
@@ -763,7 +763,7 @@
     .broader-actions button{border:1px solid #d9deea;background:#fff;color:var(--ft-blue);border-radius:999px;padding:7px 10px;font-size:12px;font-weight:900;cursor:pointer}
 
   
-    /* v9.8 — Mon compagnon Emploi */
+    /* v9.9 — Mon compagnon Emploi */
     .hero-flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px}
     .hero-flow span{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:7px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);color:var(--ft-blue-dark);font-weight:900;font-size:13px}
     .hero-flow b{color:var(--ft-blue);font-size:15px}
@@ -801,7 +801,7 @@
     }
     
   
-    /* v9.8 — pertinence + jauge marché */
+    /* v9.9 — pertinence + jauge marché */
     .gauge-card,.relevance-card{
       background:#fff;
       border:1px solid var(--line);
@@ -926,7 +926,7 @@
     }
 
   
-    /* v9.8 — simplification radicale + parcours guidé */
+    /* v9.9 — simplification radicale + parcours guidé */
     .brand-title{
       white-space:normal;
       line-height:1.05;
@@ -1097,7 +1097,7 @@
     }
 
   
-    /* v9.8 — patch stabilité parcours guidé */
+    /* v9.9 — patch stabilité parcours guidé */
     .guide-options{max-width:100%}
     .guide-btn{width:100%}
     .guide-btn div{min-width:0}
@@ -1118,7 +1118,7 @@
     }
 
   
-    /* v9.8 — boutons de suggestion guidés */
+    /* v9.9 — boutons de suggestion guidés */
     .guide-options{
       display:grid;
       gap:10px;
@@ -1211,7 +1211,7 @@
     }
 
   
-    /* v9.8 — vrai parcours guidé dans le carré bleu */
+    /* v9.9 — vrai parcours guidé dans le carré bleu */
     .guided-panel{
       margin-top:14px;
       border-radius:26px;
@@ -1258,7 +1258,7 @@
     }
 
   
-    /* v9.8 — actions guidées robustes */
+    /* v9.9 — actions guidées robustes */
     .guided-detail-form{
       display:grid;
       gap:10px;
@@ -1328,14 +1328,14 @@
     }
 
   
-    /* v9.8 — restauration du chat libre */
+    /* v9.9 — restauration du chat libre */
     .message-row.user .bubble{white-space:pre-wrap}
     .message-row.assistant .bubble{overflow:visible}
     .chat-fallback{display:grid;gap:10px;white-space:pre-wrap;line-height:1.45}
     .chat-fallback .small-btn{width:max-content}
 
   
-    /* v9.8 — pistes proches compactes + reset flottant */
+    /* v9.9 — pistes proches compactes + reset flottant */
     .broader-box{
       padding:10px 11px !important;
       border-radius:16px !important;
@@ -1456,6 +1456,45 @@
       }
     }
 
+  
+    /* v9.9 — pilotage réel des actions */
+    .guided-choice.direct{
+      background:#ffffff;
+      border-left:7px solid #20b486;
+    }
+    .guided-choice.query{
+      background:#ffffff;
+      border-left:7px solid var(--ft-yellow);
+    }
+    .guided-choice.direct::after{
+      content:"↗";
+      font-size:18px;
+    }
+    .guided-choice.query::after{
+      content:"→";
+    }
+    .pilotage-note{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      width:max-content;
+      max-width:100%;
+      border-radius:999px;
+      padding:6px 9px;
+      background:rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.25);
+      color:#fff;
+      font-size:12px;
+      font-weight:900;
+      margin-top:-2px;
+    }
+    .guided-detail-form .pilotage-note{
+      width:auto;
+      border-radius:12px;
+      line-height:1.3;
+      background:rgba(255,255,255,.14);
+    }
+
   </style>
 </head>
 <body data-mode="demandeur">
@@ -1471,7 +1510,7 @@
           </div>
         </div>
         <div class="top-actions">
-          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v9.8</span></div>
+          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v9.9</span></div>
           <button class="icon-btn" id="resetBtn" type="button" title="Nouvelle conversation">↺ <span>Nouveau</span></button>
         </div>
       </header>
@@ -1536,6 +1575,15 @@
   <script>
     const WORKER = "https://assistant-frai-api.vnhz.workers.dev";
     const DEFAULT_CITY = "Issy-les-Moulineaux";
+    const OFFICIAL_ACTIONS = {
+      activprojet: "https://www.francetravail.fr/candidat/votre-projet-professionnel/definir-votre-projet-professionn/activprojet.html",
+      metierscope: "https://candidat.francetravail.fr/metierscope/",
+      immersion: "https://immersion-facile.beta.gouv.fr/accueil-beneficiaires",
+      ateliers: "https://www.francetravail.fr/candidat/les-ateliers-francetravail.html",
+      ateliersCandidature: "https://www.francetravail.fr/candidat/les-ateliers-francetravail/ateliers-sur-les-techniques-de-r.html",
+      cv: "https://www.francetravail.fr/candidat/vos-recherches/preparer-votre-candidature/cv-lettre-de-motivation-e-mail/comment-rediger-un-cv-efficace-e.html",
+      entretien: "https://www.francetravail.fr/candidat/vos-recherches/preparer-votre-candidature/entretien/des-entretiens-dembauche-100---r.html"
+    };
     const els = {
       messages: document.getElementById("messages"),
       form: document.getElementById("composer"),
@@ -1633,7 +1681,7 @@ function bind(){
       try{
         const r=await fetch(WORKER+"/health?_="+Date.now(),{cache:"no-store"});
         const d=await r.json();
-        if(d.ok) els.status.textContent = "Prêt · " + (d.mode || "v9.8");
+        if(d.ok) els.status.textContent = "Prêt · " + (d.mode || "v9.9");
       }catch(e){ els.status.textContent = "Worker à vérifier"; }
     }
 
@@ -1780,7 +1828,7 @@ function renderWelcome(){
       options.forEach(opt=>{
         const btn=document.createElement("button");
         btn.type="button";
-        btn.className="guided-choice";
+        btn.className="guided-choice" + (opt.url ? " direct" : (opt.prompt || opt.detailAction ? " query" : ""));
         btn.innerHTML = `<div>${escapeHtml(opt.label)}${opt.help ? `<span>${escapeHtml(opt.help)}</span>` : ""}</div>`;
         btn.onclick=()=>handlePanelOption(opt);
         optionBox.appendChild(btn);
@@ -1855,10 +1903,10 @@ function renderWelcome(){
         {label:"Voir les événements", help:"Préciser ville et thème", detailAction:"events"}
       ];
       if(step === "unknownJob") return [
-        {label:"Activ’Projet", help:"Clarifier un projet professionnel", prompt:"Je veux clarifier mon projet professionnel avec Activ'Projet"},
-        {label:"Immersion facilitée", help:"Tester un métier en situation réelle", prompt:"Je veux faire une immersion facilitée pour découvrir un métier"},
-        {label:"Métierscope", help:"Explorer des métiers possibles", prompt:"Je veux explorer des métiers avec Métierscope"},
-        {label:"Atelier projet", help:"Être guidé pour choisir une piste", prompt:"Je ne sais pas quel métier choisir"}
+        {label:"Activ’Projet", help:"Ouvrir le service officiel", url:OFFICIAL_ACTIONS.activprojet, directLabel:"Ouverture Activ’Projet"},
+        {label:"Immersion facilitée", help:"Ouvrir le service officiel", url:OFFICIAL_ACTIONS.immersion, directLabel:"Ouverture Immersion facilitée"},
+        {label:"Métierscope", help:"Ouvrir le service officiel", url:OFFICIAL_ACTIONS.metierscope, directLabel:"Ouverture Métierscope"},
+        {label:"Atelier projet", help:"Ouvrir les ateliers France Travail", url:OFFICIAL_ACTIONS.ateliers, directLabel:"Ouverture Ateliers France Travail"}
       ];
       if(step === "stage") return [
         {label:"Découvrir un métier", help:"Observer le quotidien avant de choisir", prompt:"Je veux faire une immersion facilitée pour découvrir un métier"},
@@ -1866,9 +1914,9 @@ function renderWelcome(){
         {label:"Trouver une entreprise", help:"Préparer une demande d’accueil", prompt:"Comment trouver une entreprise pour une immersion facilitée ?"}
       ];
       if(step === "atelier") return [
-        {label:"Atelier CV", help:"Améliorer mon CV", prompt:"Quels ateliers pour améliorer mon CV ?"},
+        {label:"Atelier CV", help:"Ouvrir l’atelier candidature", url:OFFICIAL_ACTIONS.ateliersCandidature, directLabel:"Ouverture Atelier CV"},
         {label:"Atelier entretien", help:"Préparer un entretien", prompt:"Je veux préparer un entretien d'embauche"},
-        {label:"Atelier projet", help:"Clarifier mon projet professionnel", prompt:"Je veux clarifier mon projet professionnel"},
+        {label:"Atelier projet", help:"Ouvrir les ateliers France Travail", url:OFFICIAL_ACTIONS.ateliers, directLabel:"Ouverture Ateliers France Travail"},
         {label:"Atelier numérique", help:"Être plus autonome en ligne", prompt:"Quels ateliers numériques France Travail peuvent m'aider ?"}
       ];
       return [];
@@ -1883,6 +1931,11 @@ function renderWelcome(){
         return;
       }
 
+      if(opt.url){
+        openOfficialAction(opt.url, opt.directLabel || opt.label || "Service France Travail");
+        return;
+      }
+
       if(opt.detailAction){
         renderGuidedActionDetails(opt.detailAction);
         scrollToGuidedPanel();
@@ -1890,8 +1943,24 @@ function renderWelcome(){
       }
 
       if(opt.prompt){
-        submitPromptFromGuide(personalizePromptFromContext(opt.prompt));
+        runGuideQuery(personalizePromptFromContext(opt.prompt));
       }
+    }
+
+    function openOfficialAction(url, label){
+      try{
+        recordClick("service_officiel", label || url);
+      }catch(_){}
+      toast(label || "Ouverture du service");
+      const opened = window.open(url, "_blank", "noopener,noreferrer");
+      if(!opened){
+        window.location.href = url;
+      }
+    }
+
+    function runGuideQuery(prompt){
+      if(!prompt || !prompt.trim()) return;
+      submitPromptFromGuide(prompt.trim());
     }
 
     function renderGuidedActionDetails(action){
@@ -1949,6 +2018,10 @@ function renderWelcome(){
       const text=document.createElement("p");
       text.textContent = cfg.text;
       els.guidedPanel.appendChild(text);
+      const note=document.createElement("div");
+      note.className="pilotage-note";
+      note.textContent="Cette étape lance une vraie recherche, elle ne remplit pas seulement le chat.";
+      els.guidedPanel.appendChild(note);
       els.guidedPanel.appendChild(renderPanelProgress("knownJob"));
 
       const form=document.createElement("div");
@@ -2006,7 +2079,7 @@ function renderWelcome(){
         prompt = "Quels événements emploi " + (job ? "sur " + job + " " : "") + (city ? "à " + city : "peuvent m'aider ?");
       }
 
-      submitPromptFromGuide(personalizePromptFromContext(prompt));
+      runGuideQuery(personalizePromptFromContext(prompt));
     }
 
     function showGuidedError(errorEl, message){
@@ -2684,7 +2757,7 @@ function renderSelectionDrawer(){
       const el = nodes.find(node => node.dataset.id === id);
       if(el) el.remove();
     }
-    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v9.8"; }
+    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v9.9"; }
 
     function saveMessage(role,content,extra){ const arr=read("frai_messages",[]); arr.push({role,content,extra}); localStorage.setItem("frai_messages",JSON.stringify(arr.slice(-30))); }
     function recordUsage(data,message,ms,error){ const s=read("frai_stats",{total:0,errors:0,clicks:0,feedback:{},intents:{},times:[]}); s.total++; if(error)s.errors++; const it=data.intent||"diagnostic"; s.intents[it]=(s.intents[it]||0)+1; s.times.push(ms); s.times=s.times.slice(-100); localStorage.setItem("frai_stats",JSON.stringify(s)); }
