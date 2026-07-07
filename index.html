@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#273b99" />
   <meta name="description" content="Mon compagnon Emploi — assistant France Travail pour orienter vers la bonne action" />
-  <title>Mon compagnon Emploi · France Travail · v9.4</title>
+  <title>Mon compagnon Emploi · France Travail · v9.5</title>
   <style>
     :root{
       --ft-blue:#273b99;--ft-blue-dark:#1d2b73;--ft-blue-soft:#eef2ff;
@@ -763,7 +763,7 @@
     .broader-actions button{border:1px solid #d9deea;background:#fff;color:var(--ft-blue);border-radius:999px;padding:7px 10px;font-size:12px;font-weight:900;cursor:pointer}
 
   
-    /* v9.4 — Mon compagnon Emploi */
+    /* v9.5 — Mon compagnon Emploi */
     .hero-flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px}
     .hero-flow span{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:7px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);color:var(--ft-blue-dark);font-weight:900;font-size:13px}
     .hero-flow b{color:var(--ft-blue);font-size:15px}
@@ -801,7 +801,7 @@
     }
     
   
-    /* v9.4 — pertinence + jauge marché */
+    /* v9.5 — pertinence + jauge marché */
     .gauge-card,.relevance-card{
       background:#fff;
       border:1px solid var(--line);
@@ -926,7 +926,7 @@
     }
 
   
-    /* v9.4 — simplification radicale + parcours guidé */
+    /* v9.5 — simplification radicale + parcours guidé */
     .brand-title{
       white-space:normal;
       line-height:1.05;
@@ -1097,7 +1097,7 @@
     }
 
   
-    /* v9.4 — patch stabilité parcours guidé */
+    /* v9.5 — patch stabilité parcours guidé */
     .guide-options{max-width:100%}
     .guide-btn{width:100%}
     .guide-btn div{min-width:0}
@@ -1118,7 +1118,7 @@
     }
 
   
-    /* v9.4 — boutons de suggestion guidés */
+    /* v9.5 — boutons de suggestion guidés */
     .guide-options{
       display:grid;
       gap:10px;
@@ -1210,6 +1210,53 @@
       }
     }
 
+  
+    /* v9.5 — vrai parcours guidé dans le carré bleu */
+    .guided-panel{
+      margin-top:14px;
+      border-radius:26px;
+      padding:16px;
+      background:linear-gradient(135deg,var(--ft-blue) 0%,#3651c7 100%);
+      color:#fff;
+      box-shadow:0 16px 34px rgba(39,59,153,.20);
+      display:grid;
+      gap:13px;
+    }
+    .guided-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .guided-kicker{font-size:12px;font-weight:1000;letter-spacing:.07em;text-transform:uppercase;opacity:.84}
+    .guided-panel h2{margin:4px 0 0;font-size:clamp(22px,5vw,32px);line-height:1.08;color:#fff;letter-spacing:-.03em}
+    .guided-panel p{margin:0;color:rgba(255,255,255,.90);font-size:15px;line-height:1.35}
+    .guided-progress-line{display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:8px;border-radius:18px;background:rgba(255,255,255,.10)}
+    .guided-step-pill{display:inline-flex;align-items:center;gap:6px;padding:7px 9px;border-radius:999px;background:rgba(255,255,255,.13);color:#fff;font-size:12px;font-weight:950;opacity:.72}
+    .guided-step-pill.active{background:#fff;color:var(--ft-blue);opacity:1}
+    .guided-arrow{opacity:.72;font-weight:1000}
+    .guided-options{display:grid;gap:10px}
+    .guided-options.two{grid-template-columns:1fr 1fr}
+    .guided-choice{border:0;border-radius:18px;background:#fff;color:var(--ft-blue);padding:13px 14px;min-height:56px;cursor:pointer;text-align:left;font-weight:1000;display:flex;justify-content:space-between;align-items:center;gap:12px;box-shadow:0 8px 18px rgba(17,24,39,.12)}
+    .guided-choice div{min-width:0;line-height:1.15}
+    .guided-choice span{display:block;color:#5b6472;font-size:12px;line-height:1.25;margin-top:4px;font-weight:800}
+    .guided-choice::after{content:"›";color:var(--ft-blue);font-size:26px;line-height:1;flex:0 0 auto}
+    .guided-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .guided-actions button{border:1px solid rgba(255,255,255,.36);background:rgba(255,255,255,.12);color:#fff;border-radius:999px;padding:8px 11px;font-size:12px;font-weight:900;cursor:pointer}
+    .advisor-guided{display:none;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);border-radius:18px;padding:11px 12px}
+    body[data-mode="conseiller"] .advisor-guided{display:grid;gap:6px}
+    .advisor-guided strong{color:#fff;font-size:13px;text-transform:uppercase;letter-spacing:.05em}
+    .advisor-guided ul{margin:0;padding-left:18px;color:rgba(255,255,255,.92);font-size:13px;line-height:1.35}
+    .advisor-guided li{margin:3px 0}
+    body[data-mode="conseiller"] .guided-panel{background:linear-gradient(135deg,#1d2b73 0%,#273b99 100%)}
+    .chips{display:none !important}
+    .brand-title{max-width:none !important}
+    @media(max-width:760px){
+      .guided-panel{border-radius:22px;padding:14px;gap:11px}
+      .guided-panel h2{font-size:23px}
+      .guided-panel p{font-size:14px}
+      .guided-options.two{grid-template-columns:1fr}
+      .guided-choice{border-radius:16px;min-height:50px;padding:11px 13px;font-size:14px}
+      .guided-choice span{font-size:11px}
+      .guided-step-pill{font-size:11px}
+      .brand-title{max-width:42vw !important;white-space:normal}
+    }
+
   </style>
 </head>
 <body data-mode="demandeur">
@@ -1225,7 +1272,7 @@
           </div>
         </div>
         <div class="top-actions">
-          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v9.4</span></div>
+          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v9.5</span></div>
           <button class="icon-btn" id="resetBtn" type="button" title="Nouvelle conversation">↺ <span>Nouveau</span></button>
         </div>
       </header>
@@ -1249,12 +1296,7 @@
           </div>
         </div>
 
-        <div class="chips" aria-label="Démarrer le parcours">
-          <button class="chip" type="button" data-guide-start="emploi">Je suis au chômage</button>
-          <button class="chip" type="button" data-guide-start="orientation">Je connais le métier</button>
-          <button class="chip" type="button" data-guide-start="stage">Je veux découvrir</button>
-          <button class="chip" type="button" data-guide-start="atelier">Je veux un atelier</button>
-        </div>
+        <section id="guidedPanel" class="guided-panel" aria-label="Parcours guidé Mon compagnon Emploi"></section>
 
         <details class="pilot-pages"><summary>À propos du pilote</summary><div class="nav-line" aria-label="Pages de crédibilité produit">
           <a href="./demo.html">Démo nationale</a>
@@ -1306,9 +1348,10 @@
       selectionFabCount: document.getElementById("selectionFabCount"),
       selectionDrawer: document.getElementById("selectionDrawer"),
       selectionDrawerBody: document.getElementById("selectionDrawerBody"),
-      selectionCloseBtn: document.getElementById("selectionCloseBtn")
+      selectionCloseBtn: document.getElementById("selectionCloseBtn"),
+      guidedPanel: document.getElementById("guidedPanel")
     };
-    const state = { busy:false, city: localStorage.getItem("frai_city") || DEFAULT_CITY, lastData:null, guideStep:"start", guideContext:{} };
+    const state = { busy:false, city: localStorage.getItem("frai_city") || DEFAULT_CITY, lastData:null, guideStep:"situation", guideContext:{} };
 
 
     function updateKeyboardOffset(){
@@ -1348,6 +1391,7 @@
       if(saved.length) saved.forEach(m => renderMessage(m.role,m.content,m.extra,false));
       else renderWelcome();
       refreshSelectionUi();
+      renderGuidedPanel("situation");
       health();
     }
 
@@ -1358,7 +1402,7 @@ function bind(){
   els.input.addEventListener("focus", () => { document.body.classList.add("keyboard-open"); updateKeyboardOffset(); setTimeout(scrollBottom, 120); });
   els.input.addEventListener("blur", () => { setTimeout(() => { document.body.classList.remove("keyboard-open"); updateKeyboardOffset(); }, 160); });
   els.input.addEventListener("keydown", e => { if(e.key==="Enter" && !e.shiftKey){ e.preventDefault(); els.form.requestSubmit(); }});
-  els.reset.addEventListener("click", () => { localStorage.removeItem("frai_messages"); els.messages.innerHTML=""; document.body.classList.remove("chat-started"); renderWelcome(); toast("Nouvelle conversation"); });
+  els.reset.addEventListener("click", () => { localStorage.removeItem("frai_messages"); els.messages.innerHTML=""; document.body.classList.remove("chat-started"); state.guideContext={}; renderGuidedPanel("situation"); toast("Nouvelle conversation"); });
   document.querySelectorAll(".chip").forEach(b => b.addEventListener("click",()=>{
         if(b.dataset.guideStart){ startGuidedFlow(b.dataset.guideStart); return; }
         els.input.value=b.dataset.prompt||""; autosize(); els.input.focus();
@@ -1366,7 +1410,8 @@ function bind(){
   document.querySelectorAll(".mode-btn").forEach(b => b.addEventListener("click",()=>{
     document.body.dataset.mode=b.dataset.mode;
     document.querySelectorAll(".mode-btn").forEach(x=>x.classList.toggle("active",x===b));
-    toast(b.dataset.mode==="conseiller" ? "Mode conseiller activé" : "Mode demandeur activé");
+    renderGuidedPanel(state.guideStep || "situation");
+        toast(b.dataset.mode==="conseiller" ? "Mode conseiller activé" : "Mode demandeur activé");
   }));
   els.selectionFab?.addEventListener("click", openSelectionDrawer);
   els.selectionCloseBtn?.addEventListener("click", closeSelectionDrawer);
@@ -1378,7 +1423,7 @@ function bind(){
       try{
         const r=await fetch(WORKER+"/health?_="+Date.now(),{cache:"no-store"});
         const d=await r.json();
-        if(d.ok) els.status.textContent = "Prêt · " + (d.mode || "v9.4");
+        if(d.ok) els.status.textContent = "Prêt · " + (d.mode || "v9.5");
       }catch(e){ els.status.textContent = "Worker à vérifier"; }
     }
 
@@ -1417,222 +1462,164 @@ function bind(){
 
     
 function renderWelcome(){
-  renderMessage("assistant","Choisissez une situation. Les boutons se remplacent étape par étape pour construire le bon parcours.",{
-    provider:"Mon compagnon Emploi",
-    intent:"diagnostic",
-    diagnosticLabel:"accueil",
-    confidenceLabel:"à préciser",
-    guideMode:"start",
-    guideTitle:"Par quoi voulez-vous commencer ?",
-    guideText:"Choisissez une entrée. L’assistant vous guidera ensuite vers l’action utile : offre, atelier, immersion, événement ou formation.",
-    officialLinks:[]
-  });
-}
-    function badge(text, cls=""){ const s=document.createElement("span"); s.className="badge "+cls; s.textContent=text; return s; }
-
-
-    // v8.3 — formulation plus humaine et explications lisibles
-    function startGuidedFlow(kind){
-      const starts = {
-        emploi: {
-          step:"situation",
-          title:"Quelle est votre situation ?",
-          text:"Choisissez la situation la plus proche. Les propositions se remplaceront étape par étape.",
-          context:{start:"emploi"}
-        },
-        orientation: {
-          step:"knowJob",
-          title:"Connaissez-vous le métier visé ?",
-          text:"Cette réponse permet de choisir entre recherche directe, atelier, immersion ou projet professionnel.",
-          context:{start:"orientation"}
-        },
-        stage: {
-          step:"stage",
-          title:"Que voulez-vous découvrir ?",
-          text:"L’immersion facilitée sert à tester un métier, confirmer un projet ou découvrir un environnement de travail.",
-          context:{start:"stage"}
-        },
-        atelier: {
-          step:"atelier",
-          title:"Quel atelier vous aiderait maintenant ?",
-          text:"Choisissez le point à travailler en priorité.",
-          context:{start:"atelier"}
-        }
-      };
-
-      const cfg = starts[kind] || starts.emploi;
-      state.guideStep = cfg.step;
-      state.guideContext = cfg.context || {};
-      renderGuideStep(cfg.step, cfg.title, cfg.text);
+      renderGuidedPanel("situation");
     }
 
-    function renderGuideStep(step, title, text){
+    function scrollToGuidedPanel(){
+      setTimeout(()=>els.guidedPanel?.scrollIntoView({behavior:"smooth", block:"center"}), 30);
+    }
+
+    function renderGuidedPanel(step="situation"){
+      if(!els.guidedPanel) return;
       state.guideStep = step;
-      renderMessage("assistant", text || "Choisissez la suite du parcours.", {
-        intent:"diagnostic",
-        diagnosticLabel:"parcours guidé",
-        guideMode:step,
-        guideTitle:title || guideTitleForStep(step),
-        guideText:text || guideTextForStep(step),
-        guideContext:{...(state.guideContext||{})}
-      });
-    }
+      const cfg = getPanelStepConfig(step);
+      const options = getPanelOptions(step);
+      els.guidedPanel.innerHTML = "";
 
-    function guideTitleForStep(step){
-      return ({
-        start:"Par quoi voulez-vous commencer ?",
-        situation:"Quelle est votre situation ?",
-        knowJob:"Connaissez-vous le métier visé ?",
-        knownJob:"Quelle action voulez-vous faire maintenant ?",
-        unknownJob:"Construire ou tester votre projet",
-        stage:"Que voulez-vous découvrir ?",
-        atelier:"Quel atelier vous aiderait maintenant ?"
-      })[step] || "Choisir la suite";
-    }
+      const head=document.createElement("div");
+      head.className="guided-panel-head";
+      head.innerHTML = `<div><div class="guided-kicker">${escapeHtml(cfg.kicker)}</div><h2>${escapeHtml(cfg.title)}</h2></div>`;
+      els.guidedPanel.appendChild(head);
 
-    function guideTextForStep(step){
-      return ({
-        start:"Choisissez une entrée. Les boutons se remplacent pour construire le parcours.",
-        situation:"Votre situation permet de proposer les bons services sans afficher trop de choix.",
-        knowJob:"Si le métier est clair, on peut chercher des offres ou travailler la candidature. Sinon, il vaut mieux explorer ou tester.",
-        knownJob:"Choisissez l’action la plus utile maintenant.",
-        unknownJob:"Quand le métier n’est pas clair, il vaut mieux clarifier, explorer ou tester avant de chercher des offres.",
-        stage:"Choisissez ce que vous voulez vérifier avec une immersion.",
-        atelier:"Un atelier doit répondre à un besoin précis : CV, entretien, projet ou numérique."
-      })[step] || "Choisissez la suite du parcours.";
-    }
+      const text=document.createElement("p");
+      text.textContent=cfg.text;
+      els.guidedPanel.appendChild(text);
+      els.guidedPanel.appendChild(renderPanelProgress(step));
 
-    function renderGuidedOptions(data){
-      const mode = data.guideMode || (data.intent === "diagnostic" ? "start" : "");
-      if(!mode) return null;
-
-      const options = getGuideOptions(mode, data);
-      if(!options.length) return null;
-
-      const box=document.createElement("div");
-
-      const progress=document.createElement("div");
-      progress.className="guide-progress";
-      const level = guideLevel(mode);
-      progress.innerHTML = `
-        <span>Parcours guidé</span>
-        <i class="${level >= 1 ? "active" : ""}"></i>
-        <i class="${level >= 2 ? "active" : ""}"></i>
-        <i class="${level >= 3 ? "active" : ""}"></i>
-      `;
-      box.appendChild(progress);
-
-      const wrap=document.createElement("div");
-      wrap.className="guide-options";
-      if(options.length === 2) wrap.classList.add("two");
-
+      const optionBox=document.createElement("div");
+      optionBox.className="guided-options";
+      if(options.length === 2) optionBox.classList.add("two");
       options.forEach(opt=>{
         const btn=document.createElement("button");
         btn.type="button";
-        btn.className="guide-btn";
+        btn.className="guided-choice";
         btn.innerHTML = `<div>${escapeHtml(opt.label)}${opt.help ? `<span>${escapeHtml(opt.help)}</span>` : ""}</div>`;
-        btn.onclick=()=>handleGuideOption(opt);
-        wrap.appendChild(btn);
+        btn.onclick=()=>handlePanelOption(opt);
+        optionBox.appendChild(btn);
       });
+      els.guidedPanel.appendChild(optionBox);
 
-      box.appendChild(wrap);
+      const advisor=document.createElement("div");
+      advisor.className="advisor-guided";
+      advisor.innerHTML = advisorGuidanceHtml(step);
+      els.guidedPanel.appendChild(advisor);
 
-      if(mode !== "start" && mode !== "situation"){
-        const reset=document.createElement("button");
-        reset.type="button";
-        reset.className="guide-reset";
-        reset.textContent="Revenir au début";
-        reset.onclick=()=>startGuidedFlow("emploi");
-        box.appendChild(reset);
+      const actions=document.createElement("div");
+      actions.className="guided-actions";
+      if(step !== "situation"){
+        const back=document.createElement("button");
+        back.type="button";
+        back.textContent="← Étape précédente";
+        back.onclick=()=>renderGuidedPanel(previousPanelStep(step));
+        actions.appendChild(back);
       }
-
-      return box;
+      const reset=document.createElement("button");
+      reset.type="button";
+      reset.textContent="Repartir du début";
+      reset.onclick=()=>{ state.guideContext={}; renderGuidedPanel("situation"); };
+      actions.appendChild(reset);
+      els.guidedPanel.appendChild(actions);
     }
 
-    function guideLevel(mode){
-      if(mode === "start" || mode === "situation") return 1;
-      if(mode === "knowJob") return 2;
-      return 3;
+    function getPanelStepConfig(step){
+      const conseiller = (document.body.dataset.mode || "demandeur") === "conseiller";
+      const map = {
+        situation:{kicker: conseiller ? "Diagnostic conseiller" : "Étape 1", title:"Quelle est la situation ?", text: conseiller ? "Identifier le point d’entrée évite une mauvaise orientation vers un service inadapté." : "Choisissez la situation la plus proche. Les propositions vont se remplacer pour construire le bon parcours."},
+        knowJob:{kicker: conseiller ? "Qualification du besoin" : "Étape 2", title:"Le métier est-il déjà connu ?", text: conseiller ? "Si le métier est connu : offres, CV, entretien ou événement. Sinon : exploration, projet ou immersion." : "Si vous connaissez le métier, on peut agir directement. Sinon, on vous aide à explorer ou tester."},
+        knownJob:{kicker: conseiller ? "Action emploi" : "Étape 3", title:"Quelle action faire maintenant ?", text: conseiller ? "Choisir l’action la plus utile : offres, candidature ou contact recruteur." : "Choisissez l’action prioritaire. L’assistant lancera ensuite la bonne recherche."},
+        unknownJob:{kicker: conseiller ? "Construction du projet" : "Étape 3", title:"Construire ou tester le projet", text: conseiller ? "Sans métier clair, éviter la recherche d’offres immédiate. Proposer projet, exploration métier ou immersion." : "Quand le métier n’est pas clair, il vaut mieux clarifier, explorer ou tester avant de chercher des offres."},
+        stage:{kicker: conseiller ? "Immersion" : "Découvrir un métier", title:"Que voulez-vous vérifier ?", text: conseiller ? "L’immersion est pertinente pour confirmer un métier, sécuriser une reconversion ou découvrir un environnement." : "L’immersion facilitée permet de tester un métier en conditions réelles."},
+        atelier:{kicker: conseiller ? "Atelier adapté" : "Besoin méthode", title:"Quel atelier vous aiderait ?", text: conseiller ? "Orienter vers un atelier seulement si le besoin porte sur méthode, CV, entretien, projet ou numérique." : "Choisissez le point à travailler en priorité."}
+      };
+      return map[step] || map.situation;
     }
 
-    function getGuideOptions(mode, data){
-      if(mode === "start"){
-        return [
-          {label:"Je suis au chômage", help:"Je veux avancer vers un emploi", next:"knowJob", context:{situation:"chomage"}},
-          {label:"Je veux changer de métier", help:"Découvrir ou confirmer une piste", next:"knowJob", context:{situation:"reconversion"}},
-          {label:"Je manque de méthode", help:"CV, entretien, candidature", next:"atelier", context:{situation:"methode"}},
-          {label:"Je veux découvrir un métier", help:"Immersion, projet, métierscope", next:"unknownJob", context:{situation:"decouverte"}}
-        ];
-      }
+    function renderPanelProgress(step){
+      const div=document.createElement("div");
+      div.className="guided-progress-line";
+      const level = ({situation:1, knowJob:2, knownJob:3, unknownJob:3, stage:2, atelier:2})[step] || 1;
+      const labels = ["Situation", "Métier", "Action"];
+      labels.forEach((label,idx)=>{
+        const pill=document.createElement("span");
+        pill.className="guided-step-pill" + (level === idx+1 ? " active" : "");
+        pill.textContent = `${idx+1}. ${label}`;
+        div.appendChild(pill);
+        if(idx < labels.length-1){ const arr=document.createElement("span"); arr.className="guided-arrow"; arr.textContent="→"; div.appendChild(arr); }
+      });
+      return div;
+    }
 
-      if(mode === "situation"){
-        return [
-          {label:"Au chômage", help:"Chercher une action concrète vers l’emploi", next:"knowJob", context:{situation:"chomage"}},
-          {label:"En reconversion", help:"Vérifier ou construire un nouveau projet", next:"knowJob", context:{situation:"reconversion"}},
-          {label:"Sans idée précise", help:"Explorer des métiers ou tester une piste", next:"unknownJob", context:{situation:"projet_flou"}},
-          {label:"Déjà en poste", help:"Préparer une évolution ou un changement", next:"knowJob", context:{situation:"en_poste"}}
-        ];
-      }
-
-      if(mode === "knowJob"){
-        return [
-          {label:"Oui, je connais le métier", help:"Chercher des offres ou améliorer la candidature", next:"knownJob", context:{knowJob:"yes"}},
-          {label:"Non, pas encore", help:"Clarifier, explorer ou tester", next:"unknownJob", context:{knowJob:"no"}}
-        ];
-      }
-
-      if(mode === "knownJob"){
-        return [
-          {label:"Rechercher des offres", help:"Trouver et trier les offres adaptées", prompt:"Je cherche une offre d'emploi dans le métier que je vise"},
-          {label:"Améliorer mon CV", help:"Atelier CV ou candidature", prompt:"Quels ateliers pour améliorer mon CV ?"},
-          {label:"Préparer un entretien", help:"S’entraîner avant de rencontrer un recruteur", prompt:"Je veux préparer un entretien d'embauche"},
-          {label:"Voir les événements", help:"Rencontrer un recruteur ou s’informer", prompt:"Quels événements emploi peuvent m'aider ?"}
-        ];
-      }
-
-      if(mode === "unknownJob"){
-        return [
-          {label:"Activ’Projet", help:"Clarifier un projet professionnel", prompt:"Je veux clarifier mon projet professionnel avec Activ'Projet"},
-          {label:"Immersion facilitée", help:"Tester un métier en situation réelle", prompt:"Je veux faire une immersion facilitée pour découvrir un métier"},
-          {label:"Métierscope", help:"Explorer des métiers possibles", prompt:"Je veux explorer des métiers avec Métierscope"},
-          {label:"Atelier projet", help:"Être guidé pour choisir une piste", prompt:"Je ne sais pas quel métier choisir"}
-        ];
-      }
-
-      if(mode === "stage"){
-        return [
-          {label:"Découvrir un métier", help:"Observer le quotidien avant de choisir", prompt:"Je veux faire une immersion facilitée pour découvrir un métier"},
-          {label:"Confirmer un projet", help:"Vérifier avant formation ou candidature", prompt:"Je veux confirmer mon projet avec une immersion facilitée"},
-          {label:"Trouver une entreprise", help:"Préparer une demande d’accueil", prompt:"Comment trouver une entreprise pour une immersion facilitée ?"}
-        ];
-      }
-
-      if(mode === "atelier"){
-        return [
-          {label:"Atelier CV", help:"Améliorer mon CV", prompt:"Quels ateliers pour améliorer mon CV ?"},
-          {label:"Atelier entretien", help:"Préparer un entretien", prompt:"Je veux préparer un entretien d'embauche"},
-          {label:"Atelier projet", help:"Clarifier mon projet professionnel", prompt:"Je veux clarifier mon projet professionnel"},
-          {label:"Atelier numérique", help:"Être plus autonome en ligne", prompt:"Quels ateliers numériques France Travail peuvent m'aider ?"}
-        ];
-      }
-
+    function getPanelOptions(step){
+      if(step === "situation") return [
+        {label:"Je suis au chômage", help:"Avancer vers un emploi", next:"knowJob", context:{situation:"chomage"}},
+        {label:"Je veux changer de métier", help:"Explorer ou confirmer une piste", next:"knowJob", context:{situation:"reconversion"}},
+        {label:"Je manque de méthode", help:"CV, entretien, candidature", next:"atelier", context:{situation:"methode"}},
+        {label:"Je veux découvrir un métier", help:"Immersion, projet, Métierscope", next:"unknownJob", context:{situation:"decouverte"}}
+      ];
+      if(step === "knowJob") return [
+        {label:"Oui, je connais le métier", help:"Offres, CV, entretien ou événement", next:"knownJob", context:{knowJob:"yes"}},
+        {label:"Non, pas encore", help:"Projet, immersion, exploration métier", next:"unknownJob", context:{knowJob:"no"}}
+      ];
+      if(step === "knownJob") return [
+        {label:"Rechercher des offres", help:"Trouver et trier les offres adaptées", prompt:"Je cherche une offre d'emploi dans le métier que je vise"},
+        {label:"Améliorer mon CV", help:"Atelier CV ou candidature", prompt:"Quels ateliers pour améliorer mon CV ?"},
+        {label:"Préparer un entretien", help:"S’entraîner avant un recruteur", prompt:"Je veux préparer un entretien d'embauche"},
+        {label:"Voir les événements", help:"Rencontrer ou s’informer", prompt:"Quels événements emploi peuvent m'aider ?"}
+      ];
+      if(step === "unknownJob") return [
+        {label:"Activ’Projet", help:"Clarifier un projet professionnel", prompt:"Je veux clarifier mon projet professionnel avec Activ'Projet"},
+        {label:"Immersion facilitée", help:"Tester un métier en situation réelle", prompt:"Je veux faire une immersion facilitée pour découvrir un métier"},
+        {label:"Métierscope", help:"Explorer des métiers possibles", prompt:"Je veux explorer des métiers avec Métierscope"},
+        {label:"Atelier projet", help:"Être guidé pour choisir une piste", prompt:"Je ne sais pas quel métier choisir"}
+      ];
+      if(step === "stage") return [
+        {label:"Découvrir un métier", help:"Observer le quotidien avant de choisir", prompt:"Je veux faire une immersion facilitée pour découvrir un métier"},
+        {label:"Confirmer un projet", help:"Vérifier avant formation ou candidature", prompt:"Je veux confirmer mon projet avec une immersion facilitée"},
+        {label:"Trouver une entreprise", help:"Préparer une demande d’accueil", prompt:"Comment trouver une entreprise pour une immersion facilitée ?"}
+      ];
+      if(step === "atelier") return [
+        {label:"Atelier CV", help:"Améliorer mon CV", prompt:"Quels ateliers pour améliorer mon CV ?"},
+        {label:"Atelier entretien", help:"Préparer un entretien", prompt:"Je veux préparer un entretien d'embauche"},
+        {label:"Atelier projet", help:"Clarifier mon projet professionnel", prompt:"Je veux clarifier mon projet professionnel"},
+        {label:"Atelier numérique", help:"Être plus autonome en ligne", prompt:"Quels ateliers numériques France Travail peuvent m'aider ?"}
+      ];
       return [];
     }
 
-    function handleGuideOption(opt){
+    function handlePanelOption(opt){
       state.guideContext = {...(state.guideContext||{}), ...(opt.context||{})};
-
-      if(opt.prompt){
-        els.input.value = opt.prompt;
-        autosize();
-        els.input.focus();
-        return;
-      }
-
-      if(opt.next){
-        renderGuideStep(opt.next, guideTitleForStep(opt.next), guideTextForStep(opt.next));
-      }
+      if(opt.next){ renderGuidedPanel(opt.next); scrollToGuidedPanel(); return; }
+      if(opt.prompt){ els.input.value = personalizePromptFromContext(opt.prompt); autosize(); setTimeout(()=>els.form.requestSubmit(), 80); }
     }
+
+    function personalizePromptFromContext(prompt){
+      const ctx = state.guideContext || {};
+      if(ctx.situation === "chomage" && !/chômage|chomage/i.test(prompt)) return prompt + " Je suis au chômage.";
+      if(ctx.situation === "reconversion" && !/reconversion/i.test(prompt)) return prompt + " Je suis en reconversion.";
+      return prompt;
+    }
+
+    function previousPanelStep(step){
+      if(["knownJob","unknownJob"].includes(step)) return "knowJob";
+      if(["knowJob","atelier","stage"].includes(step)) return "situation";
+      return "situation";
+    }
+
+    function advisorGuidanceHtml(step){
+      const lines = ({
+        situation:["Objectif : qualifier la situation avant de proposer un service.","Vigilance : ne pas orienter trop vite vers les offres si le projet est flou."],
+        knowJob:["Question clé : le métier est-il identifié ?","Oui : offres, CV, entretien, événements. Non : projet, immersion, Métierscope."],
+        knownJob:["Action directe possible.","Privilégier une seule action prioritaire pour éviter la dispersion."],
+        unknownJob:["Recherche d’offres prématurée.","Orienter vers Activ’Projet, immersion facilitée ou exploration métier."],
+        atelier:["Atelier pertinent si le besoin est méthodologique.","Si besoin de tester un métier : immersion plutôt qu’atelier."],
+        stage:["Immersion pertinente pour observer, confirmer ou sécuriser une piste.","Clarifier le métier et l’entreprise d’accueil."]
+      })[step] || [];
+      return `<strong>Vue conseiller</strong><ul>${lines.map(x=>`<li>${escapeHtml(x)}</li>`).join("")}</ul>`;
+    }
+
+    function renderGuidedOptions(){ return null; }
+    function getGuideOptions(){ return []; }
+    function handleGuideOption(){}
 
 
     function humanActionTitle(data, fallback) {
@@ -2261,7 +2248,7 @@ function renderSelectionDrawer(){
       const el = nodes.find(node => node.dataset.id === id);
       if(el) el.remove();
     }
-    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v9.4"; }
+    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v9.5"; }
 
     function saveMessage(role,content,extra){ const arr=read("frai_messages",[]); arr.push({role,content,extra}); localStorage.setItem("frai_messages",JSON.stringify(arr.slice(-30))); }
     function recordUsage(data,message,ms,error){ const s=read("frai_stats",{total:0,errors:0,clicks:0,feedback:{},intents:{},times:[]}); s.total++; if(error)s.errors++; const it=data.intent||"diagnostic"; s.intents[it]=(s.intents[it]||0)+1; s.times.push(ms); s.times=s.times.slice(-100); localStorage.setItem("frai_stats",JSON.stringify(s)); }
