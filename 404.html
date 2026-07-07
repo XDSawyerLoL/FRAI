@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#273b99" />
   <meta name="description" content="Mon compagnon Emploi — assistant France Travail pour orienter vers la bonne action" />
-  <title>Mon compagnon Emploi · France Travail · v9.7</title>
+  <title>Mon compagnon Emploi · France Travail · v9.8</title>
   <style>
     :root{
       --ft-blue:#273b99;--ft-blue-dark:#1d2b73;--ft-blue-soft:#eef2ff;
@@ -763,7 +763,7 @@
     .broader-actions button{border:1px solid #d9deea;background:#fff;color:var(--ft-blue);border-radius:999px;padding:7px 10px;font-size:12px;font-weight:900;cursor:pointer}
 
   
-    /* v9.7 — Mon compagnon Emploi */
+    /* v9.8 — Mon compagnon Emploi */
     .hero-flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px}
     .hero-flow span{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:7px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);color:var(--ft-blue-dark);font-weight:900;font-size:13px}
     .hero-flow b{color:var(--ft-blue);font-size:15px}
@@ -801,7 +801,7 @@
     }
     
   
-    /* v9.7 — pertinence + jauge marché */
+    /* v9.8 — pertinence + jauge marché */
     .gauge-card,.relevance-card{
       background:#fff;
       border:1px solid var(--line);
@@ -926,7 +926,7 @@
     }
 
   
-    /* v9.7 — simplification radicale + parcours guidé */
+    /* v9.8 — simplification radicale + parcours guidé */
     .brand-title{
       white-space:normal;
       line-height:1.05;
@@ -1097,7 +1097,7 @@
     }
 
   
-    /* v9.7 — patch stabilité parcours guidé */
+    /* v9.8 — patch stabilité parcours guidé */
     .guide-options{max-width:100%}
     .guide-btn{width:100%}
     .guide-btn div{min-width:0}
@@ -1118,7 +1118,7 @@
     }
 
   
-    /* v9.7 — boutons de suggestion guidés */
+    /* v9.8 — boutons de suggestion guidés */
     .guide-options{
       display:grid;
       gap:10px;
@@ -1211,7 +1211,7 @@
     }
 
   
-    /* v9.7 — vrai parcours guidé dans le carré bleu */
+    /* v9.8 — vrai parcours guidé dans le carré bleu */
     .guided-panel{
       margin-top:14px;
       border-radius:26px;
@@ -1258,7 +1258,7 @@
     }
 
   
-    /* v9.7 — actions guidées robustes */
+    /* v9.8 — actions guidées robustes */
     .guided-detail-form{
       display:grid;
       gap:10px;
@@ -1328,11 +1328,133 @@
     }
 
   
-    /* v9.7 — restauration du chat libre */
+    /* v9.8 — restauration du chat libre */
     .message-row.user .bubble{white-space:pre-wrap}
     .message-row.assistant .bubble{overflow:visible}
     .chat-fallback{display:grid;gap:10px;white-space:pre-wrap;line-height:1.45}
     .chat-fallback .small-btn{width:max-content}
+
+  
+    /* v9.8 — pistes proches compactes + reset flottant */
+    .broader-box{
+      padding:10px 11px !important;
+      border-radius:16px !important;
+      margin-top:8px !important;
+    }
+    .broader-box h3{
+      font-size:15px !important;
+      margin:0 0 4px !important;
+      line-height:1.15 !important;
+    }
+    .broader-box > p{
+      font-size:12px !important;
+      line-height:1.25 !important;
+      margin:0 0 8px !important;
+    }
+    .broader-list{
+      gap:7px !important;
+    }
+    .broader-item{
+      display:grid !important;
+      grid-template-columns:1fr auto !important;
+      gap:7px 10px !important;
+      align-items:center !important;
+      padding:9px 10px !important;
+      min-height:0 !important;
+      border-radius:13px !important;
+    }
+    .broader-item strong{
+      font-size:14px !important;
+      line-height:1.18 !important;
+      margin:0 !important;
+    }
+    .broader-item small{
+      font-size:12px !important;
+      line-height:1.25 !important;
+      margin:2px 0 0 !important;
+      grid-column:1 / 2 !important;
+    }
+    .broader-item .skill-tags{
+      grid-column:1 / -1 !important;
+      gap:4px !important;
+      margin-top:2px !important;
+    }
+    .broader-item .skill-tag{
+      font-size:10px !important;
+      padding:3px 6px !important;
+    }
+    .broader-item .broader-actions{
+      grid-column:2 / 3 !important;
+      grid-row:1 / 3 !important;
+      margin:0 !important;
+      justify-content:flex-end !important;
+    }
+    .broader-item .broader-actions button{
+      font-size:0 !important;
+      width:42px !important;
+      height:42px !important;
+      padding:0 !important;
+      border-radius:50% !important;
+      display:grid !important;
+      place-items:center !important;
+      background:var(--ft-blue) !important;
+      color:#fff !important;
+      border-color:var(--ft-blue) !important;
+    }
+    .broader-item .broader-actions button::before{
+      content:"→";
+      font-size:18px;
+      font-weight:1000;
+      line-height:1;
+    }
+    .reset-fab{
+      position:fixed;
+      right:8px;
+      bottom:128px;
+      z-index:35;
+      border:0;
+      border-radius:999px;
+      background:var(--ft-blue);
+      color:#fff;
+      padding:9px 12px;
+      font-size:13px;
+      font-weight:1000;
+      box-shadow:0 12px 26px rgba(39,59,153,.22);
+      cursor:pointer;
+      transform:scale(.92);
+      transform-origin:right bottom;
+    }
+    body.keyboard-open .reset-fab{
+      display:none !important;
+    }
+    @media(max-width:760px){
+      .broader-item{
+        grid-template-columns:1fr auto !important;
+        padding:8px 9px !important;
+      }
+      .broader-item strong{
+        font-size:13px !important;
+      }
+      .broader-item small{
+        font-size:11px !important;
+        max-height:2.5em;
+        overflow:hidden;
+      }
+      .broader-item .skill-tags{
+        max-height:24px;
+        overflow:hidden;
+      }
+      .broader-item .broader-actions button{
+        width:38px !important;
+        height:38px !important;
+      }
+      .reset-fab{
+        right:8px;
+        bottom:122px;
+        padding:8px 11px;
+        font-size:12px;
+      }
+    }
 
   </style>
 </head>
@@ -1349,7 +1471,7 @@
           </div>
         </div>
         <div class="top-actions">
-          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v9.7</span></div>
+          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v9.8</span></div>
           <button class="icon-btn" id="resetBtn" type="button" title="Nouvelle conversation">↺ <span>Nouveau</span></button>
         </div>
       </header>
@@ -1397,6 +1519,7 @@
       </section>
     </main>
   </div>
+  <button id="resetFab" class="reset-fab" type="button" aria-label="Réinitialiser le chat">Réinitialiser</button>
   <button id="selectionFab" class="selection-fab" type="button" hidden aria-label="Ouvrir ma sélection">Sélection <span id="selectionFabCount">0</span></button>
   <div id="selectionDrawer" class="selection-drawer" hidden>
     <div class="selection-backdrop" data-close-selection="1"></div>
@@ -1426,7 +1549,8 @@
       selectionDrawer: document.getElementById("selectionDrawer"),
       selectionDrawerBody: document.getElementById("selectionDrawerBody"),
       selectionCloseBtn: document.getElementById("selectionCloseBtn"),
-      guidedPanel: document.getElementById("guidedPanel")
+      guidedPanel: document.getElementById("guidedPanel"),
+      resetFab: document.getElementById("resetFab")
     };
     const state = { busy:false, city: localStorage.getItem("frai_city") || DEFAULT_CITY, lastData:null, guideStep:"situation", guideContext:{} };
 
@@ -1479,7 +1603,16 @@ function bind(){
   els.input.addEventListener("focus", () => { document.body.classList.add("keyboard-open"); updateKeyboardOffset(); setTimeout(scrollBottom, 120); });
   els.input.addEventListener("blur", () => { setTimeout(() => { document.body.classList.remove("keyboard-open"); updateKeyboardOffset(); }, 160); });
   els.input.addEventListener("keydown", e => { if(e.key==="Enter" && !e.shiftKey){ e.preventDefault(); els.form.requestSubmit(); }});
-  els.reset.addEventListener("click", () => { localStorage.removeItem("frai_messages"); els.messages.innerHTML=""; document.body.classList.remove("chat-started"); state.guideContext={}; renderGuidedPanel("situation"); toast("Nouvelle conversation"); });
+  const resetConversation = () => {
+        localStorage.removeItem("frai_messages");
+        els.messages.innerHTML="";
+        document.body.classList.remove("chat-started");
+        state.guideContext={};
+        renderGuidedPanel("situation");
+        toast("Nouvelle conversation");
+      };
+      els.reset.addEventListener("click", resetConversation);
+      els.resetFab?.addEventListener("click", resetConversation);
   document.querySelectorAll(".chip").forEach(b => b.addEventListener("click",()=>{
         if(b.dataset.guideStart){ startGuidedFlow(b.dataset.guideStart); return; }
         els.input.value=b.dataset.prompt||""; autosize(); els.input.focus();
@@ -1500,7 +1633,7 @@ function bind(){
       try{
         const r=await fetch(WORKER+"/health?_="+Date.now(),{cache:"no-store"});
         const d=await r.json();
-        if(d.ok) els.status.textContent = "Prêt · " + (d.mode || "v9.7");
+        if(d.ok) els.status.textContent = "Prêt · " + (d.mode || "v9.8");
       }catch(e){ els.status.textContent = "Worker à vérifier"; }
     }
 
@@ -2551,7 +2684,7 @@ function renderSelectionDrawer(){
       const el = nodes.find(node => node.dataset.id === id);
       if(el) el.remove();
     }
-    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v9.7"; }
+    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v9.8"; }
 
     function saveMessage(role,content,extra){ const arr=read("frai_messages",[]); arr.push({role,content,extra}); localStorage.setItem("frai_messages",JSON.stringify(arr.slice(-30))); }
     function recordUsage(data,message,ms,error){ const s=read("frai_stats",{total:0,errors:0,clicks:0,feedback:{},intents:{},times:[]}); s.total++; if(error)s.errors++; const it=data.intent||"diagnostic"; s.intents[it]=(s.intents[it]||0)+1; s.times.push(ms); s.times=s.times.slice(-100); localStorage.setItem("frai_stats",JSON.stringify(s)); }
