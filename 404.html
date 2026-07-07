@@ -763,7 +763,7 @@
     .broader-actions button{border:1px solid #d9deea;background:#fff;color:var(--ft-blue);border-radius:999px;padding:7px 10px;font-size:12px;font-weight:900;cursor:pointer}
 
   
-    /* v9.10.3 — Mon compagnon Emploi */
+    /* v9.10.7 — Mon compagnon Emploi */
     .hero-flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px}
     .hero-flow span{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:7px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);color:var(--ft-blue-dark);font-weight:900;font-size:13px}
     .hero-flow b{color:var(--ft-blue);font-size:15px}
@@ -801,7 +801,7 @@
     }
     
   
-    /* v9.10.3 — pertinence + jauge marché */
+    /* v9.10.7 — pertinence + jauge marché */
     .gauge-card,.relevance-card{
       background:#fff;
       border:1px solid var(--line);
@@ -926,7 +926,7 @@
     }
 
   
-    /* v9.10.3 — simplification radicale + parcours guidé */
+    /* v9.10.7 — simplification radicale + parcours guidé */
     .brand-title{
       white-space:normal;
       line-height:1.05;
@@ -1097,7 +1097,7 @@
     }
 
   
-    /* v9.10.3 — patch stabilité parcours guidé */
+    /* v9.10.7 — patch stabilité parcours guidé */
     .guide-options{max-width:100%}
     .guide-btn{width:100%}
     .guide-btn div{min-width:0}
@@ -1118,7 +1118,7 @@
     }
 
   
-    /* v9.10.3 — boutons de suggestion guidés */
+    /* v9.10.7 — boutons de suggestion guidés */
     .guide-options{
       display:grid;
       gap:10px;
@@ -1211,7 +1211,7 @@
     }
 
   
-    /* v9.10.3 — vrai parcours guidé dans le carré bleu */
+    /* v9.10.7 — vrai parcours guidé dans le carré bleu */
     .guided-panel{
       margin-top:14px;
       border-radius:26px;
@@ -1258,7 +1258,7 @@
     }
 
   
-    /* v9.10.3 — actions guidées robustes */
+    /* v9.10.7 — actions guidées robustes */
     .guided-detail-form{
       display:grid;
       gap:10px;
@@ -1328,14 +1328,14 @@
     }
 
   
-    /* v9.10.3 — restauration du chat libre */
+    /* v9.10.7 — restauration du chat libre */
     .message-row.user .bubble{white-space:pre-wrap}
     .message-row.assistant .bubble{overflow:visible}
     .chat-fallback{display:grid;gap:10px;white-space:pre-wrap;line-height:1.45}
     .chat-fallback .small-btn{width:max-content}
 
   
-    /* v9.10.3 — pistes proches compactes + reset flottant */
+    /* v9.10.7 — pistes proches compactes + reset flottant */
     .broader-box{
       padding:10px 11px !important;
       border-radius:16px !important;
@@ -1457,7 +1457,7 @@
     }
 
   
-    /* v9.10.3 — pilotage réel des actions */
+    /* v9.10.7 — pilotage réel des actions */
     .guided-choice.direct{
       background:#ffffff;
       border-left:7px solid #20b486;
@@ -1496,7 +1496,7 @@
     }
 
   
-    /* v9.10.3 — pistes proches directes + saisie mobile stabilisée */
+    /* v9.10.7 — pistes proches directes + saisie mobile stabilisée */
     .composer{
       z-index:44 !important;
       transform:none !important;
@@ -1529,7 +1529,7 @@
 
   
 
-    /* v9.10.3 — bulles d’aide + anti-débordement mobile */
+    /* v9.10.7 — bulles d’aide + anti-débordement mobile */
     .guided-panel,
     .guided-panel *{
       box-sizing:border-box;
@@ -1646,7 +1646,7 @@
     }
 
   
-    /* v9.10.3 — mini-popin d’aide + vrai mode conseiller */
+    /* v9.10.7 — mini-popin d’aide + vrai mode conseiller */
     .guided-choice-wrap.open .guided-info-bubble{display:none !important}
     .guided-help-popin{
       position:fixed;
@@ -1771,6 +1771,278 @@
       body[data-mode="conseiller"] .guided-choice span::before{display:block}
     }
 
+  
+    /* v9.10.7 — cartes blanches pleine largeur + ? bien intégré */
+    .guided-choice-wrap{
+      width:100%;
+      min-width:0;
+    }
+    .guided-choice-line{
+      position:relative;
+      display:block;
+      width:100%;
+      min-width:0;
+    }
+    .guided-choice{
+      width:100%;
+      max-width:100%;
+      box-sizing:border-box;
+      align-items:center;
+    }
+    .guided-choice.has-info{
+      width:100%;
+      padding-right:76px;
+    }
+    .guided-choice-info{
+      right:18px;
+      top:50%;
+      transform:translateY(-50%);
+      width:42px;
+      height:42px;
+      font-size:24px;
+      border:2px solid #cfd7ef;
+      background:#f4f7ff;
+      box-shadow:0 8px 18px rgba(17,24,39,.10);
+    }
+    .guided-choice.direct::after,
+    .guided-choice.query::after{
+      margin-right:70px;
+    }
+    @media(max-width:760px){
+      .guided-choice{
+        width:100%;
+        max-width:100%;
+      }
+      .guided-choice.has-info{
+        padding-right:68px;
+      }
+      .guided-choice.direct::after,
+      .guided-choice.query::after{
+        margin-right:58px;
+      }
+      .guided-choice-info{
+        right:14px;
+        width:38px;
+        height:38px;
+        font-size:22px;
+      }
+    }
+
+  
+    /* v9.10.7 — finition premium des cartes guidées */
+    .guided-options{
+      gap:12px !important;
+      width:100%;
+    }
+    .guided-choice-wrap{
+      width:100%;
+      max-width:100%;
+      min-width:0;
+    }
+    .guided-choice-line{
+      position:relative;
+      width:100%;
+      min-width:0;
+    }
+    .guided-choice{
+      position:relative;
+      width:100%;
+      min-height:74px;
+      padding:15px 104px 15px 22px !important;
+      border-radius:22px !important;
+      display:grid !important;
+      grid-template-columns:minmax(0,1fr);
+      align-items:center;
+      background:#fff;
+      box-shadow:0 10px 22px rgba(17,24,39,.12);
+      border:1px solid rgba(255,255,255,.70);
+      overflow:hidden;
+    }
+    .guided-choice::before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:0;
+      bottom:0;
+      width:12px;
+      background:#f4c542;
+      border-radius:22px 0 0 22px;
+    }
+    .guided-choice.direct::before{
+      background:#20b486;
+    }
+    .guided-choice.query::before{
+      background:#f4c542;
+    }
+    .guided-choice div{
+      min-width:0;
+      max-width:100%;
+      overflow-wrap:anywhere;
+      word-break:normal;
+      line-height:1.1;
+    }
+    .guided-choice div,
+    .guided-choice div:first-child{
+      color:var(--ft-blue);
+      font-size:clamp(19px,4.5vw,25px);
+      font-weight:1000;
+      letter-spacing:-.025em;
+    }
+    .guided-choice span{
+      display:block;
+      color:#5b6472;
+      font-size:clamp(13px,3.1vw,16px);
+      font-weight:850;
+      line-height:1.24;
+      margin-top:6px;
+      letter-spacing:0;
+    }
+    .guided-choice.direct::after,
+    .guided-choice.query::after,
+    .guided-choice::after{
+      position:absolute;
+      right:72px;
+      top:50%;
+      transform:translateY(-50%);
+      margin:0 !important;
+      color:var(--ft-blue);
+      font-size:34px;
+      line-height:1;
+      font-weight:1000;
+      width:26px;
+      text-align:center;
+    }
+    .guided-choice.direct::after{
+      content:"↗";
+      font-size:28px;
+    }
+    .guided-choice.query::after,
+    .guided-choice::after{
+      content:"→";
+    }
+    .guided-choice.has-info{
+      padding-right:126px !important;
+    }
+    .guided-choice.has-info::after{
+      right:78px;
+    }
+    .guided-choice-info{
+      position:absolute;
+      right:18px;
+      top:50%;
+      transform:translateY(-50%);
+      width:42px;
+      height:42px;
+      border-radius:999px;
+      border:2px solid #cfd7ef;
+      background:#f4f7ff;
+      color:var(--ft-blue);
+      display:grid;
+      place-items:center;
+      font-size:24px;
+      font-weight:1000;
+      cursor:pointer;
+      z-index:3;
+      box-shadow:0 8px 16px rgba(17,24,39,.12);
+      transition:transform .14s ease, background .14s ease, box-shadow .14s ease;
+    }
+    .guided-choice-info:hover,
+    .guided-choice-info:focus-visible{
+      background:#fff;
+      transform:translateY(-50%) scale(1.04);
+      box-shadow:0 10px 20px rgba(17,24,39,.15);
+      outline:3px solid rgba(39,59,153,.18);
+      outline-offset:2px;
+    }
+    .guided-choice:active{
+      transform:translateY(1px);
+    }
+    .guided-choice:focus-visible{
+      outline:3px solid rgba(255,255,255,.68);
+      outline-offset:3px;
+    }
+    body[data-mode="conseiller"] .guided-choice{
+      border-left:0 !important;
+    }
+    body[data-mode="conseiller"] .guided-choice::before{
+      background:#f4c542;
+    }
+    body[data-mode="conseiller"] .guided-choice.direct::before{
+      background:#20b486;
+    }
+    body[data-mode="conseiller"] .guided-choice span::before{
+      content:"Conseiller : ";
+      display:inline;
+      font-weight:1000;
+      color:#273b99;
+    }
+    @media(max-width:760px){
+      .guided-options{
+        gap:10px !important;
+      }
+      .guided-choice{
+        min-height:68px;
+        padding:13px 92px 13px 18px !important;
+        border-radius:20px !important;
+      }
+      .guided-choice::before{
+        width:9px;
+        border-radius:20px 0 0 20px;
+      }
+      .guided-choice div,
+      .guided-choice div:first-child{
+        font-size:clamp(18px,5.5vw,22px);
+      }
+      .guided-choice span{
+        font-size:clamp(12px,3.8vw,14px);
+        margin-top:5px;
+      }
+      .guided-choice.direct::after,
+      .guided-choice.query::after,
+      .guided-choice::after{
+        right:58px;
+        font-size:29px;
+      }
+      .guided-choice.direct::after{
+        font-size:25px;
+      }
+      .guided-choice.has-info{
+        padding-right:104px !important;
+      }
+      .guided-choice.has-info::after{
+        right:58px;
+      }
+      .guided-choice-info{
+        right:12px;
+        width:38px;
+        height:38px;
+        font-size:22px;
+      }
+      body[data-mode="conseiller"] .guided-choice span::before{
+        display:inline;
+      }
+    }
+    @media(max-width:390px){
+      .guided-choice{
+        padding-right:84px !important;
+      }
+      .guided-choice.has-info{
+        padding-right:96px !important;
+      }
+      .guided-choice.direct::after,
+      .guided-choice.query::after,
+      .guided-choice::after,
+      .guided-choice.has-info::after{
+        right:52px;
+      }
+      .guided-choice-info{
+        width:34px;
+        height:34px;
+        font-size:20px;
+        right:10px;
+      }
+    }
+
   </style>
 </head>
 <body data-mode="demandeur">
@@ -1786,7 +2058,7 @@
           </div>
         </div>
         <div class="top-actions">
-          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v9.10.3</span></div>
+          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v9.10.7</span></div>
           <button class="icon-btn" id="resetBtn" type="button" title="Nouvelle conversation">↺ <span>Nouveau</span></button>
         </div>
       </header>
@@ -1873,7 +2145,11 @@
       ateliers: "https://www.francetravail.fr/candidat/les-ateliers-francetravail.html",
       ateliersCandidature: "https://www.francetravail.fr/candidat/les-ateliers-francetravail/ateliers-sur-les-techniques-de-r.html",
       cv: "https://www.francetravail.fr/candidat/vos-recherches/preparer-votre-candidature/cv-lettre-de-motivation-e-mail/comment-rediger-un-cv-efficace-e.html",
-      entretien: "https://www.francetravail.fr/candidat/vos-recherches/preparer-votre-candidature/entretien/des-entretiens-dembauche-100---r.html"
+      entretien: "https://www.francetravail.fr/candidat/vos-recherches/preparer-votre-candidature/entretien/des-entretiens-dembauche-100---r.html",
+      formations: "https://candidat.francetravail.fr/formations/recherche",
+      projetFormation: "https://www.francetravail.fr/candidat/votre-projet-de-formation.html",
+      bonneAlternance: "https://labonnealternance.apprentissage.beta.gouv.fr/",
+      alternanceInfo: "https://www.francetravail.fr/candidat/vos-services-en-ligne/la-bonne-alternance.html"
     };
     const els = {
       messages: document.getElementById("messages"),
@@ -2234,7 +2510,7 @@ function renderWelcome(){
     function renderPanelProgress(step){
       const div=document.createElement("div");
       div.className="guided-progress-line";
-      const level = ({situation:1, knowJob:2, knownJob:3, unknownJob:3, stage:2, atelier:2})[step] || 1;
+      const level = ({situation:1, knowJob:2, knownJob:3, unknownJob:3, stage:2, atelier:2, training:2})[step] || 1;
       const labels = ["Situation", "Métier", "Action"];
       labels.forEach((label,idx)=>{
         const pill=document.createElement("span");
@@ -2250,6 +2526,7 @@ function renderWelcome(){
       if(step === "situation") return [
         {label:"Je suis au chômage", help:"Avancer vers un emploi", info:"Ce parcours convient si vous cherchez rapidement la prochaine action utile vers l’emploi : clarifier le métier, cibler les offres ou renforcer la candidature.", next:"knowJob", context:{situation:"chomage"}},
         {label:"Je veux changer de métier", help:"Explorer ou confirmer une piste", info:"Choisissez cette entrée si vous êtes en reconversion ou si votre projet n’est plus stabilisé. Le parcours privilégiera exploration, immersion et construction du projet.", next:"knowJob", context:{situation:"reconversion"}},
+        {label:"Je cherche une formation", help:"Formation, alternance, POEI", info:"Cette entrée sert à retrouver les pistes de formation : rechercher une formation, préparer une alternance ou regarder une préparation opérationnelle à l’emploi.", next:"training", context:{situation:"formation"}},
         {label:"Je manque de méthode", help:"CV, entretien, candidature", info:"Cette entrée est utile quand le besoin porte surtout sur la méthode : améliorer un CV, préparer un entretien, mieux candidater ou gagner en autonomie numérique.", next:"atelier", context:{situation:"methode"}},
         {label:"Je veux découvrir un métier", help:"Immersion, projet, Métierscope", info:"À choisir si le métier n’est pas encore clair. Le parcours proposera des solutions pour explorer un métier, tester une piste ou clarifier un projet professionnel.", next:"unknownJob", context:{situation:"decouverte"}}
       ];
@@ -2259,6 +2536,8 @@ function renderWelcome(){
       ];
       if(step === "knownJob") return [
         {label:"Rechercher des offres", help:"Préciser métier et ville", info:"Cette action lance une vraie recherche d’offres à partir d’un métier et d’une ville. Elle sert quand le poste visé est déjà identifié.", detailAction:"offres"},
+        {label:"Trouver une formation", help:"Préciser métier et ville", info:"Cette action relance la partie formation : elle aide à chercher une formation liée au métier ou au projet, avec un territoire si nécessaire.", detailAction:"formation"},
+        {label:"La bonne alternance", help:"Ouvrir le service officiel", info:"La Bonne Alternance aide à rechercher une alternance et une formation en apprentissage. Utile quand la personne veut se former tout en travaillant.", url:OFFICIAL_ACTIONS.bonneAlternance, directLabel:"Ouverture La bonne alternance"},
         {label:"Améliorer mon CV", help:"Préciser le métier ciblé", info:"Cette action aide à cibler les bons ateliers ou conseils CV selon le poste recherché, pour éviter une aide trop générique.", detailAction:"cv"},
         {label:"Préparer un entretien", help:"Préciser le métier ou le poste", info:"Cette action sert à obtenir une préparation d’entretien cohérente avec le métier visé : questions probables, posture et éléments à valoriser.", detailAction:"entretien"},
         {label:"Voir les événements", help:"Préciser ville et thème", info:"Cette action aide à repérer des forums, salons, recrutements ou rencontres emploi en lien avec un métier ou un territoire.", detailAction:"events"}
@@ -2267,7 +2546,15 @@ function renderWelcome(){
         {label:"Activ’Projet", help:"Ouvrir le service officiel", info:"Activ’Projet aide à clarifier un projet professionnel, identifier des pistes réalistes et mieux comprendre ses priorités avant de candidater.", url:OFFICIAL_ACTIONS.activprojet, directLabel:"Ouverture Activ’Projet"},
         {label:"Immersion facilitée", help:"Ouvrir le service officiel", info:"L’immersion facilitée permet de tester un métier ou un environnement de travail en situation réelle, sans s’engager trop vite.", url:OFFICIAL_ACTIONS.immersion, directLabel:"Ouverture Immersion facilitée"},
         {label:"Métierscope", help:"Ouvrir le service officiel", info:"Métierscope permet d’explorer des métiers, leurs contenus, les compétences associées et des pistes proches pour élargir la réflexion.", url:OFFICIAL_ACTIONS.metierscope, directLabel:"Ouverture Métierscope"},
+        {label:"Trouver une formation", help:"Explorer une piste de formation", info:"Cette action est utile si la personne pense devoir monter en compétence ou construire une reconversion par la formation.", detailAction:"formation"},
+        {label:"La bonne alternance", help:"Ouvrir le service officiel", info:"La Bonne Alternance est utile pour chercher une alternance et une formation en apprentissage quand le projet peut se faire en contrat.", url:OFFICIAL_ACTIONS.bonneAlternance, directLabel:"Ouverture La bonne alternance"},
         {label:"Atelier projet", help:"Ouvrir les ateliers France Travail", info:"Les ateliers projet servent à être guidé pas à pas pour clarifier une piste, structurer la réflexion et choisir la prochaine bonne action.", url:OFFICIAL_ACTIONS.ateliers, directLabel:"Ouverture Ateliers France Travail"}
+      ];
+      if(step === "training") return [
+        {label:"Trouver une formation", help:"Rechercher une formation France Travail", info:"Cette action lance une recherche formation à partir d’un métier, d’un domaine ou d’une ville. Elle remet la formation dans le parcours principal.", detailAction:"formation"},
+        {label:"La bonne alternance", help:"Alternance + formation en apprentissage", info:"La Bonne Alternance permet de chercher une alternance et une formation en apprentissage. Elle est pertinente pour apprendre un métier en contrat.", url:OFFICIAL_ACTIONS.bonneAlternance, directLabel:"Ouverture La bonne alternance"},
+        {label:"Projet de formation", help:"Comprendre les étapes", info:"Cette page aide à construire un projet de formation : choisir un métier, vérifier les compétences et préparer le financement.", url:OFFICIAL_ACTIONS.projetFormation, directLabel:"Ouverture projet de formation"},
+        {label:"POEI", help:"Préparation opérationnelle à l’emploi", info:"La POEI est utile quand une formation courte prépare à une embauche identifiée ou à un besoin employeur.", prompt:"Je veux comprendre la POEI, préparation opérationnelle à l'emploi, et savoir si elle convient à ma situation"}
       ];
       if(step === "stage") return [
         {label:"Découvrir un métier", help:"Observer le quotidien avant de choisir", prompt:"Je veux faire une immersion facilitée pour découvrir un métier"},
@@ -2364,6 +2651,16 @@ function renderWelcome(){
             {id:"guidedJob", label:"Thème ou métier", placeholder:"Ex. vente, numérique, restauration"}
           ],
           primary:"Voir les événements"
+        },
+        formation:{
+          kicker:"Formation",
+          title:"Quelle formation chercher ?",
+          text:"Indiquez un métier, un domaine ou une compétence, puis une ville si utile.",
+          fields:[
+            {id:"guidedJob", label:"Métier, domaine ou compétence", placeholder:"Ex. vente, numérique, petite enfance"},
+            {id:"guidedCity", label:"Ville ou secteur", placeholder:"Ex. Paris, Issy-les-Moulineaux"}
+          ],
+          primary:"Chercher les formations"
         }
       }[action];
 
@@ -2438,6 +2735,9 @@ function renderWelcome(){
       } else if(action === "events"){
         if(!city && !job){ showGuidedError(errorEl, "Indiquez au moins une ville ou un thème."); return; }
         prompt = "Quels événements emploi " + (job ? "sur " + job + " " : "") + (city ? "à " + city : "peuvent m'aider ?");
+      } else if(action === "formation"){
+        if(!job){ showGuidedError(errorEl, "Indiquez au moins un métier, un domaine ou une compétence."); return; }
+        prompt = "Je cherche une formation en " + job + (city ? " à " + city : "") + ". Propose la bonne prochaine étape France Travail.";
       }
 
       runGuideQuery(personalizePromptFromContext(prompt));
@@ -2462,7 +2762,7 @@ function renderWelcome(){
 
     function previousPanelStep(step){
       if(["knownJob","unknownJob"].includes(step)) return "knowJob";
-      if(["knowJob","atelier","stage"].includes(step)) return "situation";
+      if(["knowJob","atelier","stage","training"].includes(step)) return "situation";
       return "situation";
     }
 
@@ -2473,6 +2773,7 @@ function renderWelcome(){
         knownJob:"But conseiller : choisir une seule action opérationnelle pour éviter la dispersion.",
         unknownJob:"But conseiller : éviter l’offre trop tôt ; privilégier projet, exploration ou immersion.",
         atelier:"But conseiller : proposer un atelier seulement si le besoin est méthodologique.",
+        training:"But conseiller : distinguer formation, alternance et préparation courte vers l’emploi.",
         stage:"But conseiller : utiliser l’immersion pour confirmer ou sécuriser une piste."
       })[step] || "But conseiller : transformer la demande en prochaine action utile.";
     }
@@ -2500,6 +2801,7 @@ function renderWelcome(){
       if (intent === "ateliers") return "Choisir l’atelier le plus adapté";
       if (intent === "pmsmp") return "Tester un métier avec une immersion";
       if (intent === "poe") return "Vérifier une POEI avant embauche";
+      if (intent === "events" && !(Array.isArray(data.events) && data.events.length)) return "Aucun événement ciblé trouvé";
       if (intent === "events") return "S’inscrire à un événement utile";
       if (intent === "recherche_emploi") return "Consulter les offres les plus proches";
       if (intent === "candidature_cv") return "Améliorer la candidature";
@@ -2513,6 +2815,7 @@ function renderWelcome(){
       if (intent === "ateliers") return "Les ateliers servent à travailler un point précis : CV, entretien, projet, numérique, formation ou création d’entreprise.";
       if (intent === "pmsmp") return "L’objectif est de vérifier un métier en conditions réelles avant de s’engager.";
       if (intent === "poe") return "La POEI prépare à une embauche quand un besoin de formation court est identifié.";
+      if (intent === "events" && !(Array.isArray(data.events) && data.events.length)) return "Les résultats trop éloignés du thème demandé sont écartés. Essayez un métier plus large, une autre ville ou le service Mes Événements Emploi.";
       if (intent === "events") return "Un événement peut donner un contact direct, une information métier ou une opportunité de recrutement.";
       return fallback || data.analysis?.need || data.compactReply || "";
     }
@@ -2846,10 +3149,11 @@ function renderSelectionDrawer(){
 
 
     function renderResults(wrap,data){
-      const offres = Array.isArray(data.offres) ? data.offres.slice(0, 30) : [];
+      const offerIntents = ["recherche_emploi","poe","international"];
+      const offres = offerIntents.includes(data.intent) && Array.isArray(data.offres) ? data.offres.slice(0, 30) : [];
       const otherItems=[];
 
-      (data.events||[]).slice(0,4).forEach(e=>otherItems.push({kind:"Événement",title:e.titre,meta:[formatDate(e.dateEvenement),e.heureDebut,e.ville,e.type].filter(Boolean).join(" · "),desc:e.description||e.deroulement,url:e.url,cta:"Voir l’événement"}));
+      (data.events||[]).slice(0,4).forEach(e=>otherItems.push({kind:"Événement",title:e.titre,meta:[formatDate(e.dateEvenement),formatHour(e.heureDebut),e.ville,e.type].filter(Boolean).join(" · "),desc:e.description||e.deroulement,url:e.url,cta:"Voir l’événement"}));
       (data.formations||[]).slice(0,3).forEach(f=>otherItems.push({kind:"Formation",title:f.titre,meta:[f.organisme,f.ville,f.dateDebut].filter(Boolean).join(" · "),desc:f.description,url:f.url,cta:"Voir la formation"}));
       (data.atelierCategories||[]).slice(0,9).forEach(a=>otherItems.push({kind:"Atelier",title:a.title,meta:"France Travail",desc:a.description,url:"",cta:""}));
 
@@ -3140,7 +3444,7 @@ function renderSelectionDrawer(){
       const el = nodes.find(node => node.dataset.id === id);
       if(el) el.remove();
     }
-    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v9.10.3"; }
+    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v9.10.7"; }
 
     function saveMessage(role,content,extra){ const arr=read("frai_messages",[]); arr.push({role,content,extra}); localStorage.setItem("frai_messages",JSON.stringify(arr.slice(-30))); }
     function recordUsage(data,message,ms,error){ const s=read("frai_stats",{total:0,errors:0,clicks:0,feedback:{},intents:{},times:[]}); s.total++; if(error)s.errors++; const it=data.intent||"diagnostic"; s.intents[it]=(s.intents[it]||0)+1; s.times.push(ms); s.times=s.times.slice(-100); localStorage.setItem("frai_stats",JSON.stringify(s)); }
@@ -3156,6 +3460,7 @@ function renderSelectionDrawer(){
     function firstLine(s){ return String(s||"").split(/\n+/).find(Boolean)||""; }
     function trim(s,n){ s=String(s||"").replace(/\s+/g," ").trim(); return s.length>n?s.slice(0,n-1)+"…":s; }
     function formatDate(v){ if(!v)return""; const d=new Date(v); if(Number.isNaN(d.getTime()))return""; return d.toLocaleDateString("fr-FR",{weekday:"short",day:"2-digit",month:"short"}); }
+    function formatHour(v){ if(!v)return""; const s=String(v); const m=s.match(/(\d{1,2}):(\d{2})/); return m ? `${m[1].padStart(2,"0")}:${m[2]}` : s; }
     function formatIntent(i){ return ({diagnostic:"besoin à préciser",pmsmp:"immersion facilitée",poe:"POEI (Préparation opérationnelle à l’emploi)",ateliers:"ateliers France Travail",recherche_emploi:"recherche d’emploi",candidature_cv:"CV / candidature",activ_projet:"projet professionnel",events:"événements emploi"})[i]||i||"diagnostic"; }
     function extractCity(t){ const m=String(t||"").match(/\b(?:à|a|sur|près de|pres de)\s+([A-Za-zÀ-ÿ' -]{3,60})/i); return m?m[1].replace(/[?.!,;:].*$/,"").trim():""; }
   </script>
