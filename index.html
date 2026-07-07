@@ -763,7 +763,7 @@
     .broader-actions button{border:1px solid #d9deea;background:#fff;color:var(--ft-blue);border-radius:999px;padding:7px 10px;font-size:12px;font-weight:900;cursor:pointer}
 
   
-    /* v9.10.8 — Mon compagnon Emploi */
+    /* v9.10.9 — Mon compagnon Emploi */
     .hero-flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px}
     .hero-flow span{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:7px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);color:var(--ft-blue-dark);font-weight:900;font-size:13px}
     .hero-flow b{color:var(--ft-blue);font-size:15px}
@@ -801,7 +801,7 @@
     }
     
   
-    /* v9.10.8 — pertinence + jauge marché */
+    /* v9.10.9 — pertinence + jauge marché */
     .gauge-card,.relevance-card{
       background:#fff;
       border:1px solid var(--line);
@@ -926,7 +926,7 @@
     }
 
   
-    /* v9.10.8 — simplification radicale + parcours guidé */
+    /* v9.10.9 — simplification radicale + parcours guidé */
     .brand-title{
       white-space:normal;
       line-height:1.05;
@@ -1097,7 +1097,7 @@
     }
 
   
-    /* v9.10.8 — patch stabilité parcours guidé */
+    /* v9.10.9 — patch stabilité parcours guidé */
     .guide-options{max-width:100%}
     .guide-btn{width:100%}
     .guide-btn div{min-width:0}
@@ -1118,7 +1118,7 @@
     }
 
   
-    /* v9.10.8 — boutons de suggestion guidés */
+    /* v9.10.9 — boutons de suggestion guidés */
     .guide-options{
       display:grid;
       gap:10px;
@@ -1211,7 +1211,7 @@
     }
 
   
-    /* v9.10.8 — vrai parcours guidé dans le carré bleu */
+    /* v9.10.9 — vrai parcours guidé dans le carré bleu */
     .guided-panel{
       margin-top:14px;
       border-radius:26px;
@@ -1258,7 +1258,7 @@
     }
 
   
-    /* v9.10.8 — actions guidées robustes */
+    /* v9.10.9 — actions guidées robustes */
     .guided-detail-form{
       display:grid;
       gap:10px;
@@ -1328,14 +1328,14 @@
     }
 
   
-    /* v9.10.8 — restauration du chat libre */
+    /* v9.10.9 — restauration du chat libre */
     .message-row.user .bubble{white-space:pre-wrap}
     .message-row.assistant .bubble{overflow:visible}
     .chat-fallback{display:grid;gap:10px;white-space:pre-wrap;line-height:1.45}
     .chat-fallback .small-btn{width:max-content}
 
   
-    /* v9.10.8 — pistes proches compactes + reset flottant */
+    /* v9.10.9 — pistes proches compactes + reset flottant */
     .broader-box{
       padding:10px 11px !important;
       border-radius:16px !important;
@@ -1457,7 +1457,7 @@
     }
 
   
-    /* v9.10.8 — pilotage réel des actions */
+    /* v9.10.9 — pilotage réel des actions */
     .guided-choice.direct{
       background:#ffffff;
       border-left:7px solid #20b486;
@@ -1496,7 +1496,7 @@
     }
 
   
-    /* v9.10.8 — pistes proches directes + saisie mobile stabilisée */
+    /* v9.10.9 — pistes proches directes + saisie mobile stabilisée */
     .composer{
       z-index:44 !important;
       transform:none !important;
@@ -1529,7 +1529,7 @@
 
   
 
-    /* v9.10.8 — bulles d’aide + anti-débordement mobile */
+    /* v9.10.9 — bulles d’aide + anti-débordement mobile */
     .guided-panel,
     .guided-panel *{
       box-sizing:border-box;
@@ -1646,7 +1646,7 @@
     }
 
   
-    /* v9.10.8 — mini-popin d’aide + vrai mode conseiller */
+    /* v9.10.9 — mini-popin d’aide + vrai mode conseiller */
     .guided-choice-wrap.open .guided-info-bubble{display:none !important}
     .guided-help-popin{
       position:fixed;
@@ -1772,7 +1772,7 @@
     }
 
   
-    /* v9.10.8 — cartes blanches pleine largeur + ? bien intégré */
+    /* v9.10.9 — cartes blanches pleine largeur + ? bien intégré */
     .guided-choice-wrap{
       width:100%;
       min-width:0;
@@ -1829,7 +1829,7 @@
     }
 
   
-    /* v9.10.8 — finition premium des cartes guidées */
+    /* v9.10.9 — finition premium des cartes guidées */
     .guided-options{
       gap:12px !important;
       width:100%;
@@ -2044,7 +2044,7 @@
     }
 
   
-    /* v9.10.8 — parcours guidé compact mobile */
+    /* v9.10.9 — parcours guidé compact mobile */
     .guided-panel{
       gap:12px !important;
     }
@@ -2234,6 +2234,113 @@
       }
     }
 
+  
+    /* v9.10.9 — UX mobile stable + cartes sans flèches */
+    .guided-choice::after,
+    .guided-choice.direct::after,
+    .guided-choice.query::after,
+    .guided-choice.has-info::after{
+      content:none !important;
+      display:none !important;
+    }
+    .guided-choice{
+      padding-right:18px !important;
+    }
+    .guided-choice.has-info{
+      padding-right:58px !important;
+    }
+    .guided-choice-info{
+      right:12px !important;
+      width:30px !important;
+      height:30px !important;
+      font-size:18px !important;
+    }
+    .guided-choice div,
+    .guided-choice div:first-child{
+      padding-right:0 !important;
+    }
+    .guided-panel{
+      margin-bottom:14px !important;
+    }
+    .intro{
+      padding-bottom:18px !important;
+    }
+    .chat-area{
+      padding-bottom:0 !important;
+    }
+    .messages{
+      padding-bottom:22px !important;
+    }
+    .composer-wrap{
+      position:sticky !important;
+      left:auto !important;
+      right:auto !important;
+      bottom:0 !important;
+      z-index:45 !important;
+      transform:none !important;
+      will-change:auto !important;
+      padding:8px 12px calc(8px + env(safe-area-inset-bottom,0px)) !important;
+      background:rgba(255,255,255,.96) !important;
+    }
+    .composer{
+      gap:8px !important;
+      align-items:flex-end !important;
+    }
+    .input-box{
+      border-radius:18px !important;
+      padding:9px 11px !important;
+    }
+    .send-btn{
+      min-height:54px !important;
+      min-width:98px !important;
+      border-radius:18px !important;
+    }
+    body.keyboard-open .composer-wrap{
+      position:sticky !important;
+      bottom:0 !important;
+    }
+    @media(max-width:760px){
+      .guided-panel{
+        margin-bottom:12px !important;
+      }
+      .intro{
+        padding-bottom:14px !important;
+      }
+      .messages{
+        padding-bottom:16px !important;
+      }
+      .composer-wrap{
+        padding:8px 8px calc(8px + env(safe-area-inset-bottom,0px)) !important;
+      }
+      .composer textarea{
+        max-height:86px !important;
+      }
+      .guided-choice{
+        min-height:50px !important;
+        padding:8px 14px !important;
+      }
+      .guided-choice.has-info{
+        padding-right:52px !important;
+      }
+      .guided-choice-info{
+        right:9px !important;
+        width:28px !important;
+        height:28px !important;
+        font-size:17px !important;
+      }
+    }
+    @media(max-width:390px){
+      .guided-choice.has-info{
+        padding-right:48px !important;
+      }
+      .guided-choice-info{
+        right:8px !important;
+        width:27px !important;
+        height:27px !important;
+        font-size:16px !important;
+      }
+    }
+
   </style>
 </head>
 <body data-mode="demandeur">
@@ -2249,7 +2356,7 @@
           </div>
         </div>
         <div class="top-actions">
-          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v9.10.8</span></div>
+          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v9.10.9</span></div>
           <button class="icon-btn" id="resetBtn" type="button" title="Nouvelle conversation">↺ <span>Nouveau</span></button>
         </div>
       </header>
@@ -2374,10 +2481,10 @@
 
 
     function updateKeyboardOffset(){
-      if(!window.visualViewport) return;
-      const offset = Math.max(0, window.innerHeight - window.visualViewport.height - window.visualViewport.offsetTop);
-      document.documentElement.style.setProperty("--keyboard-offset", offset + "px");
-      document.body.classList.toggle("keyboard-open", offset > 80 || document.activeElement === els.input);
+      // v9.10.9 : ne plus déplacer manuellement le composer.
+      // Les navigateurs mobiles gèrent déjà le viewport clavier ; l’ancien offset faisait “flotter” le champ.
+      document.documentElement.style.setProperty("--keyboard-offset", "0px");
+      document.body.classList.toggle("keyboard-open", document.activeElement === els.input);
     }
     if(window.visualViewport){
       window.visualViewport.addEventListener("resize", updateKeyboardOffset);
@@ -2420,7 +2527,7 @@
 function bind(){
   els.form.addEventListener("submit", submit);
   els.input.addEventListener("input", autosize);
-  els.input.addEventListener("focus", () => { document.body.classList.add("keyboard-open"); updateKeyboardOffset(); setTimeout(scrollBottom, 120); });
+  els.input.addEventListener("focus", () => { document.body.classList.add("keyboard-open"); updateKeyboardOffset(); });
   els.input.addEventListener("blur", () => { setTimeout(() => { document.body.classList.remove("keyboard-open"); updateKeyboardOffset(); }, 160); });
   els.input.addEventListener("keydown", e => { if(e.key==="Enter" && !e.shiftKey){ e.preventDefault(); els.form.requestSubmit(); }});
   const resetConversation = () => {
@@ -2989,6 +3096,7 @@ function renderWelcome(){
     function humanActionTitle(data, fallback) {
       const intent = data.intent || "";
       if (intent === "diagnostic") return "Préciser la situation pour choisir le bon service";
+      if (intent === "ateliers" && Array.isArray(data.atelierCategories) && data.atelierCategories.length === 1) return "Choisir l’atelier " + data.atelierCategories[0].title;
       if (intent === "ateliers") return "Choisir l’atelier le plus adapté";
       if (intent === "pmsmp") return "Tester un métier avec une immersion";
       if (intent === "poe") return "Vérifier une POEI avant embauche";
@@ -3635,7 +3743,7 @@ function renderSelectionDrawer(){
       const el = nodes.find(node => node.dataset.id === id);
       if(el) el.remove();
     }
-    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v9.10.8"; }
+    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v9.10.9"; }
 
     function saveMessage(role,content,extra){ const arr=read("frai_messages",[]); arr.push({role,content,extra}); localStorage.setItem("frai_messages",JSON.stringify(arr.slice(-30))); }
     function recordUsage(data,message,ms,error){ const s=read("frai_stats",{total:0,errors:0,clicks:0,feedback:{},intents:{},times:[]}); s.total++; if(error)s.errors++; const it=data.intent||"diagnostic"; s.intents[it]=(s.intents[it]||0)+1; s.times.push(ms); s.times=s.times.slice(-100); localStorage.setItem("frai_stats",JSON.stringify(s)); }
