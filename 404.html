@@ -763,7 +763,7 @@
     .broader-actions button{border:1px solid #d9deea;background:#fff;color:var(--ft-blue);border-radius:999px;padding:7px 10px;font-size:12px;font-weight:900;cursor:pointer}
 
   
-    /* v9.10.9 — Mon compagnon Emploi */
+    /* v9.11 — Mon compagnon Emploi */
     .hero-flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px}
     .hero-flow span{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:7px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);color:var(--ft-blue-dark);font-weight:900;font-size:13px}
     .hero-flow b{color:var(--ft-blue);font-size:15px}
@@ -801,7 +801,7 @@
     }
     
   
-    /* v9.10.9 — pertinence + jauge marché */
+    /* v9.11 — pertinence + jauge marché */
     .gauge-card,.relevance-card{
       background:#fff;
       border:1px solid var(--line);
@@ -926,7 +926,7 @@
     }
 
   
-    /* v9.10.9 — simplification radicale + parcours guidé */
+    /* v9.11 — simplification radicale + parcours guidé */
     .brand-title{
       white-space:normal;
       line-height:1.05;
@@ -1097,7 +1097,7 @@
     }
 
   
-    /* v9.10.9 — patch stabilité parcours guidé */
+    /* v9.11 — patch stabilité parcours guidé */
     .guide-options{max-width:100%}
     .guide-btn{width:100%}
     .guide-btn div{min-width:0}
@@ -1118,7 +1118,7 @@
     }
 
   
-    /* v9.10.9 — boutons de suggestion guidés */
+    /* v9.11 — boutons de suggestion guidés */
     .guide-options{
       display:grid;
       gap:10px;
@@ -1211,7 +1211,7 @@
     }
 
   
-    /* v9.10.9 — vrai parcours guidé dans le carré bleu */
+    /* v9.11 — vrai parcours guidé dans le carré bleu */
     .guided-panel{
       margin-top:14px;
       border-radius:26px;
@@ -1258,7 +1258,7 @@
     }
 
   
-    /* v9.10.9 — actions guidées robustes */
+    /* v9.11 — actions guidées robustes */
     .guided-detail-form{
       display:grid;
       gap:10px;
@@ -1328,14 +1328,14 @@
     }
 
   
-    /* v9.10.9 — restauration du chat libre */
+    /* v9.11 — restauration du chat libre */
     .message-row.user .bubble{white-space:pre-wrap}
     .message-row.assistant .bubble{overflow:visible}
     .chat-fallback{display:grid;gap:10px;white-space:pre-wrap;line-height:1.45}
     .chat-fallback .small-btn{width:max-content}
 
   
-    /* v9.10.9 — pistes proches compactes + reset flottant */
+    /* v9.11 — pistes proches compactes + reset flottant */
     .broader-box{
       padding:10px 11px !important;
       border-radius:16px !important;
@@ -1457,7 +1457,7 @@
     }
 
   
-    /* v9.10.9 — pilotage réel des actions */
+    /* v9.11 — pilotage réel des actions */
     .guided-choice.direct{
       background:#ffffff;
       border-left:7px solid #20b486;
@@ -1496,7 +1496,7 @@
     }
 
   
-    /* v9.10.9 — pistes proches directes + saisie mobile stabilisée */
+    /* v9.11 — pistes proches directes + saisie mobile stabilisée */
     .composer{
       z-index:44 !important;
       transform:none !important;
@@ -1529,7 +1529,7 @@
 
   
 
-    /* v9.10.9 — bulles d’aide + anti-débordement mobile */
+    /* v9.11 — bulles d’aide + anti-débordement mobile */
     .guided-panel,
     .guided-panel *{
       box-sizing:border-box;
@@ -1646,7 +1646,7 @@
     }
 
   
-    /* v9.10.9 — mini-popin d’aide + vrai mode conseiller */
+    /* v9.11 — mini-popin d’aide + vrai mode conseiller */
     .guided-choice-wrap.open .guided-info-bubble{display:none !important}
     .guided-help-popin{
       position:fixed;
@@ -1772,7 +1772,7 @@
     }
 
   
-    /* v9.10.9 — cartes blanches pleine largeur + ? bien intégré */
+    /* v9.11 — cartes blanches pleine largeur + ? bien intégré */
     .guided-choice-wrap{
       width:100%;
       min-width:0;
@@ -1829,7 +1829,7 @@
     }
 
   
-    /* v9.10.9 — finition premium des cartes guidées */
+    /* v9.11 — finition premium des cartes guidées */
     .guided-options{
       gap:12px !important;
       width:100%;
@@ -2044,7 +2044,7 @@
     }
 
   
-    /* v9.10.9 — parcours guidé compact mobile */
+    /* v9.11 — parcours guidé compact mobile */
     .guided-panel{
       gap:12px !important;
     }
@@ -2235,7 +2235,7 @@
     }
 
   
-    /* v9.10.9 — UX mobile stable + cartes sans flèches */
+    /* v9.11 — UX mobile stable + cartes sans flèches */
     .guided-choice::after,
     .guided-choice.direct::after,
     .guided-choice.query::after,
@@ -2341,6 +2341,11 @@
       }
     }
 
+  
+    /* v9.11 — formations à comparer + sélection générique */
+    .formation-swipe-box .offer-swipe-head strong::before{content:"🎓 "; font-size:.9em}
+    .formation-card-swipe .offer-actions .keep{background:#273b99}
+    .formation-card-swipe .offer-actions .pass{background:#fff}
   </style>
 </head>
 <body data-mode="demandeur">
@@ -2356,7 +2361,7 @@
           </div>
         </div>
         <div class="top-actions">
-          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v9.10.9</span></div>
+          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v9.11</span></div>
           <button class="icon-btn" id="resetBtn" type="button" title="Nouvelle conversation">↺ <span>Nouveau</span></button>
         </div>
       </header>
@@ -2447,7 +2452,8 @@
       formations: "https://candidat.francetravail.fr/formations/recherche",
       projetFormation: "https://www.francetravail.fr/candidat/votre-projet-de-formation.html",
       bonneAlternance: "https://labonnealternance.apprentissage.beta.gouv.fr/",
-      alternanceInfo: "https://www.francetravail.fr/candidat/vos-services-en-ligne/la-bonne-alternance.html"
+      alternanceInfo: "https://www.francetravail.fr/candidat/vos-services-en-ligne/la-bonne-alternance.html",
+      myjobglasses: "https://www.myjobglasses.com/"
     };
     const els = {
       messages: document.getElementById("messages"),
@@ -2836,6 +2842,7 @@ function renderWelcome(){
         {label:"Rechercher des offres", help:"Préciser métier et ville", info:"Cette action lance une vraie recherche d’offres à partir d’un métier et d’une ville. Elle sert quand le poste visé est déjà identifié.", detailAction:"offres"},
         {label:"Trouver une formation", help:"Préciser métier et ville", info:"Cette action relance la partie formation : elle aide à chercher une formation liée au métier ou au projet, avec un territoire si nécessaire.", detailAction:"formation"},
         {label:"La bonne alternance", help:"Ouvrir le service officiel", info:"La Bonne Alternance aide à rechercher une alternance et une formation en apprentissage. Utile quand la personne veut se former tout en travaillant.", url:OFFICIAL_ACTIONS.bonneAlternance, directLabel:"Ouverture La bonne alternance"},
+        {label:"Parler à un professionnel", help:"My Job Glasses", info:"My Job Glasses permet d’échanger avec un professionnel pour comprendre concrètement un métier, un secteur ou un parcours avant de s’engager.", url:OFFICIAL_ACTIONS.myjobglasses, directLabel:"Ouverture My Job Glasses"},
         {label:"Améliorer mon CV", help:"Préciser le métier ciblé", info:"Cette action aide à cibler les bons ateliers ou conseils CV selon le poste recherché, pour éviter une aide trop générique.", detailAction:"cv"},
         {label:"Préparer un entretien", help:"Préciser le métier ou le poste", info:"Cette action sert à obtenir une préparation d’entretien cohérente avec le métier visé : questions probables, posture et éléments à valoriser.", detailAction:"entretien"},
         {label:"Voir les événements", help:"Préciser ville et thème", info:"Cette action aide à repérer des forums, salons, recrutements ou rencontres emploi en lien avec un métier ou un territoire.", detailAction:"events"}
@@ -2844,6 +2851,7 @@ function renderWelcome(){
         {label:"Activ’Projet", help:"Ouvrir le service officiel", info:"Activ’Projet aide à clarifier un projet professionnel, identifier des pistes réalistes et mieux comprendre ses priorités avant de candidater.", url:OFFICIAL_ACTIONS.activprojet, directLabel:"Ouverture Activ’Projet"},
         {label:"Immersion facilitée", help:"Ouvrir le service officiel", info:"L’immersion facilitée permet de tester un métier ou un environnement de travail en situation réelle, sans s’engager trop vite.", url:OFFICIAL_ACTIONS.immersion, directLabel:"Ouverture Immersion facilitée"},
         {label:"Métierscope", help:"Ouvrir le service officiel", info:"Métierscope permet d’explorer des métiers, leurs contenus, les compétences associées et des pistes proches pour élargir la réflexion.", url:OFFICIAL_ACTIONS.metierscope, directLabel:"Ouverture Métierscope"},
+        {label:"Parler à un professionnel", help:"My Job Glasses", info:"My Job Glasses est pertinent quand la personne veut découvrir les coulisses d’un métier par l’échange avec un professionnel.", url:OFFICIAL_ACTIONS.myjobglasses, directLabel:"Ouverture My Job Glasses"},
         {label:"Trouver une formation", help:"Explorer une piste de formation", info:"Cette action est utile si la personne pense devoir monter en compétence ou construire une reconversion par la formation.", detailAction:"formation"},
         {label:"La bonne alternance", help:"Ouvrir le service officiel", info:"La Bonne Alternance est utile pour chercher une alternance et une formation en apprentissage quand le projet peut se faire en contrat.", url:OFFICIAL_ACTIONS.bonneAlternance, directLabel:"Ouverture La bonne alternance"},
         {label:"Atelier projet", help:"Ouvrir les ateliers France Travail", info:"Les ateliers projet servent à être guidé pas à pas pour clarifier une piste, structurer la réflexion et choisir la prochaine bonne action.", url:OFFICIAL_ACTIONS.ateliers, directLabel:"Ouverture Ateliers France Travail"}
@@ -2852,6 +2860,7 @@ function renderWelcome(){
         {label:"Trouver une formation", help:"Rechercher une formation France Travail", info:"Cette action lance une recherche formation à partir d’un métier, d’un domaine ou d’une ville. Elle remet la formation dans le parcours principal.", detailAction:"formation"},
         {label:"La bonne alternance", help:"Alternance + formation en apprentissage", info:"La Bonne Alternance permet de chercher une alternance et une formation en apprentissage. Elle est pertinente pour apprendre un métier en contrat.", url:OFFICIAL_ACTIONS.bonneAlternance, directLabel:"Ouverture La bonne alternance"},
         {label:"Projet de formation", help:"Comprendre les étapes", info:"Cette page aide à construire un projet de formation : choisir un métier, vérifier les compétences et préparer le financement.", url:OFFICIAL_ACTIONS.projetFormation, directLabel:"Ouverture projet de formation"},
+        {label:"Parler à un professionnel", help:"My Job Glasses", info:"À utiliser avant ou pendant le projet de formation pour vérifier la réalité du métier auprès d’une personne qui l’exerce.", url:OFFICIAL_ACTIONS.myjobglasses, directLabel:"Ouverture My Job Glasses"},
         {label:"POEI", help:"Préparation opérationnelle à l’emploi", info:"La POEI est utile quand une formation courte prépare à une embauche identifiée ou à un besoin employeur.", prompt:"Je veux comprendre la POEI, préparation opérationnelle à l'emploi, et savoir si elle convient à ma situation"}
       ];
       if(step === "stage") return [
@@ -3327,7 +3336,7 @@ function renderSelectionDrawer(){
   if(!items.length){
     const div=document.createElement('div');
     div.className='selection-empty';
-    div.textContent='Aucune offre gardée pour le moment.';
+    div.textContent='Aucun élément gardé pour le moment.';
     els.selectionDrawerBody.appendChild(div);
     return;
   }
@@ -3335,7 +3344,7 @@ function renderSelectionDrawer(){
     const key=selectedOfferKey(o);
     const row=document.createElement('div');
     row.className='saved-offer';
-    row.innerHTML=`<strong>${escapeHtml(o.title || 'Offre d’emploi')}</strong><small>${escapeHtml([o.company,o.location,o.contract].filter(Boolean).join(' · '))}</small><div class="saved-actions">${o.url ? `<a href="${escapeHtml(o.url)}" target="_blank" rel="noopener">Voir l’offre</a>` : ''}<button type="button" data-remove-offer="${escapeHtml(key)}">Retirer</button></div>`;
+    row.innerHTML=`<strong>${escapeHtml(o.title || 'Élément sélectionné')}</strong><small>${escapeHtml([o.kind,o.company,o.location,o.contract].filter(Boolean).join(' · '))}</small><div class="saved-actions">${o.url ? `<a href="${escapeHtml(o.url)}" target="_blank" rel="noopener">Voir</a>` : ''}<button type="button" data-remove-offer="${escapeHtml(key)}">Retirer</button></div>`;
     els.selectionDrawerBody.appendChild(row);
   });
   const actions=document.createElement('div');
@@ -3450,15 +3459,21 @@ function renderSelectionDrawer(){
     function renderResults(wrap,data){
       const offerIntents = ["recherche_emploi","poe","international"];
       const offres = offerIntents.includes(data.intent) && Array.isArray(data.offres) ? data.offres.slice(0, 30) : [];
+      const formations = data.intent === "formation" && Array.isArray(data.formations) ? data.formations.slice(0, 30) : [];
       const otherItems=[];
 
       (data.events||[]).slice(0,4).forEach(e=>otherItems.push({kind:"Événement",title:e.titre,meta:[formatDate(e.dateEvenement),formatHour(e.heureDebut),e.ville,e.type].filter(Boolean).join(" · "),desc:e.description||e.deroulement,url:e.url,cta:"Voir l’événement"}));
-      (data.formations||[]).slice(0,3).forEach(f=>otherItems.push({kind:"Formation",title:f.titre,meta:[f.organisme,f.ville,f.dateDebut].filter(Boolean).join(" · "),desc:f.description,url:f.url,cta:"Voir la formation"}));
+      if(data.intent !== "formation") (data.formations||[]).slice(0,3).forEach(f=>otherItems.push({kind:"Formation",title:f.titre,meta:[f.organisme,f.ville,f.dateDebut].filter(Boolean).join(" · "),desc:f.description,url:f.url,cta:"Voir la formation"}));
       (data.atelierCategories||[]).slice(0,9).forEach(a=>otherItems.push({kind:"Atelier",title:a.title,meta:"France Travail",desc:a.description,url:"",cta:""}));
 
       if(offres.length){
         wrap.appendChild(sectionHead(offres.length > 8 ? "Offres à trier" : "Offres repérées"));
         wrap.appendChild(renderOfferSwiper(offres, data));
+      }
+
+      if(data.intent === "formation"){
+        wrap.appendChild(sectionHead(formations.length ? "Formations à comparer" : "Recherche formation"));
+        wrap.appendChild(renderFormationSwiper(formations, data));
       }
 
       if(otherItems.length){
@@ -3482,6 +3497,136 @@ function renderSelectionDrawer(){
         wrap.appendChild(list);
       }
     }
+
+
+    function renderFormationSwiper(formations, data){
+      let index = 0;
+      const box=document.createElement("section");
+      box.className="offer-swipe-box formation-swipe-box";
+
+      const head=document.createElement("div");
+      head.className="offer-swipe-head";
+      const title=document.createElement("strong");
+      title.textContent=formations.length ? "Formations à comparer" : "Recherche formation France Travail";
+      const count=document.createElement("span");
+      count.className="offer-count";
+      head.append(title,count);
+
+      const help=document.createElement("p");
+      help.className="offer-swipe-help";
+      help.textContent=formations.length
+        ? "Balayez à gauche pour passer, à droite pour garder. Les formations gardées restent dans votre sélection."
+        : "Aucune formation exploitable n’a été reçue par l’API. Vous pouvez quand même lancer la recherche officielle avec le métier et la ville.";
+
+      const holder=document.createElement("div");
+      const selection=renderSelectionPanel();
+      box.append(head,help,holder,selection);
+
+      function update(){
+        count.textContent = formations.length ? `${Math.min(index+1, formations.length)} / ${formations.length}` : "0";
+        holder.innerHTML="";
+
+        if(!formations.length){
+          const empty=document.createElement("div");
+          empty.className="swipe-empty";
+          const url = data.formationSearchUrl || findOfficialLink(data, "formation") || "https://candidat.francetravail.fr/formations/recherche";
+          empty.innerHTML = `
+            <b>Recherche à lancer</b><br>
+            Le service officiel France Travail permet de rechercher par métier, domaine et lieu.
+            <div class="saved-actions" style="margin-top:10px">
+              <a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">Ouvrir la recherche formation</a>
+            </div>
+          `;
+          holder.appendChild(empty);
+          refreshSelectionPanel(selection);
+          return;
+        }
+
+        if(index >= formations.length){
+          const done=document.createElement("div");
+          done.className="swipe-empty";
+          done.innerHTML=`Comparaison terminée. Vous pouvez consulter les formations gardées dans <b>Ma sélection</b>.`;
+          holder.appendChild(done);
+          refreshSelectionPanel(selection);
+          return;
+        }
+
+        const formation=normalizeFormation(formations[index]);
+        const card=document.createElement("article");
+        card.className="offer-card-swipe formation-card-swipe";
+        card.innerHTML=formationCardHtml(formation);
+        attachSwipe(card, () => passFormation(), () => keepFormation(formation));
+        holder.appendChild(card);
+        refreshSelectionPanel(selection);
+      }
+
+      function passFormation(){
+        recordClick("formation_pass", formations[index]?.titre || "formation");
+        index += 1;
+        update();
+      }
+
+      function keepFormation(formation){
+        saveSelectedOffer({...formation, kind:"Formation"});
+        recordClick("formation_keep", formation.title || "formation");
+        toast("Formation ajoutée à votre sélection");
+        refreshSelectionUi();
+        index += 1;
+        update();
+      }
+
+      box.addEventListener("click", (event)=>{
+        const action = event.target?.dataset?.formationAction;
+        if(!action) return;
+        const formation = normalizeFormation(formations[index]);
+        if(action === "pass") passFormation();
+        if(action === "keep") keepFormation(formation);
+      });
+
+      update();
+      return box;
+    }
+
+    function findOfficialLink(data, needle){
+      const links = [...(data.officialLinks||[]), ...(data.actionLinks||[])];
+      const n = normalizeUiText(needle || "");
+      const found = links.find(l => normalizeUiText([l.label,l.title,l.description,l.url].filter(Boolean).join(" ")).includes(n));
+      return found?.url || "";
+    }
+
+    function normalizeFormation(f){
+      return {
+        id: f.id || f.url || `${f.titre||"formation"}-${f.organisme||""}-${f.ville||""}`,
+        kind: "Formation",
+        title: f.titre || f.intitule || "Formation",
+        company: f.organisme || "Organisme de formation",
+        location: f.ville || f.lieu || "",
+        contract: [f.dateDebut, f.financement || (f.certifiante ? "Certifiante" : "")].filter(Boolean).join(" · "),
+        description: f.description || f.objectif || "",
+        url: f.url || ""
+      };
+    }
+
+    function formationCardHtml(f){
+      const meta = [f.company, f.location].filter(Boolean).join(" · ");
+      const tags = [f.contract].filter(Boolean).slice(0,2).map(x=>`<span class="offer-tag">${escapeHtml(shortOfferText(x, 42))}</span>`).join("");
+      return `
+        <h3>${escapeHtml(shortOfferText(f.title, 64))}</h3>
+        <div class="offer-meta">${escapeHtml(meta || "Formation France Travail")}</div>
+        ${tags ? `<div class="offer-tags">${tags}</div>` : ""}
+        ${f.description ? `<details><summary>Pourquoi cette formation ?</summary><div>${escapeHtml(trim(f.description, 360))}</div></details>` : ""}
+        <div class="offer-actions">
+          <button class="pass" type="button" data-formation-action="pass">Pas adapté</button>
+          <button class="keep" type="button" data-formation-action="keep">Garder</button>
+        </div>
+        ${f.url ? `<a class="btn outline" href="${escapeHtml(f.url)}" target="_blank" rel="noopener">Voir la formation complète</a>` : ""}
+      `;
+    }
+
+    function normalizeUiText(value){
+      return String(value || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/\s+/g," ").trim();
+    }
+
 
     function renderOfferSwiper(offres, data){
       let index = 0;
@@ -3554,7 +3699,7 @@ function renderSelectionDrawer(){
     function normalizeOffer(o){
       return {
         id: o.id || o.url || `${o.titre||o.intitule||"offre"}-${o.entreprise||""}-${o.lieu||""}`,
-        title: o.titre || o.intitule || "Offre d’emploi",
+        title: o.titre || o.intitule || "Élément sélectionné",
         company: o.entreprise || "",
         location: o.lieu || o.ville || "",
         contract: o.typeContrat || o.contrat || "",
@@ -3576,7 +3721,7 @@ function renderSelectionDrawer(){
           <button class="pass" type="button" data-offer-action="pass">Pas adapté</button>
           <button class="keep" type="button" data-offer-action="keep">Garder</button>
         </div>
-        ${o.url ? `<a class="btn outline" href="${escapeHtml(o.url)}" target="_blank" rel="noopener">Voir l’offre complète</a>` : ""}
+        ${o.url ? `<a class="btn outline" href="${escapeHtml(o.url)}" target="_blank" rel="noopener">Voir complète</a>` : ""}
       `;
     }
 
@@ -3662,7 +3807,7 @@ function renderSelectionDrawer(){
         const empty=document.createElement("div");
         empty.className="swipe-empty";
         empty.style.marginTop="10px";
-        empty.textContent="Aucune offre gardée pour le moment.";
+        empty.textContent="Aucun élément gardé pour le moment.";
         panel.appendChild(empty);
         return;
       }
@@ -3672,10 +3817,10 @@ function renderSelectionDrawer(){
         const row=document.createElement("div");
         row.className="saved-offer";
         row.innerHTML=`
-          <strong>${escapeHtml(o.title || "Offre d’emploi")}</strong>
-          <small>${escapeHtml([o.company,o.location,o.contract].filter(Boolean).join(" · "))}</small>
+          <strong>${escapeHtml(o.title || "Élément sélectionné")}</strong>
+          <small>${escapeHtml([o.kind,o.company,o.location,o.contract].filter(Boolean).join(" · "))}</small>
           <div class="saved-actions">
-            ${o.url ? `<a href="${escapeHtml(o.url)}" target="_blank" rel="noopener">Voir l’offre</a>` : ""}
+            ${o.url ? `<a href="${escapeHtml(o.url)}" target="_blank" rel="noopener">Voir</a>` : ""}
             <button type="button" data-remove-offer="${escapeHtml(key)}">Retirer</button>
           </div>
         `;
@@ -3702,7 +3847,7 @@ function renderSelectionDrawer(){
 
     function copySelectedOffers(){
       const items=readSelectedOffers();
-      const text = "Ma sélection d’offres FRAI\n\n" + items.map((o,i)=>`${i+1}. ${o.title}\n${[o.company,o.location,o.contract].filter(Boolean).join(" · ")}\n${o.url||""}`).join("\n\n");
+      const text = "Ma sélection FRAI\n\n" + items.map((o,i)=>`${i+1}. ${o.title}\n${[o.kind,o.company,o.location,o.contract].filter(Boolean).join(" · ")}\n${o.url||""}`).join("\n\n");
       navigator.clipboard?.writeText(text);
       toast("Sélection copiée");
     }
@@ -3743,7 +3888,7 @@ function renderSelectionDrawer(){
       const el = nodes.find(node => node.dataset.id === id);
       if(el) el.remove();
     }
-    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v9.10.9"; }
+    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v9.11"; }
 
     function saveMessage(role,content,extra){ const arr=read("frai_messages",[]); arr.push({role,content,extra}); localStorage.setItem("frai_messages",JSON.stringify(arr.slice(-30))); }
     function recordUsage(data,message,ms,error){ const s=read("frai_stats",{total:0,errors:0,clicks:0,feedback:{},intents:{},times:[]}); s.total++; if(error)s.errors++; const it=data.intent||"diagnostic"; s.intents[it]=(s.intents[it]||0)+1; s.times.push(ms); s.times=s.times.slice(-100); localStorage.setItem("frai_stats",JSON.stringify(s)); }
