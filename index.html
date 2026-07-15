@@ -763,7 +763,7 @@
     .broader-actions button{border:1px solid #d9deea;background:#fff;color:var(--ft-blue);border-radius:999px;padding:7px 10px;font-size:12px;font-weight:900;cursor:pointer}
 
   
-    /* v9.11 — Mon compagnon Emploi */
+    /* v9.12 — Mon compagnon Emploi */
     .hero-flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px}
     .hero-flow span{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:7px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);color:var(--ft-blue-dark);font-weight:900;font-size:13px}
     .hero-flow b{color:var(--ft-blue);font-size:15px}
@@ -801,7 +801,7 @@
     }
     
   
-    /* v9.11 — pertinence + jauge marché */
+    /* v9.12 — pertinence + jauge marché */
     .gauge-card,.relevance-card{
       background:#fff;
       border:1px solid var(--line);
@@ -926,7 +926,7 @@
     }
 
   
-    /* v9.11 — simplification radicale + parcours guidé */
+    /* v9.12 — simplification radicale + parcours guidé */
     .brand-title{
       white-space:normal;
       line-height:1.05;
@@ -1097,7 +1097,7 @@
     }
 
   
-    /* v9.11 — patch stabilité parcours guidé */
+    /* v9.12 — patch stabilité parcours guidé */
     .guide-options{max-width:100%}
     .guide-btn{width:100%}
     .guide-btn div{min-width:0}
@@ -1118,7 +1118,7 @@
     }
 
   
-    /* v9.11 — boutons de suggestion guidés */
+    /* v9.12 — boutons de suggestion guidés */
     .guide-options{
       display:grid;
       gap:10px;
@@ -1211,7 +1211,7 @@
     }
 
   
-    /* v9.11 — vrai parcours guidé dans le carré bleu */
+    /* v9.12 — vrai parcours guidé dans le carré bleu */
     .guided-panel{
       margin-top:14px;
       border-radius:26px;
@@ -1258,7 +1258,7 @@
     }
 
   
-    /* v9.11 — actions guidées robustes */
+    /* v9.12 — actions guidées robustes */
     .guided-detail-form{
       display:grid;
       gap:10px;
@@ -1328,14 +1328,14 @@
     }
 
   
-    /* v9.11 — restauration du chat libre */
+    /* v9.12 — restauration du chat libre */
     .message-row.user .bubble{white-space:pre-wrap}
     .message-row.assistant .bubble{overflow:visible}
     .chat-fallback{display:grid;gap:10px;white-space:pre-wrap;line-height:1.45}
     .chat-fallback .small-btn{width:max-content}
 
   
-    /* v9.11 — pistes proches compactes + reset flottant */
+    /* v9.12 — pistes proches compactes + reset flottant */
     .broader-box{
       padding:10px 11px !important;
       border-radius:16px !important;
@@ -1457,7 +1457,7 @@
     }
 
   
-    /* v9.11 — pilotage réel des actions */
+    /* v9.12 — pilotage réel des actions */
     .guided-choice.direct{
       background:#ffffff;
       border-left:7px solid #20b486;
@@ -1496,7 +1496,7 @@
     }
 
   
-    /* v9.11 — pistes proches directes + saisie mobile stabilisée */
+    /* v9.12 — pistes proches directes + saisie mobile stabilisée */
     .composer{
       z-index:44 !important;
       transform:none !important;
@@ -1529,7 +1529,7 @@
 
   
 
-    /* v9.11 — bulles d’aide + anti-débordement mobile */
+    /* v9.12 — bulles d’aide + anti-débordement mobile */
     .guided-panel,
     .guided-panel *{
       box-sizing:border-box;
@@ -1646,7 +1646,7 @@
     }
 
   
-    /* v9.11 — mini-popin d’aide + vrai mode conseiller */
+    /* v9.12 — mini-popin d’aide + vrai mode conseiller */
     .guided-choice-wrap.open .guided-info-bubble{display:none !important}
     .guided-help-popin{
       position:fixed;
@@ -1772,7 +1772,7 @@
     }
 
   
-    /* v9.11 — cartes blanches pleine largeur + ? bien intégré */
+    /* v9.12 — cartes blanches pleine largeur + ? bien intégré */
     .guided-choice-wrap{
       width:100%;
       min-width:0;
@@ -1829,7 +1829,7 @@
     }
 
   
-    /* v9.11 — finition premium des cartes guidées */
+    /* v9.12 — finition premium des cartes guidées */
     .guided-options{
       gap:12px !important;
       width:100%;
@@ -2044,7 +2044,7 @@
     }
 
   
-    /* v9.11 — parcours guidé compact mobile */
+    /* v9.12 — parcours guidé compact mobile */
     .guided-panel{
       gap:12px !important;
     }
@@ -2235,7 +2235,7 @@
     }
 
   
-    /* v9.11 — UX mobile stable + cartes sans flèches */
+    /* v9.12 — UX mobile stable + cartes sans flèches */
     .guided-choice::after,
     .guided-choice.direct::after,
     .guided-choice.query::after,
@@ -2342,10 +2342,160 @@
     }
 
   
-    /* v9.11 — formations à comparer + sélection générique */
+    /* v9.12 — formations à comparer + sélection générique */
     .formation-swipe-box .offer-swipe-head strong::before{content:"🎓 "; font-size:.9em}
     .formation-card-swipe .offer-actions .keep{background:#273b99}
     .formation-card-swipe .offer-actions .pass{background:#fff}
+  
+    /* v9.12 — Calendrier emploi intégré */
+    .feature-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    .feature-action{
+      border:1px solid #d7ddec;
+      background:#fff;
+      border-radius:18px;
+      padding:10px 12px;
+      display:grid;
+      gap:3px;
+      text-align:left;
+      cursor:pointer;
+      box-shadow:0 8px 18px rgba(17,24,39,.07);
+      color:var(--text);
+    }
+    .feature-action b{color:var(--blue-dark);font-size:14px}
+    .feature-action span{color:var(--muted);font-size:12px;font-weight:750}
+    .calendar-panel{
+      margin-top:12px;
+      border-radius:28px;
+      background:linear-gradient(135deg,var(--blue) 0%,#3651c7 100%);
+      color:#fff;
+      padding:14px;
+      box-shadow:0 18px 38px rgba(39,59,153,.22);
+      overflow:hidden;
+    }
+    .calendar-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:11px}
+    .calendar-head h2{margin:0;font-size:24px;line-height:1.05;letter-spacing:-.03em;color:#fff}
+    .calendar-head p{margin:4px 0 0;color:rgba(255,255,255,.86);font-size:13px;line-height:1.3}
+    .calendar-close{border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff;border-radius:999px;width:36px;height:36px;font-weight:1000;cursor:pointer}
+    .calendar-tabs,.calendar-filters,.calendar-actions{display:flex;gap:7px;overflow:auto;scrollbar-width:none}
+    .calendar-tabs::-webkit-scrollbar,.calendar-filters::-webkit-scrollbar,.calendar-actions::-webkit-scrollbar{display:none}
+    .calendar-tabs{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:4px;margin-bottom:10px}
+    .calendar-tab,.calendar-filter,.calendar-action{
+      border:0;
+      border-radius:999px;
+      padding:8px 11px;
+      font-weight:900;
+      white-space:nowrap;
+      cursor:pointer;
+    }
+    .calendar-tab{background:transparent;color:#fff;flex:1;min-width:92px}
+    .calendar-tab.active{background:#fff;color:var(--blue)}
+    .calendar-filters{margin-bottom:10px}
+    .calendar-filter{background:#fff;color:var(--blue-dark);border:1px solid #dbe2f1;font-size:12px}
+    .calendar-filter.active{background:var(--blue-dark);color:#fff;border-color:rgba(255,255,255,.28)}
+    .calendar-card{
+      background:#fff;
+      color:var(--text);
+      border-radius:24px;
+      border:1px solid rgba(255,255,255,.65);
+      overflow:hidden;
+      box-shadow:0 12px 28px rgba(17,24,39,.13);
+    }
+    .calendar-month-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:12px 14px 6px;
+      color:var(--blue-dark);
+      font-weight:1000;
+    }
+    .calendar-nav{
+      border:0;
+      background:var(--blue-soft);
+      color:var(--blue);
+      width:34px;
+      height:34px;
+      border-radius:999px;
+      font-weight:1000;
+      cursor:pointer;
+    }
+    .calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;padding:4px 10px 12px}
+    .calendar-dow{text-align:center;color:#6b7280;font-size:10px;font-weight:950;text-transform:uppercase;padding:5px 0}
+    .calendar-day{
+      min-height:43px;
+      border:0;
+      background:#fff;
+      border-radius:13px;
+      display:grid;
+      place-items:center;
+      gap:2px;
+      cursor:pointer;
+      color:#111827;
+      font-weight:800;
+    }
+    .calendar-day.muted{color:#a3acbd}
+    .calendar-day.selected{background:var(--blue);color:#fff}
+    .calendar-day.today{outline:2px solid rgba(39,59,153,.22)}
+    .calendar-dots{height:9px;display:flex;gap:2px;align-items:center;justify-content:center}
+    .calendar-dot{width:5px;height:5px;border-radius:999px;background:var(--blue)}
+    .calendar-dot.event{background:#ff7a00}.calendar-dot.formation{background:#0ea5a3}.calendar-dot.atelier{background:#8b5cf6}.calendar-dot.reminder{background:#273b99}.calendar-dot.candidature{background:#14855f}
+    .calendar-content{display:grid;grid-template-columns:1fr .72fr;gap:10px;padding:0 12px 12px}
+    .calendar-agenda,.calendar-side{display:grid;gap:8px}
+    .calendar-section-title{font-weight:1000;color:var(--blue-dark);font-size:14px;margin:0}
+    .calendar-item{
+      display:grid;
+      grid-template-columns:auto 1fr auto;
+      align-items:center;
+      gap:9px;
+      border:1px solid var(--line);
+      border-left:5px solid var(--blue);
+      border-radius:16px;
+      padding:9px;
+      background:#fff;
+    }
+    .calendar-item.event{border-left-color:#ff7a00}.calendar-item.formation{border-left-color:#0ea5a3}.calendar-item.atelier{border-left-color:#8b5cf6}.calendar-item.reminder{border-left-color:#273b99}.calendar-item.candidature{border-left-color:#14855f}
+    .calendar-ico{width:34px;height:34px;border-radius:12px;display:grid;place-items:center;background:var(--blue-soft);color:var(--blue);font-weight:1000}
+    .calendar-item strong{display:block;color:#111827;font-size:13px;line-height:1.15}
+    .calendar-item small{display:block;color:#5b6472;font-size:11px;margin-top:3px}
+    .calendar-item a,.calendar-mini-btn{
+      border:1px solid #cbd5ee;
+      color:var(--blue);
+      background:#fff;
+      border-radius:999px;
+      padding:6px 8px;
+      font-size:11px;
+      font-weight:900;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .calendar-tip,.calendar-summary{
+      background:#f3f7ff;
+      border:1px solid #dfe7f5;
+      border-radius:18px;
+      padding:11px;
+      color:#111827;
+      display:grid;
+      gap:6px;
+    }
+    .calendar-tip b,.calendar-summary b{color:var(--blue-dark);font-size:13px}
+    .calendar-tip p,.calendar-summary p{margin:0;color:#4b5563;font-size:12px;line-height:1.35}
+    .calendar-actions{margin-top:10px}
+    .calendar-action{background:#fff;color:var(--blue);border:1px solid rgba(255,255,255,.55);font-size:12px}
+    .calendar-action.primary{background:var(--green);color:#fff;border-color:var(--green)}
+    .calendar-empty{border:1px dashed #cbd5ee;background:#fbfcff;border-radius:16px;padding:12px;color:#4b5563;font-size:13px;line-height:1.35}
+    body.calendar-open .calendar-entry{border-color:var(--blue);background:var(--blue-soft)}
+    @media(max-width:760px){
+      .calendar-panel{border-radius:22px;padding:12px;margin-top:10px}
+      .calendar-head h2{font-size:22px}
+      .calendar-content{grid-template-columns:1fr;padding:0 10px 10px}
+      .calendar-day{min-height:38px;border-radius:11px;font-size:13px}
+      .calendar-grid{gap:2px;padding:3px 8px 10px}
+      .calendar-item{grid-template-columns:auto 1fr;align-items:start}
+      .calendar-item a,.calendar-mini-btn{grid-column:2}
+      .feature-actions{margin-top:10px}
+      .feature-action{width:100%}
+    }
+
   </style>
 </head>
 <body data-mode="demandeur">
@@ -2361,7 +2511,7 @@
           </div>
         </div>
         <div class="top-actions">
-          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v9.11</span></div>
+          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v9.12</span></div>
           <button class="icon-btn" id="resetBtn" type="button" title="Nouvelle conversation">↺ <span>Nouveau</span></button>
         </div>
       </header>
@@ -2378,6 +2528,12 @@
             <div class="hero-flow" aria-label="Parcours guidé">
               <span>Décrire</span><b>→</b><span>Comprendre</span><b>→</b><span>Agir</span>
             </div>
+            <div class="feature-actions" aria-label="Fonctions principales">
+              <button id="calendarToggle" class="feature-action calendar-entry" type="button">
+                <b>📅 Calendrier emploi</b>
+                <span>Événements, ateliers, formations et rappels</span>
+              </button>
+            </div>
           </div>
           <div class="mode-switch" role="tablist" aria-label="Mode d'affichage">
             <button class="mode-btn active" data-mode="demandeur" type="button">Demandeur</button>
@@ -2386,6 +2542,8 @@
         </div>
 
         <section id="guidedPanel" class="guided-panel" aria-label="Parcours guidé Mon compagnon Emploi"></section>
+
+        <section id="calendarPanel" class="calendar-panel" aria-label="Calendrier emploi" hidden></section>
 
         <details class="pilot-pages"><summary>À propos du pilote</summary><div class="nav-line" aria-label="Pages de crédibilité produit">
           <a href="./demo.html">Démo nationale</a>
@@ -2469,6 +2627,8 @@
       selectionDrawerBody: document.getElementById("selectionDrawerBody"),
       selectionCloseBtn: document.getElementById("selectionCloseBtn"),
       guidedPanel: document.getElementById("guidedPanel"),
+      calendarToggle: document.getElementById("calendarToggle"),
+      calendarPanel: document.getElementById("calendarPanel"),
       resetFab: document.getElementById("resetFab"),
       guidedHelpPopin: document.getElementById("guidedHelpPopin"),
       guidedHelpTitle: document.getElementById("guidedHelpTitle"),
@@ -2476,7 +2636,18 @@
       guidedHelpClose: document.getElementById("guidedHelpClose"),
       guidedHelpOk: document.getElementById("guidedHelpOk")
     };
-    const state = { busy:false, city: localStorage.getItem("frai_city") || DEFAULT_CITY, lastData:null, guideStep:"situation", guideContext:{} };
+    const state = {
+      busy:false,
+      city: localStorage.getItem("frai_city") || DEFAULT_CITY,
+      lastData:null,
+      guideStep:"situation",
+      guideContext:{},
+      calendarOpen:false,
+      calendarView:"mois",
+      calendarFilter:"all",
+      calendarDate:new Date(),
+      calendarSelectedDate:toDateKey(new Date())
+    };
 
     document.addEventListener("click", (e)=>{
       if(e.target === els.guidedHelpPopin) closeGuidedHelp();
@@ -2526,6 +2697,7 @@
       els.guidedHelpClose?.addEventListener("click", closeGuidedHelp);
       els.guidedHelpOk?.addEventListener("click", closeGuidedHelp);
       renderGuidedPanel("situation");
+      renderCalendarPanel();
       health();
     }
 
@@ -2559,6 +2731,8 @@ function bind(){
   els.selectionFab?.addEventListener("click", openSelectionDrawer);
   els.selectionCloseBtn?.addEventListener("click", closeSelectionDrawer);
   els.selectionDrawer?.addEventListener("click", (e)=>{ if(e.target?.dataset?.closeSelection) closeSelectionDrawer(); });
+  els.calendarToggle?.addEventListener("click", toggleCalendarPanel);
+  els.calendarPanel?.addEventListener("click", handleCalendarClick);
 }
 
 
@@ -2566,7 +2740,7 @@ function bind(){
       try{
         const r=await fetch(WORKER+"/health?_="+Date.now(),{cache:"no-store"});
         const d=await r.json();
-        if(d.ok) els.status.textContent = "Prêt · " + (d.mode || "v9.10.1");
+        if(d.ok) els.status.textContent = "Prêt · " + (d.mode || "v9.12");
       }catch(e){ els.status.textContent = "Worker à vérifier"; }
     }
 
@@ -2616,6 +2790,7 @@ function bind(){
         }
 
         remove(id);
+        syncCalendarFromAgentData(data, true);
         renderMessage("assistant", data.compactReply || data.reply || "Réponse reçue.", data);
         recordUsage(data, text, Math.round(performance.now() - t0), false);
       }catch(err){
@@ -3394,6 +3569,468 @@ function renderSelectionDrawer(){
       return details;
     }
 
+
+    /* ===== Calendrier emploi v9.12 ===== */
+
+    function toggleCalendarPanel(){
+      state.calendarOpen = !state.calendarOpen;
+      els.calendarPanel.hidden = !state.calendarOpen;
+      document.body.classList.toggle("calendar-open", state.calendarOpen);
+      renderCalendarPanel();
+      if(state.calendarOpen){
+        setTimeout(()=>els.calendarPanel.scrollIntoView({behavior:"smooth", block:"start"}), 50);
+      }
+    }
+
+    function openCalendarPanel(){
+      state.calendarOpen = true;
+      els.calendarPanel.hidden = false;
+      document.body.classList.add("calendar-open");
+      renderCalendarPanel();
+      setTimeout(()=>els.calendarPanel.scrollIntoView({behavior:"smooth", block:"start"}), 50);
+    }
+
+    function closeCalendarPanel(){
+      state.calendarOpen = false;
+      els.calendarPanel.hidden = true;
+      document.body.classList.remove("calendar-open");
+    }
+
+    function handleCalendarClick(e){
+      const t = e.target;
+      if(!t) return;
+
+      if(t.dataset.calClose){ closeCalendarPanel(); return; }
+
+      if(t.dataset.calView){
+        state.calendarView = t.dataset.calView;
+        renderCalendarPanel();
+        return;
+      }
+
+      if(t.dataset.calFilter){
+        state.calendarFilter = t.dataset.calFilter;
+        renderCalendarPanel();
+        return;
+      }
+
+      if(t.dataset.calPrev){
+        state.calendarDate = addMonths(state.calendarDate, -1);
+        state.calendarSelectedDate = toDateKey(state.calendarDate);
+        renderCalendarPanel();
+        return;
+      }
+
+      if(t.dataset.calNext){
+        state.calendarDate = addMonths(state.calendarDate, 1);
+        state.calendarSelectedDate = toDateKey(state.calendarDate);
+        renderCalendarPanel();
+        return;
+      }
+
+      const day = t.closest("[data-cal-day]");
+      if(day){
+        state.calendarSelectedDate = day.dataset.calDay;
+        renderCalendarPanel();
+        return;
+      }
+
+      if(t.dataset.calImport){
+        const added = syncCalendarFromAgentData(state.lastData, false);
+        toast(added ? `${added} élément(s) intégré(s)` : "Aucun nouvel événement à intégrer");
+        renderCalendarPanel();
+        return;
+      }
+
+      if(t.dataset.calSearch){
+        openCalendarPanel();
+        runImmediateQuery(`Quels événements emploi à ${state.city || DEFAULT_CITY} ce mois-ci ?`);
+        return;
+      }
+
+      if(t.dataset.calReminder){
+        addCalendarReminder();
+        return;
+      }
+    }
+
+    function renderCalendarPanel(){
+      if(!els.calendarPanel) return;
+      if(els.calendarPanel.hidden && !state.calendarOpen) return;
+
+      const allItems = getCalendarItems();
+      const items = filterCalendarItems(allItems);
+      const selectedItems = items
+        .filter(i => i.date === state.calendarSelectedDate)
+        .sort((a,b)=>String(a.time||"").localeCompare(String(b.time||"")));
+
+      const monthLabel = state.calendarDate.toLocaleDateString("fr-FR", { month:"long", year:"numeric" });
+      const total = items.length;
+      const byType = countCalendarTypes(items);
+
+      els.calendarPanel.innerHTML = `
+        <div class="calendar-head">
+          <div>
+            <h2>Calendrier emploi</h2>
+            <p>Mes événements, ateliers, formations, candidatures et rappels au même endroit.</p>
+          </div>
+          <button class="calendar-close" type="button" data-cal-close="1" aria-label="Fermer">×</button>
+        </div>
+
+        <div class="calendar-tabs" role="tablist" aria-label="Vue du calendrier">
+          ${calendarTab("mois","Mois")}
+          ${calendarTab("semaine","Semaine")}
+          ${calendarTab("agenda","Agenda")}
+        </div>
+
+        <div class="calendar-filters" aria-label="Filtres calendrier">
+          ${calendarFilter("all","Tout", total)}
+          ${calendarFilter("event","Emploi", byType.event)}
+          ${calendarFilter("formation","Formation", byType.formation)}
+          ${calendarFilter("atelier","Atelier", byType.atelier)}
+          ${calendarFilter("candidature","Candidature", byType.candidature)}
+          ${calendarFilter("reminder","Perso", byType.reminder)}
+        </div>
+
+        <div class="calendar-card">
+          ${renderCalendarMainView(items, selectedItems, monthLabel)}
+        </div>
+
+        <div class="calendar-actions">
+          <button class="calendar-action primary" type="button" data-cal-import="1">Intégrer les derniers résultats</button>
+          <button class="calendar-action" type="button" data-cal-search="1">Chercher des événements</button>
+          <button class="calendar-action" type="button" data-cal-reminder="1">Ajouter un rappel</button>
+        </div>
+      `;
+    }
+
+    function renderCalendarMainView(items, selectedItems, monthLabel){
+      if(state.calendarView === "agenda"){
+        return `
+          <div class="calendar-month-head"><strong>Agenda à venir</strong></div>
+          <div class="calendar-content" style="grid-template-columns:1fr">
+            <div class="calendar-agenda">${renderCalendarAgendaList(items, 12)}</div>
+          </div>
+        `;
+      }
+
+      if(state.calendarView === "semaine"){
+        const weekItems = items.filter(i => isInSameWeek(parseLocalDate(i.date), parseLocalDate(state.calendarSelectedDate)));
+        return `
+          <div class="calendar-month-head">
+            <button class="calendar-nav" type="button" data-cal-prev="1">‹</button>
+            <strong>Semaine du ${escapeHtml(formatCalendarDate(startOfWeek(parseLocalDate(state.calendarSelectedDate))))}</strong>
+            <button class="calendar-nav" type="button" data-cal-next="1">›</button>
+          </div>
+          <div class="calendar-content" style="grid-template-columns:1fr">
+            <div class="calendar-agenda">${renderCalendarAgendaList(weekItems, 12)}</div>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="calendar-month-head">
+          <button class="calendar-nav" type="button" data-cal-prev="1">‹</button>
+          <strong>${escapeHtml(capitalize(monthLabel))}</strong>
+          <button class="calendar-nav" type="button" data-cal-next="1">›</button>
+        </div>
+        ${renderMonthGrid(items)}
+        <div class="calendar-content">
+          <div class="calendar-agenda">
+            <p class="calendar-section-title">${escapeHtml(formatCalendarDate(parseLocalDate(state.calendarSelectedDate)))} · ${selectedItems.length}</p>
+            ${renderCalendarItems(selectedItems)}
+          </div>
+          <aside class="calendar-side">
+            <div class="calendar-tip">
+              <b>Conseil du jour</b>
+              <p>${escapeHtml(calendarTip(selectedItems, items))}</p>
+            </div>
+            <div class="calendar-summary">
+              <b>Mon mois en un coup d’œil</b>
+              <p>${escapeHtml(calendarSummary(items))}</p>
+            </div>
+          </aside>
+        </div>
+      `;
+    }
+
+    function renderMonthGrid(items){
+      const date = new Date(state.calendarDate.getFullYear(), state.calendarDate.getMonth(), 1);
+      const year = date.getFullYear();
+      const month = date.getMonth();
+      const firstDay = (new Date(year, month, 1).getDay() + 6) % 7;
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const prevDays = new Date(year, month, 0).getDate();
+      const cells = [];
+      const dows = ["Lun","Mar","Mer","Jeu","Ven","Sam","Dim"];
+      dows.forEach(d => cells.push(`<div class="calendar-dow">${d}</div>`));
+
+      for(let i=0;i<42;i++){
+        const dayNum = i - firstDay + 1;
+        let cellDate, label, muted=false;
+        if(dayNum < 1){
+          label = prevDays + dayNum;
+          cellDate = new Date(year, month - 1, label);
+          muted=true;
+        }else if(dayNum > daysInMonth){
+          label = dayNum - daysInMonth;
+          cellDate = new Date(year, month + 1, label);
+          muted=true;
+        }else{
+          label = dayNum;
+          cellDate = new Date(year, month, label);
+        }
+
+        const key = toDateKey(cellDate);
+        const dayItems = items.filter(x => x.date === key);
+        const cls = [
+          "calendar-day",
+          muted ? "muted" : "",
+          key === state.calendarSelectedDate ? "selected" : "",
+          key === toDateKey(new Date()) ? "today" : ""
+        ].filter(Boolean).join(" ");
+
+        cells.push(`
+          <button type="button" class="${cls}" data-cal-day="${key}" aria-label="${escapeHtml(formatCalendarDate(cellDate))}">
+            <span>${label}</span>
+            <span class="calendar-dots">${dayItems.slice(0,3).map(i=>`<i class="calendar-dot ${escapeHtml(i.type)}"></i>`).join("")}</span>
+          </button>
+        `);
+      }
+
+      return `<div class="calendar-grid">${cells.join("")}</div>`;
+    }
+
+    function renderCalendarItems(items){
+      if(!items.length){
+        return `<div class="calendar-empty">Aucun élément ce jour. Intégrez les derniers événements trouvés, cherchez des événements ou ajoutez un rappel personnel.</div>`;
+      }
+      return items.map(renderCalendarItem).join("");
+    }
+
+    function renderCalendarAgendaList(items, limit=10){
+      const nowKey = toDateKey(new Date());
+      const upcoming = items
+        .filter(i => i.date >= nowKey)
+        .sort((a,b)=>`${a.date} ${a.time||""}`.localeCompare(`${b.date} ${b.time||""}`))
+        .slice(0, limit);
+      if(!upcoming.length) return `<div class="calendar-empty">Aucun élément à venir. Lancez une recherche d’événements ou ajoutez un rappel.</div>`;
+      return upcoming.map(renderCalendarItem).join("");
+    }
+
+    function renderCalendarItem(item){
+      const icon = ({event:"💼", formation:"🎓", atelier:"👥", reminder:"🔔", candidature:"📨"})[item.type] || "📌";
+      const meta = [item.time, item.location, item.source].filter(Boolean).join(" · ");
+      const url = item.url ? `<a href="${escapeHtml(item.url)}" target="_blank" rel="noopener">Voir</a>` : "";
+      return `
+        <article class="calendar-item ${escapeHtml(item.type)}">
+          <span class="calendar-ico">${icon}</span>
+          <span><strong>${escapeHtml(trim(item.title, 58))}</strong><small>${escapeHtml(meta || item.label || "Calendrier emploi")}</small></span>
+          ${url}
+        </article>
+      `;
+    }
+
+    function calendarTab(key,label){
+      return `<button class="calendar-tab ${state.calendarView===key ? "active" : ""}" type="button" data-cal-view="${key}">${label}</button>`;
+    }
+
+    function calendarFilter(key,label,count){
+      const suffix = key === "all" ? "" : ` ${count || 0}`;
+      return `<button class="calendar-filter ${state.calendarFilter===key ? "active" : ""}" type="button" data-cal-filter="${key}">${label}${suffix}</button>`;
+    }
+
+    function getCalendarItems(){
+      const stored = read("frai_calendar_items", []);
+      return stored.map(normalizeCalendarItem).filter(Boolean);
+    }
+
+    function writeCalendarItems(items){
+      const clean = dedupeCalendarItems(items.map(normalizeCalendarItem).filter(Boolean)).slice(0, 250);
+      localStorage.setItem("frai_calendar_items", JSON.stringify(clean));
+    }
+
+    function syncCalendarFromAgentData(data, silent=true){
+      if(!data) return 0;
+      const before = getCalendarItems();
+      const mapped = [];
+
+      (data.events || []).forEach(e => {
+        const d = parseEventDate(e.dateEvenement);
+        if(!d) return;
+        mapped.push({
+          id:`event-${e.id || e.url || e.titre}-${toDateKey(d)}`,
+          type: inferCalendarType(e),
+          title:e.titre || "Événement emploi",
+          date:toDateKey(d),
+          time:formatTimeForCalendar(e.heureDebut || d),
+          location:[e.ville,e.codePostal].filter(Boolean).join(" "),
+          source:"Mes événements emploi",
+          url:e.url || ""
+        });
+      });
+
+      (data.formations || []).forEach(f => {
+        const d = parseEventDate(f.dateDebut);
+        if(!d) return;
+        mapped.push({
+          id:`formation-${f.id || f.url || f.titre}-${toDateKey(d)}`,
+          type:"formation",
+          title:f.titre || "Formation",
+          date:toDateKey(d),
+          time:"",
+          location:f.ville || "Formation",
+          source:f.organisme || "France Travail",
+          url:f.url || ""
+        });
+      });
+
+      if(!mapped.length) return 0;
+
+      const after = dedupeCalendarItems([...before, ...mapped]);
+      writeCalendarItems(after);
+      const added = Math.max(0, after.length - before.length);
+
+      const first = mapped[0];
+      if(first?.date){
+        state.calendarDate = parseLocalDate(first.date);
+        state.calendarSelectedDate = first.date;
+      }
+
+      if(!silent && added) toast(`${added} élément(s) ajouté(s) au calendrier`);
+      renderCalendarPanel();
+      return added;
+    }
+
+    function addCalendarReminder(){
+      const today = state.calendarSelectedDate || toDateKey(new Date());
+      const title = prompt("Titre du rappel", "Relance candidature");
+      if(!title) return;
+      const date = prompt("Date du rappel (AAAA-MM-JJ)", today);
+      if(!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)){ toast("Date invalide"); return; }
+      const time = prompt("Heure du rappel", "09:00") || "";
+      const items = getCalendarItems();
+      items.push({
+        id:"reminder-" + Date.now(),
+        type:"reminder",
+        title,
+        date,
+        time,
+        location:"",
+        source:"Rappel personnel",
+        url:""
+      });
+      writeCalendarItems(items);
+      state.calendarSelectedDate = date;
+      state.calendarDate = parseLocalDate(date);
+      renderCalendarPanel();
+      toast("Rappel ajouté");
+    }
+
+    function normalizeCalendarItem(i){
+      if(!i || !i.title || !i.date) return null;
+      return {
+        id:String(i.id || `${i.type}-${i.title}-${i.date}-${i.time||""}`),
+        type:["event","formation","atelier","reminder","candidature"].includes(i.type) ? i.type : "event",
+        title:String(i.title || "Événement"),
+        date:String(i.date).slice(0,10),
+        time:String(i.time || ""),
+        location:String(i.location || ""),
+        source:String(i.source || ""),
+        url:String(i.url || "")
+      };
+    }
+
+    function dedupeCalendarItems(items){
+      const map = new Map();
+      items.forEach(i => map.set(i.id, i));
+      return [...map.values()].sort((a,b)=>`${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`));
+    }
+
+    function filterCalendarItems(items){
+      if(state.calendarFilter === "all") return items;
+      return items.filter(i => i.type === state.calendarFilter);
+    }
+
+    function countCalendarTypes(items){
+      return items.reduce((acc,i)=>{ acc[i.type]=(acc[i.type]||0)+1; return acc; }, {event:0,formation:0,atelier:0,reminder:0,candidature:0});
+    }
+
+    function inferCalendarType(e){
+      const t = normalizeUiText([e.type,e.titre,e.description].filter(Boolean).join(" "));
+      if(t.includes("atelier")) return "atelier";
+      if(t.includes("formation") || t.includes("poei") || t.includes("poe")) return "formation";
+      if(t.includes("candidature")) return "candidature";
+      return "event";
+    }
+
+    function parseEventDate(v){
+      if(!v) return null;
+      const d = new Date(v);
+      return Number.isNaN(d.getTime()) ? null : d;
+    }
+
+    function parseLocalDate(key){
+      const [y,m,d] = String(key).slice(0,10).split("-").map(Number);
+      return new Date(y || new Date().getFullYear(), (m || 1) - 1, d || 1);
+    }
+
+    function toDateKey(date){
+      const d = date instanceof Date ? date : new Date(date);
+      if(Number.isNaN(d.getTime())) return "";
+      const y = d.getFullYear();
+      const m = String(d.getMonth()+1).padStart(2,"0");
+      const day = String(d.getDate()).padStart(2,"0");
+      return `${y}-${m}-${day}`;
+    }
+
+    function addMonths(date, delta){
+      return new Date(date.getFullYear(), date.getMonth() + delta, 1);
+    }
+
+    function startOfWeek(date){
+      const d = new Date(date);
+      const day = (d.getDay()+6)%7;
+      d.setDate(d.getDate()-day);
+      d.setHours(0,0,0,0);
+      return d;
+    }
+
+    function isInSameWeek(a,b){
+      return toDateKey(startOfWeek(a)) === toDateKey(startOfWeek(b));
+    }
+
+    function formatCalendarDate(date){
+      if(!(date instanceof Date) || Number.isNaN(date.getTime())) return "";
+      return date.toLocaleDateString("fr-FR", { weekday:"long", day:"2-digit", month:"long" });
+    }
+
+    function formatTimeForCalendar(v){
+      if(!v) return "";
+      if(v instanceof Date) return v.toLocaleTimeString("fr-FR", {hour:"2-digit", minute:"2-digit"});
+      const s = String(v);
+      const m = s.match(/(\d{1,2}):(\d{2})/);
+      return m ? `${m[1].padStart(2,"0")}:${m[2]}` : "";
+    }
+
+    function calendarTip(selectedItems, items){
+      if(selectedItems.length >= 3) return "Journée chargée : priorisez l’inscription, le trajet et les documents nécessaires.";
+      if(selectedItems.some(i=>i.type==="formation")) return "Avant une formation, vérifiez les prérequis, les dates et le financement possible.";
+      if(selectedItems.some(i=>i.type==="atelier")) return "Préparez un objectif concret avant l’atelier : CV, entretien, projet ou numérique.";
+      if(items.length) return "Regroupez événements, formations et rappels pour garder une vision claire de votre parcours.";
+      return "Importez vos événements emploi ou ajoutez un rappel pour commencer à piloter votre semaine.";
+    }
+
+    function calendarSummary(items){
+      const c = countCalendarTypes(items);
+      return `${items.length} élément(s) ce mois : ${c.event||0} emploi, ${c.formation||0} formation(s), ${c.atelier||0} atelier(s), ${c.candidature||0} candidature(s), ${c.reminder||0} rappel(s).`;
+    }
+
+    function capitalize(s){
+      return String(s||"").charAt(0).toUpperCase() + String(s||"").slice(1);
+    }
+
+
     function runImmediateQuery(prompt){
       const clean = String(prompt || "").trim();
       if(!clean) return;
@@ -3888,7 +4525,7 @@ function renderSelectionDrawer(){
       const el = nodes.find(node => node.dataset.id === id);
       if(el) el.remove();
     }
-    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v9.11"; }
+    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v9.12"; }
 
     function saveMessage(role,content,extra){ const arr=read("frai_messages",[]); arr.push({role,content,extra}); localStorage.setItem("frai_messages",JSON.stringify(arr.slice(-30))); }
     function recordUsage(data,message,ms,error){ const s=read("frai_stats",{total:0,errors:0,clicks:0,feedback:{},intents:{},times:[]}); s.total++; if(error)s.errors++; const it=data.intent||"diagnostic"; s.intents[it]=(s.intents[it]||0)+1; s.times.push(ms); s.times=s.times.slice(-100); localStorage.setItem("frai_stats",JSON.stringify(s)); }
