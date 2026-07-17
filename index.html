@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#273b99" />
   <meta name="description" content="Mon compagnon Emploi — assistant France Travail pour orienter vers la bonne action" />
-  <title>Mon compagnon Emploi · France Travail · v9.10.1.1</title>
+  <title>Mon compagnon Emploi · France Travail · v9.16.4</title>
   <style>
     :root{
       --ft-blue:#273b99;--ft-blue-dark:#1d2b73;--ft-blue-soft:#eef2ff;
@@ -763,7 +763,7 @@
     .broader-actions button{border:1px solid #d9deea;background:#fff;color:var(--ft-blue);border-radius:999px;padding:7px 10px;font-size:12px;font-weight:900;cursor:pointer}
 
   
-    /* v9.16.2 — Mon compagnon Emploi */
+    /* v9.13 — Mon compagnon Emploi */
     .hero-flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px}
     .hero-flow span{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:7px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);color:var(--ft-blue-dark);font-weight:900;font-size:13px}
     .hero-flow b{color:var(--ft-blue);font-size:15px}
@@ -801,7 +801,7 @@
     }
     
   
-    /* v9.16.2 — pertinence + jauge marché */
+    /* v9.13 — pertinence + jauge marché */
     .gauge-card,.relevance-card{
       background:#fff;
       border:1px solid var(--line);
@@ -926,7 +926,7 @@
     }
 
   
-    /* v9.16.2 — simplification radicale + parcours guidé */
+    /* v9.13 — simplification radicale + parcours guidé */
     .brand-title{
       white-space:normal;
       line-height:1.05;
@@ -1097,7 +1097,7 @@
     }
 
   
-    /* v9.16.2 — patch stabilité parcours guidé */
+    /* v9.13 — patch stabilité parcours guidé */
     .guide-options{max-width:100%}
     .guide-btn{width:100%}
     .guide-btn div{min-width:0}
@@ -1118,7 +1118,7 @@
     }
 
   
-    /* v9.16.2 — boutons de suggestion guidés */
+    /* v9.13 — boutons de suggestion guidés */
     .guide-options{
       display:grid;
       gap:10px;
@@ -1211,7 +1211,7 @@
     }
 
   
-    /* v9.16.2 — vrai parcours guidé dans le carré bleu */
+    /* v9.13 — vrai parcours guidé dans le carré bleu */
     .guided-panel{
       margin-top:14px;
       border-radius:26px;
@@ -1258,7 +1258,7 @@
     }
 
   
-    /* v9.16.2 — actions guidées robustes */
+    /* v9.13 — actions guidées robustes */
     .guided-detail-form{
       display:grid;
       gap:10px;
@@ -1328,14 +1328,14 @@
     }
 
   
-    /* v9.16.2 — restauration du chat libre */
+    /* v9.13 — restauration du chat libre */
     .message-row.user .bubble{white-space:pre-wrap}
     .message-row.assistant .bubble{overflow:visible}
     .chat-fallback{display:grid;gap:10px;white-space:pre-wrap;line-height:1.45}
     .chat-fallback .small-btn{width:max-content}
 
   
-    /* v9.16.2 — pistes proches compactes + reset flottant */
+    /* v9.13 — pistes proches compactes + reset flottant */
     .broader-box{
       padding:10px 11px !important;
       border-radius:16px !important;
@@ -1457,7 +1457,7 @@
     }
 
   
-    /* v9.16.2 — pilotage réel des actions */
+    /* v9.13 — pilotage réel des actions */
     .guided-choice.direct{
       background:#ffffff;
       border-left:7px solid #20b486;
@@ -1496,7 +1496,7 @@
     }
 
   
-    /* v9.16.2 — pistes proches directes + saisie mobile stabilisée */
+    /* v9.13 — pistes proches directes + saisie mobile stabilisée */
     .composer{
       z-index:44 !important;
       transform:none !important;
@@ -1529,7 +1529,7 @@
 
   
 
-    /* v9.16.2 — bulles d’aide + anti-débordement mobile */
+    /* v9.13 — bulles d’aide + anti-débordement mobile */
     .guided-panel,
     .guided-panel *{
       box-sizing:border-box;
@@ -1646,7 +1646,7 @@
     }
 
   
-    /* v9.16.2 — mini-popin d’aide + vrai mode conseiller */
+    /* v9.13 — mini-popin d’aide + vrai mode conseiller */
     .guided-choice-wrap.open .guided-info-bubble{display:none !important}
     .guided-help-popin{
       position:fixed;
@@ -1721,7 +1721,7 @@
       background:linear-gradient(135deg,#17245f 0%,#273b99 100%) !important;
       border:2px solid rgba(255,255,255,.14);
     }
-    body[data-mode="conseiller"] .guided-kicker::before{content:"Guide pro · "}
+    body[data-mode="conseiller"] .guided-kicker::before{content:"Vue conseiller · "}
     body[data-mode="conseiller"] .advisor-guided{
       display:grid !important;
       gap:8px;
@@ -1747,7 +1747,7 @@
     body[data-mode="conseiller"] .guided-choice{border-left:7px solid #f4c542}
     body[data-mode="conseiller"] .guided-choice.direct{border-left-color:#20b486}
     body[data-mode="conseiller"] .guided-choice span::before{
-      content:"Repère pro : ";
+      content:"Conseiller : ";
       font-weight:1000;
       color:#273b99;
     }
@@ -1772,7 +1772,7 @@
     }
 
   
-    /* v9.16.2 — cartes blanches pleine largeur + ? bien intégré */
+    /* v9.13 — cartes blanches pleine largeur + ? bien intégré */
     .guided-choice-wrap{
       width:100%;
       min-width:0;
@@ -1829,7 +1829,7 @@
     }
 
   
-    /* v9.16.2 — finition premium des cartes guidées */
+    /* v9.13 — finition premium des cartes guidées */
     .guided-options{
       gap:12px !important;
       width:100%;
@@ -1971,7 +1971,7 @@
       background:#20b486;
     }
     body[data-mode="conseiller"] .guided-choice span::before{
-      content:"Repère pro : ";
+      content:"Conseiller : ";
       display:inline;
       font-weight:1000;
       color:#273b99;
@@ -2044,7 +2044,7 @@
     }
 
   
-    /* v9.16.2 — parcours guidé compact mobile */
+    /* v9.13 — parcours guidé compact mobile */
     .guided-panel{
       gap:12px !important;
     }
@@ -2235,7 +2235,7 @@
     }
 
   
-    /* v9.16.2 — UX mobile stable + cartes sans flèches */
+    /* v9.13 — UX mobile stable + cartes sans flèches */
     .guided-choice::after,
     .guided-choice.direct::after,
     .guided-choice.query::after,
@@ -2342,12 +2342,12 @@
     }
 
   
-    /* v9.16.2 — formations à comparer + sélection générique */
+    /* v9.13 — formations à comparer + sélection générique */
     .formation-swipe-box .offer-swipe-head strong::before{content:"🎓 "; font-size:.9em}
     .formation-card-swipe .offer-actions .keep{background:#273b99}
     .formation-card-swipe .offer-actions .pass{background:#fff}
   
-    /* v9.16.2 — Calendrier emploi intégré */
+    /* v9.13 — Calendrier emploi intégré */
     .feature-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
     .feature-action{
       border:1px solid #d7ddec;
@@ -2497,7 +2497,7 @@
     }
 
   
-    /* v9.16.2 — recherche calendrier */
+    /* v9.13 — recherche calendrier */
     .calendar-search{
       display:grid;
       grid-template-columns:1fr auto auto;
@@ -2523,7 +2523,7 @@
       .calendar-search .calendar-mini-btn{width:100%}
     }
 
-    /* v9.16.2 — modules POEI / Immersion */
+    /* v9.13 — modules POEI / Immersion */
     .poei-box,.immersion-box{
       border-radius:22px;
       background:#fff;
@@ -2548,18 +2548,21 @@
     .poei-card small,.immersion-card small{color:#5b6472;font-size:12px;line-height:1.3}
     .immersion-actions,.poei-actions{display:flex;gap:7px;flex-wrap:wrap}
   
-    /* v9.16.2 — parcours offre de service */
-    .service-pathway-box{
+
+    /* v9.16.4 — fiches prestations non destructives */
+    .need-detect-box,.service-sheet-card{
       border:1px solid var(--line);
       border-radius:22px;
       background:linear-gradient(180deg,#ffffff,#f8fbff);
       box-shadow:0 10px 24px rgba(17,24,39,.08);
-      padding:13px;
-      display:grid;
-      gap:12px;
+      padding:14px;
+      white-space:normal;
     }
-    .service-pathway-head span{
+    .need-detect-box{border-left:7px solid var(--ft-green)}
+    .need-detect-box span,.service-sheet-kicker{
       display:inline-flex;
+      width:max-content;
+      max-width:100%;
       padding:5px 9px;
       border-radius:999px;
       background:#e8f0ff;
@@ -2567,88 +2570,95 @@
       font-size:11px;
       font-weight:950;
       text-transform:uppercase;
-      letter-spacing:.03em;
-      margin-bottom:6px;
+      letter-spacing:.04em;
+      margin-bottom:7px;
     }
-    .service-pathway-head strong{display:block;color:var(--blue-dark);font-size:16px}
-    .service-pathway-head p{margin:4px 0 0;color:#5b6472;font-size:13px;line-height:1.35}
-    .service-pathway-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-    .service-pathway-card{
-      border:1px solid #dfe6f3;
-      border-left:5px solid var(--blue);
-      border-radius:15px;
-      padding:9px;
-      background:#fff;
+    .need-detect-box strong{display:block;color:#111827;font-size:16px;line-height:1.25}
+    .need-detect-box p{margin:5px 0 0;color:#5b6472;font-size:13px;line-height:1.35}
+    .service-sheet-card{border-left:7px solid var(--ft-blue);display:grid;gap:11px}
+    .service-sheet-card h3{margin:0;color:var(--blue-dark);font-size:20px;line-height:1.12;letter-spacing:-.025em}
+    .service-sheet-card p{margin:0;color:#4b5563;line-height:1.42}
+    .service-sheet-main{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+    .service-sheet-mini{border:1px solid #dfe6f3;border-radius:16px;background:#fff;padding:10px;display:grid;gap:4px}
+    .service-sheet-mini b{font-size:11px;color:#17245f;text-transform:uppercase;letter-spacing:.04em}
+    .service-sheet-mini small{font-size:13px;color:#4b5563;line-height:1.35}
+    .service-sheet-list{display:grid;gap:6px;margin:0;padding-left:18px;color:#4b5563;font-size:13px;line-height:1.35}
+    .service-sheet-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .service-sheet-actions .btn{border-color:#cbd5ee}
+    .service-sheet-alt{display:grid;gap:7px}
+    .service-sheet-alt-title{font-size:12px;font-weight:950;text-transform:uppercase;letter-spacing:.05em;color:#64748b}
+    .service-sheet-alt-row{display:flex;gap:7px;flex-wrap:wrap}
+    .service-sheet-alt-row button{border:1px solid #dfe6f3;background:#fff;border-radius:999px;padding:8px 10px;font-size:12px;font-weight:900;color:var(--blue-dark);cursor:pointer}
+    .guided-options.service-menu{grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch}
+    .guided-options.service-menu .guided-choice{height:100%;min-height:72px}
+    @media(max-width:760px){
+      .service-sheet-main{grid-template-columns:1fr}
+      .guided-options.service-menu{grid-template-columns:1fr}
+      .service-sheet-card h3{font-size:18px}
+      .service-sheet-actions .btn{width:100%}
+      .reset-fab{right:8px !important;bottom:118px !important;padding:9px 12px !important;font-size:13px !important;opacity:.92}
+      .selection-fab{right:8px !important;bottom:68px !important;padding:9px 12px !important;font-size:13px !important;opacity:.92}
     }
-    .service-pathway-card strong{display:block;color:#111827;font-size:13px}
-    .service-pathway-card small{display:block;margin-top:3px;color:#64748b;font-size:12px;line-height:1.32}
-    @media(max-width:760px){.service-pathway-list{grid-template-columns:1fr}}
-  
-    /* v9.16.2 — Guide pro / référentiel conseiller */
-    body[data-mode="conseiller"] .mode-btn.active{background:#17245f;color:#fff}
-    .guide-pro-box{
+
+
+
+    /* v9.16.5 — Guide pro précis, une seule réponse finale */
+    .guide-pro-final{
       border:1px solid var(--line);
       border-radius:22px;
-      background:#fff;
-      box-shadow:0 10px 24px rgba(17,24,39,.08);
-      padding:13px;
-    }
-    .guide-pro-grid{
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:10px;
-    }
-    .guide-pro-card{
-      border:1px solid #dfe6f3;
-      border-left:6px solid #17245f;
-      border-radius:17px;
-      padding:11px;
       background:linear-gradient(180deg,#ffffff,#f8fbff);
+      box-shadow:0 10px 24px rgba(17,24,39,.08);
+      padding:14px;
       display:grid;
-      gap:8px;
+      gap:12px;
     }
-    .guide-pro-top span{
+    .guide-pro-final-head span{
       display:inline-flex;
       width:max-content;
       max-width:100%;
-      padding:4px 8px;
+      padding:5px 9px;
       border-radius:999px;
       background:#e8f0ff;
       color:#17245f;
-      font-size:10px;
+      font-size:11px;
       font-weight:950;
       text-transform:uppercase;
       letter-spacing:.04em;
-      margin-bottom:5px;
+      margin-bottom:6px;
     }
-    .guide-pro-top strong{display:block;color:#111827;font-size:14px;line-height:1.2}
-    .guide-pro-card p{margin:0;color:#4b5563;font-size:13px;line-height:1.35}
-    .guide-pro-card ul{margin:0;padding-left:17px;color:#4b5563;font-size:12px;line-height:1.32}
-    .guide-pro-action,.guide-pro-vigilance{
-      border-radius:13px;
-      background:#f1f5ff;
-      padding:8px;
+    .guide-pro-final-head strong{display:block;color:#111827;font-size:17px;line-height:1.18}
+    .guide-pro-final-head p{margin:5px 0 0;color:#5b6472;font-size:13px;line-height:1.35}
+    .guide-pro-detected{
       display:grid;
-      gap:2px;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:8px;
     }
-    .guide-pro-vigilance{background:#fff7ed}
-    .guide-pro-action b,.guide-pro-vigilance b{font-size:11px;color:#17245f;text-transform:uppercase;letter-spacing:.04em}
-    .guide-pro-action small,.guide-pro-vigilance small{font-size:12px;color:#4b5563;line-height:1.32}
-    .guide-pro-source{color:#64748b;font-size:11px}
-    @media(max-width:760px){.guide-pro-grid{grid-template-columns:1fr}}
-  
-    /* v9.16.2 — langue / FLE */
-    .intro-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
-    .language-select-label{display:flex;align-items:center;gap:6px;background:#f1f4fb;border:1px solid var(--line);padding:4px 8px;border-radius:999px;font-size:12px;color:#4b5563;font-weight:900}
-    .language-select-label select{border:0;background:#fff;color:#17245f;border-radius:999px;padding:7px 8px;font-weight:950;outline:none;max-width:190px}
-    .fle-box{border:1px solid var(--line);border-radius:22px;background:linear-gradient(180deg,#ffffff,#f7fbff);box-shadow:0 10px 24px rgba(17,24,39,.08);padding:13px;display:grid;gap:12px}
-    .fle-head strong{display:block;color:var(--blue-dark);font-size:16px}
-    .fle-head p{margin:4px 0 0;color:#5b6472;font-size:13px;line-height:1.35}
-    .fle-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
-    .fle-card{text-decoration:none;border:1px solid #dfe6f3;border-left:5px solid #20b486;border-radius:16px;padding:10px;background:#fff;display:grid;gap:4px}
-    .fle-card strong{color:#111827;font-size:13px}
-    .fle-card small{color:#64748b;font-size:12px;line-height:1.3}
-    @media(max-width:760px){.intro-controls{width:100%;justify-content:stretch}.intro-controls .mode-switch{flex:1}.language-select-label{width:100%;justify-content:space-between}.fle-grid{grid-template-columns:1fr}}
+    .guide-pro-detected div,
+    .guide-pro-checks,
+    .guide-pro-warning{
+      border:1px solid #dfe6f3;
+      border-radius:16px;
+      background:#fff;
+      padding:10px;
+    }
+    .guide-pro-detected b,
+    .guide-pro-checks b,
+    .guide-pro-warning b{
+      display:block;
+      color:#17245f;
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+      margin-bottom:4px;
+    }
+    .guide-pro-detected small{display:block;color:#374151;font-size:13px;line-height:1.35}
+    .guide-pro-checks ul,.guide-pro-warning ul{margin:0;padding-left:18px;color:#4b5563;font-size:13px;line-height:1.35}
+    .guide-pro-warning{background:#fff7ed;border-color:#fed7aa}
+    .guide-pro-submit-row{display:flex;gap:8px;flex-wrap:wrap}
+    .guide-pro-submit-row button{border:1px solid var(--line);border-radius:14px;padding:10px 12px;font-weight:950;cursor:pointer;background:#fff;color:#17245f}
+    .guide-pro-submit-row .primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+    @media(max-width:760px){.guide-pro-detected{grid-template-columns:1fr}.guide-pro-submit-row button{width:100%}}
+
   </style>
 </head>
 <body data-mode="demandeur">
@@ -2664,7 +2674,7 @@
           </div>
         </div>
         <div class="top-actions">
-          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v9.16.2</span></div>
+          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v9.13</span></div>
           <button class="icon-btn" id="resetBtn" type="button" title="Nouvelle conversation">↺ <span>Nouveau</span></button>
         </div>
       </header>
@@ -2673,10 +2683,10 @@
         <div class="intro-grid">
           <div>
             <h1>Mon compagnon Emploi</h1>
-            <p>Un parcours guidé pour choisir la bonne action France Travail : offre, atelier, immersion, événement ou formation.</p>
+            <p>Un parcours guidé pour reprendre le pouvoir d’agir : comprendre le besoin, choisir la bonne action France Travail et avancer sans se perdre dans les dispositifs.</p>
             <div class="mission-card" aria-label="Rôle de l'assistant">
               <strong>À quoi sert cet outil ?</strong>
-              <span>Vous répondez à quelques choix simples. L’assistant affiche ensuite l’action utile et les services adaptés.</span>
+              <span>Vous répondez à quelques choix simples. L’assistant aide à reprendre le pouvoir d’agir avec une orientation claire, puis affiche l’action utile et les services adaptés.</span>
             </div>
             <div class="hero-flow" aria-label="Parcours guidé">
               <span>Décrire</span><b>→</b><span>Comprendre</span><b>→</b><span>Agir</span>
@@ -2688,42 +2698,9 @@
               </button>
             </div>
           </div>
-          <div class="intro-controls">
-            <div class="mode-switch" role="tablist" aria-label="Mode d'affichage">
-              <button class="mode-btn active" data-mode="demandeur" type="button">Demandeur</button>
-              <button class="mode-btn" data-mode="conseiller" type="button">Guide pro</button>
-            </div>
-            <label class="language-select-label">
-              <span title="Détectée automatiquement depuis le navigateur, modifiable ici">Langue</span>
-              <select id="languageSelect" aria-label="Langue de réponse">
-                <option value="auto">Auto navigateur</option>
-                <option value="fr">Français</option>
-                <option value="simple-fr">Français simple</option>
-                <option value="en">English</option>
-                <option value="es">Español</option>
-                <option value="ar">العربية</option>
-                <option value="zh">中文</option>
-                <option value="ur">اردو</option>
-                <option value="pa">ਪੰਜਾਬੀ</option>
-                <option value="hi">हिन्दी</option>
-                <option value="fa">فارسی</option>
-                <option value="tr">Türkçe</option>
-                <option value="pt">Português</option>
-                <option value="it">Italiano</option>
-                <option value="de">Deutsch</option>
-                <option value="ru">Русский</option>
-                <option value="uk">Українська</option>
-                <option value="pl">Polski</option>
-                <option value="ro">Română</option>
-                <option value="nl">Nederlands</option>
-                <option value="bn">বাংলা</option>
-                <option value="ta">தமிழ்</option>
-                <option value="vi">Tiếng Việt</option>
-                <option value="ko">한국어</option>
-                <option value="ja">日本語</option>
-                <option value="sw">Kiswahili</option>
-              </select>
-            </label>
+          <div class="mode-switch" role="tablist" aria-label="Mode d'affichage">
+            <button class="mode-btn active" data-mode="demandeur" type="button">Demandeur</button>
+            <button class="mode-btn" data-mode="conseiller" type="button">Conseiller</button>
           </div>
         </div>
 
@@ -2797,18 +2774,369 @@
       projetFormation: "https://www.francetravail.fr/candidat/votre-projet-de-formation.html",
       bonneAlternance: "https://labonnealternance.apprentissage.beta.gouv.fr/",
       alternanceInfo: "https://www.francetravail.fr/candidat/vos-services-en-ligne/la-bonne-alternance.html",
-      myjobglasses: "https://www.myjobglasses.com/",
-      activCrea: "https://messervices.francetravail.fr/centre-interet/activ-crea",
-      emploiStable: "https://messervices.francetravail.fr/centre-interet/un-emploi-stable",
-      agircadres: "https://messervices.francetravail.fr/centre-interet/agilcadres",
-      vsi: "https://messervices.francetravail.fr/centre-interet/vsi",
-      international: "https://messervices.francetravail.fr/centre-interet/activinternational",
-      aides: "https://www.francetravail.fr/candidat/vos-droits-et-demarches.html",
-      bonneBoite: "https://labonneboite.francetravail.fr/",
-      allianceFrancaise: "https://www.alliancefr.org/",
-      tv5mondeFle: "https://apprendre.tv5monde.com/fr",
-      dilf: "https://www.gidef.org/diplome-initial-de-langue-francaise-dilf/"
+      myjobglasses: "https://www.myjobglasses.com/"
     };
+
+
+    /* ===== v9.16.4 — Fiches prestations / besoin détecté ===== */
+    const SERVICE_SHEETS = {
+      activ_projet:{
+        category:"Choisir un métier", title:"Activ’Projet", duration:"8 à 12 semaines",
+        short:"Clarifier ou confirmer un projet professionnel avant de chercher une formation ou des offres.",
+        objective:"Définir une piste réaliste en confrontant envies, compétences et marché du travail.",
+        when:["projet flou ou reconversion", "plusieurs pistes sans choix clair", "besoin de vérifier la réalité du métier"],
+        nextAction:"Valider avec le conseiller si Activ’Projet est l’accompagnement prioritaire.",
+        agentPrompt:"Je ne sais pas quel métier choisir. Oriente-moi vers Activ’Projet ou la bonne action France Travail.",
+        url:OFFICIAL_ACTIONS.activprojet, alternatives:["metierscope","immersion","myjobglasses"]
+      },
+      metierscope:{
+        category:"Choisir un métier", title:"Métierscope", duration:"Consultation libre",
+        short:"Explorer des métiers, compétences et pistes proches sans lancer trop vite une candidature.",
+        objective:"Comparer les métiers et repérer des pistes cohérentes avec le profil.",
+        when:["besoin d’explorer", "métier proche à identifier", "reconversion à cadrer"],
+        nextAction:"Choisir 1 ou 2 métiers à tester ensuite par immersion ou échange métier.",
+        agentPrompt:"Aide-moi à explorer des métiers proches et réalistes avec Métierscope.",
+        url:OFFICIAL_ACTIONS.metierscope, alternatives:["activ_projet","immersion","myjobglasses"]
+      },
+      myjobglasses:{
+        category:"Choisir un métier", title:"Parler à un professionnel", duration:"Échange ponctuel",
+        short:"Comprendre la réalité d’un métier avec une personne qui l’exerce.",
+        objective:"Vérifier le quotidien, les contraintes et les compétences avant de s’engager.",
+        when:["doute sur la réalité du métier", "formation envisagée", "besoin d’un retour terrain"],
+        nextAction:"Préparer 3 questions puis contacter un professionnel du métier ciblé.",
+        agentPrompt:"Aide-moi à préparer les questions à poser à un professionnel sur le métier visé.",
+        url:OFFICIAL_ACTIONS.myjobglasses, alternatives:["immersion","metierscope","formation"]
+      },
+      immersion:{
+        category:"Choisir un métier", title:"Immersion facilitée", duration:"Courte période en entreprise",
+        short:"Tester un métier en conditions réelles avant formation, candidature ou reconversion.",
+        objective:"Confirmer une piste, découvrir un environnement et sécuriser le projet.",
+        when:["faire un stage d’observation", "tester un métier", "confirmer avant formation"],
+        nextAction:"Indiquer le métier et la ville pour chercher une entreprise accueillante.",
+        agentPrompt:"Je veux faire une immersion facilitée pour tester un métier. Aide-moi à chercher une entreprise accueillante.",
+        url:OFFICIAL_ACTIONS.immersion, alternatives:["activ_projet","myjobglasses","formation"]
+      },
+      formation:{
+        category:"Se former", title:"Recherche de formation", duration:"Selon formation",
+        short:"Trouver une formation liée au métier, au domaine ou aux compétences à renforcer.",
+        objective:"Comparer les formations utiles et vérifier leur cohérence avec le projet.",
+        when:["métier visé connu", "compétence manquante", "reconversion par formation"],
+        nextAction:"Préciser métier + ville, puis comparer les formations proposées.",
+        agentPrompt:"Je cherche une formation adaptée à mon projet. Aide-moi à comparer les options utiles.",
+        url:OFFICIAL_ACTIONS.formations, alternatives:["prepa_competences","poei","alternance"]
+      },
+      prepa_competences:{
+        category:"Se former", title:"Prépa compétences / GCO", duration:"2 à 8 semaines",
+        short:"Faire le point sur les compétences avant de choisir une formation ou un métier.",
+        objective:"Identifier les écarts entre le projet, les compétences actuelles et le niveau attendu.",
+        when:["besoin de bilan compétences", "doute sur le niveau", "formation envisagée mais pas sécurisée"],
+        nextAction:"Lister les compétences à vérifier avec le conseiller avant prescription.",
+        agentPrompt:"Je veux faire le point sur mes compétences et choisir la bonne action France Travail.",
+        alternatives:["formation","poei","activ_projet"]
+      },
+      poei:{
+        category:"Se former", title:"POEI — Préparation opérationnelle à l’emploi", duration:"Formation courte avant embauche",
+        short:"Se former rapidement pour répondre à un besoin d’employeur ou à une embauche identifiée.",
+        objective:"Réduire l’écart de compétences entre le candidat et le poste visé.",
+        when:["employeur ou poste identifié", "formation courte nécessaire", "besoin de recrutement local"],
+        nextAction:"Vérifier le métier, la ville et les événements ou offres associés.",
+        agentPrompt:"Je cherche une POEI, préparation opérationnelle à l’emploi. Repère les actions et événements pertinents.",
+        alternatives:["formation","mrs","alternance"]
+      },
+      alternance:{
+        category:"Se former", title:"La Bonne Alternance", duration:"Contrat + formation",
+        short:"Se former en travaillant via apprentissage ou contrat de professionnalisation.",
+        objective:"Trouver une entreprise et une formation compatibles avec le projet.",
+        when:["apprendre un métier en contrat", "besoin d’expérience", "formation longue avec employeur"],
+        nextAction:"Préciser métier et territoire, puis chercher entreprise + centre de formation.",
+        agentPrompt:"Je cherche une alternance. Aide-moi à cibler métier, ville et prochaines démarches.",
+        url:OFFICIAL_ACTIONS.bonneAlternance, alternatives:["formation","poei","myjobglasses"]
+      },
+      atelier_cv:{
+        category:"Préparer sa candidature", title:"Atelier CV / candidature", duration:"½ journée à 1 journée",
+        short:"Améliorer un CV, une candidature ou une présentation écrite pour un poste précis.",
+        objective:"Rendre la candidature claire, ciblée et cohérente avec le poste visé.",
+        when:["CV peu lisible", "candidatures sans retour", "besoin d’adapter au métier"],
+        nextAction:"Indiquer le poste visé pour obtenir une aide CV ciblée.",
+        agentPrompt:"Je veux améliorer mon CV pour un poste précis. Aide-moi à structurer la candidature.",
+        url:OFFICIAL_ACTIONS.ateliersCandidature, alternatives:["entretien","vsi","organisation_recherche"]
+      },
+      entretien:{
+        category:"Préparer sa candidature", title:"Préparation entretien", duration:"Action courte",
+        short:"Préparer les réponses, les exemples et la posture avant un échange recruteur.",
+        objective:"Convaincre avec des arguments concrets et réduire l’improvisation.",
+        when:["entretien prévu", "stress entretien", "difficulté à se vendre"],
+        nextAction:"Préciser le poste pour préparer les questions probables.",
+        agentPrompt:"Je veux préparer un entretien d’embauche pour un poste précis.",
+        url:OFFICIAL_ACTIONS.entretien, alternatives:["atelier_cv","vsi","organisation_recherche"]
+      },
+      vsi:{
+        category:"Préparer sa candidature", title:"Valoriser son image professionnelle", duration:"2 à 3 semaines",
+        short:"Travailler la confiance, la posture, la présentation et la valorisation des compétences.",
+        objective:"Aider la personne à mieux se présenter face aux recruteurs.",
+        when:["manque de confiance", "difficulté à parler de soi", "image professionnelle à renforcer"],
+        nextAction:"Identifier ce qui bloque : posture, discours, confiance ou visibilité.",
+        agentPrompt:"Je veux valoriser mon image professionnelle et mieux me présenter aux recruteurs.",
+        alternatives:["entretien","atelier_cv","organisation_recherche"]
+      },
+      organisation_recherche:{
+        category:"Préparer sa candidature", title:"Organiser sa recherche d’emploi", duration:"1 journée",
+        short:"Structurer les candidatures, relances, outils et priorités de recherche.",
+        objective:"Passer d’actions dispersées à un plan simple et suivi.",
+        when:["recherche désorganisée", "perte de motivation", "pas de suivi candidatures"],
+        nextAction:"Choisir 3 actions hebdomadaires mesurables.",
+        agentPrompt:"Je veux organiser et optimiser ma recherche d’emploi avec une méthode claire.",
+        alternatives:["atelier_cv","events","bonne_boite"]
+      },
+      atelier_numerique:{
+        category:"Préparer sa candidature", title:"Atelier numérique", duration:"Variable",
+        short:"Gagner en autonomie sur les démarches en ligne, CV, candidatures et espace personnel.",
+        objective:"Réduire le blocage numérique qui freine les démarches emploi.",
+        when:["difficulté ordinateur ou mobile", "services en ligne bloquants", "candidatures numériques difficiles"],
+        nextAction:"Identifier l’outil qui bloque : CV, mail, espace personnel ou candidature.",
+        agentPrompt:"Quels ateliers numériques France Travail peuvent m’aider ?",
+        url:OFFICIAL_ACTIONS.ateliers, alternatives:["organisation_recherche","atelier_cv","freins"]
+      },
+      offres:{
+        category:"Trouver un emploi", title:"Recherche d’offres", duration:"Action immédiate",
+        short:"Rechercher des offres concrètes par métier et territoire, puis trier les plus utiles.",
+        objective:"Passer d’une intention à une sélection d’offres exploitables.",
+        when:["métier connu", "ville ou rayon clair", "prêt à candidater"],
+        nextAction:"Indiquer métier + ville pour afficher les offres à trier.",
+        agentPrompt:"Je cherche des offres d’emploi. Aide-moi à trouver les plus pertinentes.",
+        alternatives:["events","bonne_boite","mrs"]
+      },
+      events:{
+        category:"Trouver un emploi", title:"Événements emploi", duration:"Selon calendrier local",
+        short:"Repérer forums, job dating, informations collectives ou rencontres recruteurs.",
+        objective:"Créer un contact concret avec des recruteurs ou un secteur.",
+        when:["besoin de rencontrer", "marché local à explorer", "événement proche"],
+        nextAction:"Indiquer la ville et le thème pour afficher les événements utiles.",
+        agentPrompt:"Quels événements emploi peuvent m’aider près de chez moi ?",
+        alternatives:["offres","mrs","poei"]
+      },
+      mrs:{
+        category:"Trouver un emploi", title:"MRS — Méthode de recrutement par simulation", duration:"Action de recrutement",
+        short:"Recruter autrement, avec exercices d’habiletés, quand le CV ne suffit pas.",
+        objective:"Donner accès à des postes via les capacités démontrées plutôt que le parcours écrit.",
+        when:["peu d’expérience", "reconversion", "recrutement sans CV ou collectif"],
+        nextAction:"Chercher les événements MRS dans la ville ou le secteur ciblé.",
+        agentPrompt:"Je cherche une MRS, méthode de recrutement par simulation, autour de moi.",
+        alternatives:["events","poei","offres"]
+      },
+      emploi_stable:{
+        category:"Trouver un emploi", title:"Un Emploi Stable", duration:"8 à 12 semaines",
+        short:"Accompagnement pour améliorer les techniques de recherche et accéder à un emploi durable.",
+        objective:"Structurer la stratégie de recherche et consolider les démarches.",
+        when:["retour à l’emploi durable", "besoin de méthode renforcée", "recherche active mais peu efficace"],
+        nextAction:"Vérifier avec le conseiller si l’accompagnement correspond au profil.",
+        agentPrompt:"Je veux retrouver un emploi stable. Aide-moi à choisir les prochaines actions.",
+        alternatives:["organisation_recherche","offres","events"]
+      },
+      agil_cadres:{
+        category:"Trouver un emploi", title:"Agil’Cadres", duration:"Jusqu’à 9 mois",
+        short:"Accompagnement renforcé pour cadres dans l’adaptation au marché et la stratégie de retour à l’emploi.",
+        objective:"Travailler positionnement, réseau, méthode et opportunités cadres.",
+        when:["profil cadre", "repositionnement", "besoin d’accompagnement long"],
+        nextAction:"Confirmer le statut cadre et le besoin d’appui spécifique.",
+        agentPrompt:"Je suis cadre et je veux structurer mon retour à l’emploi. Oriente-moi.",
+        alternatives:["emploi_stable","bonne_boite","organisation_recherche"]
+      },
+      bonne_boite:{
+        category:"Trouver un emploi", title:"La Bonne Boîte", duration:"Consultation libre",
+        short:"Identifier des entreprises susceptibles de recruter même sans offre publiée.",
+        objective:"Cibler des candidatures spontanées utiles et éviter l’envoi massif.",
+        when:["peu d’offres visibles", "candidature spontanée", "secteur local à cibler"],
+        nextAction:"Choisir métier + ville, puis sélectionner quelques entreprises prioritaires.",
+        agentPrompt:"Aide-moi à cibler des entreprises pertinentes avec La Bonne Boîte.",
+        alternatives:["offres","events","organisation_recherche"]
+      },
+      activ_crea:{
+        category:"Créer une entreprise", title:"Activ’Créa", duration:"8 semaines",
+        short:"Explorer une idée de création ou reprise d’entreprise et vérifier sa faisabilité.",
+        objective:"Passer d’une envie à un projet clarifié : motivations, marché, démarches et posture.",
+        when:["idée d’activité", "envie d’indépendance", "reprise ou création à vérifier"],
+        nextAction:"Décrire l’idée, le public visé et le niveau d’avancement.",
+        agentPrompt:"Je veux créer une entreprise. Oriente-moi vers Activ’Créa et les étapes utiles.",
+        alternatives:["atelier_creation","metierscope","organisation_recherche"]
+      },
+      atelier_creation:{
+        category:"Créer une entreprise", title:"Atelier création d’entreprise", duration:"½ journée à 1 journée",
+        short:"Comprendre les premières démarches, ressources et points de vigilance d’un projet de création.",
+        objective:"Structurer l’idée avant de lancer des démarches lourdes.",
+        when:["première idée", "besoin de cadre", "questions sur étapes ou ressources"],
+        nextAction:"Lister les points à vérifier : offre, clients, statut, ressources, accompagnement.",
+        agentPrompt:"Je veux structurer mon projet de création d’entreprise avec les étapes France Travail.",
+        url:OFFICIAL_ACTIONS.ateliers, alternatives:["activ_crea","organisation_recherche","metierscope"]
+      },
+      defi_sante_emploi:{
+        category:"Lever les freins", title:"Défi Santé Emploi", duration:"Jusqu’à 7 mois",
+        short:"Accompagnement quand la santé, le handicap ou une difficulté durable bloque le retour à l’emploi.",
+        objective:"Identifier les difficultés, sécuriser la reprise et adapter les démarches au cadre professionnel.",
+        when:["santé fragile", "handicap", "fatigue durable", "retour à l’emploi difficile pour raison médicale"],
+        nextAction:"En parler au conseiller pour vérifier l’orientation et les partenaires utiles.",
+        agentPrompt:"J’ai un frein santé ou handicap dans mon retour à l’emploi. Oriente-moi vers le bon accompagnement.",
+        alternatives:["mobilite","organisation_recherche","activ_projet"]
+      },
+      mobilite:{
+        category:"Lever les freins", title:"Mobilité / transport", duration:"Selon situation",
+        short:"Traiter les problèmes de déplacement qui limitent les candidatures ou la reprise d’emploi.",
+        objective:"Identifier une solution de trajet, permis, zone de recherche ou aide mobilisable.",
+        when:["pas de véhicule", "permis bloquant", "trajet impossible", "zone d’emploi trop limitée"],
+        nextAction:"Préciser le lieu, le mode de transport et le poste visé.",
+        agentPrompt:"J’ai un problème de mobilité ou de transport qui bloque ma recherche d’emploi.",
+        alternatives:["defi_sante_emploi","offres","events"]
+      },
+      garde:{
+        category:"Lever les freins", title:"Garde / contraintes familiales", duration:"Selon situation",
+        short:"Adapter la recherche quand les contraintes de garde, horaires ou disponibilité bloquent l’emploi.",
+        objective:"Trouver un cadre compatible entre emploi, formation et organisation personnelle.",
+        when:["garde d’enfant", "horaires impossibles", "contraintes familiales", "disponibilité limitée"],
+        nextAction:"Clarifier les horaires possibles et les marges de solution.",
+        agentPrompt:"J’ai des contraintes familiales ou de garde qui bloquent mon retour à l’emploi.",
+        alternatives:["mobilite","offres","formation"]
+      },
+      fle:{
+        category:"Lever les freins", title:"Français / langue", duration:"Selon parcours",
+        short:"Orienter vers FLE, DILF ou ressources quand la langue bloque emploi, formation ou démarches.",
+        objective:"Renforcer la compréhension et l’expression pour accéder aux démarches et au travail.",
+        when:["personne allophone", "difficultés de compréhension", "besoin de français avant emploi"],
+        nextAction:"Identifier le niveau actuel et chercher une ressource ou formation FLE locale.",
+        agentPrompt:"Je dois apprendre le français pour travailler. Cherche des formations FLE et les prochaines actions.",
+        alternatives:["atelier_numerique","formation","defi_sante_emploi"]
+      },
+      autres_freins:{
+        category:"Lever les freins", title:"Identifier le frein prioritaire", duration:"Diagnostic court",
+        short:"Faire le tri entre santé, mobilité, garde, logement, numérique, confiance ou démarches.",
+        objective:"Éviter de tout traiter à la fois et choisir le blocage qui empêche vraiment l’action emploi.",
+        when:["plusieurs problèmes en même temps", "situation confuse", "besoin d’ordre de priorité"],
+        nextAction:"Nommer le frein principal puis choisir une seule action de départ.",
+        agentPrompt:"J’ai plusieurs freins périphériques et je veux savoir par quoi commencer.",
+        alternatives:["defi_sante_emploi","mobilite","garde"]
+      },
+      activ_international:{
+        category:"International", title:"Activ’International", duration:"8 à 12 semaines",
+        short:"Structurer un projet de retour à l’emploi à l’étranger ou de mobilité internationale.",
+        objective:"Vérifier pays cible, langue, démarches, métier, opportunités et faisabilité.",
+        when:["travail à l’étranger", "mobilité européenne", "retour en France ou départ", "projet international flou"],
+        nextAction:"Préciser pays, métier, langue et niveau de préparation.",
+        agentPrompt:"Je veux travailler à l’international. Aide-moi à structurer mon projet avec Activ’International.",
+        alternatives:["formation","offres","fle"]
+      }
+    };
+
+    function getServiceSheet(key){ return SERVICE_SHEETS[key] || null; }
+
+    function detectServiceSheetFromText(text){
+      const t = normalizeUiText(text || "");
+      if(!t) return "";
+      if(/\b(sante|maladie|handicap|rqth|fatigue|medical|medecin|psy|depression|anxiete|invalidite)\b/.test(t)) return "defi_sante_emploi";
+      if(/\b(mobilite|transport|permis|voiture|trajet|bus|train|deplacement)\b/.test(t)) return "mobilite";
+      if(/\b(garde|enfant|familial|famille|horaire|creche|nounou|parent)\b/.test(t)) return "garde";
+      if(/\b(fle|francais|langue|allophone|dilf|comprendre|parler francais)\b/.test(t)) return "fle";
+      if(/\b(creer|creation|entreprise|auto entrepreneur|micro entreprise|activite|reprendre une entreprise)\b/.test(t)) return "activ_crea";
+      if(/\b(international|etranger|europe|mobilite internationale|u1|u2|partir travailler)\b/.test(t)) return "activ_international";
+      if(/\b(poei|poec|preparation operationnelle|formation avant embauche|formation prealable)\b/.test(t)) return "poei";
+      if(/\b(mrs|simulation|sans cv|habilete|habiletes)\b/.test(t)) return "mrs";
+      if(/\b(alternance|apprentissage|contrat pro|contrat de professionnalisation)\b/.test(t)) return "alternance";
+      if(/\b(immersion|stage|tester un metier|decouvrir un metier|entreprise accueillante)\b/.test(t)) return "immersion";
+      if(/\b(cv|lettre de motivation|candidature|candidater)\b/.test(t)) return "atelier_cv";
+      if(/\b(entretien|recruteur|embauche|se presenter)\b/.test(t)) return "entretien";
+      if(/\b(image professionnelle|confiance|posture|valoriser|parler de moi)\b/.test(t)) return "vsi";
+      if(/\b(methode|organiser|organisation|suivi|relance|plan de recherche)\b/.test(t)) return "organisation_recherche";
+      if(/\b(numerique|ordinateur|internet|mail|email|espace personnel|demarche en ligne)\b/.test(t)) return "atelier_numerique";
+      if(/\b(cadre|cadres|manager|ingenieur)\b/.test(t)) return "agil_cadres";
+      if(/\b(emploi stable|emploi durable|retour emploi durable)\b/.test(t)) return "emploi_stable";
+      if(/\b(metier flou|quoi faire|orientation|reconversion|changer de metier|projet professionnel|activ projet)\b/.test(t)) return "activ_projet";
+      if(/\b(formation|former|se former|competence|competences)\b/.test(t)) return "formation";
+      return "";
+    }
+
+    function buildServiceSheetData(key, originText){
+      const sheet = getServiceSheet(key);
+      return {
+        ok:true,
+        intent:"fiche_prestation",
+        diagnosticLabel:"Besoin détecté",
+        serviceSheetKey:key,
+        serviceSheet:sheet,
+        sourceText:originText || "",
+        compactReply: sheet ? `Besoin détecté : ${sheet.category}. Orientation prioritaire : ${sheet.title}.` : "Fiche prestation.",
+        reply: sheet ? `Besoin détecté : ${sheet.category}. Orientation prioritaire : ${sheet.title}.` : "Fiche prestation.",
+        priorityAction: sheet ? sheet.title : "Fiche prestation",
+        analysis:{need: sheet ? sheet.short : "Besoin à qualifier"}
+      };
+    }
+
+    function renderNeedDetectedCard(data){
+      const sheet = data.serviceSheet || getServiceSheet(data.serviceSheetKey);
+      const box=document.createElement("section");
+      box.className="need-detect-box";
+      box.innerHTML=`<span>Besoin détecté</span><strong>${escapeHtml(sheet?.category || "Orientation France Travail")}</strong><p>${escapeHtml(sheet?.short || "La demande est orientée vers une fiche prestation.")}</p>`;
+      return box;
+    }
+
+    function renderServiceSheetCard(key, contextText=""){
+      const sheet = getServiceSheet(key);
+      const card=document.createElement("section");
+      card.className="service-sheet-card";
+      if(!sheet){ card.textContent="Fiche introuvable."; return card; }
+      const when = (sheet.when || []).slice(0,4).map(x=>`<li>${escapeHtml(x)}</li>`).join("");
+      const alternatives = (sheet.alternatives || []).slice(0,3).map(k=>getServiceSheet(k) ? `<button type="button" data-open-sheet="${escapeHtml(k)}">${escapeHtml(getServiceSheet(k).title)}</button>` : "").join("");
+      card.innerHTML = `
+        <div><span class="service-sheet-kicker">${escapeHtml(sheet.category)}</span><h3>${escapeHtml(sheet.title)}</h3><p>${escapeHtml(sheet.short)}</p></div>
+        <div class="service-sheet-main">
+          <div class="service-sheet-mini"><b>Objectif</b><small>${escapeHtml(sheet.objective || "Clarifier la prochaine action utile.")}</small></div>
+          <div class="service-sheet-mini"><b>Durée</b><small>${escapeHtml(sheet.duration || "Selon situation")}</small></div>
+        </div>
+        <div class="service-sheet-mini"><b>Quand l’utiliser</b><ul class="service-sheet-list">${when}</ul></div>
+        <div class="service-sheet-mini"><b>Prochaine action</b><small>${escapeHtml(sheet.nextAction || "Valider l’orientation puis lancer l’action.")}</small></div>
+        ${alternatives ? `<div class="service-sheet-alt"><div class="service-sheet-alt-title">Pistes proches, seulement si besoin</div><div class="service-sheet-alt-row">${alternatives}</div></div>` : ""}
+        <div class="service-sheet-actions"></div>
+      `;
+      const actions = card.querySelector(".service-sheet-actions");
+      const run = document.createElement("button");
+      run.type="button"; run.className="btn outline"; run.textContent="Lancer avec l’agent";
+      run.onclick=()=>runImmediateQuery(sheet.agentPrompt || sheet.short || sheet.title);
+      actions.appendChild(run);
+      if(sheet.url){
+        const a=document.createElement("a");
+        a.className="btn outline"; a.href=sheet.url; a.target="_blank"; a.rel="noopener noreferrer"; a.textContent="Ouvrir le service";
+        actions.appendChild(a);
+      }
+      card.querySelectorAll("[data-open-sheet]").forEach(btn=>{
+        btn.addEventListener("click",()=>renderServiceSheetPanel(btn.dataset.openSheet, contextText));
+      });
+      return card;
+    }
+
+    function renderServiceSheetPanel(key, contextText=""){
+      if(!els.guidedPanel) return;
+      const sheet = getServiceSheet(key);
+      if(!sheet) return;
+      state.guideStep = "sheet_" + key;
+      els.guidedPanel.innerHTML = "";
+      const head=document.createElement("div");
+      head.className="guided-panel-head";
+      head.innerHTML = `<div><div class="guided-kicker">Fiche prestation</div><h2>${escapeHtml(sheet.title)}</h2></div>`;
+      els.guidedPanel.appendChild(head);
+      els.guidedPanel.appendChild(renderServiceSheetCard(key, contextText));
+      const actions=document.createElement("div");
+      actions.className="guided-actions";
+      const back=document.createElement("button");
+      back.type="button"; back.textContent="← Retour aux rubriques"; back.onclick=()=>renderGuidedPanel("situation");
+      actions.appendChild(back);
+      els.guidedPanel.appendChild(actions);
+    }
+
+    function shouldUseLocalSheet(text, key){
+      if(!key) return false;
+      const t = normalizeUiText(text || "");
+      if(/\b(offre|offres|job dating|evenement|forum|calendrier|boulanger|vendeur|secretaire|conducteur)\b/.test(t) && !/\b(sante|handicap|poei|mrs|immersion|stage|alternance|creation|international)\b/.test(t)) return false;
+      return true;
+    }
+
+
     const els = {
       messages: document.getElementById("messages"),
       form: document.getElementById("composer"),
@@ -2843,8 +3171,7 @@
       calendarFilter:"all",
       calendarDate:new Date(),
       calendarSelectedDate:toDateKey(new Date()),
-      calendarSearch:"",
-      language: resolveInitialLanguage()
+      calendarSearch:""
     };
 
     document.addEventListener("click", (e)=>{
@@ -2854,105 +3181,6 @@
       if(e.key === "Escape") closeGuidedHelp();
     });
 
-
-    function resolveInitialLanguage(){
-      const saved = localStorage.getItem("frai_language");
-      if(saved && saved !== "auto") return saved;
-
-      const detected = detectBrowserLanguage();
-      localStorage.setItem("frai_language_auto", detected);
-      return detected;
-    }
-
-    function normalizeLanguageCode(raw){
-      const value = String(raw || "fr").toLowerCase().trim();
-      if(!value || value === "auto") return detectBrowserLanguage();
-      if(value === "simple-fr") return "simple-fr";
-
-      // On garde le code principal BCP-47 : fr-FR -> fr, ur-PK -> ur, zh-CN -> zh.
-      const cleaned = value.replace("_","-").split("-")[0].replace(/[^a-z]/g, "");
-      return cleaned || "fr";
-    }
-
-    function detectBrowserLanguage(){
-      const langs = Array.isArray(navigator.languages) && navigator.languages.length
-        ? navigator.languages
-        : [navigator.language || navigator.userLanguage || "fr"];
-
-      for(const raw of langs){
-        const code = normalizeLanguageCode(raw);
-        if(code) return code;
-      }
-
-      return "fr";
-    }
-
-    function ensureLanguageOption(lang){
-      if(!els.languageSelect) return;
-      const code = normalizeLanguageCode(lang);
-      if([...els.languageSelect.options].some(o => o.value === code)) return;
-
-      const opt = document.createElement("option");
-      opt.value = code;
-      opt.textContent = "Langue navigateur · " + browserLanguageLabel(code);
-      els.languageSelect.insertBefore(opt, els.languageSelect.options[1] || null);
-    }
-
-    function browserLanguageLabel(lang){
-      const code = normalizeLanguageCode(lang);
-      const manual = {
-        fr:"français",
-        "simple-fr":"français simple",
-        en:"anglais",
-        es:"espagnol",
-        ar:"arabe",
-        zh:"chinois",
-        ur:"ourdou",
-        pa:"pendjabi",
-        ps:"pachto",
-        hi:"hindi",
-        fa:"persan",
-        tr:"turc",
-        pt:"portugais",
-        it:"italien",
-        de:"allemand",
-        ru:"russe",
-        uk:"ukrainien",
-        pl:"polonais",
-        ro:"roumain",
-        nl:"néerlandais",
-        bn:"bengali",
-        ta:"tamoul",
-        vi:"vietnamien",
-        ko:"coréen",
-        ja:"japonais",
-        sw:"swahili"
-      };
-      if(manual[code]) return manual[code];
-
-      try{
-        if(window.Intl && Intl.DisplayNames){
-          const dn = new Intl.DisplayNames(["fr"], {type:"language"});
-          return dn.of(code) || code;
-        }
-      }catch(_){}
-
-      return code;
-    }
-
-    function maybeToastDetectedLanguage(){
-      const saved = localStorage.getItem("frai_language");
-      const alreadyShown = localStorage.getItem("frai_language_detected_toast");
-      if(saved || alreadyShown) return;
-
-      const detected = localStorage.getItem("frai_language_auto") || state.language || "fr";
-      ensureLanguageOption(detected);
-
-      if(detected && detected !== "fr"){
-        toast("Langue du navigateur détectée : " + browserLanguageLabel(detected));
-        localStorage.setItem("frai_language_detected_toast", "1");
-      }
-    }
 
     function updateKeyboardOffset(){
       // v9.10.9 : ne plus déplacer manuellement le composer.
@@ -2981,6 +3209,227 @@
       if (els && els.status) els.status.textContent = "Erreur affichage · rechargez";
     });
 
+
+
+    /* ===== v9.16.5 — Guide pro précis, sans appels dispersés ===== */
+    const __fraiBaseGuide = {
+      getPanelStepConfig,
+      getPanelOptions,
+      handlePanelOption,
+      previousPanelStep,
+      renderPanelProgress,
+      getConseillerSummary,
+      advisorGuidanceHtml
+    };
+
+    function isGuideProMode(){
+      return (document.body.dataset.mode || "demandeur") === "conseiller";
+    }
+
+    const GUIDE_PRO_STEPS = {
+      situation:{kicker:"Guide pro", title:"Quel sujet faut-il sécuriser ?", text:"Choisissez d’abord le thème. Aucune réponse n’est envoyée à l’agent à cette étape : le parcours qualifie le besoin avant l’appel final."},
+      gp_formation:{kicker:"Guide pro · formation", title:"Quelle question formation faut-il traiter ?", text:"Sélectionnez le cas précis pour éviter une réponse trop générale sur la formation."},
+      gp_droits:{kicker:"Guide pro · droits", title:"Quelle situation administrative vérifier ?", text:"Les droits et l’indemnisation demandent un cadrage précis avant de répondre."},
+      gp_accompagnement:{kicker:"Guide pro · accompagnement", title:"Quel accompagnement semble correspondre ?", text:"Choisissez l’entrée qui décrit le blocage principal, pas le dispositif au hasard."},
+      gp_freins:{kicker:"Guide pro · freins", title:"Quel frein bloque le parcours ?", text:"Identifier le frein évite d’orienter vers une action emploi alors que l’obstacle est périphérique."},
+      gp_candidature:{kicker:"Guide pro · candidature", title:"Quel levier de recherche activer ?", text:"Choisissez la difficulté dominante : candidature, entretien, recrutement sans CV, événements ou entreprises."},
+      gp_international:{kicker:"Guide pro · international", title:"Quelle situation de mobilité ?", text:"La réponse dépend du projet : départ, retour, pays cible, droits ou offres."},
+      gp_espace:{kicker:"Guide pro · espace personnel", title:"Quelle démarche faut-il localiser ?", text:"Orientez vers le bon espace ou la bonne démarche sans noyer la personne dans tous les menus."},
+      guideProFinal:{kicker:"Guide pro · synthèse", title:"Réponse à envoyer", text:"Vérifiez la synthèse. Un seul appel sera envoyé à l’agent quand vous validez."}
+    };
+
+    function gpFinal(category, title, need, orientation, checks, vigilance, prompt){
+      return {category,title,need,orientation,checks,vigilance,prompt};
+    }
+
+    const GUIDE_PRO_OPTIONS = {
+      situation:[
+        {label:"Formation & financement", help:"AIF, CPF, AREF, RFFT, alternance", info:"Questions liées au financement, à la rémunération ou au choix du bon cadre de formation.", gpNext:"gp_formation", context:{gpCategory:"Formation & financement"}},
+        {label:"Droits & indemnisation", help:"Actualisation, ARE, reprise, trop-perçu", info:"Situations sensibles qui peuvent modifier les droits, obligations ou paiements.", gpNext:"gp_droits", context:{gpCategory:"Droits & indemnisation"}},
+        {label:"Accompagnements", help:"Activ’Projet, VSI, UES, AIJ, handicap", info:"Aide à choisir une prestation selon le besoin réel, pas selon le nom du dispositif.", gpNext:"gp_accompagnement", context:{gpCategory:"Accompagnements"}},
+        {label:"Freins périphériques", help:"Santé, mobilité, garde, numérique, langue", info:"Blocages qui empêchent l’action emploi ou formation d’être réaliste.", gpNext:"gp_freins", context:{gpCategory:"Freins périphériques"}},
+        {label:"Candidature & recrutement", help:"CV, entretien, MRS, événements", info:"Méthode de recherche, relation recruteur et accès aux opportunités.", gpNext:"gp_candidature", context:{gpCategory:"Candidature & recrutement"}},
+        {label:"International", help:"Départ, retour, Europe, pays cible", info:"Projet de mobilité, retour en France ou recherche hors territoire.", gpNext:"gp_international", context:{gpCategory:"International"}},
+        {label:"Espace personnel", help:"Documents, actualisation, démarches", info:"Aide à retrouver la bonne démarche ou le bon onglet sans faire une réponse administrative vague.", gpNext:"gp_espace", context:{gpCategory:"Espace personnel"}}
+      ],
+      gp_formation:[
+        {label:"Financer une formation", help:"AIF, CPF, abondement", info:"Quand la question porte sur qui paie, quel financement mobiliser ou comment monter la demande.", gpFinal:gpFinal("Formation & financement","Financement de formation","La personne veut financer une formation ou comprendre quel levier utiliser.","Vérifier d’abord la cohérence projet + formation + financement disponible.",["La formation est-elle liée à un projet validé ?","Un financement plus adapté que l’AIF existe-t-il ?","La formation est-elle éligible et correctement référencée ?"],["Ne pas promettre un financement avant étude du dossier.","Distinguer CPF, abondement et financement France Travail."],"Explique le bon raisonnement conseiller pour une demande de financement de formation : AIF, CPF, abondement, cohérence projet, conditions de vigilance et prochaine action." )},
+        {label:"Rémunération pendant formation", help:"AREF, RFFT", info:"Quand la personne demande si elle sera payée pendant la formation.", gpFinal:gpFinal("Formation & financement","Rémunération pendant formation","La question porte sur le maintien ou l’ouverture d’une rémunération pendant formation.","Identifier d’abord si la personne est indemnisée ou non indemnisée.",["La personne perçoit-elle l’ARE ?","La formation est-elle validée dans le parcours ?","La durée des droits couvre-t-elle la formation ?"],["AREF et RFFT ne concernent pas les mêmes publics.","Ne pas confondre financement de la formation et rémunération."],"Réponds comme guide pro sur rémunération pendant formation : AREF, RFFT, public concerné, questions à poser, vigilance et action suivante." )},
+        {label:"Alternance", help:"Apprentissage / contrat pro", info:"Quand la formation se fait avec un employeur et un contrat.", gpFinal:gpFinal("Formation & financement","Alternance","La personne veut se former en travaillant via apprentissage ou contrat de professionnalisation.","Orienter vers recherche d’employeur + organisme + cohérence métier.",["Le métier visé est-il clair ?","La personne cherche-t-elle un employeur ou une formation ?","Le niveau et l’âge orientent-ils plutôt vers apprentissage ou contrat pro ?"],["Ne pas traiter l’alternance comme une simple formation sans employeur.","Vérifier le calendrier d’entrée et le rythme."],"Réponds comme guide pro sur l’alternance : apprentissage, contrat pro, recherche employeur, étapes et vigilance." )},
+        {label:"POEI / formation avant embauche", help:"Besoin employeur", info:"Quand la formation prépare une prise de poste identifiée.", gpFinal:gpFinal("Formation & financement","POEI / préparation avant embauche","La personne cherche une formation courte liée à une embauche ou à un besoin employeur.","Vérifier l’existence d’un poste ou d’un besoin employeur avant d’orienter.",["Y a-t-il une entreprise ou une offre derrière ?","Le poste nécessite-t-il une montée en compétence courte ?","Le demandeur est-il disponible pour l’entrée en formation ?"],["Une POEI n’est pas une formation classique libre.","L’objectif doit rester l’embauche."],"Réponds comme guide pro sur POEI et préparation opérationnelle à l’emploi : besoin employeur, conditions, étapes et vigilance." )},
+        {label:"VAE / certification", help:"Expérience → diplôme", info:"Quand l’enjeu est de faire reconnaître l’expérience.", gpFinal:gpFinal("Formation & financement","VAE / certification","La personne veut transformer son expérience en certification ou diplôme.","Vérifier l’expérience, la certification visée et le besoin d’accompagnement.",["Quelle certification est visée ?","L’expérience est-elle suffisamment liée ?","La personne a-t-elle besoin d’un accompagnement VAE ?"],["Ne pas orienter vers VAE si le besoin est d’abord une reconversion sans expérience.","Vérifier RNCP/certification."],"Réponds comme guide pro sur VAE : public, conditions, étapes, vigilance et prochaine action." )}
+      ],
+      gp_droits:[
+        {label:"Actualisation / changement", help:"Déclarer une situation", info:"Quand un changement peut impacter les droits ou obligations.", gpFinal:gpFinal("Droits & indemnisation","Actualisation ou changement de situation","La personne doit savoir comment déclarer un changement ou actualiser correctement.","Sécuriser le type de changement, la période et le canal de déclaration.",["Quel changement exact ?","À quelle date ?","L’actualisation du mois est-elle déjà faite ?"],["Une mauvaise période déclarée peut créer un trop-perçu.","Rester factuel et orienter vers l’espace personnel si besoin."],"Réponds comme guide pro sur actualisation et changement de situation : questions à poser, risques, canal et prochaine action." )},
+        {label:"Reprise d’activité", help:"Impact sur ARE", info:"Quand la personne reprend un emploi ou une activité.", gpFinal:gpFinal("Droits & indemnisation","Reprise d’activité et droits","La personne veut comprendre l’impact d’une reprise sur ses droits.","Vérifier nature, durée, rémunération et déclaration de l’activité.",["CDD, CDI, intérim ou indépendant ?","Quelle date de début et quelle durée ?","Quel salaire ou volume horaire ?"],["Ne pas annoncer un montant sans calcul officiel.","Rappeler la déclaration de l’activité."],"Réponds comme guide pro sur reprise d’activité et impact sur ARE : cadre général, questions, vigilance et action suivante." )},
+        {label:"Trop-perçu", help:"Dette, échéancier, recours", info:"Quand une somme versée à tort est signalée.", gpFinal:gpFinal("Droits & indemnisation","Trop-perçu","La personne a reçu ou craint un trop-perçu.","Identifier le motif, la période et les options de remboursement ou contestation.",["Quel est le motif indiqué ?","Quelle période est concernée ?","La personne souhaite-t-elle comprendre, échelonner ou contester ?"],["Sujet sensible : éviter les promesses.","Distinguer demande d’explication, échéancier et recours."],"Réponds comme guide pro sur trop-perçu : explication, étapes, échelonnement, contestation possible, vigilance." )},
+        {label:"Reprise de droits", help:"Reliquat, réinscription", info:"Quand la personne revient après une activité ou interruption.", gpFinal:gpFinal("Droits & indemnisation","Reprise ou rechargement de droits","La personne veut savoir si ses droits peuvent reprendre ou être recalculés.","Vérifier reliquat, fin de contrat, réinscription et éléments d’activité.",["Existe-t-il un reliquat ?","La personne s’est-elle réinscrite ?","Quelles périodes travaillées depuis ?"],["Ne pas confondre reprise d’un reliquat et rechargement.","Le calcul dépend du dossier."],"Réponds comme guide pro sur reprise de droits ARE/rechargement : questions, différence, vigilance et action suivante." )},
+        {label:"Droits et engagements", help:"Contrat d’engagement", info:"Quand la question porte sur obligations, convocations ou actions convenues.", gpFinal:gpFinal("Droits & indemnisation","Droits et engagements","La personne demande ce qu’elle doit faire ou risque en cas de non-respect.","Revenir au contrat d’engagement, aux convocations et aux actions prévues.",["Quelle obligation ou action est concernée ?","Y a-t-il une convocation ou demande officielle ?","La personne a-t-elle un motif ou justificatif ?"],["Ne pas dramatiser, mais rappeler le cadre.","Orienter vers le conseiller si situation particulière."],"Réponds comme guide pro sur droits et engagements : cadre, obligations, vigilance et prochaine action." )}
+      ],
+      gp_accompagnement:[
+        {label:"Projet flou", help:"Activ’Projet", info:"Quand la personne ne sait pas vers quel métier aller.", gpFinal:gpFinal("Accompagnements","Projet professionnel flou","Le besoin principal est de clarifier un projet avant action emploi ou formation.","Orienter vers construction du projet plutôt que vers offres immédiates.",["La personne a-t-elle une piste métier ?","Le projet est-il réaliste au regard du marché ?","Faut-il tester avant de se former ?"],["Ne pas lancer une formation si le métier n’est pas confirmé.","Proposer immersion ou échange métier si besoin."],"Réponds comme guide pro sur projet professionnel flou : Activ’Projet, Métierscope, immersion, questions et action prioritaire." )},
+        {label:"Image professionnelle", help:"VSI / présentation de soi", info:"Quand le blocage est la posture, la confiance ou la présentation.", gpFinal:gpFinal("Accompagnements","Valoriser son image professionnelle","La personne doit améliorer sa présentation, sa confiance ou sa posture candidat.","Vérifier si le frein est l’image, le CV, l’entretien ou la confiance.",["Le blocage apparaît-il en entretien ?","Le CV obtient-il des retours ?","La personne sait-elle présenter ses expériences ?"],["Ne pas réduire ce besoin à un simple CV.","Travailler les preuves et exemples concrets."],"Réponds comme guide pro sur Valoriser son image professionnelle : public, signes, questions et prochaine action." )},
+        {label:"Retour durable à l’emploi", help:"Un Emploi Stable", info:"Quand le besoin est de structurer une recherche durable.", gpFinal:gpFinal("Accompagnements","Un Emploi Stable","La personne cherche un emploi durable mais sa méthode ou son ciblage doit être renforcé.","Vérifier disponibilité, projet et intensité de recherche.",["Le métier cible est-il clair ?","La personne candidate-t-elle régulièrement ?","Qu’est-ce qui bloque : méthode, marché, mobilité, confiance ?"],["Ne pas proposer si le frein principal est santé, logement ou garde.","Éviter le catalogue de prestations."],"Réponds comme guide pro sur Un Emploi Stable : quand le proposer, questions de vérification, vigilance et action." )},
+        {label:"Jeune", help:"AIJ / accompagnement jeune", info:"Quand le public jeune a besoin d’un suivi renforcé.", gpFinal:gpFinal("Accompagnements","Accompagnement jeune","Le besoin concerne un jeune avec recherche, orientation ou insertion à sécuriser.","Vérifier âge, autonomie, projet et freins avant orientation.",["Quel âge et quelle situation ?","Projet clair ou à construire ?","Freins sociaux ou mobilité ?"],["Adapter l’accompagnement au niveau d’autonomie.","Ne pas oublier Mission locale/partenaires selon cas."],"Réponds comme guide pro sur accompagnement jeune : qualification, options, vigilance et prochaine action." )},
+        {label:"Handicap / adaptation", help:"Cap emploi", info:"Quand la situation de handicap impacte l’emploi ou la formation.", gpFinal:gpFinal("Accompagnements","Handicap et adaptation du parcours","La personne a une situation de handicap ou une contrainte durable à intégrer.","Sécuriser l’orientation avec adaptation, Cap emploi ou partenaire si pertinent.",["Y a-t-il une reconnaissance ou démarche en cours ?","Quelle contrainte impacte le poste ?","Besoin d’aménagement, reconversion ou maintien ?"],["Rester factuel et respecter la confidentialité.","Ne pas confondre santé générale et handicap reconnu."],"Réponds comme guide pro sur handicap et adaptation : questions, Cap emploi, vigilance et action suivante." )}
+      ],
+      gp_freins:[
+        {label:"Santé", help:"Défi Santé Emploi", info:"Quand la santé freine directement le retour à l’emploi.", gpFinal:gpFinal("Freins périphériques","Frein santé","Le besoin détecté est un frein santé qui empêche ou fragilise le retour à l’emploi.","Évaluer si une action emploi est possible ou si un accompagnement santé/parcours est prioritaire.",["Le frein est-il temporaire ou durable ?","Impacte-t-il les horaires, les gestes ou le rythme ?","La personne peut-elle engager une action maintenant ?"],["Ne pas médicaliser la réponse.","Orienter vers conseiller/partenaire quand le frein dépasse l’emploi."],"Réponds comme guide pro sur frein santé et Défi Santé Emploi : quand l’utiliser, questions, vigilance et prochaine action." )},
+        {label:"Mobilité", help:"Transport / permis / territoire", info:"Quand le déplacement limite les candidatures ou la formation.", gpFinal:gpFinal("Freins périphériques","Frein mobilité","Le frein principal est le déplacement, la zone géographique ou le transport.","Vérifier si le projet doit être adapté ou si une aide mobilité est pertinente.",["Quel trajet bloque ?","Permis, véhicule ou transport collectif ?","Le lieu de formation/emploi est-il négociable ?"],["Ne pas proposer offres loin du domicile si mobilité non résolue.","Distinguer aide ponctuelle et contrainte structurelle."],"Réponds comme guide pro sur frein mobilité : diagnostic, aides possibles, vigilance et action suivante." )},
+        {label:"Garde / famille", help:"Disponibilité", info:"Quand l’organisation personnelle bloque emploi ou formation.", gpFinal:gpFinal("Freins périphériques","Frein garde ou contraintes familiales","La disponibilité est limitée par garde d’enfant ou contraintes familiales.","Adapter le parcours à la disponibilité réelle avant de proposer des offres.",["Quelles plages horaires sont possibles ?","La contrainte est-elle temporaire ou durable ?","Formation ou emploi peut-il être aménagé ?"],["Ne pas pousser une action incompatible avec les horaires réels.","Explorer partenaires ou aides selon situation."],"Réponds comme guide pro sur contraintes familiales/garde : questions, adaptation parcours, vigilance et action suivante." )},
+        {label:"Numérique", help:"Autonomie en ligne", info:"Quand les outils numériques bloquent les démarches.", gpFinal:gpFinal("Freins périphériques","Frein numérique","La personne a besoin d’autonomie numérique pour candidater ou gérer ses démarches.","Identifier si le blocage concerne compte, CV, candidature, mail ou démarches en ligne.",["La personne sait-elle accéder à son espace ?","Dispose-t-elle d’un mail et de documents ?","Le besoin est-il formation numérique ou aide ponctuelle ?"],["Ne pas supposer que la personne est autonome.","Prévoir une action très concrète et courte."],"Réponds comme guide pro sur frein numérique : diagnostic, atelier numérique, étapes concrètes et vigilance." )},
+        {label:"Français / langue", help:"FLE", info:"Quand la langue limite la compréhension ou l’accès à l’emploi.", gpFinal:gpFinal("Freins périphériques","Besoin linguistique / FLE","La maîtrise du français limite les démarches, la formation ou l’emploi.","Vérifier niveau, objectif et urgence emploi avant orientation.",["Compréhension orale, écrite ou administrative ?","Objectif emploi direct ou formation d’abord ?","Besoin de cours, certification ou français simple ?"],["Répondre en français simple si nécessaire.","Ne pas noyer la personne dans les sigles."],"Réponds comme guide pro sur besoin FLE/langue : diagnostic simple, pistes, vigilance et prochaine action." )}
+      ],
+      gp_candidature:[
+        {label:"CV / candidature", help:"Cibler et prouver", info:"Quand la personne candidate mais n’obtient pas de retour.", gpFinal:gpFinal("Candidature & recrutement","CV ou candidature à renforcer","Le besoin porte sur la qualité ou le ciblage des candidatures.","Vérifier métier cible, preuves, mots-clés et volume de candidatures.",["Le métier cible est-il précis ?","Le CV montre-t-il des preuves utiles ?","Y a-t-il des retours recruteurs ?"],["Ne pas refaire un CV générique.","Relier CV au poste et au marché."],"Réponds comme guide pro sur CV/candidature : diagnostic, action prioritaire, vigilance et prochaine action." )},
+        {label:"Entretien", help:"Convaincre", info:"Quand la personne obtient des entretiens mais bloque à l’oral.", gpFinal:gpFinal("Candidature & recrutement","Préparation entretien","Le besoin porte sur la capacité à convaincre en entretien.","Préparer exemples, motivation, questions difficiles et posture.",["Quel poste est visé ?","Quels retours après entretien ?","La personne sait-elle raconter ses expériences ?"],["Ne pas faire une préparation abstraite.","Travailler des exemples concrets."],"Réponds comme guide pro sur préparation entretien : questions, méthode, vigilance et action suivante." )},
+        {label:"MRS", help:"Recrutement sans CV", info:"Quand les compétences peuvent être évaluées autrement que par diplôme/CV.", gpFinal:gpFinal("Candidature & recrutement","Méthode de recrutement par simulation","Le besoin est d’accéder à un recrutement par habiletés plutôt que par CV classique.","Chercher si une action MRS existe sur le territoire ou le métier.",["Quel métier ou secteur ?","Quelle ville ou bassin ?","La personne est-elle disponible pour information collective/test ?"],["La MRS dépend des actions disponibles localement.","Ne pas promettre une MRS si aucun événement n’est repéré."],"Réponds comme guide pro sur MRS : quand l’utiliser, recherche d’événements, questions et vigilance." )},
+        {label:"Événements emploi", help:"Forum / job dating", info:"Quand un contact recruteur ou une information collective peut accélérer.", gpFinal:gpFinal("Candidature & recrutement","Événement emploi","Le besoin est de rencontrer recruteurs, ateliers ou informations locales.","Cibler ville, période et thème pour éviter les événements hors sujet.",["Quelle ville ?","Quel métier ou thème ?","Besoin recruteur, atelier ou information métier ?"],["Écarter les événements trop éloignés du besoin.","Préparer la personne avant inscription."],"Réponds comme guide pro sur événements emploi : qualification, recherche ciblée, préparation et vigilance." )},
+        {label:"Entreprises à cibler", help:"La Bonne Boîte", info:"Quand il faut prospecter au-delà des offres publiées.", gpFinal:gpFinal("Candidature & recrutement","Cibler les entreprises","Le besoin est d’identifier des entreprises potentielles même sans offre publiée.","Vérifier métier, territoire et approche de contact.",["Quel métier cible ?","Quel secteur géographique ?","La personne peut-elle envoyer une candidature spontanée ciblée ?"],["Ne pas envoyer des candidatures massives non ciblées.","Préparer un message court et adapté."],"Réponds comme guide pro sur ciblage entreprises / La Bonne Boîte : méthode, questions, vigilance et action." )}
+      ],
+      gp_international:[
+        {label:"Projet de départ", help:"Activ’International", info:"Quand la personne veut travailler hors de France.", gpFinal:gpFinal("International","Projet de travail à l’international","La personne veut préparer une mobilité professionnelle à l’étranger.","Vérifier pays cible, langue, métier, droits et faisabilité.",["Quel pays ?","Quel métier ?","Niveau de langue et documents nécessaires ?"],["Ne pas lancer une recherche d’offres sans pays ni métier.","Préparer le projet avant candidature."],"Réponds comme guide pro sur projet international : Activ’International, questions, étapes, vigilance." )},
+        {label:"Retour en France", help:"Droits / documents", info:"Quand la personne revient après une activité à l’étranger.", gpFinal:gpFinal("International","Retour en France après activité à l’étranger","La personne revient en France et doit sécuriser droits, inscription ou documents.","Identifier pays, périodes travaillées et documents disponibles.",["Dans quel pays ?","Quelles périodes d’activité ?","Quels documents ou formulaires déjà obtenus ?"],["Les règles varient selon pays et situation.","Orienter vers vérification du dossier."],"Réponds comme guide pro sur retour en France après emploi à l’étranger : documents, questions, vigilance et action." )},
+        {label:"Offres internationales", help:"Pays + métier", info:"Quand le projet est déjà assez clair pour chercher des offres.", gpFinal:gpFinal("International","Recherche d’offres internationales","La personne a un pays ou un métier cible et veut chercher des opportunités.","Cadrer pays, métier, langue et conditions avant recherche.",["Pays cible ?","Métier et niveau d’expérience ?","Langue, visa ou reconnaissance diplôme ?"],["Ne pas mélanger orientation internationale et recherche d’offres.","Vérifier les prérequis."],"Réponds comme guide pro sur offres internationales : cadrage, étapes, ressources et vigilance." )}
+      ],
+      gp_espace:[
+        {label:"Documents / attestations", help:"Où trouver", info:"Quand la personne cherche un document dans son espace.", gpFinal:gpFinal("Espace personnel","Documents et attestations","La personne cherche un document, une attestation ou un justificatif.","Identifier le document exact et orienter vers la rubrique correspondante.",["Quel document précis ?","Est-ce pour droits, formation, employeur ou organisme ?","Le document existe-t-il déjà dans l’espace ?"],["Éviter une réponse vague type 'allez dans votre espace'.","Donner un chemin court."],"Réponds comme guide pro pour retrouver documents/attestations dans l’espace personnel : questions, chemin conseillé, vigilance." )},
+        {label:"Actualisation", help:"Déclarer le mois", info:"Quand la personne ne sait pas actualiser ou corriger.", gpFinal:gpFinal("Espace personnel","Actualisation dans l’espace personnel","La personne a besoin d’aide pour actualiser ou comprendre une déclaration mensuelle.","Identifier mois, activité, formation, arrêt ou changement à déclarer.",["Quel mois ?","Quelle situation à déclarer ?","Actualisation déjà validée ou non ?"],["Sujet sensible : la déclaration doit être exacte.","En cas d’erreur, orienter vers correction/contact."],"Réponds comme guide pro sur actualisation espace personnel : chemin, questions, vigilance et action." )},
+        {label:"Rendez-vous / messages", help:"Contacter conseiller", info:"Quand la personne cherche à contacter ou répondre.", gpFinal:gpFinal("Espace personnel","Messages et rendez-vous","La personne veut contacter son conseiller, répondre à une demande ou retrouver un rendez-vous.","Orienter vers messagerie, agenda ou notification selon le besoin.",["Message, convocation ou rendez-vous ?","La demande a-t-elle une échéance ?","Une pièce doit-elle être ajoutée ?"],["Ne pas ignorer les délais.","Distinguer contact conseiller et réclamation/démarche officielle."],"Réponds comme guide pro sur messages/rendez-vous espace personnel : chemin, questions, vigilance et prochaine action." )},
+        {label:"Projet / formation", help:"Suivi parcours", info:"Quand la personne cherche où voir son projet, ses formations ou actions.", gpFinal:gpFinal("Espace personnel","Projet, formation ou actions dans l’espace personnel","La personne cherche à suivre une action, une formation ou un projet dans son espace.","Identifier l’action et orienter vers le bon suivi.",["Formation, atelier, prestation ou candidature ?","L’action est-elle déjà validée ?","La personne cherche inscription, suivi ou justificatif ?"],["Ne pas mélanger recherche de formation et suivi d’une formation validée.","Donner un chemin simple."],"Réponds comme guide pro sur suivi projet/formation/action dans l’espace personnel : chemin, questions, vigilance." )}
+      ]
+    };
+
+    getPanelStepConfig = function(step){
+      if(!isGuideProMode()) return __fraiBaseGuide.getPanelStepConfig(step);
+      return GUIDE_PRO_STEPS[step] || GUIDE_PRO_STEPS.situation;
+    };
+
+    getPanelOptions = function(step){
+      if(!isGuideProMode()) return __fraiBaseGuide.getPanelOptions(step);
+      return GUIDE_PRO_OPTIONS[step] || GUIDE_PRO_OPTIONS.situation;
+    };
+
+    handlePanelOption = function(opt){
+      closeGuidedInfoBubbles();
+      if(isGuideProMode() && (opt.gpNext || opt.gpFinal)){
+        state.guideProContext = {...(state.guideProContext || {}), ...(opt.context || {})};
+        if(opt.gpNext){
+          state.guideStep = opt.gpNext;
+          renderGuidedPanel(opt.gpNext);
+          scrollToGuidedPanel();
+          return;
+        }
+        if(opt.gpFinal){
+          renderGuideProFinal(opt.gpFinal);
+          scrollToGuidedPanel();
+          return;
+        }
+      }
+      return __fraiBaseGuide.handlePanelOption(opt);
+    };
+
+    previousPanelStep = function(step){
+      if(isGuideProMode()){
+        if(step === "guideProFinal") return state.guideProLastStep || "situation";
+        if(/^gp_/.test(step)) return "situation";
+      }
+      return __fraiBaseGuide.previousPanelStep(step);
+    };
+
+    renderPanelProgress = function(step){
+      if(!isGuideProMode()) return __fraiBaseGuide.renderPanelProgress(step);
+      const div=document.createElement("div");
+      div.className="guided-progress-line";
+      const level = step === "situation" ? 1 : (step === "guideProFinal" ? 3 : 2);
+      ["Thème", "Cas", "Réponse"].forEach((label,idx)=>{
+        const pill=document.createElement("span");
+        pill.className="guided-step-pill" + (level === idx+1 ? " active" : "");
+        pill.textContent = `${idx+1}. ${label}`;
+        div.appendChild(pill);
+        if(idx < 2){ const arr=document.createElement("span"); arr.className="guided-arrow"; arr.textContent="→"; div.appendChild(arr); }
+      });
+      return div;
+    };
+
+    getConseillerSummary = function(step){
+      if(!isGuideProMode()) return __fraiBaseGuide.getConseillerSummary(step);
+      if(step === "situation") return "Guide pro : choisir le thème avant toute réponse. Aucun appel agent n’est envoyé ici.";
+      if(step === "guideProFinal") return "Guide pro : vérifier la synthèse puis envoyer une seule demande structurée à l’agent.";
+      return "Guide pro : choisir le cas précis. La réponse ne partira qu’à l’étape suivante.";
+    };
+
+    advisorGuidanceHtml = function(step){
+      if(!isGuideProMode()) return __fraiBaseGuide.advisorGuidanceHtml(step);
+      const lines = step === "situation"
+        ? ["Sélectionner la famille de besoin.", "Ne pas envoyer de réponse avant qualification."]
+        : step === "guideProFinal"
+          ? ["Un seul appel agent sera envoyé.", "La réponse attendue doit contenir : besoin confirmé, orientation prioritaire, questions de vérification, vigilance, prochaine action."]
+          : ["Sélectionner le cas le plus proche.", "La fiche finale préparera l’appel unique à l’agent."];
+      return `<strong>Guide pro</strong><ul>${lines.map(x=>`<li>${escapeHtml(x)}</li>`).join("")}</ul>`;
+    };
+
+    function renderGuideProFinal(final){
+      if(!els.guidedPanel) return;
+      state.guideStep = "guideProFinal";
+      state.guideProLastStep = Object.keys(GUIDE_PRO_OPTIONS).find(k => (GUIDE_PRO_OPTIONS[k] || []).some(o => o.gpFinal === final)) || state.guideStep || "situation";
+      els.guidedPanel.innerHTML = "";
+
+      const box=document.createElement("section");
+      box.className="guide-pro-final";
+      const checks=(final.checks||[]).slice(0,3).map(x=>`<li>${escapeHtml(x)}</li>`).join("");
+      const vig=(final.vigilance||[]).slice(0,2).map(x=>`<li>${escapeHtml(x)}</li>`).join("");
+      box.innerHTML = `
+        <div class="guide-pro-final-head">
+          <span>${escapeHtml(final.category || "Guide pro")}</span>
+          <strong>${escapeHtml(final.title || "Réponse à cadrer")}</strong>
+          <p>La réponse n’est pas encore envoyée. Validez seulement si ce besoin correspond à la situation.</p>
+        </div>
+        <div class="guide-pro-detected">
+          <div><b>Besoin détecté</b><small>${escapeHtml(final.need || "Besoin à préciser")}</small></div>
+          <div><b>Orientation prioritaire</b><small>${escapeHtml(final.orientation || "Orientation à vérifier")}</small></div>
+        </div>
+        <div class="guide-pro-checks"><b>Questions à poser avant réponse</b><ul>${checks}</ul></div>
+        <div class="guide-pro-warning"><b>Vigilance conseiller</b><ul>${vig}</ul></div>
+      `;
+
+      const row=document.createElement("div");
+      row.className="guide-pro-submit-row";
+      const send=document.createElement("button");
+      send.type="button";
+      send.className="primary";
+      send.textContent="Envoyer une seule réponse à l’agent";
+      send.onclick=()=>runImmediateQuery(buildGuideProPrompt(final));
+      const back=document.createElement("button");
+      back.type="button";
+      back.textContent="← Changer le cas";
+      back.onclick=()=>renderGuidedPanel(state.guideProLastStep || "situation");
+      const restart=document.createElement("button");
+      restart.type="button";
+      restart.textContent="Repartir du thème";
+      restart.onclick=()=>renderGuidedPanel("situation");
+      row.append(send, back, restart);
+      box.appendChild(row);
+
+      els.guidedPanel.appendChild(box);
+    }
+
+    function buildGuideProPrompt(final){
+      return [
+        "Mode Guide pro France Travail.",
+        "Réponds en une seule réponse structurée, courte et actionnable pour un conseiller.",
+        "Ne fais pas un catalogue. Donne une seule orientation prioritaire et au maximum deux alternatives si nécessaire.",
+        "Format attendu : Besoin confirmé / Orientation prioritaire / Questions de vérification / Point de vigilance / Prochaine action.",
+        "Catégorie : " + (final.category || ""),
+        "Besoin détecté : " + (final.need || ""),
+        "Orientation à vérifier : " + (final.orientation || ""),
+        "Questions de vérification : " + (final.checks || []).join(" ; "),
+        "Vigilances : " + (final.vigilance || []).join(" ; "),
+        "Demande : " + (final.prompt || final.title || "")
+      ].filter(Boolean).join("\n");
+    }
+
+
     init();
 
     function init(){
@@ -2993,11 +3442,6 @@
       refreshSelectionUi();
       els.guidedHelpClose?.addEventListener("click", closeGuidedHelp);
       els.guidedHelpOk?.addEventListener("click", closeGuidedHelp);
-      if(els.languageSelect){
-        ensureLanguageOption(state.language || "fr");
-        els.languageSelect.value = state.language || "fr";
-      }
-      setTimeout(maybeToastDetectedLanguage, 500);
       renderGuidedPanel("situation");
       renderCalendarPanel();
       health();
@@ -3027,32 +3471,9 @@ function bind(){
   document.querySelectorAll(".mode-btn").forEach(b => b.addEventListener("click",()=>{
     document.body.dataset.mode=b.dataset.mode;
     document.querySelectorAll(".mode-btn").forEach(x=>x.classList.toggle("active",x===b));
-    if(b.dataset.mode === "conseiller"){
-      state.guideStep = "situation";
-      els.input.placeholder = "Ex. AIF, RFFT, trop-perçu, changement de situation, Cap emploi…";
-    }else{
-      state.guideStep = "situation";
-      els.input.placeholder = "Ex. Je veux faire un stage, trouver un atelier CV, chercher une offre…";
-    }
     renderGuidedPanel(state.guideStep || "situation");
-        toast(b.dataset.mode==="conseiller" ? "Guide pro activé" : "Mode demandeur activé");
+        toast(b.dataset.mode==="conseiller" ? "Mode conseiller activé" : "Mode demandeur activé");
   }));
-  els.languageSelect?.addEventListener("change", ()=>{
-    const selected = els.languageSelect.value || "auto";
-    if(selected === "auto"){
-      localStorage.removeItem("frai_language");
-      localStorage.removeItem("frai_language_manual");
-      state.language = detectBrowserLanguage();
-      ensureLanguageOption(state.language);
-      els.languageSelect.value = state.language;
-      toast("Langue automatique : " + browserLanguageLabel(state.language));
-    }else{
-      state.language = normalizeLanguageCode(selected);
-      localStorage.setItem("frai_language", state.language);
-      localStorage.setItem("frai_language_manual", "1");
-      toast(languageToastText(state.language));
-    }
-  });
   els.selectionFab?.addEventListener("click", openSelectionDrawer);
   els.selectionCloseBtn?.addEventListener("click", closeSelectionDrawer);
   els.selectionDrawer?.addEventListener("click", (e)=>{ if(e.target?.dataset?.closeSelection) closeSelectionDrawer(); });
@@ -3067,7 +3488,7 @@ function bind(){
       try{
         const r=await fetch(WORKER+"/health?_="+Date.now(),{cache:"no-store"});
         const d=await r.json();
-        if(d.ok) els.status.textContent = "Prêt · " + (d.mode || "v9.16.2");
+        if(d.ok) els.status.textContent = "Prêt · " + (d.mode || "v9.13");
       }catch(e){ els.status.textContent = "Worker à vérifier"; }
     }
 
@@ -3086,6 +3507,13 @@ function bind(){
 
       try{
         renderMessage("user", text);
+        const localSheetKey = detectServiceSheetFromText(text);
+        if(shouldUseLocalSheet(text, localSheetKey)){
+          const localData = buildServiceSheetData(localSheetKey, text);
+          renderMessage("assistant", localData.compactReply || localData.reply, localData);
+          recordUsage(localData, text, Math.round(performance.now() - t0), false);
+          return;
+        }
         setBusy(true);
         id = renderLoading();
 
@@ -3093,8 +3521,7 @@ function bind(){
           message: text,
           city: extractCity(text) || state.city,
           useLLM: true,
-          mode: document.body.dataset.mode || "demandeur",
-          language: normalizeLanguageCode(state.language || "fr")
+          mode: document.body.dataset.mode || "demandeur"
         };
 
         const res = await fetch(WORKER + "/api/agent?_=" + Date.now(), {
@@ -3110,7 +3537,7 @@ function bind(){
         try{
           data = JSON.parse(raw);
         }catch(_){
-          throw new Error("Réponse non JSON : " + raw.slice(0,160));
+          throw new Error("Le service n’a pas renvoyé une réponse exploitable. Vérifiez le Worker ou le réseau.");
         }
 
         if(!res.ok || data.ok === false){
@@ -3185,12 +3612,7 @@ function bind(){
       return div;
     }
 
-function languageToastText(lang){
-      const code = normalizeLanguageCode(lang);
-      return "Langue de réponse : " + browserLanguageLabel(code);
-    }
-
-    function renderWelcome(){
+function renderWelcome(){
       renderGuidedPanel("situation");
     }
 
@@ -3244,6 +3666,7 @@ function languageToastText(lang){
 
       const optionBox=document.createElement("div");
       optionBox.className="guided-options";
+      if(step === "situation") optionBox.classList.add("service-menu");
       if(options.length === 2) optionBox.classList.add("two");
       options.forEach((opt, idx)=>{
         const wrap=document.createElement("div");
@@ -3306,177 +3729,23 @@ function languageToastText(lang){
       els.guidedPanel.appendChild(actions);
     }
 
-    function isGuideProMode(){
-      return (document.body.dataset.mode || "demandeur") === "conseiller";
-    }
-
-    function getGuideProStepConfig(step){
-      const map = {
-        situation:{
-          kicker:"Référentiel conseiller",
-          title:"Quel repère métier chercher ?",
-          text:"Rechercher une fiche courte pour sécuriser l’orientation : formation, indemnisation, droits, accompagnement ou démarches."
-        },
-        guideFormation:{
-          kicker:"Formation & financement",
-          title:"Formation : financement, rémunération, mobilité",
-          text:"Choisir le dispositif à vérifier avant de répondre au demandeur."
-        },
-        guideDroits:{
-          kicker:"Droits & indemnisation",
-          title:"Actualisation, droits, trop-perçu, reprise",
-          text:"Repères pour éviter une réponse incomplète sur les droits, obligations ou impacts administratifs."
-        },
-        guideAccompagnement:{
-          kicker:"Accompagnements",
-          title:"Prestations et accompagnements ciblés",
-          text:"Choisir l’accompagnement selon le besoin : image, jeune, handicap, emploi stable ou orientation."
-        },
-        guideInternational:{
-          kicker:"International",
-          title:"Europe, mobilité et droits chômage",
-          text:"Repères pour les situations de départ, retour ou travail en Europe."
-        },
-        guideEspace:{
-          kicker:"Espace personnel",
-          title:"Où faire la démarche ?",
-          text:"Orienter vers le bon onglet ou le bon service : Mon projet, allocations, documents, actualisation."
-        },
-        fle:{
-          kicker:"Français langue étrangère",
-          title:"Apprendre le français pour avancer",
-          text:"Pour une personne allophone, une difficulté de compréhension ou un besoin de français avant emploi, formation ou démarches."
-        }
-      };
-      return map[step] || map.situation;
-    }
-
-    function getGuideProOptions(step){
-      if(step === "situation") return [
-        {label:"Formation & financement", help:"AIF, CPF, AREF, RFFT, mobilité", info:"Pour répondre aux questions sur le financement, la rémunération pendant formation, la mobilité ou l’alternance.", next:"guideFormation"},
-        {label:"Droits & indemnisation", help:"ARE, trop-perçu, actualisation, CSP", info:"Pour les questions sensibles liées aux allocations, erreurs de déclaration, reprise de droits ou obligations.", next:"guideDroits"},
-        {label:"Accompagnements", help:"VSI, UES, AIJ, Cap emploi", info:"Pour proposer la bonne prestation selon profil, frein ou besoin d’accompagnement.", next:"guideAccompagnement"},
-        {label:"International", help:"Europe, U1, U2, retour en France", info:"Pour les situations de mobilité européenne, retour en France ou recherche d’emploi dans un autre État.", next:"guideInternational"},
-        {label:"Espace personnel", help:"Onglets, documents, démarches", info:"Pour guider rapidement vers le bon endroit dans l’espace personnel.", next:"guideEspace"}
-      ];
-
-      if(step === "guideFormation") return [
-        {label:"AIF", help:"Financement d’une formation", info:"Aide individuelle à la formation : cohérence projet, Qualiopi, contrat d’engagement, absence de financement plus adapté.", prompt:"Guide pro AIF : explique l'aide individuelle à la formation, conditions, vigilance et prochaine action."},
-        {label:"RFFT", help:"Rémunération formation non indemnisé", info:"Rémunération de formation France Travail pour demandeurs d’emploi non indemnisés ou non indemnisables sous conditions.", prompt:"Guide pro RFFT : rémunération de formation France Travail, public concerné, conditions et vigilance."},
-        {label:"AREF", help:"ARE pendant formation", info:"Allocation d’aide au retour à l’emploi formation pour personnes indemnisées entrant en formation validée.", prompt:"Guide pro AREF : explique ARE Formation, conditions et limites de droits."},
-        {label:"CPF", help:"Compte personnel de formation", info:"Droits formation mobilisables via Mon Compte Formation, avec possibilité d’abondement selon situation.", prompt:"Guide pro CPF : explique usage CPF, abondement et articulation avec AIF."},
-        {label:"Aide mobilité formation", help:"Transport, repas, hébergement", info:"Aide pour les frais annexes en formation selon distance, financement et situation indemnisation.", prompt:"Guide pro aide mobilité formation : conditions, frais couverts, délai et vigilance."},
-        {label:"Contrat pro", help:"Alternance avec employeur", info:"Contrat de travail avec formation en alternance, à articuler avec projet, diplôme et employeur.", prompt:"Guide pro contrat de professionnalisation : public, étapes et vigilance."},
-        {label:"VAE", help:"Transformer l’expérience en certification", info:"Démarche pour obtenir une certification RNCP à partir de l’expérience.", prompt:"Guide pro VAE : expliquer étapes, public et orientation France VAE."}
-      ];
-
-      if(step === "guideDroits") return [
-        {label:"Changement de situation", help:"Déclarer au bon moment", info:"Tout changement pouvant impacter allocation ou recherche doit être déclaré dans les délais.", prompt:"Guide pro changement de situation : délais, canaux, pièces et conséquences."},
-        {label:"Trop-perçu", help:"Dette, échéancier, recours", info:"Sommes versées à tort, souvent liées à déclaration ou changement non signalé.", prompt:"Guide pro trop-perçu : expliquer motifs, remboursement, échelonnement, remise et recours."},
-        {label:"Reprise de droits ARE", help:"Reliquat, délai, réinscription", info:"Reprise possible sous conditions si droits ARE restants et délai de déchéance non dépassé.", prompt:"Guide pro reprise des droits ARE : conditions, exceptions et prochaine action."},
-        {label:"Droits et engagements", help:"Contrat d’engagement, obligations", info:"Cadre des droits, actualisation, changement de situation et actions décidées avec le conseiller.", prompt:"Guide pro droits et engagements : résumer obligations, droits et vigilance."},
-        {label:"CRE", help:"Contrôle recherche d’emploi", info:"Contrôle des actes positifs et répétés de recherche d’emploi et preuves de remobilisation.", prompt:"Guide pro CRE contrôle recherche emploi : expliquer obligations et preuves attendues."},
-        {label:"CSP", help:"Licenciement économique", info:"Contrat de sécurisation professionnelle, délai de réflexion et accompagnement renforcé.", prompt:"Guide pro CSP : public, délai, accompagnement et vigilance."}
-      ];
-
-      if(step === "guideAccompagnement") return [
-        {label:"VSI", help:"Image pro, confiance, posture", info:"Accompagnement pour mieux se présenter et valoriser ses compétences auprès des recruteurs.", prompt:"Guide pro VSI Valoriser son image : public, objectif, durée et orientation."},
-        {label:"Un Emploi Stable", help:"Projet clair, emploi durable", info:"Accompagnement de 3 mois pour demandeurs autonomes avec projet défini et sans frein périphérique.", prompt:"Guide pro Un Emploi Stable : critères, objectif et vigilance."},
-        {label:"AIJ", help:"Jeunes moins de 30 ans", info:"Accompagnement individualisé et intensif pour jeunes demandeurs d’emploi.", prompt:"Guide pro AIJ : public cible, conditions et intérêt."},
-        {label:"Cap emploi", help:"RQTH / BOE / handicap", info:"Accompagnement spécialisé si le handicap constitue le frein principal à l’emploi.", prompt:"Guide pro Cap emploi : public concerné, orientation et vigilance."},
-        {label:"Entretien d’orientation", help:"Définir le bon référent", info:"Entretien de 15 à 30 minutes pour affiner l’orientation d’accompagnement.", prompt:"Guide pro entretien d'orientation : objectif, public et suite possible."}
-      ];
-
-      if(step === "guideInternational") return [
-        {label:"Allocation chômage en Europe", help:"U1, U2, retour, départ", info:"Repères pour périodes de travail en Europe, départ en recherche d’emploi ou retour en France.", prompt:"Guide pro allocation chômage en Europe : U1, U2, retour en France et vigilance."},
-        {label:"Projet international", help:"Activ’International", info:"À articuler avec pays, langue, démarches, candidature et droits.", prompt:"Je veux travailler à l'international. Aide-moi à structurer le projet et les démarches utiles."}
-      ];
-
-      if(step === "guideEspace") return [
-        {label:"Espace personnel", help:"Trouver le bon onglet", info:"Accueil, Mon projet, Mon inscription et mes allocations, Mes échanges et documents, Mes services+.", prompt:"Guide pro espace personnel : orienter vers le bon onglet selon la démarche."},
-        {label:"Actualisation", help:"28 au 15", info:"Actualisation mensuelle si concerné, avec conséquences en cas d’oubli.", prompt:"Guide pro actualisation : période, obligations et conséquences."},
-        {label:"Transmettre un document", help:"Mes échanges et documents", info:"Pour les justificatifs : arrêt maladie, congé maternité, pension, changement selon cas.", prompt:"Guide pro transmettre un document : quel espace, contexte et vigilance."}
-      ];
-
-      return getGuideProOptions("situation");
-    }
 
     function getPanelStepConfig(step){
-      if(isGuideProMode()) return getGuideProStepConfig(step);
-      const conseiller = state.conseillerMode;
+      const conseiller = (document.body.dataset.mode || "demandeur") === "conseiller";
       const map = {
-        situation:{
-          kicker: conseiller ? "Diagnostic offre de service" : "Parcours France Travail",
-          title:"Quelle rubrique correspond au besoin ?",
-          text: conseiller
-            ? "Choisir la famille d’offre de service avant de proposer une prestation évite les orientations trop rapides."
-            : "Choisissez l’entrée la plus proche. L’assistant proposera ensuite la prestation ou l’action la plus adaptée."
-        },
-        chooseJob:{
-          kicker: conseiller ? "Choisir un métier" : "Choisir un métier",
-          title:"Clarifier ou confirmer un projet",
-          text:"Pour les personnes qui ne savent pas encore quel métier viser, qui veulent changer de voie ou vérifier une piste."
-        },
-        training:{
-          kicker: conseiller ? "Se former" : "Se former",
-          title:"Formation, compétences, alternance ou POEI",
-          text:"Pour vérifier si une formation est nécessaire, trouver une formation disponible, préparer une alternance ou repérer une POEI."
-        },
-        candidature:{
-          kicker: conseiller ? "Préparer sa candidature" : "Préparer sa candidature",
-          title:"CV, entretien, image professionnelle",
-          text:"Pour travailler les outils, la posture, les techniques de recherche ou la présentation au recruteur."
-        },
-        employment:{
-          kicker: conseiller ? "Trouver un emploi" : "Trouver un emploi",
-          title:"Offres, événements, MRS, emploi stable",
-          text:"Pour aller vers des opportunités concrètes : offres, entreprises, événements, MRS ou accompagnement de retour à l’emploi."
-        },
-        creation:{
-          kicker: conseiller ? "Créer une entreprise" : "Créer une entreprise",
-          title:"Tester une idée de création ou reprise",
-          text:"Pour explorer la création d’activité, vérifier la cohérence du projet et identifier les prochaines démarches."
-        },
-        freins:{
-          kicker: conseiller ? "Lever les freins périphériques" : "Lever les freins",
-          title:"Santé, mobilité, garde, logement, numérique",
-          text:"Pour traiter ce qui bloque l’accès à l’emploi avant ou pendant la recherche."
-        },
-        international:{
-          kicker: conseiller ? "S’ouvrir à l’international" : "International",
-          title:"Préparer une mobilité ou un emploi à l’étranger",
-          text:"Pour vérifier la faisabilité : pays, langue, droits, métier, candidature et démarches."
-        },
-        fle:{
-          kicker: conseiller ? "Besoin linguistique" : "Français / langue",
-          title:"Apprendre le français pour accéder à l’emploi",
-          text:"Pour orienter vers FLE, DILF, ressources gratuites ou organisme local quand la langue bloque les démarches."
-        },
-        knowJob:{
-          kicker: conseiller ? "Qualification du besoin" : "Métier connu ?",
-          title:"Le métier est-il déjà connu ?",
-          text:"Si le métier est connu, on peut agir directement. Sinon, il faut clarifier ou tester avant de chercher des offres."
-        },
-        knownJob:{
-          kicker: conseiller ? "Action emploi" : "Action directe",
-          title:"Quelle action faire maintenant ?",
-          text:"Choisir l’action opérationnelle la plus utile : offres, formation, CV, entretien ou événement."
-        },
-        unknownJob:{
-          kicker: conseiller ? "Construction du projet" : "Construire ou tester le projet",
-          title:"Construire ou tester le projet",
-          text:"Quand le métier n’est pas clair, il vaut mieux clarifier, explorer ou tester avant de chercher des offres."
-        },
-        stage:{
-          kicker: conseiller ? "Immersion" : "Découvrir un métier",
-          title:"Que voulez-vous vérifier ?",
-          text:"L’immersion facilitée permet de tester un métier en conditions réelles."
-        },
-        atelier:{
-          kicker: conseiller ? "Atelier adapté" : "Besoin méthode",
-          title:"Quel atelier vous aiderait ?",
-          text:"Choisissez le point à travailler : CV, entretien, projet, compétences, formation, numérique ou création."
-        }
+        situation:{kicker: conseiller ? "Gamme des prestations" : "Parcours France Travail", title:"Quelle rubrique correspond au besoin ?", text:"Choisissez une rubrique. L’application affiche ensuite seulement les fiches utiles, pas tout le catalogue."},
+        chooseJob:{kicker:"Choisir un métier", title:"Construire ou vérifier le projet", text:"À utiliser quand le métier n’est pas clair, quand une reconversion démarre ou quand il faut tester une piste."},
+        training:{kicker:"Se former", title:"Formation, compétences ou alternance", text:"Choisir la bonne entrée selon le besoin : formation classique, compétences à vérifier, POEI ou alternance."},
+        candidature:{kicker:"Préparer sa candidature", title:"CV, entretien, image ou méthode", text:"Travailler uniquement le blocage qui empêche de convaincre : document, entretien, posture ou organisation."},
+        employment:{kicker:"Trouver un emploi", title:"Passer aux opportunités concrètes", text:"Offres, événements, MRS, entreprises à cibler ou accompagnement renforcé."},
+        creation:{kicker:"Créer une entreprise", title:"Vérifier ou structurer une idée", text:"Orienter vers Activ’Créa ou un atelier création selon le niveau d’avancement."},
+        freins:{kicker:"Lever les freins périphériques", title:"Identifier le frein prioritaire", text:"Santé, mobilité, garde, langue, numérique : on choisit le blocage principal avant d’agir."},
+        fle:{kicker:"Français / langue", title:"Apprendre le français pour accéder à l’emploi", text:"Pour une personne allophone ou quand la langue bloque emploi, formation ou démarches."},
+        international:{kicker:"International", title:"Préparer une mobilité professionnelle", text:"Structurer pays cible, langue, démarches, métier et faisabilité."},
+        knownJob:{kicker: conseiller ? "Action emploi" : "Action directe", title:"Quelle action faire maintenant ?", text:"Le métier est connu : lancer une recherche, une formation, une candidature ou un événement."},
+        unknownJob:{kicker:"Choisir un métier", title:"Construire ou tester le projet", text:"Quand le métier n’est pas clair, il faut clarifier, explorer ou tester avant les offres."},
+        stage:{kicker:"Immersion", title:"Que voulez-vous vérifier ?", text:"L’immersion facilitée permet de tester un métier en conditions réelles."},
+        atelier:{kicker:"Préparer sa candidature", title:"Quel atelier vous aiderait ?", text:"Choisissez le point à travailler : CV, entretien, projet, compétences, formation, numérique ou création."}
       };
       return map[step] || map.situation;
     }
@@ -3484,8 +3753,8 @@ function languageToastText(lang){
     function renderPanelProgress(step){
       const div=document.createElement("div");
       div.className="guided-progress-line";
-      const level = ({situation:1, knowJob:2, knownJob:3, unknownJob:3, stage:2, atelier:2, training:2})[step] || 1;
-      const labels = ["Situation", "Métier", "Action"];
+      const level = ({situation:1, chooseJob:2, training:2, candidature:2, employment:2, creation:2, freins:2, fle:2, international:2, knownJob:3, unknownJob:3, stage:3, atelier:3})[step] || 1;
+      const labels = ["Rubrique", "Besoin", "Action"];
       labels.forEach((label,idx)=>{
         const pill=document.createElement("span");
         pill.className="guided-step-pill" + (level === idx+1 ? " active" : "");
@@ -3497,10 +3766,9 @@ function languageToastText(lang){
     }
 
     function getPanelOptions(step){
-      if(isGuideProMode()) return getGuideProOptions(step);
       if(step === "situation") return [
-        {label:"Choisir un métier", help:"Activ’Projet, Métierscope, immersion", info:"Pour construire, confirmer ou changer de projet professionnel. À utiliser quand la personne ne sait pas encore vers quel métier aller.", next:"chooseJob", context:{rubrique:"choisir_metier"}},
-        {label:"Se former", help:"Formation, compétences, alternance, POEI", info:"Pour identifier une formation, vérifier les compétences à renforcer ou préparer une embauche avec formation courte.", next:"training", context:{rubrique:"se_former"}},
+        {label:"Choisir un métier", help:"Activ’Projet, Métierscope, immersion", info:"Pour construire, confirmer ou changer de projet professionnel.", next:"chooseJob", context:{rubrique:"choisir_metier"}},
+        {label:"Se former", help:"Formation, compétences, alternance, POEI", info:"Pour identifier une formation, vérifier les compétences ou préparer une embauche avec formation courte.", next:"training", context:{rubrique:"se_former"}},
         {label:"Préparer sa candidature", help:"CV, entretien, image professionnelle", info:"Pour travailler la candidature, la posture, la méthode de recherche et la capacité à convaincre.", next:"candidature", context:{rubrique:"candidature"}},
         {label:"Trouver un emploi", help:"Offres, événements, MRS, emploi stable", info:"Pour aller vers des opportunités concrètes : offres, entreprises, événements, MRS ou accompagnement retour à l’emploi.", next:"employment", context:{rubrique:"emploi"}},
         {label:"Créer une entreprise", help:"Activ’Créa, ateliers création", info:"Pour vérifier une idée, structurer un projet et identifier les démarches de création ou reprise d’activité.", next:"creation", context:{rubrique:"creation"}},
@@ -3509,88 +3777,83 @@ function languageToastText(lang){
       ];
 
       if(step === "chooseJob") return [
-        {label:"Mon projet est flou", help:"Activ’Projet", info:"Orientation vers Activ’Projet : clarifier les pistes, confronter le projet au marché et choisir une direction réaliste.", prompt:"Je ne sais pas quel métier choisir. Oriente-moi vers le bon parcours France Travail."},
-        {label:"Explorer les métiers", help:"Métierscope", info:"Métierscope sert à visualiser les métiers, compétences, salaires indicatifs et perspectives.", url:OFFICIAL_ACTIONS.metierscope, directLabel:"Ouverture Métierscope"},
-        {label:"Parler à un professionnel", help:"My Job Glasses", info:"Utile pour comprendre la réalité quotidienne d’un métier avant formation ou candidature.", url:OFFICIAL_ACTIONS.myjobglasses, directLabel:"Ouverture My Job Glasses"},
-        {label:"Tester un métier", help:"Immersion facilitée", info:"À utiliser pour confirmer une piste en situation réelle, auprès d’une entreprise accueillante.", detailAction:"immersion"},
-        {label:"Je connais déjà le métier", help:"Passer à l’action", info:"Si le métier est connu, on bascule sur offres, formation, CV, entretien ou événements.", next:"knownJob", context:{knowJob:"yes"}}
+        {label:"Activ’Projet", help:"Projet flou ou reconversion", info:"Clarifier une piste professionnelle réaliste avant formation ou candidature.", sheetKey:"activ_projet"},
+        {label:"Métierscope", help:"Explorer les métiers", info:"Visualiser métiers, compétences et pistes proches.", sheetKey:"metierscope"},
+        {label:"Parler à un professionnel", help:"My Job Glasses", info:"Comprendre le quotidien réel d’un métier avant de s’engager.", sheetKey:"myjobglasses"},
+        {label:"Immersion facilitée", help:"Tester un métier", info:"Vérifier une piste en situation réelle auprès d’une entreprise accueillante.", detailAction:"immersion"},
+        {label:"Je connais déjà le métier", help:"Passer à l’action", info:"Basculer sur offres, formation, CV, entretien ou événements.", next:"knownJob", context:{knowJob:"yes"}}
       ];
 
       if(step === "training") return [
-        {label:"Trouver une formation", help:"Formations France Travail", info:"Recherche des formations concrètes liées au métier, au domaine ou à la ville.", detailAction:"formation"},
-        {label:"Faire le point sur mes compétences", help:"Prépa compétences / GCO", info:"Pour identifier les écarts de compétences avant de s’engager dans une formation ou une candidature.", prompt:"Je veux faire le point sur mes compétences et savoir quelle prestation France Travail choisir."},
-        {label:"POEI", help:"Préparation opérationnelle à l’emploi", info:"Utile quand une formation courte prépare à une embauche ou à un besoin employeur identifié.", prompt:"Je cherche une POEI, préparation opérationnelle à l'emploi. Repère les POEI possibles et les événements liés."},
-        {label:"La bonne alternance", help:"Alternance et apprentissage", info:"À utiliser pour se former en contrat et repérer des opportunités d’alternance.", url:OFFICIAL_ACTIONS.bonneAlternance, directLabel:"Ouverture La bonne alternance"},
-        {label:"Vérifier le métier avant formation", help:"Immersion / professionnel", info:"Avant de prescrire une formation lourde, vérifier que le métier correspond réellement.", detailAction:"immersion"}
+        {label:"Trouver une formation", help:"Métier + ville", info:"Recherche des formations concrètes liées au métier, au domaine ou à la ville.", detailAction:"formation"},
+        {label:"Faire le point sur mes compétences", help:"Prépa compétences / GCO", info:"Identifier les écarts de compétences avant formation ou candidature.", sheetKey:"prepa_competences"},
+        {label:"POEI", help:"Préparation opérationnelle à l’emploi", info:"Formation courte liée à une embauche ou à un besoin employeur.", sheetKey:"poei"},
+        {label:"La Bonne Alternance", help:"Alternance et apprentissage", info:"Se former en contrat et repérer des opportunités d’alternance.", sheetKey:"alternance"},
+        {label:"Vérifier le métier avant formation", help:"Immersion / professionnel", info:"Éviter une formation mal ciblée en testant le métier.", detailAction:"immersion"}
       ];
 
       if(step === "candidature") return [
-        {label:"Améliorer mon CV", help:"Atelier candidature", info:"Correspond aux ateliers R02/R03/R05 : CV, candidature, organisation de recherche.", detailAction:"cv"},
-        {label:"Préparer un entretien", help:"Convaincre un recruteur", info:"Pour travailler les réponses, les exemples, la posture et le stress d’entretien.", detailAction:"entretien"},
-        {label:"Valoriser mon image professionnelle", help:"VSI / VS2", info:"Adapté quand le blocage est la présentation de soi, la confiance, la posture ou l’image candidat.", prompt:"Je veux valoriser mon image professionnelle et mieux me présenter aux recruteurs."},
-        {label:"Organiser ma recherche", help:"Méthode et outils", info:"Pour structurer les démarches, prioriser les actions et éviter une recherche dispersée.", prompt:"Je veux organiser et optimiser ma recherche d'emploi avec une méthode claire."},
-        {label:"Atelier numérique", help:"Autonomie en ligne", info:"Pour aider sur les outils numériques, les démarches en ligne et les candidatures.", prompt:"Quels ateliers numériques France Travail peuvent m'aider ?"}
+        {label:"Améliorer mon CV", help:"Atelier candidature", info:"CV, candidature, organisation de recherche.", sheetKey:"atelier_cv"},
+        {label:"Préparer un entretien", help:"Convaincre un recruteur", info:"Réponses, exemples, posture et stress d’entretien.", sheetKey:"entretien"},
+        {label:"Valoriser mon image professionnelle", help:"VSI / VS2", info:"Présentation de soi, confiance, posture ou image candidat.", sheetKey:"vsi"},
+        {label:"Organiser ma recherche", help:"Méthode et outils", info:"Structurer les démarches, prioriser les actions et suivre les candidatures.", sheetKey:"organisation_recherche"},
+        {label:"Atelier numérique", help:"Autonomie en ligne", info:"Outils numériques, démarches en ligne et candidatures.", sheetKey:"atelier_numerique"}
       ];
 
       if(step === "employment") return [
         {label:"Rechercher des offres", help:"Métier + ville", info:"Recherche directe d’offres France Travail, avec cartes à trier et sélection.", detailAction:"offres"},
-        {label:"Voir les événements", help:"Forums, job dating, infos collectives", info:"Recherche dans Mes Événements Emploi : rencontres recruteurs, forums, réunions, actions locales.", detailAction:"events"},
-        {label:"MRS", help:"Méthode de recrutement par simulation", info:"Repère les événements ou actions MRS dans le calendrier et les résultats.", prompt:"Je cherche une MRS, méthode de recrutement par simulation, autour de moi. Affiche les événements et actions pertinentes."},
-        {label:"Un Emploi Stable", help:"Accompagnement retour emploi", info:"Pertinent si la personne vise un emploi durable mais doit structurer sa recherche.", url:OFFICIAL_ACTIONS.emploiStable, directLabel:"Ouverture Un Emploi Stable"},
-        {label:"Agil’Cadres", help:"Cadres / accompagnement renforcé", info:"À proposer pour cadres ou profils autonomes ayant besoin d’un accompagnement méthodologique prolongé.", url:OFFICIAL_ACTIONS.agircadres, directLabel:"Ouverture Agil’Cadres"},
-        {label:"Cibler les entreprises", help:"La Bonne Boîte", info:"Permet d’identifier des entreprises qui recrutent potentiellement, même sans offre publiée.", url:OFFICIAL_ACTIONS.bonneBoite, directLabel:"Ouverture La Bonne Boîte"}
+        {label:"Voir les événements", help:"Forums, job dating, infos collectives", info:"Événements emploi : rencontres recruteurs, forums, réunions, actions locales.", detailAction:"events"},
+        {label:"MRS", help:"Méthode de recrutement par simulation", info:"Recrutement par habiletés quand le CV ne suffit pas.", sheetKey:"mrs"},
+        {label:"Un Emploi Stable", help:"Accompagnement retour emploi", info:"Pour viser un emploi durable avec une stratégie de recherche structurée.", sheetKey:"emploi_stable"},
+        {label:"Agil’Cadres", help:"Cadres / accompagnement renforcé", info:"Pour cadres ou profils autonomes ayant besoin d’un appui prolongé.", sheetKey:"agil_cadres"},
+        {label:"Cibler les entreprises", help:"La Bonne Boîte", info:"Identifier des entreprises qui recrutent potentiellement, même sans offre publiée.", sheetKey:"bonne_boite"}
       ];
 
       if(step === "creation") return [
-        {label:"Activ’Créa", help:"Tester l’idée", info:"Pour explorer la création ou reprise d’entreprise, vérifier les motivations, le public et la faisabilité.", url:OFFICIAL_ACTIONS.activCrea, directLabel:"Ouverture Activ’Créa"},
-        {label:"Atelier création d’entreprise", help:"Structurer le projet", info:"Correspond aux ateliers création : motivations, ressources, étapes clés et posture entrepreneuriale.", prompt:"Je veux créer une entreprise. Oriente-moi vers Activ'Créa et les ateliers création adaptés."},
-        {label:"M’imaginer créateur d’entreprise", help:"Atelier court", info:"Pour une première projection avant de lancer des démarches lourdes.", prompt:"Je veux m'imaginer créateur d'entreprise et comprendre les prochaines étapes."},
-        {label:"Structurer mon projet", help:"Ressources et étapes", info:"Pour passer d’une idée à un plan d’action clair.", prompt:"Je veux structurer mon projet de création d'entreprise avec les étapes France Travail."}
+        {label:"Activ’Créa", help:"Tester l’idée", info:"Explorer la création ou reprise d’entreprise et vérifier la faisabilité.", sheetKey:"activ_crea"},
+        {label:"Atelier création d’entreprise", help:"Structurer le projet", info:"Motivations, ressources, étapes clés et posture entrepreneuriale.", sheetKey:"atelier_creation"},
+        {label:"M’imaginer créateur d’entreprise", help:"Atelier court", info:"Première projection avant démarches lourdes.", sheetKey:"atelier_creation"},
+        {label:"Structurer mon projet", help:"Ressources et étapes", info:"Passer d’une idée à un plan d’action clair.", sheetKey:"activ_crea"}
       ];
 
       if(step === "freins") return [
-        {label:"Santé / handicap", help:"Défi Santé Emploi", info:"À utiliser quand la santé, le handicap, la fatigue ou une contrainte durable impacte le retour à l’emploi.", prompt:"J'ai un frein santé ou handicap dans mon retour à l'emploi. Oriente-moi vers le bon accompagnement France Travail."},
-        {label:"Mobilité / transport", help:"Permis, trajet, zone", info:"Pour les difficultés de déplacement, permis, voiture, transport ou choix de territoire.", prompt:"J'ai un problème de mobilité ou de transport qui bloque ma recherche d'emploi."},
-        {label:"Garde / contraintes familiales", help:"Organisation personnelle", info:"Pour les contraintes de garde, horaires, organisation familiale ou disponibilité.", prompt:"J'ai des contraintes familiales ou de garde qui bloquent mon retour à l'emploi."},
-        {label:"Français / langue", help:"FLE, DILF, ressources gratuites", info:"Pour une personne allophone ou une personne qui a besoin d'apprendre le français avant emploi, formation ou démarches.", next:"fle", context:{rubrique:"fle"}},
-        {label:"Numérique / démarches en ligne", help:"Autonomie", info:"Pour les difficultés à utiliser les services en ligne, CV, candidatures ou comptes numériques.", prompt:"J'ai des difficultés numériques pour mes démarches France Travail et ma recherche d'emploi."},
-        {label:"Autres freins", help:"Faire le tri", info:"Pour identifier ce qui relève d’un conseiller, d’un partenaire ou d’une action emploi.", prompt:"J'ai plusieurs freins périphériques et je veux savoir par quoi commencer."}
+        {label:"Santé / handicap", help:"Défi Santé Emploi", info:"Santé, handicap, fatigue ou contrainte durable qui impacte le retour à l’emploi.", sheetKey:"defi_sante_emploi"},
+        {label:"Mobilité / transport", help:"Permis, trajet, zone", info:"Difficultés de déplacement, permis, voiture, transport ou territoire.", sheetKey:"mobilite"},
+        {label:"Garde / contraintes familiales", help:"Organisation personnelle", info:"Contraintes de garde, horaires, organisation familiale ou disponibilité.", sheetKey:"garde"},
+        {label:"Français / langue", help:"FLE, DILF, ressources", info:"Langue qui bloque emploi, formation ou démarches.", sheetKey:"fle"},
+        {label:"Numérique / démarches en ligne", help:"Autonomie", info:"Difficultés avec services en ligne, CV, candidatures ou comptes numériques.", sheetKey:"atelier_numerique"},
+        {label:"Autres freins", help:"Faire le tri", info:"Identifier ce qui relève d’un conseiller, d’un partenaire ou d’une action emploi.", sheetKey:"autres_freins"}
       ];
 
       if(step === "fle") return [
-        {label:"Ressources FLE gratuites", help:"TV5MONDE", info:"Cours gratuits en ligne pour apprendre ou renforcer le français.", url:OFFICIAL_ACTIONS.tv5mondeFle, directLabel:"Ouverture TV5MONDE FLE"},
-        {label:"Cours en présentiel", help:"Alliance Française", info:"Piste utile pour des cours de français structurés, notamment à Paris.", url:OFFICIAL_ACTIONS.allianceFrancaise, directLabel:"Ouverture Alliance Française"},
-        {label:"DILF", help:"Diplôme initial de langue française", info:"Repère de certification pour les premiers niveaux de français.", url:OFFICIAL_ACTIONS.dilf, directLabel:"Ouverture DILF"},
-        {label:"Chercher une formation FLE", help:"France Travail", info:"Recherche de formations en français langue étrangère liées à la ville.", prompt:"Je dois apprendre le français pour travailler. Cherche des formations FLE et les prochaines actions France Travail."},
-        {label:"Répondre en français simple", help:"Compréhension", info:"L’assistant reformule en français plus simple avec des étapes courtes.", prompt:"Explique en français simple les démarches pour apprendre le français et avancer vers l'emploi."}
+        {label:"Ressources FLE", help:"Français langue étrangère", info:"Construire une première piste pour apprendre le français.", sheetKey:"fle"},
+        {label:"Chercher une formation FLE", help:"France Travail", info:"Rechercher une formation liée à la ville et au niveau.", prompt:"Je dois apprendre le français pour travailler. Cherche des formations FLE et les prochaines actions France Travail."},
+        {label:"Répondre en français simple", help:"Compréhension", info:"Reformuler les démarches en étapes courtes.", prompt:"Explique en français simple les démarches pour apprendre le français et avancer vers l'emploi."}
       ];
 
       if(step === "international") return [
-        {label:"Activ’International", help:"Structurer le projet", info:"Pour vérifier pays cible, démarches, langue, métier et faisabilité.", url:OFFICIAL_ACTIONS.international, directLabel:"Ouverture Activ’International"},
-        {label:"Préparer mon projet international", help:"Pays, langue, démarches", info:"Construit un parcours en étapes avant de chercher des offres à l’étranger.", prompt:"Je veux travailler à l'international. Aide-moi à structurer mon projet avec Activ'International."},
-        {label:"Voir les offres internationales", help:"Recherche ciblée", info:"À utiliser si le pays ou le métier est déjà clair.", detailAction:"offres"},
-        {label:"Me former avant de partir", help:"Langue / compétences", info:"Pour vérifier les compétences à renforcer avant mobilité.", detailAction:"formation"}
+        {label:"Activ’International", help:"Structurer le projet", info:"Vérifier pays cible, démarches, langue, métier et faisabilité.", sheetKey:"activ_international"},
+        {label:"Préparer mon projet international", help:"Pays, langue, démarches", info:"Construire un parcours avant de chercher des offres à l’étranger.", sheetKey:"activ_international"},
+        {label:"Voir les offres internationales", help:"Recherche ciblée", info:"Si le pays ou le métier est déjà clair.", detailAction:"offres"},
+        {label:"Me former avant de partir", help:"Langue / compétences", info:"Vérifier les compétences à renforcer avant mobilité.", detailAction:"formation"}
       ];
 
       if(step === "knownJob") return [
-        {label:"Rechercher des offres", help:"Préciser métier et ville", info:"Cette action lance une vraie recherche d’offres à partir d’un métier et d’une ville.", detailAction:"offres"},
+        {label:"Rechercher des offres", help:"Préciser métier et ville", info:"Lance une vraie recherche d’offres à partir d’un métier et d’une ville.", detailAction:"offres"},
         {label:"Trouver une formation", help:"Préciser métier et ville", info:"Recherche une formation liée au métier ou au projet.", detailAction:"formation"},
-        {label:"Immersion facilitée", help:"Tester avant de s’engager", info:"Permet de vérifier concrètement le métier ou l’environnement.", detailAction:"immersion"},
-        {label:"Améliorer mon CV", help:"Préciser le métier ciblé", info:"Aide à cibler les bons ateliers ou conseils CV selon le poste recherché.", detailAction:"cv"},
-        {label:"Préparer un entretien", help:"Préciser le métier ou le poste", info:"Préparation d’entretien cohérente avec le métier visé.", detailAction:"entretien"},
+        {label:"Immersion facilitée", help:"Tester avant de s’engager", info:"Vérifier concrètement le métier ou l’environnement.", detailAction:"immersion"},
+        {label:"Améliorer mon CV", help:"Préciser le métier ciblé", info:"Cibler les bons ateliers ou conseils CV selon le poste recherché.", sheetKey:"atelier_cv"},
+        {label:"Préparer un entretien", help:"Préciser le métier ou le poste", info:"Préparation cohérente avec le métier visé.", sheetKey:"entretien"},
         {label:"Voir les événements", help:"Préciser ville et thème", info:"Forums, salons, recrutements ou rencontres emploi.", detailAction:"events"}
       ];
 
       if(step === "unknownJob") return getPanelOptions("chooseJob");
-
       if(step === "stage") return [
-        {label:"Découvrir un métier", help:"Observer le quotidien avant de choisir", prompt:"Je veux faire une immersion facilitée pour découvrir un métier"},
-        {label:"Confirmer un projet", help:"Vérifier avant formation ou candidature", prompt:"Je veux confirmer mon projet avec une immersion facilitée"},
-        {label:"Trouver une entreprise", help:"Préparer une demande d’accueil", prompt:"Comment trouver une entreprise pour une immersion facilitée ?"}
+        {label:"Découvrir un métier", help:"Observer le quotidien avant de choisir", detailAction:"immersion"},
+        {label:"Confirmer un projet", help:"Vérifier avant formation ou candidature", detailAction:"immersion"},
+        {label:"Trouver une entreprise", help:"Préparer une demande d’accueil", detailAction:"immersion"}
       ];
-
       if(step === "atelier") return getPanelOptions("candidature");
-
       return [];
     }
 
@@ -3606,6 +3869,12 @@ function languageToastText(lang){
 
       if(opt.url){
         openOfficialAction(opt.url, opt.directLabel || opt.label || "Service France Travail");
+        return;
+      }
+
+      if(opt.sheetKey){
+        renderServiceSheetPanel(opt.sheetKey, opt.label || "");
+        scrollToGuidedPanel();
         return;
       }
 
@@ -3631,7 +3900,15 @@ function languageToastText(lang){
       }
     }
 
-    function runGuideQuery(prompt){ runImmediateQuery(prompt); }
+    function runGuideQuery(prompt){
+      const key = detectServiceSheetFromText(prompt);
+      if(shouldUseLocalSheet(prompt, key)){
+        const data = buildServiceSheetData(key, prompt);
+        renderMessage("assistant", data.compactReply || data.reply, data);
+        return;
+      }
+      runImmediateQuery(prompt);
+    }
 
     function renderGuidedActionDetails(action){
       if(!els.guidedPanel) return;
@@ -3798,52 +4075,24 @@ function languageToastText(lang){
     }
 
     function previousPanelStep(step){
-      if(String(step || "").startsWith("guide")) return "situation";
-      if(step === "fle") return "freins";
       if(["knownJob","unknownJob"].includes(step)) return "knowJob";
       if(["knowJob","atelier","stage","training"].includes(step)) return "situation";
       return "situation";
     }
 
     function getConseillerSummary(step){
-      if(isGuideProMode()) return ({
-        situation:"Guide pro : chercher une fiche synthétique issue du référentiel interne avant de répondre.",
-        guideFormation:"Guide pro : vérifier financement, rémunération, mobilité et délais avant de conseiller.",
-        guideDroits:"Guide pro : sécuriser actualisation, droits, obligations, trop-perçu et réinscription.",
-        guideAccompagnement:"Guide pro : choisir la prestation selon le profil, le frein ou l’objectif.",
-        guideInternational:"Guide pro : distinguer départ, retour, droits européens et projet international.",
-        guideEspace:"Guide pro : orienter vers le bon onglet de l’espace personnel et les pièces à transmettre."
-      })[step] || "Guide pro : utiliser la fiche courte comme aide à la décision.";
       return ({
-        situation:"But conseiller : partir des 7 rubriques de l’offre de service avant de choisir une prestation.",
-        chooseJob:"But conseiller : orienter vers Activ’Projet, exploration ou immersion si le projet n’est pas stabilisé.",
-        training:"But conseiller : distinguer formation, compétences, alternance et POEI.",
-        candidature:"But conseiller : traiter CV, entretien, image professionnelle et méthode de recherche.",
-        employment:"But conseiller : choisir le bon accès à l’emploi : offres, événements, MRS, UES ou ciblage entreprises.",
-        creation:"But conseiller : vérifier l’idée avant les formalités de création.",
-        freins:"But conseiller : lever le frein bloquant avant de pousser la recherche d’emploi.",
-        international:"But conseiller : vérifier pays, langue, droits et faisabilité avant les offres.",
-        fle:"But conseiller : traiter la langue comme un frein d’accès à l’emploi, pas comme une identité.",
+        situation:"But conseiller : qualifier rapidement le point d’entrée avant d’orienter vers un dispositif.",
         knowJob:"But conseiller : distinguer recherche directe et construction du projet.",
         knownJob:"But conseiller : choisir une seule action opérationnelle pour éviter la dispersion.",
         unknownJob:"But conseiller : éviter l’offre trop tôt ; privilégier projet, exploration ou immersion.",
         atelier:"But conseiller : proposer un atelier seulement si le besoin est méthodologique.",
+        training:"But conseiller : distinguer formation, alternance et préparation courte vers l’emploi.",
         stage:"But conseiller : utiliser l’immersion pour confirmer ou sécuriser une piste."
       })[step] || "But conseiller : transformer la demande en prochaine action utile.";
     }
 
     function advisorGuidanceHtml(step){
-      if(isGuideProMode()){
-        const lines = ({
-          situation:["Chercher la bonne famille de fiche.","Utiliser le chat si le cas est précis ou ambigu."],
-          guideFormation:["Vérifier d’abord le statut indemnisé/non indemnisé.","Contrôler délais, financement et cohérence projet."],
-          guideDroits:["Identifier la démarche et son délai.","Ne pas répondre sans distinguer droit, obligation et justificatif."],
-          guideAccompagnement:["Repérer le vrai blocage : projet, posture, âge, handicap, emploi durable.","Proposer une prestation seulement si elle correspond au besoin."],
-          guideInternational:["Identifier le sens de mobilité : départ, retour, frontalier.","Avant départ indemnisé, penser au formulaire U2 si concerné."],
-          guideEspace:["Associer chaque demande au bon onglet : projet, allocations, documents, services+."]
-        })[step] || ["Utiliser la fiche comme repère, puis transformer en action concrète."];
-        return `<strong>Mode Guide pro</strong><ul>${lines.map(l=>`<li>${escapeHtml(l)}</li>`).join("")}</ul>`;
-      }
       const lines = ({
         situation:["Objectif : qualifier la situation avant de proposer un service.","Vigilance : ne pas orienter trop vite vers les offres si le projet est flou."],
         knowJob:["Question clé : le métier est-il identifié ?","Oui : offres, CV, entretien, événements. Non : projet, immersion, Métierscope."],
@@ -3920,6 +4169,13 @@ function languageToastText(lang){
     
 function renderAssistantAnswer(content, data){
   const wrap=document.createElement("div"); wrap.className="answer-grid";
+  if(data && data.serviceSheetKey){
+    wrap.appendChild(renderNeedDetectedCard(data));
+    wrap.appendChild(renderServiceSheetCard(data.serviceSheetKey, data.sourceText || content || ""));
+    wrap.appendChild(renderFeedback(data));
+    state.lastData = data;
+    return wrap;
+  }
 
   const action=document.createElement("section");
   action.className="priority-card";
@@ -4502,7 +4758,7 @@ function renderSelectionDrawer(){
 
         renderCalendarPanel();
       }catch(err){
-        toast("Synchronisation impossible : " + (err.message || String(err)));
+        toast("Synchronisation impossible : service indisponible ou réponse non exploitable.");
       }
     }
 
@@ -4826,21 +5082,6 @@ function renderSelectionDrawer(){
       if(data.intent !== "formation") (data.formations||[]).slice(0,3).forEach(f=>otherItems.push({kind:"Formation",title:f.titre,meta:[f.organisme,f.ville,f.dateDebut].filter(Boolean).join(" · "),desc:f.description,url:f.url,cta:"Voir la formation"}));
       (data.atelierCategories||[]).slice(0,9).forEach(a=>otherItems.push({kind:"Atelier",title:a.title,meta:"France Travail",desc:a.description,url:"",cta:""}));
 
-      if(data.prestationsAssociees || data.rubriqueParcours){
-        wrap.appendChild(sectionHead("Parcours France Travail"));
-        wrap.appendChild(renderServicePathway(data));
-      }
-
-      if(Array.isArray(data.conseillerFiches) && data.conseillerFiches.length){
-        wrap.appendChild(sectionHead("Guide pro"));
-        wrap.appendChild(renderConseillerFiches(data.conseillerFiches));
-      }
-
-      if(data.intent === "fle" || data.languageGuide){
-        wrap.appendChild(sectionHead("Français / langue"));
-        wrap.appendChild(renderFleResources(data.languageGuide));
-      }
-
       if(offres.length){
         wrap.appendChild(sectionHead(offres.length > 8 ? "Offres à trier" : "Offres repérées"));
         wrap.appendChild(renderOfferSwiper(offres, data));
@@ -4883,87 +5124,6 @@ function renderSelectionDrawer(){
       }
     }
 
-
-    function renderFleResources(guide){
-      const box=document.createElement("section");
-      box.className="fle-box";
-      const resources = [
-        {title:"TV5MONDE — apprendre le français", text:"Cours gratuits en ligne, utile en autonomie.", url:OFFICIAL_ACTIONS.tv5mondeFle},
-        {title:"Alliance Française", text:"Cours structurés, utile pour une orientation locale.", url:OFFICIAL_ACTIONS.allianceFrancaise},
-        {title:"DILF", text:"Repère de certification pour premiers niveaux.", url:OFFICIAL_ACTIONS.dilf}
-      ];
-      box.innerHTML = `
-        <div class="fle-head">
-          <strong>${escapeHtml(guide?.title || "Besoin linguistique détecté")}</strong>
-          <p>${escapeHtml(guide?.why || "La langue peut être un frein d’accès à l’emploi, à la formation ou aux démarches. On oriente vers un parcours FLE clair.")}</p>
-        </div>
-        <div class="fle-grid">
-          ${resources.map(r => `
-            <a class="fle-card" href="${escapeHtml(r.url)}" target="_blank" rel="noopener">
-              <strong>${escapeHtml(r.title)}</strong>
-              <small>${escapeHtml(r.text)}</small>
-            </a>
-          `).join("")}
-        </div>
-      `;
-      return box;
-    }
-
-    function renderConseillerFiches(fiches){
-      const box=document.createElement("section");
-      box.className="guide-pro-box";
-      const grid=document.createElement("div");
-      grid.className="guide-pro-grid";
-
-      fiches.slice(0,6).forEach(f=>{
-        const card=document.createElement("article");
-        card.className="guide-pro-card";
-        const conditions = Array.isArray(f.conditions) ? f.conditions.slice(0,3) : [];
-        card.innerHTML = `
-          <div class="guide-pro-top">
-            <span>${escapeHtml(f.rubrique || "Repère")}</span>
-            <strong>${escapeHtml(f.label || "")}</strong>
-          </div>
-          <p>${escapeHtml(f.quand || f.public || "")}</p>
-          ${conditions.length ? `<ul>${conditions.map(c=>`<li>${escapeHtml(c)}</li>`).join("")}</ul>` : ""}
-          <div class="guide-pro-action">
-            <b>Action</b>
-            <small>${escapeHtml(f.action || "")}</small>
-          </div>
-          ${f.vigilance ? `<div class="guide-pro-vigilance"><b>Vigilance</b><small>${escapeHtml(f.vigilance)}</small></div>` : ""}
-          ${f.source ? `<small class="guide-pro-source">Source : ${escapeHtml(f.source)}</small>` : ""}
-        `;
-        grid.appendChild(card);
-      });
-
-      box.appendChild(grid);
-      return box;
-    }
-
-    function renderServicePathway(data){
-      const box=document.createElement("section");
-      box.className="service-pathway-box";
-
-      const rubrique = data.rubriqueParcours || {};
-      const prestations = Array.isArray(data.prestationsAssociees) ? data.prestationsAssociees : [];
-
-      box.innerHTML = `
-        <div class="service-pathway-head">
-          <span>${escapeHtml(rubrique.kicker || "Rubrique détectée")}</span>
-          <strong>${escapeHtml(rubrique.label || formatIntent(data.intent) || "Parcours conseillé")}</strong>
-          <p>${escapeHtml(rubrique.why || "L’assistant rattache le besoin à une famille de l’offre de service avant de proposer l’action.")}</p>
-        </div>
-        <div class="service-pathway-list">
-          ${prestations.slice(0,4).map(p => `
-            <article class="service-pathway-card">
-              <strong>${escapeHtml(p.label || "")}</strong>
-              <small>${escapeHtml(p.role || p.why || "")}</small>
-            </article>
-          `).join("")}
-        </div>
-      `;
-      return box;
-    }
 
     function renderPoeiItems(items){
       const box=document.createElement("section");
@@ -5457,7 +5617,7 @@ function renderSelectionDrawer(){
       const el = nodes.find(node => node.dataset.id === id);
       if(el) el.remove();
     }
-    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v9.16.2"; }
+    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v9.16.5"; }
 
     function saveMessage(role,content,extra){ const arr=read("frai_messages",[]); arr.push({role,content,extra}); localStorage.setItem("frai_messages",JSON.stringify(arr.slice(-30))); }
     function recordUsage(data,message,ms,error){ const s=read("frai_stats",{total:0,errors:0,clicks:0,feedback:{},intents:{},times:[]}); s.total++; if(error)s.errors++; const it=data.intent||"diagnostic"; s.intents[it]=(s.intents[it]||0)+1; s.times.push(ms); s.times=s.times.slice(-100); localStorage.setItem("frai_stats",JSON.stringify(s)); }
