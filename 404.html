@@ -2659,6 +2659,79 @@
     .guide-pro-submit-row .primary{background:var(--blue);color:#fff;border-color:var(--blue)}
     @media(max-width:760px){.guide-pro-detected{grid-template-columns:1fr}.guide-pro-submit-row button{width:100%}}
 
+  
+    /* v9.16.7 — choix territoire calendrier : Île-de-France + départements */
+    .calendar-location{
+      display:grid;
+      gap:9px;
+      margin:0 0 10px;
+      padding:10px;
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:18px;
+    }
+    .calendar-location-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .calendar-location-title{
+      display:grid;
+      gap:2px;
+    }
+    .calendar-location-title b{
+      color:var(--blue-dark);
+      font-size:12px;
+      font-weight:950;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+    }
+    .calendar-location-title small,.calendar-location-current{
+      color:#64748b;
+      font-size:12px;
+      line-height:1.3;
+    }
+    .calendar-location-current{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:6px 9px;
+      border-radius:999px;
+      background:#eef2ff;
+      color:var(--blue-dark);
+      font-weight:900;
+      white-space:nowrap;
+    }
+    .calendar-zone-row{
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+    }
+    .calendar-zone-btn{
+      border:1px solid #dbe2f1;
+      background:#fbfcff;
+      color:#17245f;
+      border-radius:999px;
+      padding:8px 10px;
+      font-size:12px;
+      font-weight:950;
+      cursor:pointer;
+    }
+    .calendar-zone-btn.active{
+      background:var(--blue);
+      border-color:var(--blue);
+      color:#fff;
+      box-shadow:0 8px 18px rgba(39,59,153,.16);
+    }
+    .calendar-zone-btn:hover{border-color:var(--blue)}
+    @media(max-width:760px){
+      .calendar-location-head{display:grid;gap:6px}
+      .calendar-location-current{width:max-content;max-width:100%}
+      .calendar-zone-btn{flex:1 1 calc(50% - 6px);padding:9px 8px}
+    }
+
   </style>
 </head>
 <body data-mode="demandeur">
@@ -2674,7 +2747,7 @@
           </div>
         </div>
         <div class="top-actions">
-          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v9.13</span></div>
+          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v9.16.7</span></div>
           <button class="icon-btn" id="resetBtn" type="button" title="Nouvelle conversation">↺ <span>Nouveau</span></button>
         </div>
       </header>
@@ -2761,7 +2834,19 @@
 
   <script>
     const WORKER = "https://assistant-frai-api.vnhz.workers.dev";
-    const DEFAULT_CITY = "Issy-les-Moulineaux";
+    const DEFAULT_CITY = "Paris";
+    const DEFAULT_CALENDAR_ZONE = "idf";
+    const CALENDAR_ZONES = [
+      {key:"idf", label:"Île-de-France", short:"IDF", city:"Paris", rayon:70, help:"Toute la région"},
+      {key:"75", label:"75 · Paris", short:"75", city:"Paris", rayon:10, help:"Paris"},
+      {key:"77", label:"77 · Seine-et-Marne", short:"77", city:"Melun", rayon:45, help:"Seine-et-Marne"},
+      {key:"78", label:"78 · Yvelines", short:"78", city:"Versailles", rayon:35, help:"Yvelines"},
+      {key:"91", label:"91 · Essonne", short:"91", city:"Évry-Courcouronnes", rayon:35, help:"Essonne"},
+      {key:"92", label:"92 · Hauts-de-Seine", short:"92", city:"Nanterre", rayon:18, help:"Hauts-de-Seine"},
+      {key:"93", label:"93 · Seine-Saint-Denis", short:"93", city:"Bobigny", rayon:18, help:"Seine-Saint-Denis"},
+      {key:"94", label:"94 · Val-de-Marne", short:"94", city:"Créteil", rayon:18, help:"Val-de-Marne"},
+      {key:"95", label:"95 · Val-d’Oise", short:"95", city:"Cergy", rayon:35, help:"Val-d’Oise"}
+    ];
     const OFFICIAL_ACTIONS = {
       activprojet: "https://www.francetravail.fr/candidat/votre-projet-professionnel/definir-votre-projet-professionn/activprojet.html",
       metierscope: "https://candidat.francetravail.fr/metierscope/",
@@ -3163,6 +3248,7 @@
     const state = {
       busy:false,
       city: localStorage.getItem("frai_city") || DEFAULT_CITY,
+      calendarZoneKey: localStorage.getItem("frai_calendar_zone") || DEFAULT_CALENDAR_ZONE,
       lastData:null,
       guideStep:"situation",
       guideContext:{},
@@ -4032,6 +4118,10 @@ function renderWelcome(){
     function submitGuidedAction(action, errorEl){
       const job = (document.getElementById("guidedJob")?.value || "").trim();
       const city = (document.getElementById("guidedCity")?.value || "").trim();
+      if(city){
+        state.city = city;
+        localStorage.setItem("frai_city", city);
+      }
 
       let prompt = "";
       if(action === "offres"){
@@ -4481,6 +4571,11 @@ function renderSelectionDrawer(){
         return;
       }
 
+      if(t.dataset.calZone){
+        setCalendarZone(t.dataset.calZone, true);
+        return;
+      }
+
       if(t.dataset.calMonthSync){
         await syncCalendarMonthEvents();
         return;
@@ -4499,7 +4594,8 @@ function renderSelectionDrawer(){
 
       if(t.dataset.calSearch){
         openCalendarPanel();
-        runImmediateQuery(`Quels événements emploi à ${state.city || DEFAULT_CITY} ce mois-ci ?`);
+        const zone = getCalendarZone();
+        runImmediateQuery(`Quels événements emploi utiles sur ${zone.label} ce mois-ci ?`);
         return;
       }
 
@@ -4530,6 +4626,42 @@ function renderSelectionDrawer(){
       }
     }
 
+    function getCalendarZone(key = state.calendarZoneKey){
+      return CALENDAR_ZONES.find(z => z.key === key) || CALENDAR_ZONES.find(z => z.key === DEFAULT_CALENDAR_ZONE) || CALENDAR_ZONES[0];
+    }
+
+    function setCalendarZone(key, rerender=false){
+      const zone = getCalendarZone(key);
+      state.calendarZoneKey = zone.key;
+      state.city = zone.city;
+      localStorage.setItem("frai_calendar_zone", zone.key);
+      localStorage.setItem("frai_city", zone.city);
+      if(rerender){
+        toast(`Territoire calendrier : ${zone.label}`);
+        renderCalendarPanel();
+      }
+      return zone;
+    }
+
+    function renderCalendarZoneSelector(){
+      const zone = getCalendarZone();
+      const buttons = CALENDAR_ZONES.map(z => `<button class="calendar-zone-btn ${zone.key===z.key ? "active" : ""}" type="button" data-cal-zone="${escapeHtml(z.key)}" title="${escapeHtml(z.help || z.label)}">${escapeHtml(z.label)}</button>`).join("");
+      return `
+        <div class="calendar-location">
+          <div class="calendar-location-head">
+            <div class="calendar-location-title">
+              <b>Territoire du calendrier</b>
+              <small>Choisir l’Île-de-France complète ou un département avant la synchronisation du mois.</small>
+            </div>
+            <span class="calendar-location-current">${escapeHtml(zone.short)} · ${escapeHtml(zone.help || zone.label)}</span>
+          </div>
+          <div class="calendar-zone-row" role="group" aria-label="Départements Île-de-France">
+            ${buttons}
+          </div>
+        </div>
+      `;
+    }
+
     function renderCalendarPanel(){
       if(!els.calendarPanel) return;
       if(els.calendarPanel.hidden && !state.calendarOpen) return;
@@ -4558,6 +4690,8 @@ function renderSelectionDrawer(){
           ${calendarTab("semaine","Semaine")}
           ${calendarTab("agenda","Agenda")}
         </div>
+
+        ${renderCalendarZoneSelector()}
 
         <div class="calendar-search" role="search">
           <input id="calendarSearchInput" type="search" placeholder="Rechercher dans le mois : RATP, MRS, POEI..." value="${escapeHtml(state.calendarSearch || "")}" data-cal-search-input="1">
@@ -4735,15 +4869,23 @@ function renderSelectionDrawer(){
 
     async function syncCalendarMonthEvents(){
       const month = `${state.calendarDate.getFullYear()}-${String(state.calendarDate.getMonth()+1).padStart(2,"0")}`;
-      const ville = state.city || DEFAULT_CITY;
+      const zone = setCalendarZone(state.calendarZoneKey || DEFAULT_CALENDAR_ZONE, false);
+      const ville = zone.city || DEFAULT_CITY;
+      const rayon = zone.rayon || 10;
       const query = state.calendarSearch || "";
-      const url = `${WORKER}/api/calendar/events?ville=${encodeURIComponent(ville)}&month=${encodeURIComponent(month)}&rayon=10&size=100&maxPages=10&query=${encodeURIComponent(query)}&_=${Date.now()}`;
+      const url = `${WORKER}/api/calendar/events?ville=${encodeURIComponent(ville)}&month=${encodeURIComponent(month)}&rayon=${encodeURIComponent(rayon)}&size=100&maxPages=10&query=${encodeURIComponent(query)}&_=${Date.now()}`;
 
-      toast(state.calendarSearch ? "Recherche du mois en cours…" : "Synchronisation du mois en cours…");
+      toast(state.calendarSearch ? `Recherche du mois · ${zone.label}…` : `Synchronisation du mois · ${zone.label}…`);
 
       try{
         const res = await fetch(url, { mode:"cors", cache:"no-store" });
-        const data = await res.json();
+        const raw = await res.text();
+        let data;
+        try{
+          data = JSON.parse(raw);
+        }catch(_){
+          throw new Error("Réponse calendrier non JSON");
+        }
 
         if(!res.ok || !data.ok){
           throw new Error(data.error || `HTTP ${res.status}`);
