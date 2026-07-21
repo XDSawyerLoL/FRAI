@@ -2660,76 +2660,183 @@
     @media(max-width:760px){.guide-pro-detected{grid-template-columns:1fr}.guide-pro-submit-row button{width:100%}}
 
   
-    /* v9.16.7 — choix territoire calendrier : Île-de-France + départements */
+    /* v9.16.8 — calendrier compact + carte IDF en fenêtre */
     .calendar-location{
-      display:grid;
-      gap:9px;
-      margin:0 0 10px;
-      padding:10px;
-      border:1px solid var(--line);
-      background:#fff;
-      border-radius:18px;
-    }
-    .calendar-location-head{
       display:flex;
-      align-items:flex-start;
+      align-items:center;
       justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
+      gap:8px;
+      margin:0 0 10px;
+      padding:8px 10px;
+      border:1px solid rgba(255,255,255,.28);
+      background:rgba(255,255,255,.12);
+      border-radius:999px;
+      color:#fff;
     }
     .calendar-location-title{
-      display:grid;
-      gap:2px;
+      display:flex;
+      align-items:center;
+      gap:7px;
+      min-width:0;
     }
     .calendar-location-title b{
-      color:var(--blue-dark);
       font-size:12px;
       font-weight:950;
       text-transform:uppercase;
       letter-spacing:.04em;
-    }
-    .calendar-location-title small,.calendar-location-current{
-      color:#64748b;
-      font-size:12px;
-      line-height:1.3;
+      white-space:nowrap;
     }
     .calendar-location-current{
       display:inline-flex;
       align-items:center;
-      gap:6px;
-      padding:6px 9px;
+      gap:5px;
+      min-width:0;
+      padding:5px 8px;
       border-radius:999px;
-      background:#eef2ff;
+      background:#fff;
       color:var(--blue-dark);
-      font-weight:900;
+      font-size:12px;
+      font-weight:950;
       white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width:46vw;
     }
-    .calendar-zone-row{
-      display:flex;
-      gap:6px;
-      flex-wrap:wrap;
-    }
-    .calendar-zone-btn{
-      border:1px solid #dbe2f1;
-      background:#fbfcff;
-      color:#17245f;
+    .calendar-location-change{
+      border:1px solid rgba(255,255,255,.45);
+      background:#fff;
+      color:var(--blue);
       border-radius:999px;
       padding:8px 10px;
       font-size:12px;
       font-weight:950;
       cursor:pointer;
+      white-space:nowrap;
     }
-    .calendar-zone-btn.active{
+    .calendar-map-overlay{
+      position:fixed;
+      inset:0;
+      z-index:90;
+      background:rgba(17,24,39,.42);
+      backdrop-filter:blur(8px);
+      display:grid;
+      place-items:center;
+      padding:16px;
+    }
+    .calendar-map-modal{
+      width:min(100%,560px);
+      border-radius:26px;
+      background:#fff;
+      box-shadow:0 26px 70px rgba(17,24,39,.32);
+      border:1px solid rgba(255,255,255,.7);
+      overflow:hidden;
+    }
+    .calendar-map-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      padding:15px;
+      background:linear-gradient(135deg,var(--blue),#3651c7);
+      color:#fff;
+    }
+    .calendar-map-head strong{display:block;font-size:18px;line-height:1.12}
+    .calendar-map-head small{display:block;margin-top:4px;color:rgba(255,255,255,.86);font-size:12px;line-height:1.3}
+    .calendar-map-close{
+      border:1px solid rgba(255,255,255,.35);
+      background:rgba(255,255,255,.12);
+      color:#fff;
+      border-radius:999px;
+      width:36px;
+      height:36px;
+      font-size:20px;
+      font-weight:1000;
+      cursor:pointer;
+      flex:0 0 auto;
+    }
+    .calendar-map-body{
+      display:grid;
+      grid-template-columns:1.05fr .95fr;
+      gap:12px;
+      padding:14px;
+    }
+    .idf-map-wrap{
+      border:1px solid #dfe6f3;
+      background:linear-gradient(180deg,#f8fbff,#eef4ff);
+      border-radius:22px;
+      padding:10px;
+      display:grid;
+      gap:9px;
+    }
+    .idf-map-note{
+      color:#64748b;
+      font-size:12px;
+      line-height:1.3;
+      text-align:center;
+    }
+    .idf-map{width:100%;height:auto;display:block;max-height:330px}
+    .idf-dept{
+      cursor:pointer;
+      transition:transform .12s ease, opacity .12s ease, filter .12s ease;
+      transform-box:fill-box;
+      transform-origin:center;
+    }
+    .idf-dept rect,.idf-dept path,.idf-dept circle{
+      fill:#ffffff;
+      stroke:#273b99;
+      stroke-width:2.5;
+    }
+    .idf-dept text{
+      fill:#17245f;
+      font-size:16px;
+      font-weight:950;
+      pointer-events:none;
+    }
+    .idf-dept.active rect,.idf-dept.active path,.idf-dept.active circle{
+      fill:#273b99;
+      stroke:#17245f;
+    }
+    .idf-dept.active text{fill:#fff}
+    .idf-dept:hover{transform:scale(1.035);filter:drop-shadow(0 7px 10px rgba(39,59,153,.18))}
+    .calendar-map-list{
+      display:grid;
+      gap:7px;
+      align-content:start;
+    }
+    .calendar-map-all,.calendar-map-choice{
+      border:1px solid #dbe2f1;
+      background:#fff;
+      color:#17245f;
+      border-radius:15px;
+      padding:10px;
+      text-align:left;
+      cursor:pointer;
+      font-weight:950;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+    }
+    .calendar-map-all{background:#eef2ff;border-color:#cbd5ff}
+    .calendar-map-choice span,.calendar-map-all span{font-size:12px;color:#64748b;font-weight:850}
+    .calendar-map-choice.active,.calendar-map-all.active{
       background:var(--blue);
       border-color:var(--blue);
       color:#fff;
-      box-shadow:0 8px 18px rgba(39,59,153,.16);
+      box-shadow:0 10px 22px rgba(39,59,153,.18);
     }
-    .calendar-zone-btn:hover{border-color:var(--blue)}
+    .calendar-map-choice.active span,.calendar-map-all.active span{color:rgba(255,255,255,.86)}
     @media(max-width:760px){
-      .calendar-location-head{display:grid;gap:6px}
-      .calendar-location-current{width:max-content;max-width:100%}
-      .calendar-zone-btn{flex:1 1 calc(50% - 6px);padding:9px 8px}
+      .calendar-location{border-radius:18px;align-items:flex-start}
+      .calendar-location-title{display:grid;gap:4px}
+      .calendar-location-current{max-width:58vw}
+      .calendar-location-change{padding:8px 9px}
+      .calendar-map-overlay{padding:10px;place-items:end center}
+      .calendar-map-modal{border-radius:24px 24px 0 0;max-height:92dvh;overflow:auto}
+      .calendar-map-body{grid-template-columns:1fr;gap:10px;padding:12px}
+      .idf-map-wrap{padding:8px}
+      .calendar-map-list{grid-template-columns:1fr 1fr}
+      .calendar-map-all{grid-column:1/-1}
     }
 
   </style>
@@ -3257,14 +3364,18 @@
       calendarFilter:"all",
       calendarDate:new Date(),
       calendarSelectedDate:toDateKey(new Date()),
-      calendarSearch:""
+      calendarSearch:"",
+      calendarZoneModalOpen:false
     };
 
     document.addEventListener("click", (e)=>{
       if(e.target === els.guidedHelpPopin) closeGuidedHelp();
     });
     document.addEventListener("keydown", (e)=>{
-      if(e.key === "Escape") closeGuidedHelp();
+      if(e.key === "Escape"){
+        closeGuidedHelp();
+        if(state.calendarZoneModalOpen) closeCalendarTerritoryPicker();
+      }
     });
 
 
@@ -4571,6 +4682,25 @@ function renderSelectionDrawer(){
         return;
       }
 
+      if(t.dataset.calOpenTerritory){
+        openCalendarTerritoryPicker();
+        return;
+      }
+
+      if(t.dataset.calCloseTerritory){
+        closeCalendarTerritoryPicker();
+        return;
+      }
+
+      const mapChoice = t.closest("[data-cal-map-zone]");
+      if(mapChoice){
+        setCalendarZone(mapChoice.dataset.calMapZone, false);
+        closeCalendarTerritoryPicker();
+        toast(`Territoire calendrier : ${getCalendarZone().label}`);
+        renderCalendarPanel();
+        return;
+      }
+
       if(t.dataset.calZone){
         setCalendarZone(t.dataset.calZone, true);
         return;
@@ -4643,21 +4773,85 @@ function renderSelectionDrawer(){
       return zone;
     }
 
+    function openCalendarTerritoryPicker(){
+      state.calendarZoneModalOpen = true;
+      renderCalendarPanel();
+    }
+
+    function closeCalendarTerritoryPicker(){
+      state.calendarZoneModalOpen = false;
+      renderCalendarPanel();
+    }
+
     function renderCalendarZoneSelector(){
       const zone = getCalendarZone();
-      const buttons = CALENDAR_ZONES.map(z => `<button class="calendar-zone-btn ${zone.key===z.key ? "active" : ""}" type="button" data-cal-zone="${escapeHtml(z.key)}" title="${escapeHtml(z.help || z.label)}">${escapeHtml(z.label)}</button>`).join("");
       return `
         <div class="calendar-location">
-          <div class="calendar-location-head">
-            <div class="calendar-location-title">
-              <b>Territoire du calendrier</b>
-              <small>Choisir l’Île-de-France complète ou un département avant la synchronisation du mois.</small>
-            </div>
+          <div class="calendar-location-title">
+            <b>Territoire</b>
             <span class="calendar-location-current">${escapeHtml(zone.short)} · ${escapeHtml(zone.help || zone.label)}</span>
           </div>
-          <div class="calendar-zone-row" role="group" aria-label="Départements Île-de-France">
-            ${buttons}
-          </div>
+          <button class="calendar-location-change" type="button" data-cal-open-territory="1">Changer</button>
+        </div>
+      `;
+    }
+
+    function renderCalendarTerritoryModal(){
+      if(!state.calendarZoneModalOpen) return "";
+      const zone = getCalendarZone();
+      const choices = CALENDAR_ZONES.filter(z => z.key !== "idf").map(z => `
+        <button class="calendar-map-choice ${zone.key===z.key ? "active" : ""}" type="button" data-cal-map-zone="${escapeHtml(z.key)}">
+          ${escapeHtml(z.label)} <span>${escapeHtml(z.help || z.label)}</span>
+        </button>
+      `).join("");
+      return `
+        <div class="calendar-map-overlay" data-cal-close-territory="1">
+          <section class="calendar-map-modal" role="dialog" aria-modal="true" aria-label="Choisir un territoire calendrier" onclick="event.stopPropagation()">
+            <div class="calendar-map-head">
+              <div>
+                <strong>Choisir le territoire</strong>
+                <small>Cliquez sur la région complète ou sur un département. Le choix est appliqué puis la fenêtre se ferme.</small>
+              </div>
+              <button class="calendar-map-close" type="button" data-cal-close-territory="1" aria-label="Fermer">×</button>
+            </div>
+            <div class="calendar-map-body">
+              <div class="idf-map-wrap">
+                <svg class="idf-map" viewBox="0 0 330 330" role="img" aria-label="Carte simplifiée de l’Île-de-France">
+                  <g class="idf-dept ${zone.key==='95' ? 'active' : ''}" data-cal-map-zone="95" tabindex="0" role="button" aria-label="Val-d’Oise">
+                    <path d="M88 32 L205 20 L245 78 L197 119 L106 110 L58 73 Z"></path><text x="139" y="78">95</text>
+                  </g>
+                  <g class="idf-dept ${zone.key==='78' ? 'active' : ''}" data-cal-map-zone="78" tabindex="0" role="button" aria-label="Yvelines">
+                    <path d="M37 83 L107 111 L118 183 L87 272 L25 219 L17 139 Z"></path><text x="61" y="174">78</text>
+                  </g>
+                  <g class="idf-dept ${zone.key==='77' ? 'active' : ''}" data-cal-map-zone="77" tabindex="0" role="button" aria-label="Seine-et-Marne">
+                    <path d="M214 82 L300 92 L316 178 L277 286 L190 304 L164 229 L199 120 Z"></path><text x="246" y="188">77</text>
+                  </g>
+                  <g class="idf-dept ${zone.key==='91' ? 'active' : ''}" data-cal-map-zone="91" tabindex="0" role="button" aria-label="Essonne">
+                    <path d="M94 206 L161 191 L198 237 L189 304 L103 306 L68 269 Z"></path><text x="129" y="255">91</text>
+                  </g>
+                  <g class="idf-dept ${zone.key==='92' ? 'active' : ''}" data-cal-map-zone="92" tabindex="0" role="button" aria-label="Hauts-de-Seine">
+                    <path d="M110 124 L145 117 L151 178 L117 187 L99 160 Z"></path><text x="113" y="158">92</text>
+                  </g>
+                  <g class="idf-dept ${zone.key==='93' ? 'active' : ''}" data-cal-map-zone="93" tabindex="0" role="button" aria-label="Seine-Saint-Denis">
+                    <path d="M148 112 L198 119 L184 170 L153 177 Z"></path><text x="159" y="148">93</text>
+                  </g>
+                  <g class="idf-dept ${zone.key==='94' ? 'active' : ''}" data-cal-map-zone="94" tabindex="0" role="button" aria-label="Val-de-Marne">
+                    <path d="M151 179 L187 171 L200 225 L160 222 L124 190 Z"></path><text x="158" y="205">94</text>
+                  </g>
+                  <g class="idf-dept ${zone.key==='75' ? 'active' : ''}" data-cal-map-zone="75" tabindex="0" role="button" aria-label="Paris">
+                    <circle cx="151" cy="158" r="19"></circle><text x="139" y="164">75</text>
+                  </g>
+                </svg>
+                <div class="idf-map-note">Carte schématique : elle sert au choix rapide du département, pas à une représentation géographique exacte.</div>
+              </div>
+              <div class="calendar-map-list">
+                <button class="calendar-map-all ${zone.key==='idf' ? "active" : ""}" type="button" data-cal-map-zone="idf">
+                  Toute l’Île-de-France <span>Région complète</span>
+                </button>
+                ${choices}
+              </div>
+            </div>
+          </section>
         </div>
       `;
     }
@@ -4718,6 +4912,7 @@ function renderSelectionDrawer(){
           <button class="calendar-action" type="button" data-cal-search="1">Chercher des événements</button>
           <button class="calendar-action" type="button" data-cal-reminder="1">Ajouter un rappel</button>
         </div>
+        ${renderCalendarTerritoryModal()}
       `;
     }
 
