@@ -2840,140 +2840,15 @@
     }
 
   
-
-    /* v9.17.0 — stabilisation parcours critiques */
-    .transaction-head{
-      border:1px solid var(--line);
-      border-left:7px solid var(--green);
-      border-radius:20px;
-      background:linear-gradient(180deg,#ffffff,#f8fbff);
-      padding:13px;
-      display:grid;
-      gap:6px;
-      box-shadow:0 8px 20px rgba(17,24,39,.06);
-      white-space:normal;
-    }
-    .transaction-head span{
-      width:max-content;
-      max-width:100%;
-      border-radius:999px;
-      background:#e8f5ee;
-      color:var(--green-dark);
-      padding:4px 8px;
-      font-size:11px;
-      font-weight:950;
-      text-transform:uppercase;
-      letter-spacing:.04em;
-    }
-    .transaction-head strong{color:#111827;font-size:16px;line-height:1.2}
-    .transaction-head p{margin:0;color:#5b6472;font-size:13px;line-height:1.35}
-    .module-empty{
-      border:1px solid #dfe6f3;
-      border-left:6px solid #f59e0b;
-      border-radius:18px;
-      background:#fffaf0;
-      padding:12px;
-      display:grid;
-      gap:8px;
-      white-space:normal;
-    }
-    .module-empty strong{color:#7c4a03;font-size:15px}
-    .module-empty p{margin:0;color:#5b6472;font-size:13px;line-height:1.35}
-    .guide-pro-answer-card{
-      border:1px solid var(--line);
-      border-left:7px solid #17245f;
-      border-radius:22px;
-      background:linear-gradient(180deg,#ffffff,#f8fbff);
-      box-shadow:0 10px 24px rgba(17,24,39,.08);
-      padding:14px;
-      display:grid;
-      gap:11px;
-      white-space:normal;
-    }
-    .guide-pro-answer-card .gp-kicker{
-      width:max-content;
-      max-width:100%;
-      padding:5px 9px;
-      border-radius:999px;
-      background:#e8f0ff;
-      color:#17245f;
-      font-size:11px;
-      font-weight:950;
-      text-transform:uppercase;
-      letter-spacing:.04em;
-    }
-    .guide-pro-answer-card h3{margin:0;color:#111827;font-size:18px;line-height:1.16}
-    .guide-pro-answer-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-    .guide-pro-answer-item{border-radius:15px;background:#f1f5ff;padding:9px;display:grid;gap:3px}
-    .guide-pro-answer-item b{font-size:11px;color:#17245f;text-transform:uppercase;letter-spacing:.04em}
-    .guide-pro-answer-item small{font-size:13px;color:#4b5563;line-height:1.32}
-    .guide-pro-answer-list{border-radius:15px;background:#fff;padding:9px;border:1px solid #dfe6f3}
-    .guide-pro-answer-list b{display:block;font-size:12px;color:#17245f;margin-bottom:4px}
-    .guide-pro-answer-list ul{margin:0;padding-left:18px;color:#4b5563;font-size:13px;line-height:1.35}
-    .guide-pro-answer-actions{display:flex;gap:8px;flex-wrap:wrap}
-    @media(max-width:760px){.guide-pro-answer-grid{grid-template-columns:1fr}.transaction-head{border-radius:17px}.assistant .bubble{max-width:98%}}
-
-
-    /* v9.17.1 — correctif anti-régression mobile, sans refonte */
-    .selection-fab[hidden]{display:none !important;}
+    /* v9.17.3 — garde-fous mobile sans refonte */
     @media(max-width:760px){
-      .app{padding:0 !important; max-width:100vw !important; overflow-x:hidden !important;}
-      .shell{max-width:100vw !important; width:100% !important; min-height:100dvh !important; border-radius:0 !important; border:0 !important; overflow-x:hidden !important;}
-      .topbar{min-height:62px !important; padding:8px 10px !important; gap:8px !important; align-items:center !important;}
-      .brand{gap:8px !important; flex:1 1 auto !important; min-width:0 !important; overflow:hidden !important;}
-      .marianne{width:54px !important; height:38px !important; flex:0 0 auto !important; object-fit:contain !important;}
-      .brand-logo{width:148px !important; max-width:48vw !important; height:auto !important; flex:0 0 auto !important; object-fit:contain !important;}
-      .brand-text,.brand-title,.brand-subtitle{display:none !important;}
-      .top-actions{gap:6px !important; flex:0 0 auto !important;}
-      .status{width:38px !important; height:38px !important; padding:0 !important; justify-content:center !important; border-radius:999px !important;}
-      .status span:not(.dot),#statusText{display:none !important;}
-      .icon-btn{width:44px !important; height:44px !important; padding:0 !important; border-radius:999px !important; justify-content:center !important; font-size:21px !important;}
-      .icon-btn span{display:none !important;}
-      .intro{padding:12px 12px 10px !important;}
-      .intro-grid{display:grid !important; grid-template-columns:1fr !important; gap:10px !important; align-items:stretch !important;}
-      .intro h1{font-size:28px !important; line-height:1.05 !important; margin:0 !important; letter-spacing:-.04em !important;}
-      .intro p{font-size:15.5px !important; line-height:1.34 !important; margin:6px 0 0 !important; max-width:100% !important;}
-      .mission-card{display:none !important;}
-      .hero-flow{display:none !important;}
-      .feature-actions{margin-top:8px !important;}
-      .feature-action{width:100% !important; min-height:56px !important; padding:10px 12px !important; border-radius:18px !important; display:flex !important; align-items:center !important; justify-content:flex-start !important; gap:10px !important;}
-      .feature-action b{font-size:15px !important; line-height:1.15 !important;}
-      .feature-action span{font-size:12px !important; line-height:1.2 !important;}
-      .mode-switch{width:100% !important; margin-top:6px !important; display:grid !important; grid-template-columns:1fr 1fr !important;}
-      .mode-btn{justify-content:center !important; min-height:44px !important; font-size:14px !important; padding:8px 10px !important;}
-      .guided-panel{margin-top:10px !important; padding:12px !important; border-radius:20px !important; gap:9px !important; min-height:0 !important; height:auto !important; overflow:visible !important;}
-      .guided-panel-head{display:block !important;}
-      .guided-kicker{font-size:10px !important; line-height:1.15 !important;}
-      .guided-panel h2{font-size:20px !important; line-height:1.08 !important; margin:3px 0 0 !important;}
-      .guided-panel p{font-size:13px !important; line-height:1.3 !important;}
-      .conseiller-summary{display:none !important;}
-      .guided-progress-line{display:none !important;}
-      .guided-options{gap:8px !important; display:grid !important; width:100% !important;}
-      .guided-choice-line{position:relative !important; width:100% !important;}
-      .guided-choice{height:auto !important; min-height:52px !important; width:100% !important; padding:10px 44px 10px 12px !important; border-radius:15px !important; font-size:14px !important; line-height:1.15 !important; overflow:visible !important; display:flex !important; align-items:center !important;}
-      .guided-choice.has-info{padding-right:52px !important;}
-      .guided-choice::after,.guided-choice.direct::after,.guided-choice.query::after,.guided-choice.has-info::after{content:none !important; display:none !important;}
-      .guided-choice div{padding:0 !important; width:100% !important;}
-      .guided-choice span{font-size:11px !important; line-height:1.22 !important; margin-top:3px !important;}
-      .guided-choice-info{right:9px !important; width:30px !important; height:30px !important; font-size:17px !important;}
-      .guided-actions{display:none !important;}
-      .advisor-guided{display:none !important;}
-      .pilot-pages{display:none !important;}
-      .reset-fab{display:none !important;}
-      .selection-fab{right:10px !important; bottom:74px !important; padding:8px 10px !important; font-size:12px !important; opacity:.95 !important;}
-      .selection-fab span{min-width:20px !important; height:20px !important; font-size:12px !important;}
-      .composer-wrap{position:sticky !important; bottom:0 !important; padding:8px 10px calc(8px + var(--safe)) !important; z-index:45 !important;}
-      .composer{gap:8px !important;}
-      .input-box{border-radius:16px !important; padding:8px 10px !important;}
-      textarea{min-height:34px !important; max-height:92px !important; font-size:16px !important;}
-      .send-btn{min-width:100px !important; min-height:54px !important; border-radius:17px !important; font-size:16px !important; padding:0 14px !important;}
-      .messages{padding:10px 10px 18px !important;}
-      body.chat-started .intro h1{display:block !important; font-size:20px !important;}
-      body.chat-started .intro p{display:none !important;}
-      body.chat-started .feature-actions{display:none !important;}
+      .reset-fab{display:none!important}
+      .selection-fab[hidden]{display:none!important}
+      .selection-fab{right:10px!important;bottom:84px!important;transform:scale(.88);transform-origin:right bottom}
+      .brand-title,.brand-subtitle{display:none!important}
+      .guided-panel:empty::before{content:"Parcours indisponible. Rechargez la page ou utilisez le champ de recherche.";display:block;border:1px solid var(--line);border-left:6px solid var(--blue);border-radius:18px;background:#fff;padding:14px;color:var(--blue-dark);font-weight:900}
     }
-
-  </style>
+</style>
 </head>
 <body data-mode="demandeur">
   <div class="app">
@@ -2988,7 +2863,7 @@
           </div>
         </div>
         <div class="top-actions">
-          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v9.17.1</span></div>
+          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v9.16.7</span></div>
           <button class="icon-btn" id="resetBtn" type="button" title="Nouvelle conversation">↺ <span>Nouveau</span></button>
         </div>
       </header>
@@ -3422,15 +3297,8 @@
       `;
       const actions = card.querySelector(".service-sheet-actions");
       const run = document.createElement("button");
-      run.type="button"; run.className="btn outline";
-      const operationalDetail = ({formation:"formation", immersion:"immersion", atelier_cv:"cv", entretien:"entretien"})[key];
-      if(operationalDetail){
-        run.textContent = key === "formation" ? "Préciser et chercher" : (key === "immersion" ? "Chercher une immersion" : "Préciser l’action");
-        run.onclick=()=>renderGuidedActionDetails(operationalDetail);
-      }else{
-        run.textContent="Lancer avec l’agent";
-        run.onclick=()=>runGuideQuery(sheet.agentPrompt || sheet.short || sheet.title, {bypassLocalSheet:true});
-      }
+      run.type="button"; run.className="btn outline"; run.textContent="Lancer avec l’agent";
+      run.onclick=()=>runImmediateQuery(sheet.agentPrompt || sheet.short || sheet.title);
       actions.appendChild(run);
       if(sheet.url){
         const a=document.createElement("a");
@@ -3465,20 +3333,7 @@
     function shouldUseLocalSheet(text, key){
       if(!key) return false;
       const t = normalizeUiText(text || "");
-
-      // Les fiches servent à expliquer une prestation.
-      // Les demandes concrètes doivent partir vers le Worker pour remonter des résultats réels.
-      if(key === "formation" && (
-        /\b(cherche|chercher|recherche|trouver|affiche|comparer)\b/.test(t) ||
-        /\b(formation en|formation de|formation a|formation à|se former en|formations disponibles)\b/.test(t)
-      )) return false;
-
-      if(key === "immersion" && (
-        /\b(cherche|chercher|recherche|trouver|affiche|tester|entreprise accueillante|entreprises accueillantes)\b/.test(t) ||
-        /\b(metier de|métier de|tester le metier|tester le métier)\b/.test(t)
-      )) return false;
-
-      if(/\b(offre|offres|job dating|evenement|événement|forum|calendrier|boulanger|vendeur|secretaire|secrétaire|conducteur)\b/.test(t) && !/\b(sante|santé|handicap|poei|mrs|immersion|stage|alternance|creation|création|international)\b/.test(t)) return false;
+      if(/\b(offre|offres|job dating|evenement|forum|calendrier|boulanger|vendeur|secretaire|conducteur)\b/.test(t) && !/\b(sante|handicap|poei|mrs|immersion|stage|alternance|creation|international)\b/.test(t)) return false;
       return true;
     }
 
@@ -3749,11 +3604,8 @@
       const send=document.createElement("button");
       send.type="button";
       send.className="primary";
-      send.textContent="Afficher la réponse courte";
-      send.onclick=()=>{
-        const data = buildGuideProCardData(final);
-        renderMessage("assistant", data.compactReply, data);
-      };
+      send.textContent="Envoyer une seule réponse à l’agent";
+      send.onclick=()=>runImmediateQuery(buildGuideProPrompt(final));
       const back=document.createElement("button");
       back.type="button";
       back.textContent="← Changer le cas";
@@ -3860,16 +3712,15 @@ function bind(){
       const t0 = performance.now();
 
       try{
-        renderMessage("user", text);
-        const directRequest = parseDirectTransactionalRequest(text);
+        const directRequest = detectDirectApiRequest(text);
         if(directRequest){
-          await runDirectModuleSearch(directRequest.type, { job:directRequest.job, city:directRequest.city, originalText:text, userAlreadyRendered:true });
+          await runDirectApiModule(directRequest.kind, directRequest, text, t0);
           return;
         }
-        const bypassLocalSheet = !!state.bypassNextLocalSheet;
-        state.bypassNextLocalSheet = false;
+
+        renderMessage("user", text);
         const localSheetKey = detectServiceSheetFromText(text);
-        if(!bypassLocalSheet && shouldUseLocalSheet(text, localSheetKey)){
+        if(shouldUseLocalSheet(text, localSheetKey)){
           const localData = buildServiceSheetData(localSheetKey, text);
           renderMessage("assistant", localData.compactReply || localData.reply, localData);
           recordUsage(localData, text, Math.round(performance.now() - t0), false);
@@ -4171,8 +4022,10 @@ function renderWelcome(){
       ];
 
       if(step === "creation") return [
-        {label:"Activ’Créa", help:"Tester et cadrer l’idée", info:"Explorer la création ou reprise d’entreprise, vérifier la faisabilité et décider si Activ’Créa est l’accompagnement adapté.", sheetKey:"activ_crea"},
-        {label:"Atelier création d’entreprise", help:"Premiers repères", info:"Comprendre les premières démarches, ressources, étapes clés et points de vigilance avant de lancer le projet.", sheetKey:"atelier_creation"}
+        {label:"Activ’Créa", help:"Tester l’idée", info:"Explorer la création ou reprise d’entreprise et vérifier la faisabilité.", sheetKey:"activ_crea"},
+        {label:"Atelier création d’entreprise", help:"Structurer le projet", info:"Motivations, ressources, étapes clés et posture entrepreneuriale.", sheetKey:"atelier_creation"},
+        {label:"M’imaginer créateur d’entreprise", help:"Atelier court", info:"Première projection avant démarches lourdes.", sheetKey:"atelier_creation"},
+        {label:"Structurer mon projet", help:"Ressources et étapes", info:"Passer d’une idée à un plan d’action clair.", sheetKey:"activ_crea"}
       ];
 
       if(step === "freins") return [
@@ -4259,12 +4112,7 @@ function renderWelcome(){
       }
     }
 
-    function runGuideQuery(prompt, options = {}){
-      if(options && options.bypassLocalSheet){
-        state.bypassNextLocalSheet = true;
-        runImmediateQuery(prompt);
-        return;
-      }
+    function runGuideQuery(prompt){
       const key = detectServiceSheetFromText(prompt);
       if(shouldUseLocalSheet(prompt, key)){
         const data = buildServiceSheetData(key, prompt);
@@ -4393,174 +4241,7 @@ function renderWelcome(){
       }
     }
 
-    async function runGuidedOfferSearch(job, city, errorEl){
-      return runDirectModuleSearch("offres", { job, city, errorEl, userAlreadyRendered:false });
-    }
-
-    async function runDirectModuleSearch(type, options = {}){
-      const job = String(options.job || options.metier || "").trim();
-      const city = String(options.city || state.city || DEFAULT_CITY).trim();
-      const originalText = String(options.originalText || "").trim();
-      const userAlreadyRendered = !!options.userAlreadyRendered;
-      const errorEl = options.errorEl || null;
-
-      if(state.busy){ toast("Une analyse est déjà en cours"); return true; }
-      if(!job && type !== "events"){
-        if(errorEl) showGuidedError(errorEl, "Il manque le métier, le domaine ou le thème à rechercher.");
-        else toast("Précisez le métier ou le domaine");
-        return true;
-      }
-
-      const labels = {
-        offres:"Recherche d’emploi",
-        formation:"Recherche formation",
-        immersion:"Immersion facilitée"
-      };
-      const prompts = {
-        offres:"Je cherche une offre d'emploi de " + job + (city ? " à " + city : ""),
-        formation:"Je cherche une formation en " + job + (city ? " à " + city : ""),
-        immersion:"Je veux tester le métier de " + job + " en immersion facilitée" + (city ? " à " + city : "")
-      };
-      const endpoint = {
-        offres:"/api/offres?metier=" + encodeURIComponent(job) + (city ? "&ville=" + encodeURIComponent(city) : ""),
-        formation:"/api/formations?q=" + encodeURIComponent(job) + (city ? "&ville=" + encodeURIComponent(city) : ""),
-        immersion:"/api/immersion?metier=" + encodeURIComponent(job) + (city ? "&ville=" + encodeURIComponent(city) : "")
-      }[type];
-
-      let id = "";
-      const t0 = performance.now();
-      const prompt = originalText || prompts[type] || job;
-      try{
-        if(!userAlreadyRendered) renderMessage("user", prompt);
-        setBusy(true);
-        id = renderLoading();
-        const res = await fetch(WORKER + endpoint + "&_=" + Date.now(), { method:"GET", mode:"cors", cache:"no-store" });
-        const raw = await res.text();
-        let data;
-        try{ data = JSON.parse(raw); }
-        catch(_){ throw new Error("Le service n’a pas renvoyé une réponse exploitable."); }
-        if(!res.ok){ throw new Error(data.error || (labels[type] + " " + res.status)); }
-        const normalized = normalizeDirectModuleData(type, data, {job, city, prompt});
-        remove(id);
-        syncCalendarFromAgentData(normalized, true);
-        renderMessage("assistant", normalized.compactReply || normalized.reply || "Résultats reçus.", normalized);
-        recordUsage(normalized, prompt, Math.round(performance.now() - t0), false);
-      }catch(err){
-        if(id) remove(id);
-        const msg = "Je n’ai pas pu lancer le module demandé.\n\nDétail : " + (err.message || String(err));
-        renderMessage("assistant", msg, { intent:"erreur", diagnosticLabel:"erreur" });
-        recordUsage({intent:"erreur"}, prompt, Math.round(performance.now() - t0), true);
-      }finally{
-        setBusy(false);
-      }
-      return true;
-    }
-
-    function normalizeDirectModuleData(type, data, ctx = {}){
-      if(type === "offres"){
-        const offres = resultArray(data, "offres").slice(0,30);
-        return {
-          ...data,
-          ok:true,
-          responseType:"offres_swipe",
-          intent:"recherche_emploi",
-          diagnosticLabel:"Recherche d’emploi",
-          compactReply: offres.length ? `${offres.length} offre(s) remontée(s). Triez les cartes et gardez les plus pertinentes.` : "Aucune offre exploitable n’est remontée. Essayez une zone plus large ou un métier proche.",
-          reply: offres.length ? `${offres.length} offre(s) remontée(s).` : "Aucune offre exploitable n’est remontée.",
-          priorityAction: offres.length ? "Trier les offres repérées" : "Élargir la recherche",
-          offres,
-          formations:[],
-          events:[],
-          actionPlan: offres.length ? [
-            {title:"Comparer", why:"Lieu, contrat, mission."},
-            {title:"Garder", why:"Mettre les offres adaptées en sélection."},
-            {title:"Postuler", why:"Ouvrir l’offre complète."}
-          ] : [
-            {title:"Élargir", why:"Tester un rayon ou une ville plus large."},
-            {title:"Métier proche", why:"Chercher une piste avec compétences transférables."},
-            {title:"Événement", why:"Voir des rencontres recruteurs."}
-          ],
-          analysis:{need:`Trouver des offres concrètes pour ${ctx.job || "le métier visé"}`},
-          understanding:{need:`Recherche d’offres · ${ctx.job || "métier"}`, goal:"Comparer et garder les offres utiles"}
-        };
-      }
-      if(type === "formation"){
-        const formations = resultArray(data, "formations").slice(0,30);
-        const url = data.searchUrl || data.formationSearchUrl || findOfficialLink(data, "formation") || "https://candidat.francetravail.fr/formations/recherche";
-        return {
-          ...data,
-          ok:true,
-          responseType:"formations_swipe",
-          intent:"formation",
-          diagnosticLabel:"Formation",
-          compactReply: formations.length ? `${formations.length} formation(s) remontée(s). Comparez les cartes et gardez les pistes utiles.` : "Aucune formation exploitable n’est remontée par l’API. Le lien officiel reste disponible.",
-          reply: formations.length ? `${formations.length} formation(s) remontée(s).` : "Aucune formation exploitable n’est remontée par l’API.",
-          priorityAction: formations.length ? "Comparer les formations" : "Ouvrir la recherche formation officielle",
-          formations,
-          formationSearchUrl:url,
-          offres:[],
-          events:[],
-          analysis:{need:`Chercher une formation en ${ctx.job || "lien avec le projet"}`},
-          understanding:{need:`Recherche formation · ${ctx.job || "domaine"}`, goal:"Comparer les formations utiles"}
-        };
-      }
-      if(type === "immersion"){
-        const immersion = data.immersion || data;
-        const offers = Array.isArray(immersion.offers) ? immersion.offers : [];
-        return {
-          ...data,
-          ok:true,
-          responseType:"immersion_resultats",
-          intent:"pmsmp",
-          diagnosticLabel:"Immersion facilitée",
-          compactReply: offers.length ? `${offers.length} entreprise(s) accueillante(s) possible(s) repérée(s).` : "Aucune entreprise exploitable n’est remontée. Le parcours Immersion Facilitée reste disponible.",
-          reply: offers.length ? `${offers.length} entreprise(s) accueillante(s) possible(s) repérée(s).` : "Aucune entreprise exploitable n’est remontée.",
-          priorityAction: offers.length ? "Contacter une entreprise accueillante" : "Ouvrir Immersion Facilitée",
-          immersion,
-          offres:[],
-          formations:[],
-          events:[],
-          analysis:{need:`Tester le métier ${ctx.job || "visé"} en conditions réelles`},
-          understanding:{need:`Immersion · ${ctx.job || "métier"}`, goal:"Trouver une entreprise accueillante"}
-        };
-      }
-      return data;
-    }
-
-    function parseDirectTransactionalRequest(text){
-      const raw = String(text || "").trim();
-      const t = normalizeUiText(raw);
-      if(!t) return null;
-      if(/^mode guide pro/i.test(raw) || /^guide pro/i.test(raw)) return null;
-      const city = extractCity(raw) || state.city || DEFAULT_CITY;
-      const cleanJob = (value) => String(value || "")
-        .replace(/\b(à|a|sur|près de|pres de)\b[\s\S]*$/i, "")
-        .replace(/\b(en|dans|autour de|disponibles?|cartes?|swipe|comparer|possible|possibles)\b$/i, "")
-        .replace(/[?.!,;:]+$/g, "")
-        .trim();
-      let m;
-      if(/\b(offre|offres|emploi|travail|poste|job)\b/.test(t) && /\b(cherche|recherche|trouve|trouver|affiche|voir|veux)\b/.test(t)){
-        m = raw.match(/(?:offres?|emploi|travail|poste|job)(?:\s+d['’]emploi)?(?:\s+de|\s+pour|\s+en)?\s+(.+)/i)
-          || raw.match(/(?:cherche|recherche|trouver|trouve|veux)\s+(?:un|une|des)?\s*(?:offres?|emploi|travail|poste|job)?\s*(?:de|pour|en)?\s+(.+)/i);
-        const job = cleanJob(m?.[1] || "");
-        if(job && job.length >= 2) return {type:"offres", job, city};
-      }
-      if(/\b(formation|formations|former|se former)\b/.test(t) && /\b(cherche|recherche|trouve|trouver|affiche|voir|veux|compare|comparer)\b/.test(t)){
-        m = raw.match(/(?:formation|formations|former|se former)(?:\s+de|\s+en|\s+pour|\s+sur)?\s+(.+)/i)
-          || raw.match(/(?:cherche|recherche|trouver|trouve|veux)\s+(?:une|des)?\s*formations?\s*(?:de|en|pour|sur)?\s+(.+)/i);
-        const job = cleanJob(m?.[1] || "");
-        if(job && job.length >= 2) return {type:"formation", job, city};
-      }
-      if(/\b(immersion|stage|tester|decouvrir|découvrir|entreprise accueillante)\b/.test(t) && /\b(metier|métier|poste|boulanger|vendeur|auxiliaire|secretariat|secrétaire|ambulancier)\b/.test(t)){
-        m = raw.match(/(?:métier|metier|poste)\s+de\s+(.+)/i)
-          || raw.match(/(?:tester|découvrir|decouvrir|immersion|stage)(?:\s+le|\s+la|\s+un|\s+une)?(?:\s+métier|\s+metier|\s+poste)?(?:\s+de|\s+en)?\s+(.+)/i);
-        const job = cleanJob(m?.[1] || "");
-        if(job && job.length >= 2) return {type:"immersion", job, city};
-      }
-      return null;
-    }
-
-    function submitGuidedAction    function submitGuidedAction(action, errorEl){
+    function submitGuidedAction(action, errorEl){
       const job = (document.getElementById("guidedJob")?.value || "").trim();
       const city = (document.getElementById("guidedCity")?.value || "").trim();
       if(city){
@@ -4571,7 +4252,7 @@ function renderWelcome(){
       let prompt = "";
       if(action === "offres"){
         if(!job){ showGuidedError(errorEl, "Indiquez au moins un métier pour chercher des offres."); return; }
-        runGuidedOfferSearch(job, city, errorEl);
+        runDirectApiModule("offres", { job, city }, "Je cherche une offre d'emploi de " + job + (city ? " à " + city : ""), performance.now());
         return;
       } else if(action === "cv"){
         if(!job){ showGuidedError(errorEl, "Indiquez le métier ou le poste visé pour le CV."); return; }
@@ -4584,15 +4265,15 @@ function renderWelcome(){
         prompt = "Quels événements emploi " + (job ? "sur " + job + " " : "") + (city ? "à " + city : "peuvent m'aider ?");
       } else if(action === "formation"){
         if(!job){ showGuidedError(errorEl, "Indiquez au moins un métier, un domaine ou une compétence."); return; }
-        runDirectModuleSearch("formation", { job, city, errorEl, userAlreadyRendered:false });
+        runDirectApiModule("formation", { job, city }, "Je cherche une formation en " + job + (city ? " à " + city : ""), performance.now());
         return;
       } else if(action === "immersion"){
         if(!job){ showGuidedError(errorEl, "Indiquez au moins le métier à tester."); return; }
-        runDirectModuleSearch("immersion", { job, city, errorEl, userAlreadyRendered:false });
+        runDirectApiModule("immersion", { job, city }, "Je veux tester le métier de " + job + " en immersion facilitée" + (city ? " à " + city : ""), performance.now());
         return;
       }
 
-      runGuideQuery(personalizePromptFromContext(prompt), {bypassLocalSheet:true});
+      runGuideQuery(personalizePromptFromContext(prompt));
     }
 
     function showGuidedError(errorEl, message){
@@ -4707,21 +4388,6 @@ function renderWelcome(){
     
 function renderAssistantAnswer(content, data){
   const wrap=document.createElement("div"); wrap.className="answer-grid";
-  if(data && data.intent === "guide_pro_card" && data.guideProFinal){
-    wrap.appendChild(renderGuideProAnswerCard(data.guideProFinal));
-    wrap.appendChild(renderFeedback(data));
-    state.lastData = data;
-    return wrap;
-  }
-  if(data && ["offres_swipe","formations_swipe","immersion_resultats"].includes(data.responseType || "")){
-    wrap.appendChild(renderTransactionalHeader(data));
-    renderResults(wrap, data);
-    const noResult = renderNoResultGuidance(data);
-    if(noResult) wrap.appendChild(noResult);
-    wrap.appendChild(renderFeedback(data));
-    state.lastData = data;
-    return wrap;
-  }
   if(data && data.serviceSheetKey){
     wrap.appendChild(renderNeedDetectedCard(data));
     wrap.appendChild(renderServiceSheetCard(data.serviceSheetKey, data.sourceText || content || ""));
@@ -4781,63 +4447,6 @@ function renderAssistantAnswer(content, data){
   return wrap;
 }
 
-
-
-function renderTransactionalHeader(data){
-  const box=document.createElement("section");
-  box.className="transaction-head";
-  const type = data.responseType || data.intent || "module";
-  const count = (type === "offres_swipe") ? resultArray(data,"offres").length : (type === "formations_swipe" ? resultArray(data,"formations").length : (data.immersion?.offers?.length || 0));
-  const label = type === "offres_swipe" ? "Offres d’emploi" : (type === "formations_swipe" ? "Formations" : "Immersion facilitée");
-  const title = data.priorityAction || (count ? `${count} résultat(s) exploitable(s)` : "Aucun résultat exploitable remonté");
-  const text = data.compactReply || data.reply || "Module exécuté.";
-  box.innerHTML = `<span>${escapeHtml(label)}</span><strong>${escapeHtml(title)}</strong><p>${escapeHtml(text)}</p>`;
-  return box;
-}
-
-function renderGuideProAnswerCard(final){
-  const card=document.createElement("section");
-  card.className="guide-pro-answer-card";
-  const checks=(final.checks||[]).slice(0,3).map(x=>`<li>${escapeHtml(x)}</li>`).join("");
-  const vig=(final.vigilance||[]).slice(0,2).map(x=>`<li>${escapeHtml(x)}</li>`).join("");
-  card.innerHTML=`
-    <span class="gp-kicker">${escapeHtml(final.category || "Guide pro")}</span>
-    <h3>${escapeHtml(final.title || "Réponse conseiller")}</h3>
-    <div class="guide-pro-answer-grid">
-      <div class="guide-pro-answer-item"><b>Besoin confirmé</b><small>${escapeHtml(final.need || "Besoin à préciser")}</small></div>
-      <div class="guide-pro-answer-item"><b>Orientation prioritaire</b><small>${escapeHtml(final.orientation || "Orientation à vérifier")}</small></div>
-    </div>
-    <div class="guide-pro-answer-list"><b>Questions de vérification</b><ul>${checks}</ul></div>
-    <div class="guide-pro-answer-list"><b>Point de vigilance</b><ul>${vig}</ul></div>
-    <div class="guide-pro-answer-item"><b>Prochaine action</b><small>${escapeHtml(final.prompt || final.orientation || "Confirmer avec la personne puis orienter vers l’action adaptée.")}</small></div>
-    <div class="guide-pro-answer-actions"><button type="button" class="small-btn" data-copy-guide-pro="1">Copier la réponse</button></div>
-  `;
-  card.querySelector('[data-copy-guide-pro]')?.addEventListener('click', ()=>{
-    const text = [
-      `Besoin confirmé : ${final.need || ""}`,
-      `Orientation prioritaire : ${final.orientation || ""}`,
-      `Questions de vérification : ${(final.checks || []).join(" ; ")}`,
-      `Point de vigilance : ${(final.vigilance || []).join(" ; ")}`,
-      `Prochaine action : ${final.prompt || final.orientation || ""}`
-    ].join("\n");
-    navigator.clipboard?.writeText(text).then(()=>toast("Réponse Guide pro copiée")).catch(()=>toast("Copie indisponible"));
-  });
-  return card;
-}
-
-function buildGuideProCardData(final){
-  return {
-    ok:true,
-    intent:"guide_pro_card",
-    responseType:"guide_pro_card",
-    diagnosticLabel:"Guide pro",
-    guideProFinal: final,
-    compactReply: "Réponse Guide pro prête : " + (final.title || "orientation conseiller"),
-    reply: "Réponse Guide pro prête.",
-    priorityAction: final.orientation || final.title || "Orientation conseiller",
-    analysis:{need: final.need || "Besoin conseiller"}
-  };
-}
 
 
 function renderUnderstandingCard(content, data){
@@ -4908,7 +4517,7 @@ function renderNoResultGuidance(data){
   const hasOffers = Array.isArray(data.offres) && data.offres.length;
   const hasEvents = Array.isArray(data.events) && data.events.length;
   const hasForms = Array.isArray(data.formations) && data.formations.length;
-  if(hasOffers || hasEvents || hasForms || !(['recherche_emploi'].includes(data.intent) || data.responseType === 'offres_swipe')) return null;
+  if(hasOffers || hasEvents || hasForms || data.intent !== 'recherche_emploi') return null;
   const card=document.createElement('section');
   card.className='no-result-card';
   card.innerHTML=`<h3>Peu de résultats sur cette piste</h3><p>Pour éviter de rester bloqué, vous pouvez élargir la recherche sans repartir de zéro.</p>`;
@@ -5524,33 +5133,24 @@ function renderSelectionDrawer(){
 
     function syncCalendarFromMonthData(data){
       const before = getCalendarItems();
-      const zone = getCalendarZone();
-      const monthKey = `${state.calendarDate.getFullYear()}-${String(state.calendarDate.getMonth()+1).padStart(2,"0")}`;
       const mapped = (data.events || []).map(e => {
         const d = parseEventDate(e.dateEvenement);
         if(!d) return null;
         return {
-          id:`event-${zone.key}-${e.id || e.url || e.titre}-${toDateKey(d)}`,
+          id:`event-${e.id || e.url || e.titre}-${toDateKey(d)}`,
           type: inferCalendarType(e),
           title:e.titre || "Événement emploi",
           date:toDateKey(d),
           time:formatTimeForCalendar(e.heureDebut || d),
           location:[e.ville,e.codePostal].filter(Boolean).join(" "),
           source:"Mes événements emploi",
-          url:e.url || "",
-          zoneKey: zone.key,
-          zoneLabel: zone.label
+          url:e.url || ""
         };
       }).filter(Boolean);
 
       if(!mapped.length) return 0;
 
-      const scopedBefore = before.filter(item => {
-        if(item.type === "reminder") return true;
-        if(item.zoneKey !== zone.key) return true;
-        return !String(item.date || "").startsWith(monthKey);
-      });
-      const after = dedupeCalendarItems([...scopedBefore, ...mapped]);
+      const after = dedupeCalendarItems([...before, ...mapped]);
       writeCalendarItems(after);
 
       const first = mapped[0];
@@ -5566,22 +5166,19 @@ function renderSelectionDrawer(){
       if(!data) return 0;
       const before = getCalendarItems();
       const mapped = [];
-      const zone = getCalendarZone();
 
       (data.events || []).forEach(e => {
         const d = parseEventDate(e.dateEvenement);
         if(!d) return;
         mapped.push({
-          id:`event-${zone.key}-${e.id || e.url || e.titre}-${toDateKey(d)}`,
+          id:`event-${e.id || e.url || e.titre}-${toDateKey(d)}`,
           type: inferCalendarType(e),
           title:e.titre || "Événement emploi",
           date:toDateKey(d),
           time:formatTimeForCalendar(e.heureDebut || d),
           location:[e.ville,e.codePostal].filter(Boolean).join(" "),
           source:"Mes événements emploi",
-          url:e.url || "",
-          zoneKey: zone.key,
-          zoneLabel: zone.label
+          url:e.url || ""
         });
       });
 
@@ -5589,32 +5186,28 @@ function renderSelectionDrawer(){
         const d = parseEventDate(f.dateDebut);
         if(!d) return;
         mapped.push({
-          id:`formation-${zone.key}-${f.id || f.url || f.titre}-${toDateKey(d)}`,
+          id:`formation-${f.id || f.url || f.titre}-${toDateKey(d)}`,
           type:"formation",
           title:f.titre || "Formation",
           date:toDateKey(d),
           time:"",
           location:f.ville || "Formation",
           source:f.organisme || "France Travail",
-          url:f.url || "",
-          zoneKey: zone.key,
-          zoneLabel: zone.label
+          url:f.url || ""
         });
       });
 
       (data.poeiItems || []).forEach(p => {
         const d = parseEventDate(p.date) || parseLocalDate(state.calendarSelectedDate);
         mapped.push({
-          id:`poei-${zone.key}-${p.url || p.title}-${toDateKey(d)}`,
+          id:`poei-${p.url || p.title}-${toDateKey(d)}`,
           type:"formation",
           title:`${p.subtype || "POEI"} — ${p.title || "dispositif"}`,
           date:toDateKey(d),
           time:"",
           location:p.meta || "",
           source:p.kind || "POEI / MRS",
-          url:p.url || "",
-          zoneKey: zone.key,
-          zoneLabel: zone.label
+          url:p.url || ""
         });
       });
 
@@ -5670,9 +5263,7 @@ function renderSelectionDrawer(){
         time:String(i.time || ""),
         location:String(i.location || ""),
         source:String(i.source || ""),
-        url:String(i.url || ""),
-        zoneKey:String(i.zoneKey || ""),
-        zoneLabel:String(i.zoneLabel || "")
+        url:String(i.url || "")
       };
     }
 
@@ -5682,18 +5273,8 @@ function renderSelectionDrawer(){
       return [...map.values()].sort((a,b)=>`${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`));
     }
 
-    function shouldShowCalendarItemForActiveZone(item){
-      if(!item) return false;
-      if(item.type === "reminder") return true;
-      const active = getCalendarZone().key;
-      const itemZone = item.zoneKey || "";
-      if(active === "idf") return true;
-      return itemZone === active;
-    }
-
     function filterCalendarItems(items){
       let result = Array.isArray(items) ? items : [];
-      result = result.filter(shouldShowCalendarItemForActiveZone);
       if(state.calendarFilter !== "all") result = result.filter(i => i.type === state.calendarFilter);
       const q = normalizeUiText(state.calendarSearch || "");
       if(q){
@@ -5798,6 +5379,119 @@ function renderSelectionDrawer(){
     }
 
 
+
+    function detectDirectApiRequest(text){
+      const raw = String(text || "").trim();
+      const t = normalizeUiText(raw);
+      const city = extractCity(raw) || state.city || "";
+      const wantsOffer = /\b(offre|offres|emploi|poste|travail|job)\b/i.test(t) && !/\b(formation|former|immersion|stage|atelier)\b/i.test(t);
+      const wantsFormation = /\b(formation|former|forme|se former|certification|caces|bpjeps)\b/i.test(t);
+      const wantsImmersion = /\b(immersion|stage|tester|decouvrir un metier|decouvrir le metier|entreprise accueillante)\b/i.test(t);
+      if(wantsFormation){
+        const job = extractJobForDirectSearch(raw, "formation", city);
+        if(job) return {kind:"formation", job, city};
+      }
+      if(wantsImmersion){
+        const job = extractJobForDirectSearch(raw, "immersion", city);
+        if(job) return {kind:"immersion", job, city};
+      }
+      if(wantsOffer){
+        const job = extractJobForDirectSearch(raw, "offres", city);
+        if(job) return {kind:"offres", job, city};
+      }
+      return null;
+    }
+
+    function extractJobForDirectSearch(text, kind, city){
+      let s = String(text || "");
+      s = s.replace(/[?.!,;:]/g, " ");
+      if(city){
+        const c = city.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        s = s.replace(new RegExp("\\b(?:à|a|sur|près de|pres de)\\s+" + c + ".*$", "i"), " ");
+      }
+      const patterns = kind === "formation" ? [
+        /formation\s+(?:en|de|d'|d’)?\s*([^,;.]+)/i,
+        /(?:me former|se former|former)\s+(?:en|à|a|comme)?\s*([^,;.]+)/i
+      ] : kind === "immersion" ? [
+        /(?:immersion|stage)\s+(?:en|de|d'|d’|pour|comme)?\s*([^,;.]+)/i,
+        /tester\s+(?:le métier de|le metier de|un métier de|un metier de|comme)?\s*([^,;.]+)/i
+      ] : [
+        /offres?\s+(?:d'emploi|emploi)?\s*(?:de|d'|d’|pour|comme)?\s*([^,;.]+)/i,
+        /(?:poste|travail|job|emploi)\s+(?:de|d'|d’|comme|en)?\s*([^,;.]+)/i,
+        /je cherche\s+(?:un|une|des)?\s*(?:offres?|emploi|travail|poste)?\s*(?:de|d'|d’|comme|en)?\s*([^,;.]+)/i
+      ];
+      for(const re of patterns){
+        const m=s.match(re);
+        if(m && m[1]){
+          return cleanDirectJob(m[1]);
+        }
+      }
+      return cleanDirectJob(s);
+    }
+
+    function cleanDirectJob(value){
+      let out = String(value || "")
+        .replace(/\b(je|veux|souhaite|cherche|trouver|une|un|des|de|d'|d’|du|la|le|les|en|à|a|pour|comme|formation|offre|offres|emploi|travail|poste|stage|immersion|facilitée|facilitee|métier|metier|tester)\b/gi, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+      return out.length >= 2 ? out : "";
+    }
+
+    async function runDirectApiModule(kind, params = {}, userText = "", t0 = performance.now()){
+      if(state.busy){ toast("Une recherche est déjà en cours"); return; }
+      const job = String(params.job || params.metier || params.q || "").trim();
+      const city = String(params.city || state.city || "").trim();
+      if(!job){ toast("Métier ou domaine manquant"); return; }
+      if(city){
+        state.city = city;
+        localStorage.setItem("frai_city", city);
+      }
+      const endpoints = {
+        offres: "/api/offres?metier=" + encodeURIComponent(job) + (city ? "&ville=" + encodeURIComponent(city) : ""),
+        formation: "/api/formations?q=" + encodeURIComponent(job) + (city ? "&ville=" + encodeURIComponent(city) : ""),
+        immersion: "/api/immersion?metier=" + encodeURIComponent(job) + (city ? "&ville=" + encodeURIComponent(city) : "")
+      };
+      const labels = {offres:"Recherche d’offres", formation:"Recherche formation", immersion:"Immersion facilitée"};
+      let id = "";
+      try{
+        setBusy(true);
+        renderMessage("user", userText || labels[kind] || "Recherche", {}, true);
+        id = renderLoading();
+        const res = await fetch(WORKER + endpoints[kind] + "&_=" + Date.now(), {method:"GET", mode:"cors", cache:"no-store"});
+        const raw = await res.text();
+        let data;
+        try{ data = JSON.parse(raw); }
+        catch(_){ throw new Error("Le Worker n’a pas renvoyé de JSON exploitable pour " + (labels[kind] || kind) + "."); }
+        if(!res.ok || data.ok === false){ throw new Error(data.message || data.error || "Erreur " + res.status); }
+        if(kind === "offres"){
+          data.responseType = "offres_swipe";
+          data.intent = "recherche_emploi";
+          data.offres = Array.isArray(data.offres) ? data.offres : [];
+        }
+        if(kind === "formation"){
+          data.responseType = "formations_swipe";
+          data.intent = "formation";
+          data.formations = Array.isArray(data.formations) ? data.formations : [];
+        }
+        if(kind === "immersion"){
+          data.responseType = "immersion_resultats";
+          data.intent = "pmsmp";
+          if(!data.immersion) data.immersion = {offers:data.offers || [], searchUrl:data.searchUrl, message:data.message || data.reply};
+        }
+        remove(id);
+        syncCalendarFromAgentData(data, true);
+        renderMessage("assistant", data.compactReply || data.reply || data.message || "Réponse reçue.", data);
+        recordUsage(data, userText, Math.round(performance.now() - t0), false);
+      }catch(err){
+        if(id) remove(id);
+        const msg = "La recherche n’a pas abouti.\n\nDétail : " + (err.message || String(err));
+        renderMessage("assistant", msg, { intent:"erreur", diagnosticLabel:"erreur" });
+        recordUsage({intent:"erreur"}, userText, Math.round(performance.now() - t0), true);
+      }finally{
+        setBusy(false);
+      }
+    }
+
     function runImmediateQuery(prompt){
       const clean = String(prompt || "").trim();
       if(!clean) return;
@@ -5860,29 +5554,23 @@ function renderSelectionDrawer(){
     }
 
 
-    function resultArray(data, key){
-      const value = data ? data[key] : null;
-      if(Array.isArray(value)) return value;
-      if(value && Array.isArray(value.items)) return value.items;
-      if(value && Array.isArray(value.results)) return value.results;
-      return [];
-    }
-
     function renderResults(wrap,data){
-      const offres = resultArray(data, "offres").slice(0, 30);
-      const formations = resultArray(data, "formations").slice(0, 30);
+      const offerIntents = ["recherche_emploi","poe","international"];
+      const offres = Array.isArray(data.offres) ? data.offres.slice(0, 30) : [];
+      const formations = Array.isArray(data.formations) ? data.formations.slice(0, 30) : [];
+      const showFormationModule = data.responseType === "formations_swipe" || data.intent === "formation";
       const otherItems=[];
 
-      resultArray(data, "events").slice(0,4).forEach(e=>otherItems.push({kind:"Événement",title:e.titre,meta:[formatDate(e.dateEvenement),formatHour(e.heureDebut),e.ville,e.type].filter(Boolean).join(" · "),desc:e.description||e.deroulement,url:e.url,cta:"Voir l’événement"}));
-      if(data.intent !== "formation") formations.slice(0,3).forEach(f=>otherItems.push({kind:"Formation",title:f.titre,meta:[f.organisme,f.ville,f.dateDebut].filter(Boolean).join(" · "),desc:f.description,url:f.url,cta:"Voir la formation"}));
+      (data.events||[]).slice(0,4).forEach(e=>otherItems.push({kind:"Événement",title:e.titre,meta:[formatDate(e.dateEvenement),formatHour(e.heureDebut),e.ville,e.type].filter(Boolean).join(" · "),desc:e.description||e.deroulement,url:e.url,cta:"Voir l’événement"}));
+      if(data.intent !== "formation") (data.formations||[]).slice(0,3).forEach(f=>otherItems.push({kind:"Formation",title:f.titre,meta:[f.organisme,f.ville,f.dateDebut].filter(Boolean).join(" · "),desc:f.description,url:f.url,cta:"Voir la formation"}));
       (data.atelierCategories||[]).slice(0,9).forEach(a=>otherItems.push({kind:"Atelier",title:a.title,meta:"France Travail",desc:a.description,url:"",cta:""}));
 
       if(offres.length){
-        wrap.appendChild(sectionHead(offres.length > 1 ? "Offres à trier" : "Offre repérée"));
+        wrap.appendChild(sectionHead(offres.length > 8 ? "Offres à trier" : "Offres repérées"));
         wrap.appendChild(renderOfferSwiper(offres, data));
       }
 
-      if(data.intent === "formation" || data.responseType === "formations_swipe" || formations.length){
+      if(showFormationModule){
         wrap.appendChild(sectionHead(formations.length ? "Formations à comparer" : "Recherche formation"));
         wrap.appendChild(renderFormationSwiper(formations, data));
       }
@@ -5892,7 +5580,7 @@ function renderSelectionDrawer(){
         wrap.appendChild(renderPoeiItems(data.poeiItems));
       }
 
-      if((data.intent === "pmsmp" || data.responseType === "immersion_resultats") && data.immersion){
+      if((data.responseType === "immersion_resultats" || data.intent === "pmsmp") && data.immersion){
         wrap.appendChild(sectionHead("Immersion facilitée"));
         wrap.appendChild(renderImmersionBox(data.immersion));
       }
@@ -5909,7 +5597,8 @@ function renderSelectionDrawer(){
             card.appendChild(d);
           }
           if(item.url){
-            const a=document.createElement("a"); a.className="btn outline"; a.href=item.url; a.target="_blank"; a.rel="noopener noreferrer"; a.textContent=item.cta || "Ouvrir";
+            const a=document.createElement("a"); a.className="btn outline"; a.href=item.url; a.target="_blank"; a.rel="noopener noreferrer"; a.style.marginTop="9px"; a.textContent=item.cta||"Voir";
+            a.addEventListener("click",()=>recordClick(item.kind,item.title));
             card.appendChild(a);
           }
           list.appendChild(card);
@@ -5917,6 +5606,7 @@ function renderSelectionDrawer(){
         wrap.appendChild(list);
       }
     }
+
 
     function renderPoeiItems(items){
       const box=document.createElement("section");
@@ -6410,7 +6100,7 @@ function renderSelectionDrawer(){
       const el = nodes.find(node => node.dataset.id === id);
       if(el) el.remove();
     }
-    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v9.17.1"; }
+    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v9.17.3"; }
 
     function saveMessage(role,content,extra){ const arr=read("frai_messages",[]); arr.push({role,content,extra}); localStorage.setItem("frai_messages",JSON.stringify(arr.slice(-30))); }
     function recordUsage(data,message,ms,error){ const s=read("frai_stats",{total:0,errors:0,clicks:0,feedback:{},intents:{},times:[]}); s.total++; if(error)s.errors++; const it=data.intent||"diagnostic"; s.intents[it]=(s.intents[it]||0)+1; s.times.push(ms); s.times=s.times.slice(-100); localStorage.setItem("frai_stats",JSON.stringify(s)); }
@@ -6429,74 +6119,6 @@ function renderSelectionDrawer(){
     function formatHour(v){ if(!v)return""; const s=String(v); const m=s.match(/(\d{1,2}):(\d{2})/); return m ? `${m[1].padStart(2,"0")}:${m[2]}` : s; }
     function formatIntent(i){ return ({diagnostic:"besoin à préciser",pmsmp:"immersion facilitée",poe:"POEI (Préparation opérationnelle à l’emploi)",ateliers:"ateliers France Travail",recherche_emploi:"recherche d’emploi",candidature_cv:"CV / candidature",activ_projet:"projet professionnel",events:"événements emploi"})[i]||i||"diagnostic"; }
     function extractCity(t){ const m=String(t||"").match(/\b(?:à|a|sur|près de|pres de)\s+([A-Za-zÀ-ÿ' -]{3,60})/i); return m?m[1].replace(/[?.!,;:].*$/,"").trim():""; }
-
-    /* v9.17.1 — garde-fou rendu parcours guidé */
-    (function(){
-      function fallbackOptions(step){
-        if(step !== "situation") return [];
-        return [
-          {label:"Choisir un métier", help:"Activ’Projet, Métierscope, immersion", next:"chooseJob"},
-          {label:"Se former", help:"Formation, compétences, alternance, POEI", next:"training"},
-          {label:"Préparer sa candidature", help:"CV, entretien, image professionnelle", next:"candidature"},
-          {label:"Trouver un emploi", help:"Offres, événements, MRS", next:"employment"},
-          {label:"Créer une entreprise", help:"Activ’Créa, atelier création", next:"creation"},
-          {label:"Lever mes freins", help:"Santé, mobilité, garde, numérique", next:"freins"},
-          {label:"Travailler à l’international", help:"Activ’International", next:"international"}
-        ];
-      }
-      function renderGuidedFallback(step){
-        const gp=document.getElementById("guidedPanel");
-        if(!gp) return;
-        gp.innerHTML="";
-        const head=document.createElement("div");
-        head.className="guided-panel-head";
-        head.innerHTML='<div><div class="guided-kicker">Parcours France Travail</div><h2>Quelle rubrique correspond au besoin ?</h2></div>';
-        gp.appendChild(head);
-        const p=document.createElement("p");
-        p.textContent="Choisissez une rubrique. L’application affichera ensuite seulement l’action utile.";
-        gp.appendChild(p);
-        const box=document.createElement("div");
-        box.className="guided-options service-menu";
-        fallbackOptions(step).forEach(opt=>{
-          const wrap=document.createElement("div");
-          wrap.className="guided-choice-wrap";
-          const line=document.createElement("div");
-          line.className="guided-choice-line";
-          const btn=document.createElement("button");
-          btn.type="button";
-          btn.className="guided-choice";
-          btn.innerHTML='<div>'+escapeHtml(opt.label)+'<span>'+escapeHtml(opt.help)+'</span></div>';
-          btn.onclick=function(){
-            try{ renderGuidedPanel(opt.next); }
-            catch(e){ console.error("Fallback navigation", e); }
-          };
-          line.appendChild(btn);
-          wrap.appendChild(line);
-          box.appendChild(wrap);
-        });
-        gp.appendChild(box);
-      }
-      const previousRender = typeof renderGuidedPanel === "function" ? renderGuidedPanel : null;
-      if(previousRender){
-        renderGuidedPanel = function(step="situation"){
-          try{
-            previousRender(step);
-            const gp=document.getElementById("guidedPanel");
-            if(gp && (!gp.textContent || gp.textContent.trim().length < 20)) renderGuidedFallback(step);
-          }catch(e){
-            console.error("Erreur parcours guidé", e);
-            renderGuidedFallback(step);
-          }
-        };
-      }
-      setTimeout(function(){
-        const gp=document.getElementById("guidedPanel");
-        if(gp && (!gp.textContent || gp.textContent.trim().length < 20)){
-          try{ renderGuidedPanel("situation"); }catch(e){ renderGuidedFallback("situation"); }
-        }
-      },120);
-    })();
-
   </script>
 </body>
 </html>
