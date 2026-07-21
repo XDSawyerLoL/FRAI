@@ -2660,7 +2660,7 @@
     @media(max-width:760px){.guide-pro-detected{grid-template-columns:1fr}.guide-pro-submit-row button{width:100%}}
 
   
-    /* v9.16.8 — calendrier compact + carte IDF en fenêtre */
+    /* v9.16.9 — fix clic carte IDF en fenêtre */
     .calendar-location{
       display:flex;
       align-items:center;
@@ -4687,7 +4687,8 @@ function renderSelectionDrawer(){
         return;
       }
 
-      if(t.dataset.calCloseTerritory){
+      const closeTerritory = t.closest("[data-cal-close-territory]");
+      if(closeTerritory){
         closeCalendarTerritoryPicker();
         return;
       }
@@ -4753,6 +4754,20 @@ function renderSelectionDrawer(){
         e.preventDefault();
         state.calendarSearch = e.target.value || "";
         await syncCalendarMonthEvents();
+        return;
+      }
+      const zoneTarget = e.target?.closest?.("[data-cal-map-zone]");
+      if(zoneTarget && (e.key === "Enter" || e.key === " ")){
+        e.preventDefault();
+        setCalendarZone(zoneTarget.dataset.calMapZone, false);
+        closeCalendarTerritoryPicker();
+        toast(`Territoire calendrier : ${getCalendarZone().label}`);
+        renderCalendarPanel();
+      }
+      const closeTarget = e.target?.closest?.("[data-cal-close-territory]");
+      if(closeTarget && (e.key === "Enter" || e.key === " ")){
+        e.preventDefault();
+        closeCalendarTerritoryPicker();
       }
     }
 
@@ -4806,7 +4821,7 @@ function renderSelectionDrawer(){
       `).join("");
       return `
         <div class="calendar-map-overlay" data-cal-close-territory="1">
-          <section class="calendar-map-modal" role="dialog" aria-modal="true" aria-label="Choisir un territoire calendrier" onclick="event.stopPropagation()">
+          <section class="calendar-map-modal" role="dialog" aria-modal="true" aria-label="Choisir un territoire calendrier">
             <div class="calendar-map-head">
               <div>
                 <strong>Choisir le territoire</strong>
