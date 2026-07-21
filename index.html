@@ -2913,6 +2913,66 @@
     .guide-pro-answer-actions{display:flex;gap:8px;flex-wrap:wrap}
     @media(max-width:760px){.guide-pro-answer-grid{grid-template-columns:1fr}.transaction-head{border-radius:17px}.assistant .bubble{max-width:98%}}
 
+
+    /* v9.17.1 — correctif anti-régression mobile, sans refonte */
+    .selection-fab[hidden]{display:none !important;}
+    @media(max-width:760px){
+      .app{padding:0 !important; max-width:100vw !important; overflow-x:hidden !important;}
+      .shell{max-width:100vw !important; width:100% !important; min-height:100dvh !important; border-radius:0 !important; border:0 !important; overflow-x:hidden !important;}
+      .topbar{min-height:62px !important; padding:8px 10px !important; gap:8px !important; align-items:center !important;}
+      .brand{gap:8px !important; flex:1 1 auto !important; min-width:0 !important; overflow:hidden !important;}
+      .marianne{width:54px !important; height:38px !important; flex:0 0 auto !important; object-fit:contain !important;}
+      .brand-logo{width:148px !important; max-width:48vw !important; height:auto !important; flex:0 0 auto !important; object-fit:contain !important;}
+      .brand-text,.brand-title,.brand-subtitle{display:none !important;}
+      .top-actions{gap:6px !important; flex:0 0 auto !important;}
+      .status{width:38px !important; height:38px !important; padding:0 !important; justify-content:center !important; border-radius:999px !important;}
+      .status span:not(.dot),#statusText{display:none !important;}
+      .icon-btn{width:44px !important; height:44px !important; padding:0 !important; border-radius:999px !important; justify-content:center !important; font-size:21px !important;}
+      .icon-btn span{display:none !important;}
+      .intro{padding:12px 12px 10px !important;}
+      .intro-grid{display:grid !important; grid-template-columns:1fr !important; gap:10px !important; align-items:stretch !important;}
+      .intro h1{font-size:28px !important; line-height:1.05 !important; margin:0 !important; letter-spacing:-.04em !important;}
+      .intro p{font-size:15.5px !important; line-height:1.34 !important; margin:6px 0 0 !important; max-width:100% !important;}
+      .mission-card{display:none !important;}
+      .hero-flow{display:none !important;}
+      .feature-actions{margin-top:8px !important;}
+      .feature-action{width:100% !important; min-height:56px !important; padding:10px 12px !important; border-radius:18px !important; display:flex !important; align-items:center !important; justify-content:flex-start !important; gap:10px !important;}
+      .feature-action b{font-size:15px !important; line-height:1.15 !important;}
+      .feature-action span{font-size:12px !important; line-height:1.2 !important;}
+      .mode-switch{width:100% !important; margin-top:6px !important; display:grid !important; grid-template-columns:1fr 1fr !important;}
+      .mode-btn{justify-content:center !important; min-height:44px !important; font-size:14px !important; padding:8px 10px !important;}
+      .guided-panel{margin-top:10px !important; padding:12px !important; border-radius:20px !important; gap:9px !important; min-height:0 !important; height:auto !important; overflow:visible !important;}
+      .guided-panel-head{display:block !important;}
+      .guided-kicker{font-size:10px !important; line-height:1.15 !important;}
+      .guided-panel h2{font-size:20px !important; line-height:1.08 !important; margin:3px 0 0 !important;}
+      .guided-panel p{font-size:13px !important; line-height:1.3 !important;}
+      .conseiller-summary{display:none !important;}
+      .guided-progress-line{display:none !important;}
+      .guided-options{gap:8px !important; display:grid !important; width:100% !important;}
+      .guided-choice-line{position:relative !important; width:100% !important;}
+      .guided-choice{height:auto !important; min-height:52px !important; width:100% !important; padding:10px 44px 10px 12px !important; border-radius:15px !important; font-size:14px !important; line-height:1.15 !important; overflow:visible !important; display:flex !important; align-items:center !important;}
+      .guided-choice.has-info{padding-right:52px !important;}
+      .guided-choice::after,.guided-choice.direct::after,.guided-choice.query::after,.guided-choice.has-info::after{content:none !important; display:none !important;}
+      .guided-choice div{padding:0 !important; width:100% !important;}
+      .guided-choice span{font-size:11px !important; line-height:1.22 !important; margin-top:3px !important;}
+      .guided-choice-info{right:9px !important; width:30px !important; height:30px !important; font-size:17px !important;}
+      .guided-actions{display:none !important;}
+      .advisor-guided{display:none !important;}
+      .pilot-pages{display:none !important;}
+      .reset-fab{display:none !important;}
+      .selection-fab{right:10px !important; bottom:74px !important; padding:8px 10px !important; font-size:12px !important; opacity:.95 !important;}
+      .selection-fab span{min-width:20px !important; height:20px !important; font-size:12px !important;}
+      .composer-wrap{position:sticky !important; bottom:0 !important; padding:8px 10px calc(8px + var(--safe)) !important; z-index:45 !important;}
+      .composer{gap:8px !important;}
+      .input-box{border-radius:16px !important; padding:8px 10px !important;}
+      textarea{min-height:34px !important; max-height:92px !important; font-size:16px !important;}
+      .send-btn{min-width:100px !important; min-height:54px !important; border-radius:17px !important; font-size:16px !important; padding:0 14px !important;}
+      .messages{padding:10px 10px 18px !important;}
+      body.chat-started .intro h1{display:block !important; font-size:20px !important;}
+      body.chat-started .intro p{display:none !important;}
+      body.chat-started .feature-actions{display:none !important;}
+    }
+
   </style>
 </head>
 <body data-mode="demandeur">
@@ -2928,7 +2988,7 @@
           </div>
         </div>
         <div class="top-actions">
-          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v9.16.7</span></div>
+          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v9.17.1</span></div>
           <button class="icon-btn" id="resetBtn" type="button" title="Nouvelle conversation">↺ <span>Nouveau</span></button>
         </div>
       </header>
@@ -6350,7 +6410,7 @@ function renderSelectionDrawer(){
       const el = nodes.find(node => node.dataset.id === id);
       if(el) el.remove();
     }
-    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v9.16.5"; }
+    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v9.17.1"; }
 
     function saveMessage(role,content,extra){ const arr=read("frai_messages",[]); arr.push({role,content,extra}); localStorage.setItem("frai_messages",JSON.stringify(arr.slice(-30))); }
     function recordUsage(data,message,ms,error){ const s=read("frai_stats",{total:0,errors:0,clicks:0,feedback:{},intents:{},times:[]}); s.total++; if(error)s.errors++; const it=data.intent||"diagnostic"; s.intents[it]=(s.intents[it]||0)+1; s.times.push(ms); s.times=s.times.slice(-100); localStorage.setItem("frai_stats",JSON.stringify(s)); }
@@ -6369,6 +6429,74 @@ function renderSelectionDrawer(){
     function formatHour(v){ if(!v)return""; const s=String(v); const m=s.match(/(\d{1,2}):(\d{2})/); return m ? `${m[1].padStart(2,"0")}:${m[2]}` : s; }
     function formatIntent(i){ return ({diagnostic:"besoin à préciser",pmsmp:"immersion facilitée",poe:"POEI (Préparation opérationnelle à l’emploi)",ateliers:"ateliers France Travail",recherche_emploi:"recherche d’emploi",candidature_cv:"CV / candidature",activ_projet:"projet professionnel",events:"événements emploi"})[i]||i||"diagnostic"; }
     function extractCity(t){ const m=String(t||"").match(/\b(?:à|a|sur|près de|pres de)\s+([A-Za-zÀ-ÿ' -]{3,60})/i); return m?m[1].replace(/[?.!,;:].*$/,"").trim():""; }
+
+    /* v9.17.1 — garde-fou rendu parcours guidé */
+    (function(){
+      function fallbackOptions(step){
+        if(step !== "situation") return [];
+        return [
+          {label:"Choisir un métier", help:"Activ’Projet, Métierscope, immersion", next:"chooseJob"},
+          {label:"Se former", help:"Formation, compétences, alternance, POEI", next:"training"},
+          {label:"Préparer sa candidature", help:"CV, entretien, image professionnelle", next:"candidature"},
+          {label:"Trouver un emploi", help:"Offres, événements, MRS", next:"employment"},
+          {label:"Créer une entreprise", help:"Activ’Créa, atelier création", next:"creation"},
+          {label:"Lever mes freins", help:"Santé, mobilité, garde, numérique", next:"freins"},
+          {label:"Travailler à l’international", help:"Activ’International", next:"international"}
+        ];
+      }
+      function renderGuidedFallback(step){
+        const gp=document.getElementById("guidedPanel");
+        if(!gp) return;
+        gp.innerHTML="";
+        const head=document.createElement("div");
+        head.className="guided-panel-head";
+        head.innerHTML='<div><div class="guided-kicker">Parcours France Travail</div><h2>Quelle rubrique correspond au besoin ?</h2></div>';
+        gp.appendChild(head);
+        const p=document.createElement("p");
+        p.textContent="Choisissez une rubrique. L’application affichera ensuite seulement l’action utile.";
+        gp.appendChild(p);
+        const box=document.createElement("div");
+        box.className="guided-options service-menu";
+        fallbackOptions(step).forEach(opt=>{
+          const wrap=document.createElement("div");
+          wrap.className="guided-choice-wrap";
+          const line=document.createElement("div");
+          line.className="guided-choice-line";
+          const btn=document.createElement("button");
+          btn.type="button";
+          btn.className="guided-choice";
+          btn.innerHTML='<div>'+escapeHtml(opt.label)+'<span>'+escapeHtml(opt.help)+'</span></div>';
+          btn.onclick=function(){
+            try{ renderGuidedPanel(opt.next); }
+            catch(e){ console.error("Fallback navigation", e); }
+          };
+          line.appendChild(btn);
+          wrap.appendChild(line);
+          box.appendChild(wrap);
+        });
+        gp.appendChild(box);
+      }
+      const previousRender = typeof renderGuidedPanel === "function" ? renderGuidedPanel : null;
+      if(previousRender){
+        renderGuidedPanel = function(step="situation"){
+          try{
+            previousRender(step);
+            const gp=document.getElementById("guidedPanel");
+            if(gp && (!gp.textContent || gp.textContent.trim().length < 20)) renderGuidedFallback(step);
+          }catch(e){
+            console.error("Erreur parcours guidé", e);
+            renderGuidedFallback(step);
+          }
+        };
+      }
+      setTimeout(function(){
+        const gp=document.getElementById("guidedPanel");
+        if(gp && (!gp.textContent || gp.textContent.trim().length < 20)){
+          try{ renderGuidedPanel("situation"); }catch(e){ renderGuidedFallback("situation"); }
+        }
+      },120);
+    })();
+
   </script>
 </body>
 </html>
