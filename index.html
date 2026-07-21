@@ -3288,8 +3288,15 @@
       `;
       const actions = card.querySelector(".service-sheet-actions");
       const run = document.createElement("button");
-      run.type="button"; run.className="btn outline"; run.textContent="Lancer avec l’agent";
-      run.onclick=()=>runImmediateQuery(sheet.agentPrompt || sheet.short || sheet.title);
+      run.type="button"; run.className="btn outline";
+      const operationalDetail = ({formation:"formation", immersion:"immersion", atelier_cv:"cv", entretien:"entretien"})[key];
+      if(operationalDetail){
+        run.textContent = key === "formation" ? "Préciser et chercher" : (key === "immersion" ? "Chercher une immersion" : "Préciser l’action");
+        run.onclick=()=>renderGuidedActionDetails(operationalDetail);
+      }else{
+        run.textContent="Lancer avec l’agent";
+        run.onclick=()=>runGuideQuery(sheet.agentPrompt || sheet.short || sheet.title, {bypassLocalSheet:true});
+      }
       actions.appendChild(run);
       if(sheet.url){
         const a=document.createElement("a");
@@ -3324,7 +3331,20 @@
     function shouldUseLocalSheet(text, key){
       if(!key) return false;
       const t = normalizeUiText(text || "");
-      if(/\b(offre|offres|job dating|evenement|forum|calendrier|boulanger|vendeur|secretaire|conducteur)\b/.test(t) && !/\b(sante|handicap|poei|mrs|immersion|stage|alternance|creation|international)\b/.test(t)) return false;
+
+      // Les fiches servent à expliquer une prestation.
+      // Les demandes concrètes doivent partir vers le Worker pour remonter des résultats réels.
+      if(key === "formation" && (
+        /\b(cherche|chercher|recherche|trouver|affiche|comparer)\b/.test(t) ||
+        /\b(formation en|formation de|formation a|formation à|se former en|formations disponibles)\b/.test(t)
+      )) return false;
+
+      if(key === "immersion" && (
+        /\b(cherche|chercher|recherche|trouver|affiche|tester|entreprise accueillante|entreprises accueillantes)\b/.test(t) ||
+        /\b(metier de|métier de|tester le metier|tester le métier)\b/.test(t)
+      )) return false;
+
+      if(/\b(offre|offres|job dating|evenement|événement|forum|calendrier|boulanger|vendeur|secretaire|secrétaire|conducteur)\b/.test(t) && !/\b(sante|santé|handicap|poei|mrs|immersion|stage|alternance|creation|création|international)\b/.test(t)) return false;
       return true;
     }
 
@@ -3704,8 +3724,10 @@ function bind(){
 
       try{
         renderMessage("user", text);
+        const bypassLocalSheet = !!state.bypassNextLocalSheet;
+        state.bypassNextLocalSheet = false;
         const localSheetKey = detectServiceSheetFromText(text);
-        if(shouldUseLocalSheet(text, localSheetKey)){
+        if(!bypassLocalSheet && shouldUseLocalSheet(text, localSheetKey)){
           const localData = buildServiceSheetData(localSheetKey, text);
           renderMessage("assistant", localData.compactReply || localData.reply, localData);
           recordUsage(localData, text, Math.round(performance.now() - t0), false);
@@ -4007,10 +4029,8 @@ function renderWelcome(){
       ];
 
       if(step === "creation") return [
-        {label:"Activ’Créa", help:"Tester l’idée", info:"Explorer la création ou reprise d’entreprise et vérifier la faisabilité.", sheetKey:"activ_crea"},
-        {label:"Atelier création d’entreprise", help:"Structurer le projet", info:"Motivations, ressources, étapes clés et posture entrepreneuriale.", sheetKey:"atelier_creation"},
-        {label:"M’imaginer créateur d’entreprise", help:"Atelier court", info:"Première projection avant démarches lourdes.", sheetKey:"atelier_creation"},
-        {label:"Structurer mon projet", help:"Ressources et étapes", info:"Passer d’une idée à un plan d’action clair.", sheetKey:"activ_crea"}
+        {label:"Activ’Créa", help:"Tester et cadrer l’idée", info:"Explorer la création ou reprise d’entreprise, vérifier la faisabilité et décider si Activ’Créa est l’accompagnement adapté.", sheetKey:"activ_crea"},
+        {label:"Atelier création d’entreprise", help:"Premiers repères", info:"Comprendre les premières démarches, ressources, étapes clés et points de vigilance avant de lancer le projet.", sheetKey:"atelier_creation"}
       ];
 
       if(step === "freins") return [
@@ -4097,7 +4117,12 @@ function renderWelcome(){
       }
     }
 
-    function runGuideQuery(prompt){
+    function runGuideQuery(prompt, options = {}){
+      if(options && options.bypassLocalSheet){
+        state.bypassNextLocalSheet = true;
+        runImmediateQuery(prompt);
+        return;
+      }
       const key = detectServiceSheetFromText(prompt);
       if(shouldUseLocalSheet(prompt, key)){
         const data = buildServiceSheetData(key, prompt);
@@ -4249,13 +4274,13 @@ function renderWelcome(){
         prompt = "Quels événements emploi " + (job ? "sur " + job + " " : "") + (city ? "à " + city : "peuvent m'aider ?");
       } else if(action === "formation"){
         if(!job){ showGuidedError(errorEl, "Indiquez au moins un métier, un domaine ou une compétence."); return; }
-        prompt = "Je cherche une formation en " + job + (city ? " à " + city : "") + ". Propose la bonne prochaine étape France Travail.";
+        prompt = "Je cherche une formation en " + job + (city ? " à " + city : "") + ". Affiche les formations disponibles en cartes à comparer, comme pour les offres.";
       } else if(action === "immersion"){
         if(!job){ showGuidedError(errorEl, "Indiquez au moins le métier à tester."); return; }
-        prompt = "Je veux faire une immersion facilitée pour tester le métier de " + job + (city ? " à " + city : "") + ". Cherche une entreprise accueillante ou prépare ma demande.";
+        prompt = "Je veux tester le métier de " + job + " en immersion facilitée" + (city ? " à " + city : "") + ". Affiche les entreprises accueillantes possibles et le lien de mise en relation.";
       }
 
-      runGuideQuery(personalizePromptFromContext(prompt));
+      runGuideQuery(personalizePromptFromContext(prompt), {bypassLocalSheet:true});
     }
 
     function showGuidedError(errorEl, message){
