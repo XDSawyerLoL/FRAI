@@ -2839,6 +2839,80 @@
       .calendar-map-all{grid-column:1/-1}
     }
 
+  
+
+    /* v9.17.0 — stabilisation parcours critiques */
+    .transaction-head{
+      border:1px solid var(--line);
+      border-left:7px solid var(--green);
+      border-radius:20px;
+      background:linear-gradient(180deg,#ffffff,#f8fbff);
+      padding:13px;
+      display:grid;
+      gap:6px;
+      box-shadow:0 8px 20px rgba(17,24,39,.06);
+      white-space:normal;
+    }
+    .transaction-head span{
+      width:max-content;
+      max-width:100%;
+      border-radius:999px;
+      background:#e8f5ee;
+      color:var(--green-dark);
+      padding:4px 8px;
+      font-size:11px;
+      font-weight:950;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+    }
+    .transaction-head strong{color:#111827;font-size:16px;line-height:1.2}
+    .transaction-head p{margin:0;color:#5b6472;font-size:13px;line-height:1.35}
+    .module-empty{
+      border:1px solid #dfe6f3;
+      border-left:6px solid #f59e0b;
+      border-radius:18px;
+      background:#fffaf0;
+      padding:12px;
+      display:grid;
+      gap:8px;
+      white-space:normal;
+    }
+    .module-empty strong{color:#7c4a03;font-size:15px}
+    .module-empty p{margin:0;color:#5b6472;font-size:13px;line-height:1.35}
+    .guide-pro-answer-card{
+      border:1px solid var(--line);
+      border-left:7px solid #17245f;
+      border-radius:22px;
+      background:linear-gradient(180deg,#ffffff,#f8fbff);
+      box-shadow:0 10px 24px rgba(17,24,39,.08);
+      padding:14px;
+      display:grid;
+      gap:11px;
+      white-space:normal;
+    }
+    .guide-pro-answer-card .gp-kicker{
+      width:max-content;
+      max-width:100%;
+      padding:5px 9px;
+      border-radius:999px;
+      background:#e8f0ff;
+      color:#17245f;
+      font-size:11px;
+      font-weight:950;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+    }
+    .guide-pro-answer-card h3{margin:0;color:#111827;font-size:18px;line-height:1.16}
+    .guide-pro-answer-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+    .guide-pro-answer-item{border-radius:15px;background:#f1f5ff;padding:9px;display:grid;gap:3px}
+    .guide-pro-answer-item b{font-size:11px;color:#17245f;text-transform:uppercase;letter-spacing:.04em}
+    .guide-pro-answer-item small{font-size:13px;color:#4b5563;line-height:1.32}
+    .guide-pro-answer-list{border-radius:15px;background:#fff;padding:9px;border:1px solid #dfe6f3}
+    .guide-pro-answer-list b{display:block;font-size:12px;color:#17245f;margin-bottom:4px}
+    .guide-pro-answer-list ul{margin:0;padding-left:18px;color:#4b5563;font-size:13px;line-height:1.35}
+    .guide-pro-answer-actions{display:flex;gap:8px;flex-wrap:wrap}
+    @media(max-width:760px){.guide-pro-answer-grid{grid-template-columns:1fr}.transaction-head{border-radius:17px}.assistant .bubble{max-width:98%}}
+
   </style>
 </head>
 <body data-mode="demandeur">
@@ -3615,8 +3689,11 @@
       const send=document.createElement("button");
       send.type="button";
       send.className="primary";
-      send.textContent="Envoyer une seule réponse à l’agent";
-      send.onclick=()=>runImmediateQuery(buildGuideProPrompt(final));
+      send.textContent="Afficher la réponse courte";
+      send.onclick=()=>{
+        const data = buildGuideProCardData(final);
+        renderMessage("assistant", data.compactReply, data);
+      };
       const back=document.createElement("button");
       back.type="button";
       back.textContent="← Changer le cas";
@@ -3724,6 +3801,11 @@ function bind(){
 
       try{
         renderMessage("user", text);
+        const directRequest = parseDirectTransactionalRequest(text);
+        if(directRequest){
+          await runDirectModuleSearch(directRequest.type, { job:directRequest.job, city:directRequest.city, originalText:text, userAlreadyRendered:true });
+          return;
+        }
         const bypassLocalSheet = !!state.bypassNextLocalSheet;
         state.bypassNextLocalSheet = false;
         const localSheetKey = detectServiceSheetFromText(text);
@@ -4252,49 +4334,173 @@ function renderWelcome(){
     }
 
     async function runGuidedOfferSearch(job, city, errorEl){
-      if(state.busy){ toast("Une analyse est déjà en cours"); return; }
-      const prompt = "Je cherche une offre d'emploi de " + job + (city ? " à " + city : "");
+      return runDirectModuleSearch("offres", { job, city, errorEl, userAlreadyRendered:false });
+    }
+
+    async function runDirectModuleSearch(type, options = {}){
+      const job = String(options.job || options.metier || "").trim();
+      const city = String(options.city || state.city || DEFAULT_CITY).trim();
+      const originalText = String(options.originalText || "").trim();
+      const userAlreadyRendered = !!options.userAlreadyRendered;
+      const errorEl = options.errorEl || null;
+
+      if(state.busy){ toast("Une analyse est déjà en cours"); return true; }
+      if(!job && type !== "events"){
+        if(errorEl) showGuidedError(errorEl, "Il manque le métier, le domaine ou le thème à rechercher.");
+        else toast("Précisez le métier ou le domaine");
+        return true;
+      }
+
+      const labels = {
+        offres:"Recherche d’emploi",
+        formation:"Recherche formation",
+        immersion:"Immersion facilitée"
+      };
+      const prompts = {
+        offres:"Je cherche une offre d'emploi de " + job + (city ? " à " + city : ""),
+        formation:"Je cherche une formation en " + job + (city ? " à " + city : ""),
+        immersion:"Je veux tester le métier de " + job + " en immersion facilitée" + (city ? " à " + city : "")
+      };
+      const endpoint = {
+        offres:"/api/offres?metier=" + encodeURIComponent(job) + (city ? "&ville=" + encodeURIComponent(city) : ""),
+        formation:"/api/formations?q=" + encodeURIComponent(job) + (city ? "&ville=" + encodeURIComponent(city) : ""),
+        immersion:"/api/immersion?metier=" + encodeURIComponent(job) + (city ? "&ville=" + encodeURIComponent(city) : "")
+      }[type];
+
       let id = "";
       const t0 = performance.now();
+      const prompt = originalText || prompts[type] || job;
       try{
-        renderMessage("user", prompt);
+        if(!userAlreadyRendered) renderMessage("user", prompt);
         setBusy(true);
         id = renderLoading();
-        const url = WORKER + "/api/offres?metier=" + encodeURIComponent(job) + (city ? "&ville=" + encodeURIComponent(city) : "") + "&_=" + Date.now();
-        const res = await fetch(url, { method:"GET", mode:"cors", cache:"no-store" });
+        const res = await fetch(WORKER + endpoint + "&_=" + Date.now(), { method:"GET", mode:"cors", cache:"no-store" });
         const raw = await res.text();
         let data;
         try{ data = JSON.parse(raw); }
-        catch(_){ throw new Error("Réponse non JSON : " + raw.slice(0,160)); }
-        if(!res.ok || data.ok === false){ throw new Error(data.error || "Recherche offres " + res.status); }
-        const normalized = {
-          ...data,
-          ok:true,
-          intent:"recherche_emploi",
-          diagnosticLabel:"Recherche d’emploi",
-          compactReply:data.compactReply || "Offres récupérées. Triez les cartes et gardez les plus pertinentes.",
-          reply:data.reply || data.compactReply || "Offres récupérées. Triez les cartes et gardez les plus pertinentes.",
-          priorityAction:data.priorityAction || "Trier les offres repérées",
-          actionPlan:data.actionPlan || [
-            {title:"Comparer", why:"Vérifier lieu, contrat et missions."},
-            {title:"Garder", why:"Mettre en sélection les offres adaptées."},
-            {title:"Postuler", why:"Ouvrir l’offre complète et candidater."}
-          ]
-        };
+        catch(_){ throw new Error("Le service n’a pas renvoyé une réponse exploitable."); }
+        if(!res.ok){ throw new Error(data.error || (labels[type] + " " + res.status)); }
+        const normalized = normalizeDirectModuleData(type, data, {job, city, prompt});
         remove(id);
-        renderMessage("assistant", normalized.compactReply, normalized);
+        syncCalendarFromAgentData(normalized, true);
+        renderMessage("assistant", normalized.compactReply || normalized.reply || "Résultats reçus.", normalized);
         recordUsage(normalized, prompt, Math.round(performance.now() - t0), false);
       }catch(err){
         if(id) remove(id);
-        const msg = "Je n’ai pas pu récupérer les offres.\n\nDétail : " + (err.message || String(err));
+        const msg = "Je n’ai pas pu lancer le module demandé.\n\nDétail : " + (err.message || String(err));
         renderMessage("assistant", msg, { intent:"erreur", diagnosticLabel:"erreur" });
         recordUsage({intent:"erreur"}, prompt, Math.round(performance.now() - t0), true);
       }finally{
         setBusy(false);
       }
+      return true;
     }
 
-    function submitGuidedAction(action, errorEl){
+    function normalizeDirectModuleData(type, data, ctx = {}){
+      if(type === "offres"){
+        const offres = resultArray(data, "offres").slice(0,30);
+        return {
+          ...data,
+          ok:true,
+          responseType:"offres_swipe",
+          intent:"recherche_emploi",
+          diagnosticLabel:"Recherche d’emploi",
+          compactReply: offres.length ? `${offres.length} offre(s) remontée(s). Triez les cartes et gardez les plus pertinentes.` : "Aucune offre exploitable n’est remontée. Essayez une zone plus large ou un métier proche.",
+          reply: offres.length ? `${offres.length} offre(s) remontée(s).` : "Aucune offre exploitable n’est remontée.",
+          priorityAction: offres.length ? "Trier les offres repérées" : "Élargir la recherche",
+          offres,
+          formations:[],
+          events:[],
+          actionPlan: offres.length ? [
+            {title:"Comparer", why:"Lieu, contrat, mission."},
+            {title:"Garder", why:"Mettre les offres adaptées en sélection."},
+            {title:"Postuler", why:"Ouvrir l’offre complète."}
+          ] : [
+            {title:"Élargir", why:"Tester un rayon ou une ville plus large."},
+            {title:"Métier proche", why:"Chercher une piste avec compétences transférables."},
+            {title:"Événement", why:"Voir des rencontres recruteurs."}
+          ],
+          analysis:{need:`Trouver des offres concrètes pour ${ctx.job || "le métier visé"}`},
+          understanding:{need:`Recherche d’offres · ${ctx.job || "métier"}`, goal:"Comparer et garder les offres utiles"}
+        };
+      }
+      if(type === "formation"){
+        const formations = resultArray(data, "formations").slice(0,30);
+        const url = data.searchUrl || data.formationSearchUrl || findOfficialLink(data, "formation") || "https://candidat.francetravail.fr/formations/recherche";
+        return {
+          ...data,
+          ok:true,
+          responseType:"formations_swipe",
+          intent:"formation",
+          diagnosticLabel:"Formation",
+          compactReply: formations.length ? `${formations.length} formation(s) remontée(s). Comparez les cartes et gardez les pistes utiles.` : "Aucune formation exploitable n’est remontée par l’API. Le lien officiel reste disponible.",
+          reply: formations.length ? `${formations.length} formation(s) remontée(s).` : "Aucune formation exploitable n’est remontée par l’API.",
+          priorityAction: formations.length ? "Comparer les formations" : "Ouvrir la recherche formation officielle",
+          formations,
+          formationSearchUrl:url,
+          offres:[],
+          events:[],
+          analysis:{need:`Chercher une formation en ${ctx.job || "lien avec le projet"}`},
+          understanding:{need:`Recherche formation · ${ctx.job || "domaine"}`, goal:"Comparer les formations utiles"}
+        };
+      }
+      if(type === "immersion"){
+        const immersion = data.immersion || data;
+        const offers = Array.isArray(immersion.offers) ? immersion.offers : [];
+        return {
+          ...data,
+          ok:true,
+          responseType:"immersion_resultats",
+          intent:"pmsmp",
+          diagnosticLabel:"Immersion facilitée",
+          compactReply: offers.length ? `${offers.length} entreprise(s) accueillante(s) possible(s) repérée(s).` : "Aucune entreprise exploitable n’est remontée. Le parcours Immersion Facilitée reste disponible.",
+          reply: offers.length ? `${offers.length} entreprise(s) accueillante(s) possible(s) repérée(s).` : "Aucune entreprise exploitable n’est remontée.",
+          priorityAction: offers.length ? "Contacter une entreprise accueillante" : "Ouvrir Immersion Facilitée",
+          immersion,
+          offres:[],
+          formations:[],
+          events:[],
+          analysis:{need:`Tester le métier ${ctx.job || "visé"} en conditions réelles`},
+          understanding:{need:`Immersion · ${ctx.job || "métier"}`, goal:"Trouver une entreprise accueillante"}
+        };
+      }
+      return data;
+    }
+
+    function parseDirectTransactionalRequest(text){
+      const raw = String(text || "").trim();
+      const t = normalizeUiText(raw);
+      if(!t) return null;
+      if(/^mode guide pro/i.test(raw) || /^guide pro/i.test(raw)) return null;
+      const city = extractCity(raw) || state.city || DEFAULT_CITY;
+      const cleanJob = (value) => String(value || "")
+        .replace(/\b(à|a|sur|près de|pres de)\b[\s\S]*$/i, "")
+        .replace(/\b(en|dans|autour de|disponibles?|cartes?|swipe|comparer|possible|possibles)\b$/i, "")
+        .replace(/[?.!,;:]+$/g, "")
+        .trim();
+      let m;
+      if(/\b(offre|offres|emploi|travail|poste|job)\b/.test(t) && /\b(cherche|recherche|trouve|trouver|affiche|voir|veux)\b/.test(t)){
+        m = raw.match(/(?:offres?|emploi|travail|poste|job)(?:\s+d['’]emploi)?(?:\s+de|\s+pour|\s+en)?\s+(.+)/i)
+          || raw.match(/(?:cherche|recherche|trouver|trouve|veux)\s+(?:un|une|des)?\s*(?:offres?|emploi|travail|poste|job)?\s*(?:de|pour|en)?\s+(.+)/i);
+        const job = cleanJob(m?.[1] || "");
+        if(job && job.length >= 2) return {type:"offres", job, city};
+      }
+      if(/\b(formation|formations|former|se former)\b/.test(t) && /\b(cherche|recherche|trouve|trouver|affiche|voir|veux|compare|comparer)\b/.test(t)){
+        m = raw.match(/(?:formation|formations|former|se former)(?:\s+de|\s+en|\s+pour|\s+sur)?\s+(.+)/i)
+          || raw.match(/(?:cherche|recherche|trouver|trouve|veux)\s+(?:une|des)?\s*formations?\s*(?:de|en|pour|sur)?\s+(.+)/i);
+        const job = cleanJob(m?.[1] || "");
+        if(job && job.length >= 2) return {type:"formation", job, city};
+      }
+      if(/\b(immersion|stage|tester|decouvrir|découvrir|entreprise accueillante)\b/.test(t) && /\b(metier|métier|poste|boulanger|vendeur|auxiliaire|secretariat|secrétaire|ambulancier)\b/.test(t)){
+        m = raw.match(/(?:métier|metier|poste)\s+de\s+(.+)/i)
+          || raw.match(/(?:tester|découvrir|decouvrir|immersion|stage)(?:\s+le|\s+la|\s+un|\s+une)?(?:\s+métier|\s+metier|\s+poste)?(?:\s+de|\s+en)?\s+(.+)/i);
+        const job = cleanJob(m?.[1] || "");
+        if(job && job.length >= 2) return {type:"immersion", job, city};
+      }
+      return null;
+    }
+
+    function submitGuidedAction    function submitGuidedAction(action, errorEl){
       const job = (document.getElementById("guidedJob")?.value || "").trim();
       const city = (document.getElementById("guidedCity")?.value || "").trim();
       if(city){
@@ -4318,10 +4524,12 @@ function renderWelcome(){
         prompt = "Quels événements emploi " + (job ? "sur " + job + " " : "") + (city ? "à " + city : "peuvent m'aider ?");
       } else if(action === "formation"){
         if(!job){ showGuidedError(errorEl, "Indiquez au moins un métier, un domaine ou une compétence."); return; }
-        prompt = "Je cherche une formation en " + job + (city ? " à " + city : "") + ". Affiche les formations disponibles en cartes à comparer, comme pour les offres.";
+        runDirectModuleSearch("formation", { job, city, errorEl, userAlreadyRendered:false });
+        return;
       } else if(action === "immersion"){
         if(!job){ showGuidedError(errorEl, "Indiquez au moins le métier à tester."); return; }
-        prompt = "Je veux tester le métier de " + job + " en immersion facilitée" + (city ? " à " + city : "") + ". Affiche les entreprises accueillantes possibles et le lien de mise en relation.";
+        runDirectModuleSearch("immersion", { job, city, errorEl, userAlreadyRendered:false });
+        return;
       }
 
       runGuideQuery(personalizePromptFromContext(prompt), {bypassLocalSheet:true});
@@ -4439,6 +4647,21 @@ function renderWelcome(){
     
 function renderAssistantAnswer(content, data){
   const wrap=document.createElement("div"); wrap.className="answer-grid";
+  if(data && data.intent === "guide_pro_card" && data.guideProFinal){
+    wrap.appendChild(renderGuideProAnswerCard(data.guideProFinal));
+    wrap.appendChild(renderFeedback(data));
+    state.lastData = data;
+    return wrap;
+  }
+  if(data && ["offres_swipe","formations_swipe","immersion_resultats"].includes(data.responseType || "")){
+    wrap.appendChild(renderTransactionalHeader(data));
+    renderResults(wrap, data);
+    const noResult = renderNoResultGuidance(data);
+    if(noResult) wrap.appendChild(noResult);
+    wrap.appendChild(renderFeedback(data));
+    state.lastData = data;
+    return wrap;
+  }
   if(data && data.serviceSheetKey){
     wrap.appendChild(renderNeedDetectedCard(data));
     wrap.appendChild(renderServiceSheetCard(data.serviceSheetKey, data.sourceText || content || ""));
@@ -4498,6 +4721,63 @@ function renderAssistantAnswer(content, data){
   return wrap;
 }
 
+
+
+function renderTransactionalHeader(data){
+  const box=document.createElement("section");
+  box.className="transaction-head";
+  const type = data.responseType || data.intent || "module";
+  const count = (type === "offres_swipe") ? resultArray(data,"offres").length : (type === "formations_swipe" ? resultArray(data,"formations").length : (data.immersion?.offers?.length || 0));
+  const label = type === "offres_swipe" ? "Offres d’emploi" : (type === "formations_swipe" ? "Formations" : "Immersion facilitée");
+  const title = data.priorityAction || (count ? `${count} résultat(s) exploitable(s)` : "Aucun résultat exploitable remonté");
+  const text = data.compactReply || data.reply || "Module exécuté.";
+  box.innerHTML = `<span>${escapeHtml(label)}</span><strong>${escapeHtml(title)}</strong><p>${escapeHtml(text)}</p>`;
+  return box;
+}
+
+function renderGuideProAnswerCard(final){
+  const card=document.createElement("section");
+  card.className="guide-pro-answer-card";
+  const checks=(final.checks||[]).slice(0,3).map(x=>`<li>${escapeHtml(x)}</li>`).join("");
+  const vig=(final.vigilance||[]).slice(0,2).map(x=>`<li>${escapeHtml(x)}</li>`).join("");
+  card.innerHTML=`
+    <span class="gp-kicker">${escapeHtml(final.category || "Guide pro")}</span>
+    <h3>${escapeHtml(final.title || "Réponse conseiller")}</h3>
+    <div class="guide-pro-answer-grid">
+      <div class="guide-pro-answer-item"><b>Besoin confirmé</b><small>${escapeHtml(final.need || "Besoin à préciser")}</small></div>
+      <div class="guide-pro-answer-item"><b>Orientation prioritaire</b><small>${escapeHtml(final.orientation || "Orientation à vérifier")}</small></div>
+    </div>
+    <div class="guide-pro-answer-list"><b>Questions de vérification</b><ul>${checks}</ul></div>
+    <div class="guide-pro-answer-list"><b>Point de vigilance</b><ul>${vig}</ul></div>
+    <div class="guide-pro-answer-item"><b>Prochaine action</b><small>${escapeHtml(final.prompt || final.orientation || "Confirmer avec la personne puis orienter vers l’action adaptée.")}</small></div>
+    <div class="guide-pro-answer-actions"><button type="button" class="small-btn" data-copy-guide-pro="1">Copier la réponse</button></div>
+  `;
+  card.querySelector('[data-copy-guide-pro]')?.addEventListener('click', ()=>{
+    const text = [
+      `Besoin confirmé : ${final.need || ""}`,
+      `Orientation prioritaire : ${final.orientation || ""}`,
+      `Questions de vérification : ${(final.checks || []).join(" ; ")}`,
+      `Point de vigilance : ${(final.vigilance || []).join(" ; ")}`,
+      `Prochaine action : ${final.prompt || final.orientation || ""}`
+    ].join("\n");
+    navigator.clipboard?.writeText(text).then(()=>toast("Réponse Guide pro copiée")).catch(()=>toast("Copie indisponible"));
+  });
+  return card;
+}
+
+function buildGuideProCardData(final){
+  return {
+    ok:true,
+    intent:"guide_pro_card",
+    responseType:"guide_pro_card",
+    diagnosticLabel:"Guide pro",
+    guideProFinal: final,
+    compactReply: "Réponse Guide pro prête : " + (final.title || "orientation conseiller"),
+    reply: "Réponse Guide pro prête.",
+    priorityAction: final.orientation || final.title || "Orientation conseiller",
+    analysis:{need: final.need || "Besoin conseiller"}
+  };
+}
 
 
 function renderUnderstandingCard(content, data){
@@ -4568,7 +4848,7 @@ function renderNoResultGuidance(data){
   const hasOffers = Array.isArray(data.offres) && data.offres.length;
   const hasEvents = Array.isArray(data.events) && data.events.length;
   const hasForms = Array.isArray(data.formations) && data.formations.length;
-  if(hasOffers || hasEvents || hasForms || data.intent !== 'recherche_emploi') return null;
+  if(hasOffers || hasEvents || hasForms || !(['recherche_emploi'].includes(data.intent) || data.responseType === 'offres_swipe')) return null;
   const card=document.createElement('section');
   card.className='no-result-card';
   card.innerHTML=`<h3>Peu de résultats sur cette piste</h3><p>Pour éviter de rester bloqué, vous pouvez élargir la recherche sans repartir de zéro.</p>`;
@@ -5184,24 +5464,33 @@ function renderSelectionDrawer(){
 
     function syncCalendarFromMonthData(data){
       const before = getCalendarItems();
+      const zone = getCalendarZone();
+      const monthKey = `${state.calendarDate.getFullYear()}-${String(state.calendarDate.getMonth()+1).padStart(2,"0")}`;
       const mapped = (data.events || []).map(e => {
         const d = parseEventDate(e.dateEvenement);
         if(!d) return null;
         return {
-          id:`event-${e.id || e.url || e.titre}-${toDateKey(d)}`,
+          id:`event-${zone.key}-${e.id || e.url || e.titre}-${toDateKey(d)}`,
           type: inferCalendarType(e),
           title:e.titre || "Événement emploi",
           date:toDateKey(d),
           time:formatTimeForCalendar(e.heureDebut || d),
           location:[e.ville,e.codePostal].filter(Boolean).join(" "),
           source:"Mes événements emploi",
-          url:e.url || ""
+          url:e.url || "",
+          zoneKey: zone.key,
+          zoneLabel: zone.label
         };
       }).filter(Boolean);
 
       if(!mapped.length) return 0;
 
-      const after = dedupeCalendarItems([...before, ...mapped]);
+      const scopedBefore = before.filter(item => {
+        if(item.type === "reminder") return true;
+        if(item.zoneKey !== zone.key) return true;
+        return !String(item.date || "").startsWith(monthKey);
+      });
+      const after = dedupeCalendarItems([...scopedBefore, ...mapped]);
       writeCalendarItems(after);
 
       const first = mapped[0];
@@ -5217,19 +5506,22 @@ function renderSelectionDrawer(){
       if(!data) return 0;
       const before = getCalendarItems();
       const mapped = [];
+      const zone = getCalendarZone();
 
       (data.events || []).forEach(e => {
         const d = parseEventDate(e.dateEvenement);
         if(!d) return;
         mapped.push({
-          id:`event-${e.id || e.url || e.titre}-${toDateKey(d)}`,
+          id:`event-${zone.key}-${e.id || e.url || e.titre}-${toDateKey(d)}`,
           type: inferCalendarType(e),
           title:e.titre || "Événement emploi",
           date:toDateKey(d),
           time:formatTimeForCalendar(e.heureDebut || d),
           location:[e.ville,e.codePostal].filter(Boolean).join(" "),
           source:"Mes événements emploi",
-          url:e.url || ""
+          url:e.url || "",
+          zoneKey: zone.key,
+          zoneLabel: zone.label
         });
       });
 
@@ -5237,28 +5529,32 @@ function renderSelectionDrawer(){
         const d = parseEventDate(f.dateDebut);
         if(!d) return;
         mapped.push({
-          id:`formation-${f.id || f.url || f.titre}-${toDateKey(d)}`,
+          id:`formation-${zone.key}-${f.id || f.url || f.titre}-${toDateKey(d)}`,
           type:"formation",
           title:f.titre || "Formation",
           date:toDateKey(d),
           time:"",
           location:f.ville || "Formation",
           source:f.organisme || "France Travail",
-          url:f.url || ""
+          url:f.url || "",
+          zoneKey: zone.key,
+          zoneLabel: zone.label
         });
       });
 
       (data.poeiItems || []).forEach(p => {
         const d = parseEventDate(p.date) || parseLocalDate(state.calendarSelectedDate);
         mapped.push({
-          id:`poei-${p.url || p.title}-${toDateKey(d)}`,
+          id:`poei-${zone.key}-${p.url || p.title}-${toDateKey(d)}`,
           type:"formation",
           title:`${p.subtype || "POEI"} — ${p.title || "dispositif"}`,
           date:toDateKey(d),
           time:"",
           location:p.meta || "",
           source:p.kind || "POEI / MRS",
-          url:p.url || ""
+          url:p.url || "",
+          zoneKey: zone.key,
+          zoneLabel: zone.label
         });
       });
 
@@ -5314,7 +5610,9 @@ function renderSelectionDrawer(){
         time:String(i.time || ""),
         location:String(i.location || ""),
         source:String(i.source || ""),
-        url:String(i.url || "")
+        url:String(i.url || ""),
+        zoneKey:String(i.zoneKey || ""),
+        zoneLabel:String(i.zoneLabel || "")
       };
     }
 
@@ -5324,8 +5622,18 @@ function renderSelectionDrawer(){
       return [...map.values()].sort((a,b)=>`${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`));
     }
 
+    function shouldShowCalendarItemForActiveZone(item){
+      if(!item) return false;
+      if(item.type === "reminder") return true;
+      const active = getCalendarZone().key;
+      const itemZone = item.zoneKey || "";
+      if(active === "idf") return true;
+      return itemZone === active;
+    }
+
     function filterCalendarItems(items){
       let result = Array.isArray(items) ? items : [];
+      result = result.filter(shouldShowCalendarItemForActiveZone);
       if(state.calendarFilter !== "all") result = result.filter(i => i.type === state.calendarFilter);
       const q = normalizeUiText(state.calendarSearch || "");
       if(q){
@@ -5514,7 +5822,7 @@ function renderSelectionDrawer(){
         wrap.appendChild(renderOfferSwiper(offres, data));
       }
 
-      if(data.intent === "formation"){
+      if(data.intent === "formation" || data.responseType === "formations_swipe" || formations.length){
         wrap.appendChild(sectionHead(formations.length ? "Formations à comparer" : "Recherche formation"));
         wrap.appendChild(renderFormationSwiper(formations, data));
       }
@@ -5524,7 +5832,7 @@ function renderSelectionDrawer(){
         wrap.appendChild(renderPoeiItems(data.poeiItems));
       }
 
-      if(data.intent === "pmsmp" && data.immersion){
+      if((data.intent === "pmsmp" || data.responseType === "immersion_resultats") && data.immersion){
         wrap.appendChild(sectionHead("Immersion facilitée"));
         wrap.appendChild(renderImmersionBox(data.immersion));
       }
