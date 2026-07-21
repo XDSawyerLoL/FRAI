@@ -2660,7 +2660,7 @@
     @media(max-width:760px){.guide-pro-detected{grid-template-columns:1fr}.guide-pro-submit-row button{width:100%}}
 
   
-    /* v9.16.9 — fix clic carte IDF en fenêtre */
+    /* v9.16.10 — fix sélection territoire carte IDF */
     .calendar-location{
       display:flex;
       align-items:center;
@@ -4687,18 +4687,17 @@ function renderSelectionDrawer(){
         return;
       }
 
-      const closeTerritory = t.closest("[data-cal-close-territory]");
-      if(closeTerritory){
-        closeCalendarTerritoryPicker();
+      const mapChoice = t.closest("[data-cal-map-zone]");
+      if(mapChoice){
+        const zone = setCalendarZone(mapChoice.dataset.calMapZone, false);
+        state.calendarZoneModalOpen = false;
+        toast(`Territoire calendrier : ${zone.label}`);
+        renderCalendarPanel();
         return;
       }
 
-      const mapChoice = t.closest("[data-cal-map-zone]");
-      if(mapChoice){
-        setCalendarZone(mapChoice.dataset.calMapZone, false);
+      if(t.dataset.calCloseTerritory){
         closeCalendarTerritoryPicker();
-        toast(`Territoire calendrier : ${getCalendarZone().label}`);
-        renderCalendarPanel();
         return;
       }
 
