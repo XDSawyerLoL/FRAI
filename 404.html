@@ -2660,7 +2660,7 @@
     @media(max-width:760px){.guide-pro-detected{grid-template-columns:1fr}.guide-pro-submit-row button{width:100%}}
 
   
-    /* v9.17.4 — fix sélection territoire carte IDF */
+    /* v9.16.10 — fix sélection territoire carte IDF */
     .calendar-location{
       display:flex;
       align-items:center;
@@ -3321,20 +3321,10 @@
       els.guidedPanel.appendChild(actions);
     }
 
-    function isTransactionalSearchText(text){
-      const t = normalizeUiText(text || "");
-      if(!t) return false;
-      if(/(offre|offres|emploi|travail|poste|job|recrute|recrutement)/.test(t) && /(cherche|recherche|trouver|voir|afficher|liste|boulanger|vendeur|secretaire|conducteur|serveur|ambulancier|administratif|logistique)/.test(t)) return "offres";
-      if(/(formation|former|se former|certification|diplome|competence|competences)/.test(t) && /(cherche|recherche|trouver|voir|afficher|liste|boulanger|vente|ambulance|ambulancier|numerique|administratif)/.test(t)) return "formation";
-      if(/(immersion|stage|tester|decouvrir|entreprise accueillante|metier a tester|metier à tester)/.test(t) && /(cherche|recherche|trouver|faire|tester|boulanger|vendeur|secretaire|conducteur|serveur|ambulancier)/.test(t)) return "immersion";
-      return false;
-    }
-
     function shouldUseLocalSheet(text, key){
       if(!key) return false;
       const t = normalizeUiText(text || "");
-      if(isTransactionalSearchText(t)) return false;
-      if(/(offre|offres|job dating|evenement|forum|calendrier|boulanger|vendeur|secretaire|conducteur)/.test(t) && !/(sante|handicap|poei|mrs|alternance|creation|international)/.test(t)) return false;
+      if(/\b(offre|offres|job dating|evenement|forum|calendrier|boulanger|vendeur|secretaire|conducteur)\b/.test(t) && !/\b(sante|handicap|poei|mrs|immersion|stage|alternance|creation|international)\b/.test(t)) return false;
       return true;
     }
 
@@ -3714,15 +3704,6 @@ function bind(){
 
       try{
         renderMessage("user", text);
-        const directKind = isTransactionalSearchText(text);
-        if(directKind){
-          const job = extractDirectJob(text, directKind);
-          const city = extractCity(text) || extractDirectCity(text) || state.city;
-          if(job){
-            runDirectApiModule(directKind, {job, city}, text, t0, {skipUserMessage:true});
-            return;
-          }
-        }
         const localSheetKey = detectServiceSheetFromText(text);
         if(shouldUseLocalSheet(text, localSheetKey)){
           const localData = buildServiceSheetData(localSheetKey, text);
@@ -4256,8 +4237,7 @@ function renderWelcome(){
       let prompt = "";
       if(action === "offres"){
         if(!job){ showGuidedError(errorEl, "Indiquez au moins un métier pour chercher des offres."); return; }
-        runDirectApiModule("offres", { job, city }, "Je cherche une offre d'emploi de " + job + (city ? " à " + city : ""), performance.now());
-        return;
+        prompt = "Je cherche une offre d'emploi de " + job + (city ? " à " + city : "");
       } else if(action === "cv"){
         if(!job){ showGuidedError(errorEl, "Indiquez le métier ou le poste visé pour le CV."); return; }
         prompt = "Quels ateliers ou conseils pour améliorer mon CV pour un poste de " + job + " ?";
@@ -4269,12 +4249,10 @@ function renderWelcome(){
         prompt = "Quels événements emploi " + (job ? "sur " + job + " " : "") + (city ? "à " + city : "peuvent m'aider ?");
       } else if(action === "formation"){
         if(!job){ showGuidedError(errorEl, "Indiquez au moins un métier, un domaine ou une compétence."); return; }
-        runDirectApiModule("formation", { job, city }, "Je cherche une formation en " + job + (city ? " à " + city : ""), performance.now());
-        return;
+        prompt = "Je cherche une formation en " + job + (city ? " à " + city : "") + ". Propose la bonne prochaine étape France Travail.";
       } else if(action === "immersion"){
         if(!job){ showGuidedError(errorEl, "Indiquez au moins le métier à tester."); return; }
-        runDirectApiModule("immersion", { job, city }, "Je veux faire une immersion facilitée pour tester le métier de " + job + (city ? " à " + city : ""), performance.now());
-        return;
+        prompt = "Je veux faire une immersion facilitée pour tester le métier de " + job + (city ? " à " + city : "") + ". Cherche une entreprise accueillante ou prépare ma demande.";
       }
 
       runGuideQuery(personalizePromptFromContext(prompt));
@@ -5383,110 +5361,6 @@ function renderSelectionDrawer(){
     }
 
 
-    function extractDirectCity(text){
-      const raw = String(text || "");
-      const m = raw.match(/(?:à|a|sur|près de|pres de|autour de)\s+([A-ZÀ-Ÿa-zà-ÿ0-9\-\s']{2,60})/i);
-      if(!m) return state.city || "";
-      return m[1].replace(/[,.!?;].*$/, "").trim();
-    }
-
-    function extractDirectJob(text, kind){
-      const raw = String(text || "");
-      const patterns = [
-        /(?:offre|offres|emploi|poste|travail|job)\s+(?:de|d'|d’|comme|en tant que)?\s*([^,.;!?]{2,80})/i,
-        /(?:formation|former|se former)\s+(?:en|de|d'|d’|pour)?\s*([^,.;!?]{2,80})/i,
-        /(?:immersion|stage|tester|découvrir|decouvrir)\s+(?:le métier de|le metier de|comme|en tant que|de|d'|d’)?\s*([^,.;!?]{2,80})/i,
-        /(?:cherche|recherche|trouver|voir|afficher)\s+(?:une|un|des)?\s*(?:offre|offres|formation|immersion|stage)?\s*(?:de|d'|d’|en|pour|comme)?\s*([^,.;!?]{2,80})/i
-      ];
-      for(const p of patterns){
-        const m = raw.match(p);
-        if(m && m[1]){
-          const cleaned = cleanDirectJob(m[1]);
-          if(cleaned) return cleaned;
-        }
-      }
-      const t = normalizeUiText(raw);
-      const known = ["boulanger", "vendeur", "vente", "secretaire", "secrétaire", "conducteur", "serveur", "ambulancier", "ambulance", "logistique", "administratif", "developpeur", "numérique", "numerique"];
-      return known.find(k => t.includes(normalizeUiText(k))) || "";
-    }
-
-    function cleanDirectJob(value){
-      return String(value || "")
-        .replace(/\b(je|veux|souhaite|cherche|recherche|trouver|voir|afficher|une|un|des|de|d'|d’|du|la|le|les|en|à|a|sur|pour|comme|offre|offres|emploi|travail|poste|job|formation|stage|immersion|facilitée|facilitee|métier|metier|tester)\b/gi, " ")
-        .replace(/\s+(?:à|a|sur|près de|pres de|autour de)\s+.*$/i, "")
-        .replace(/\s+/g, " ")
-        .trim();
-    }
-
-    async function runDirectApiModule(kind, params = {}, userText = "", t0 = performance.now(), opts = {}){
-      if(state.busy){ toast("Une recherche est déjà en cours"); return; }
-      const job = String(params.job || params.metier || params.q || "").trim();
-      const city = String(params.city || state.city || "").trim();
-      if(!job){ toast("Métier ou domaine manquant"); return; }
-      if(city){
-        state.city = city;
-        localStorage.setItem("frai_city", city);
-      }
-      const endpoints = {
-        offres: "/api/offres?metier=" + encodeURIComponent(job) + (city ? "&ville=" + encodeURIComponent(city) : ""),
-        formation: "/api/formations?q=" + encodeURIComponent(job) + (city ? "&ville=" + encodeURIComponent(city) : ""),
-        immersion: "/api/immersion?metier=" + encodeURIComponent(job) + (city ? "&ville=" + encodeURIComponent(city) : "")
-      };
-      const labels = {offres:"Recherche d’offres", formation:"Recherche formation", immersion:"Immersion facilitée"};
-      let id = "";
-      try{
-        setBusy(true);
-        if(!opts.skipUserMessage) renderMessage("user", userText || labels[kind] || "Recherche", {}, true);
-        id = renderLoading();
-        const res = await fetch(WORKER + endpoints[kind] + "&_=" + Date.now(), {method:"GET", mode:"cors", cache:"no-store"});
-        const raw = await res.text();
-        let data;
-        try{ data = JSON.parse(raw); }
-        catch(_){ throw new Error("Réponse non JSON du Worker. Vérifie le déploiement Worker et l’URL /health."); }
-        if(!res.ok || data.ok === false){ throw new Error(data.message || data.error || "Erreur HTTP " + res.status); }
-        if(kind === "offres"){
-          data.responseType = "offres_swipe";
-          data.intent = "recherche_emploi";
-          data.offres = Array.isArray(data.offres) ? data.offres : (Array.isArray(data.offers) ? data.offers : []);
-        }
-        if(kind === "formation"){
-          data.responseType = "formations_swipe";
-          data.intent = "formation";
-          data.formations = Array.isArray(data.formations) ? data.formations : [];
-        }
-        if(kind === "immersion"){
-          data.responseType = "immersion_resultats";
-          data.intent = "pmsmp";
-          if(!data.immersion) data.immersion = {offers:data.offers || [], searchUrl:data.searchUrl, message:data.message || data.reply, attempts:data.attempts||[]};
-        }
-        remove(id);
-        syncCalendarFromAgentData(data, true);
-        renderMessage("assistant", data.compactReply || data.reply || data.message || "Réponse reçue.", data);
-        recordUsage(data, userText, Math.round(performance.now() - t0), false);
-      }catch(err){
-        if(id) remove(id);
-        try{
-          const fallbackPrompt = userText || (kind === "offres" ? "Je cherche une offre d'emploi de " + job + (city ? " à " + city : "") : kind === "formation" ? "Je cherche une formation en " + job + (city ? " à " + city : "") : "Je veux faire une immersion facilitée pour tester le métier de " + job + (city ? " à " + city : ""));
-          const payload = {message:fallbackPrompt, city:city || state.city, useLLM:true, mode:document.body.dataset.mode || "demandeur"};
-          const res2 = await fetch(WORKER + "/api/agent?_=" + Date.now(), {method:"POST", mode:"cors", cache:"no-store", headers:{"content-type":"text/plain;charset=UTF-8"}, body:JSON.stringify(payload)});
-          const raw2 = await res2.text();
-          const data2 = JSON.parse(raw2);
-          if(!res2.ok || data2.ok === false) throw new Error(data2.error || "Fallback agent HTTP " + res2.status);
-          if(kind === "offres") data2.responseType = "offres_swipe";
-          if(kind === "formation") data2.responseType = "formations_swipe";
-          if(kind === "immersion") data2.responseType = "immersion_resultats";
-          renderMessage("assistant", data2.compactReply || data2.reply || "Réponse reçue.", data2);
-          recordUsage(data2, userText, Math.round(performance.now() - t0), false);
-        }catch(fallbackErr){
-          const msg = "La recherche n’a pas abouti.\n\nDétail : " + (err.message || String(err)) + "\n\nTest utile : ouvre /health puis /api/offres?metier=boulanger&ville=Paris pour isoler Worker, scope ou front.";
-          renderMessage("assistant", msg, { intent:"erreur", diagnosticLabel:"erreur" });
-          recordUsage({intent:"erreur"}, userText, Math.round(performance.now() - t0), true);
-        }
-      }finally{
-        setBusy(false);
-      }
-    }
-
     function runImmediateQuery(prompt){
       const clean = String(prompt || "").trim();
       if(!clean) return;
@@ -5551,9 +5425,8 @@ function renderSelectionDrawer(){
 
     function renderResults(wrap,data){
       const offerIntents = ["recherche_emploi","poe","international"];
-      const offres = (Array.isArray(data.offres) && (data.responseType === "offres_swipe" || offerIntents.includes(data.intent) || data.offres.length)) ? data.offres.slice(0, 30) : [];
-      const formations = Array.isArray(data.formations) ? data.formations.slice(0, 30) : [];
-      const showFormationModule = data.responseType === "formations_swipe" || data.intent === "formation";
+      const offres = Array.isArray(data.offres) ? data.offres.slice(0, 30) : [];
+      const formations = Array.isArray(data.formations) && (data.intent === "formation" || data.responseType === "formations_swipe" || data.formations.length) ? data.formations.slice(0, 30) : [];
       const otherItems=[];
 
       (data.events||[]).slice(0,4).forEach(e=>otherItems.push({kind:"Événement",title:e.titre,meta:[formatDate(e.dateEvenement),formatHour(e.heureDebut),e.ville,e.type].filter(Boolean).join(" · "),desc:e.description||e.deroulement,url:e.url,cta:"Voir l’événement"}));
@@ -5565,7 +5438,7 @@ function renderSelectionDrawer(){
         wrap.appendChild(renderOfferSwiper(offres, data));
       }
 
-      if(showFormationModule){
+      if(data.intent === "formation" || data.responseType === "formations_swipe"){
         wrap.appendChild(sectionHead(formations.length ? "Formations à comparer" : "Recherche formation"));
         wrap.appendChild(renderFormationSwiper(formations, data));
       }
@@ -5575,7 +5448,7 @@ function renderSelectionDrawer(){
         wrap.appendChild(renderPoeiItems(data.poeiItems));
       }
 
-      if((data.responseType === "immersion_resultats" || data.intent === "pmsmp") && data.immersion){
+      if(data.immersion){
         wrap.appendChild(sectionHead("Immersion facilitée"));
         wrap.appendChild(renderImmersionBox(data.immersion));
       }
