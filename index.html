@@ -2660,7 +2660,7 @@
     @media(max-width:760px){.guide-pro-detected{grid-template-columns:1fr}.guide-pro-submit-row button{width:100%}}
 
   
-    /* v9.16.10 — fix sélection territoire carte IDF */
+    /* v9.17.4 — fix sélection territoire carte IDF */
     .calendar-location{
       display:flex;
       align-items:center;
@@ -2839,16 +2839,7 @@
       .calendar-map-all{grid-column:1/-1}
     }
 
-  
-    /* v9.17.3 — garde-fous mobile sans refonte */
-    @media(max-width:760px){
-      .reset-fab{display:none!important}
-      .selection-fab[hidden]{display:none!important}
-      .selection-fab{right:10px!important;bottom:84px!important;transform:scale(.88);transform-origin:right bottom}
-      .brand-title,.brand-subtitle{display:none!important}
-      .guided-panel:empty::before{content:"Parcours indisponible. Rechargez la page ou utilisez le champ de recherche.";display:block;border:1px solid var(--line);border-left:6px solid var(--blue);border-radius:18px;background:#fff;padding:14px;color:var(--blue-dark);font-weight:900}
-    }
-</style>
+  </style>
 </head>
 <body data-mode="demandeur">
   <div class="app">
@@ -3330,10 +3321,20 @@
       els.guidedPanel.appendChild(actions);
     }
 
+    function isTransactionalSearchText(text){
+      const t = normalizeUiText(text || "");
+      if(!t) return false;
+      if(/(offre|offres|emploi|travail|poste|job|recrute|recrutement)/.test(t) && /(cherche|recherche|trouver|voir|afficher|liste|boulanger|vendeur|secretaire|conducteur|serveur|ambulancier|administratif|logistique)/.test(t)) return "offres";
+      if(/(formation|former|se former|certification|diplome|competence|competences)/.test(t) && /(cherche|recherche|trouver|voir|afficher|liste|boulanger|vente|ambulance|ambulancier|numerique|administratif)/.test(t)) return "formation";
+      if(/(immersion|stage|tester|decouvrir|entreprise accueillante|metier a tester|metier à tester)/.test(t) && /(cherche|recherche|trouver|faire|tester|boulanger|vendeur|secretaire|conducteur|serveur|ambulancier)/.test(t)) return "immersion";
+      return false;
+    }
+
     function shouldUseLocalSheet(text, key){
       if(!key) return false;
       const t = normalizeUiText(text || "");
-      if(/\b(offre|offres|job dating|evenement|forum|calendrier|boulanger|vendeur|secretaire|conducteur)\b/.test(t) && !/\b(sante|handicap|poei|mrs|immersion|stage|alternance|creation|international)\b/.test(t)) return false;
+      if(isTransactionalSearchText(t)) return false;
+      if(/(offre|offres|job dating|evenement|forum|calendrier|boulanger|vendeur|secretaire|conducteur)/.test(t) && !/(sante|handicap|poei|mrs|alternance|creation|international)/.test(t)) return false;
       return true;
     }
 
@@ -3712,13 +3713,16 @@ function bind(){
       const t0 = performance.now();
 
       try{
-        const directRequest = detectDirectApiRequest(text);
-        if(directRequest){
-          await runDirectApiModule(directRequest.kind, directRequest, text, t0);
-          return;
-        }
-
         renderMessage("user", text);
+        const directKind = isTransactionalSearchText(text);
+        if(directKind){
+          const job = extractDirectJob(text, directKind);
+          const city = extractCity(text) || extractDirectCity(text) || state.city;
+          if(job){
+            runDirectApiModule(directKind, {job, city}, text, t0, {skipUserMessage:true});
+            return;
+          }
+        }
         const localSheetKey = detectServiceSheetFromText(text);
         if(shouldUseLocalSheet(text, localSheetKey)){
           const localData = buildServiceSheetData(localSheetKey, text);
@@ -4269,7 +4273,7 @@ function renderWelcome(){
         return;
       } else if(action === "immersion"){
         if(!job){ showGuidedError(errorEl, "Indiquez au moins le métier à tester."); return; }
-        runDirectApiModule("immersion", { job, city }, "Je veux tester le métier de " + job + " en immersion facilitée" + (city ? " à " + city : ""), performance.now());
+        runDirectApiModule("immersion", { job, city }, "Je veux faire une immersion facilitée pour tester le métier de " + job + (city ? " à " + city : ""), performance.now());
         return;
       }
 
@@ -5379,65 +5383,42 @@ function renderSelectionDrawer(){
     }
 
 
-
-    function detectDirectApiRequest(text){
-      const raw = String(text || "").trim();
-      const t = normalizeUiText(raw);
-      const city = extractCity(raw) || state.city || "";
-      const wantsOffer = /\b(offre|offres|emploi|poste|travail|job)\b/i.test(t) && !/\b(formation|former|immersion|stage|atelier)\b/i.test(t);
-      const wantsFormation = /\b(formation|former|forme|se former|certification|caces|bpjeps)\b/i.test(t);
-      const wantsImmersion = /\b(immersion|stage|tester|decouvrir un metier|decouvrir le metier|entreprise accueillante)\b/i.test(t);
-      if(wantsFormation){
-        const job = extractJobForDirectSearch(raw, "formation", city);
-        if(job) return {kind:"formation", job, city};
-      }
-      if(wantsImmersion){
-        const job = extractJobForDirectSearch(raw, "immersion", city);
-        if(job) return {kind:"immersion", job, city};
-      }
-      if(wantsOffer){
-        const job = extractJobForDirectSearch(raw, "offres", city);
-        if(job) return {kind:"offres", job, city};
-      }
-      return null;
+    function extractDirectCity(text){
+      const raw = String(text || "");
+      const m = raw.match(/(?:à|a|sur|près de|pres de|autour de)\s+([A-ZÀ-Ÿa-zà-ÿ0-9\-\s']{2,60})/i);
+      if(!m) return state.city || "";
+      return m[1].replace(/[,.!?;].*$/, "").trim();
     }
 
-    function extractJobForDirectSearch(text, kind, city){
-      let s = String(text || "");
-      s = s.replace(/[?.!,;:]/g, " ");
-      if(city){
-        const c = city.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-        s = s.replace(new RegExp("\\b(?:à|a|sur|près de|pres de)\\s+" + c + ".*$", "i"), " ");
-      }
-      const patterns = kind === "formation" ? [
-        /formation\s+(?:en|de|d'|d’)?\s*([^,;.]+)/i,
-        /(?:me former|se former|former)\s+(?:en|à|a|comme)?\s*([^,;.]+)/i
-      ] : kind === "immersion" ? [
-        /(?:immersion|stage)\s+(?:en|de|d'|d’|pour|comme)?\s*([^,;.]+)/i,
-        /tester\s+(?:le métier de|le metier de|un métier de|un metier de|comme)?\s*([^,;.]+)/i
-      ] : [
-        /offres?\s+(?:d'emploi|emploi)?\s*(?:de|d'|d’|pour|comme)?\s*([^,;.]+)/i,
-        /(?:poste|travail|job|emploi)\s+(?:de|d'|d’|comme|en)?\s*([^,;.]+)/i,
-        /je cherche\s+(?:un|une|des)?\s*(?:offres?|emploi|travail|poste)?\s*(?:de|d'|d’|comme|en)?\s*([^,;.]+)/i
+    function extractDirectJob(text, kind){
+      const raw = String(text || "");
+      const patterns = [
+        /(?:offre|offres|emploi|poste|travail|job)\s+(?:de|d'|d’|comme|en tant que)?\s*([^,.;!?]{2,80})/i,
+        /(?:formation|former|se former)\s+(?:en|de|d'|d’|pour)?\s*([^,.;!?]{2,80})/i,
+        /(?:immersion|stage|tester|découvrir|decouvrir)\s+(?:le métier de|le metier de|comme|en tant que|de|d'|d’)?\s*([^,.;!?]{2,80})/i,
+        /(?:cherche|recherche|trouver|voir|afficher)\s+(?:une|un|des)?\s*(?:offre|offres|formation|immersion|stage)?\s*(?:de|d'|d’|en|pour|comme)?\s*([^,.;!?]{2,80})/i
       ];
-      for(const re of patterns){
-        const m=s.match(re);
+      for(const p of patterns){
+        const m = raw.match(p);
         if(m && m[1]){
-          return cleanDirectJob(m[1]);
+          const cleaned = cleanDirectJob(m[1]);
+          if(cleaned) return cleaned;
         }
       }
-      return cleanDirectJob(s);
+      const t = normalizeUiText(raw);
+      const known = ["boulanger", "vendeur", "vente", "secretaire", "secrétaire", "conducteur", "serveur", "ambulancier", "ambulance", "logistique", "administratif", "developpeur", "numérique", "numerique"];
+      return known.find(k => t.includes(normalizeUiText(k))) || "";
     }
 
     function cleanDirectJob(value){
-      let out = String(value || "")
-        .replace(/\b(je|veux|souhaite|cherche|trouver|une|un|des|de|d'|d’|du|la|le|les|en|à|a|pour|comme|formation|offre|offres|emploi|travail|poste|stage|immersion|facilitée|facilitee|métier|metier|tester)\b/gi, " ")
+      return String(value || "")
+        .replace(/\b(je|veux|souhaite|cherche|recherche|trouver|voir|afficher|une|un|des|de|d'|d’|du|la|le|les|en|à|a|sur|pour|comme|offre|offres|emploi|travail|poste|job|formation|stage|immersion|facilitée|facilitee|métier|metier|tester)\b/gi, " ")
+        .replace(/\s+(?:à|a|sur|près de|pres de|autour de)\s+.*$/i, "")
         .replace(/\s+/g, " ")
         .trim();
-      return out.length >= 2 ? out : "";
     }
 
-    async function runDirectApiModule(kind, params = {}, userText = "", t0 = performance.now()){
+    async function runDirectApiModule(kind, params = {}, userText = "", t0 = performance.now(), opts = {}){
       if(state.busy){ toast("Une recherche est déjà en cours"); return; }
       const job = String(params.job || params.metier || params.q || "").trim();
       const city = String(params.city || state.city || "").trim();
@@ -5455,18 +5436,18 @@ function renderSelectionDrawer(){
       let id = "";
       try{
         setBusy(true);
-        renderMessage("user", userText || labels[kind] || "Recherche", {}, true);
+        if(!opts.skipUserMessage) renderMessage("user", userText || labels[kind] || "Recherche", {}, true);
         id = renderLoading();
         const res = await fetch(WORKER + endpoints[kind] + "&_=" + Date.now(), {method:"GET", mode:"cors", cache:"no-store"});
         const raw = await res.text();
         let data;
         try{ data = JSON.parse(raw); }
-        catch(_){ throw new Error("Le Worker n’a pas renvoyé de JSON exploitable pour " + (labels[kind] || kind) + "."); }
-        if(!res.ok || data.ok === false){ throw new Error(data.message || data.error || "Erreur " + res.status); }
+        catch(_){ throw new Error("Réponse non JSON du Worker. Vérifie le déploiement Worker et l’URL /health."); }
+        if(!res.ok || data.ok === false){ throw new Error(data.message || data.error || "Erreur HTTP " + res.status); }
         if(kind === "offres"){
           data.responseType = "offres_swipe";
           data.intent = "recherche_emploi";
-          data.offres = Array.isArray(data.offres) ? data.offres : [];
+          data.offres = Array.isArray(data.offres) ? data.offres : (Array.isArray(data.offers) ? data.offers : []);
         }
         if(kind === "formation"){
           data.responseType = "formations_swipe";
@@ -5476,7 +5457,7 @@ function renderSelectionDrawer(){
         if(kind === "immersion"){
           data.responseType = "immersion_resultats";
           data.intent = "pmsmp";
-          if(!data.immersion) data.immersion = {offers:data.offers || [], searchUrl:data.searchUrl, message:data.message || data.reply};
+          if(!data.immersion) data.immersion = {offers:data.offers || [], searchUrl:data.searchUrl, message:data.message || data.reply, attempts:data.attempts||[]};
         }
         remove(id);
         syncCalendarFromAgentData(data, true);
@@ -5484,9 +5465,23 @@ function renderSelectionDrawer(){
         recordUsage(data, userText, Math.round(performance.now() - t0), false);
       }catch(err){
         if(id) remove(id);
-        const msg = "La recherche n’a pas abouti.\n\nDétail : " + (err.message || String(err));
-        renderMessage("assistant", msg, { intent:"erreur", diagnosticLabel:"erreur" });
-        recordUsage({intent:"erreur"}, userText, Math.round(performance.now() - t0), true);
+        try{
+          const fallbackPrompt = userText || (kind === "offres" ? "Je cherche une offre d'emploi de " + job + (city ? " à " + city : "") : kind === "formation" ? "Je cherche une formation en " + job + (city ? " à " + city : "") : "Je veux faire une immersion facilitée pour tester le métier de " + job + (city ? " à " + city : ""));
+          const payload = {message:fallbackPrompt, city:city || state.city, useLLM:true, mode:document.body.dataset.mode || "demandeur"};
+          const res2 = await fetch(WORKER + "/api/agent?_=" + Date.now(), {method:"POST", mode:"cors", cache:"no-store", headers:{"content-type":"text/plain;charset=UTF-8"}, body:JSON.stringify(payload)});
+          const raw2 = await res2.text();
+          const data2 = JSON.parse(raw2);
+          if(!res2.ok || data2.ok === false) throw new Error(data2.error || "Fallback agent HTTP " + res2.status);
+          if(kind === "offres") data2.responseType = "offres_swipe";
+          if(kind === "formation") data2.responseType = "formations_swipe";
+          if(kind === "immersion") data2.responseType = "immersion_resultats";
+          renderMessage("assistant", data2.compactReply || data2.reply || "Réponse reçue.", data2);
+          recordUsage(data2, userText, Math.round(performance.now() - t0), false);
+        }catch(fallbackErr){
+          const msg = "La recherche n’a pas abouti.\n\nDétail : " + (err.message || String(err)) + "\n\nTest utile : ouvre /health puis /api/offres?metier=boulanger&ville=Paris pour isoler Worker, scope ou front.";
+          renderMessage("assistant", msg, { intent:"erreur", diagnosticLabel:"erreur" });
+          recordUsage({intent:"erreur"}, userText, Math.round(performance.now() - t0), true);
+        }
       }finally{
         setBusy(false);
       }
@@ -5556,7 +5551,7 @@ function renderSelectionDrawer(){
 
     function renderResults(wrap,data){
       const offerIntents = ["recherche_emploi","poe","international"];
-      const offres = Array.isArray(data.offres) ? data.offres.slice(0, 30) : [];
+      const offres = (Array.isArray(data.offres) && (data.responseType === "offres_swipe" || offerIntents.includes(data.intent) || data.offres.length)) ? data.offres.slice(0, 30) : [];
       const formations = Array.isArray(data.formations) ? data.formations.slice(0, 30) : [];
       const showFormationModule = data.responseType === "formations_swipe" || data.intent === "formation";
       const otherItems=[];
@@ -6100,7 +6095,7 @@ function renderSelectionDrawer(){
       const el = nodes.find(node => node.dataset.id === id);
       if(el) el.remove();
     }
-    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v9.17.3"; }
+    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v9.16.5"; }
 
     function saveMessage(role,content,extra){ const arr=read("frai_messages",[]); arr.push({role,content,extra}); localStorage.setItem("frai_messages",JSON.stringify(arr.slice(-30))); }
     function recordUsage(data,message,ms,error){ const s=read("frai_stats",{total:0,errors:0,clicks:0,feedback:{},intents:{},times:[]}); s.total++; if(error)s.errors++; const it=data.intent||"diagnostic"; s.intents[it]=(s.intents[it]||0)+1; s.times.push(ms); s.times=s.times.slice(-100); localStorage.setItem("frai_stats",JSON.stringify(s)); }
