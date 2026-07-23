@@ -3222,16 +3222,20 @@
     function detectServiceSheetFromText(text){
       const t = normalizeUiText(text || "");
       if(!t) return "";
+      // Actions transactionnelles en priorité : elles ne doivent jamais être confondues avec création d’entreprise.
+      if(/\b(immersion|pmsmp|stage|tester un metier|tester le metier|decouvrir un metier|entreprise accueillante|entreprises accueillantes)\b/.test(t)) return "immersion";
+      if(/\b(offre|offres|emploi|poste|recrutement|chercher un travail|cherche un travail)\b/.test(t) && !/\b(emploi stable|creation|creer|entrepreneur|entreprise accueillante)\b/.test(t)) return "offres";
+      if(/\b(formation|former|se former|formations|competence|competences)\b/.test(t) && !/\b(formation avant embauche|poei|poec)\b/.test(t)) return "formation";
       if(/\b(sante|maladie|handicap|rqth|fatigue|medical|medecin|psy|depression|anxiete|invalidite)\b/.test(t)) return "defi_sante_emploi";
       if(/\b(mobilite|transport|permis|voiture|trajet|bus|train|deplacement)\b/.test(t)) return "mobilite";
       if(/\b(garde|enfant|familial|famille|horaire|creche|nounou|parent)\b/.test(t)) return "garde";
       if(/\b(fle|francais|langue|allophone|dilf|comprendre|parler francais)\b/.test(t)) return "fle";
-      if(/\b(creer|creation|entreprise|auto entrepreneur|micro entreprise|activite|reprendre une entreprise)\b/.test(t)) return "activ_crea";
+      // Ne pas matcher le mot “entreprise” seul : “entreprise accueillante” relève de l’immersion.
+      if(/\b(creer|creation|auto entrepreneur|micro entreprise|entrepreneur|reprendre une entreprise|activ crea|activ'crea|activ’crea)\b/.test(t)) return "activ_crea";
       if(/\b(international|etranger|europe|mobilite internationale|u1|u2|partir travailler)\b/.test(t)) return "activ_international";
       if(/\b(poei|poec|preparation operationnelle|formation avant embauche|formation prealable)\b/.test(t)) return "poei";
       if(/\b(mrs|simulation|sans cv|habilete|habiletes)\b/.test(t)) return "mrs";
       if(/\b(alternance|apprentissage|contrat pro|contrat de professionnalisation)\b/.test(t)) return "alternance";
-      if(/\b(immersion|stage|tester un metier|decouvrir un metier|entreprise accueillante)\b/.test(t)) return "immersion";
       if(/\b(cv|lettre de motivation|candidature|candidater)\b/.test(t)) return "atelier_cv";
       if(/\b(entretien|recruteur|embauche|se presenter)\b/.test(t)) return "entretien";
       if(/\b(image professionnelle|confiance|posture|valoriser|parler de moi)\b/.test(t)) return "vsi";
@@ -3323,9 +3327,109 @@
 
     function shouldUseLocalSheet(text, key){
       if(!key) return false;
+      const direct = detectTransactionalIntent(text || "");
+      if(direct) return false;
+      if(["offres","formation","immersion"].includes(key)) return false;
       const t = normalizeUiText(text || "");
       if(/\b(offre|offres|job dating|evenement|forum|calendrier|boulanger|vendeur|secretaire|conducteur)\b/.test(t) && !/\b(sante|handicap|poei|mrs|immersion|stage|alternance|creation|international)\b/.test(t)) return false;
       return true;
+    }
+
+    function detectTransactionalIntent(text){
+      const raw = String(text || "").trim();
+      const t = normalizeUiText(raw);
+      if(!t) return null;
+      const city = extractCity(raw) || state.city || "Paris";
+      if(/\b(immersion|pmsmp|stage|tester un metier|tester le metier|decouvrir un metier|entreprise accueillante|entreprises accueillantes)\b/.test(t)){
+        return { kind:"immersion", job: guessJobFromText(raw, "immersion"), city, sourceText: raw };
+      }
+      if(/\b(offre|offres|emploi|poste|recrutement|chercher un travail|cherche un travail)\b/.test(t) && !/\b(emploi stable|creation|creer|entrepreneur|entreprise accueillante)\b/.test(t)){
+        return { kind:"offres", job: guessJobFromText(raw, "offres"), city, sourceText: raw };
+      }
+      if(/\b(formation|formations|me former|se former|former)\b/.test(t) && !/\b(poei|poec|formation avant embauche|formation prealable)\b/.test(t)){
+        return { kind:"formation", job: guessJobFromText(raw, "formation"), city, sourceText: raw };
+      }
+      return null;
+    }
+
+    function guessJobFromText(text, kind){
+      let v = normalizeUiText(text || "");
+      v = v.replace(/\b(je|j|veux|voudrais|souhaite|cherche|recherche|trouver|faire|une|un|des|de|du|d|la|le|les|en|pour|sur|dans|autour|proche|a|à)\b/g," ");
+      if(kind === "immersion") v = v.replace(/\b(immersion|pmsmp|stage|tester|metier|decouvrir|entreprise|accueillante|accueillantes|facilitee|facilite|demande|convention)\b/g," ");
+      if(kind === "offres") v = v.replace(/\b(offre|offres|emploi|poste|recrutement|travail|job)\b/g," ");
+      if(kind === "formation") v = v.replace(/\b(formation|formations|former|competence|competences)\b/g," ");
+      const city = extractCity(text || "");
+      if(city) v = v.replace(normalizeUiText(city), " ");
+      v = v.replace(/\b(paris|issy les moulineaux|boulogne|nanterre|creteil|bobigny|versailles|evry|pontoise|melun)\b/g," ");
+      v = v.replace(/[^a-z0-9 -]/g," ").replace(/\s+/g," ").trim();
+      return v || "";
+    }
+
+    async function runDirectSearch(kind, params = {}, options = {}){
+      const job = String(params.job || params.metier || "").trim();
+      const city = String(params.city || params.ville || state.city || "Paris").trim();
+      const sourceText = String(params.sourceText || "").trim();
+      if(!job && ["offres","formation","immersion"].includes(kind)){
+        toast("Précisez le métier ou le domaine à rechercher");
+        return false;
+      }
+      if(state.busy){ toast("Une recherche est déjà en cours"); return false; }
+
+      if(options.renderUser){
+        const label = kind === "offres" ? `Je cherche une offre de ${job}${city ? " à " + city : ""}`
+          : kind === "formation" ? `Je cherche une formation en ${job}${city ? " à " + city : ""}`
+          : `Je veux tester le métier de ${job} en immersion facilitée${city ? " à " + city : ""}`;
+        renderMessage("user", sourceText || label);
+      }
+
+      setBusy(true);
+      const loadingId = renderLoading();
+      const t0 = performance.now();
+      try{
+        const url = new URL(WORKER + (kind === "offres" ? "/api/offres" : kind === "formation" ? "/api/formations" : "/api/immersion"));
+        if(kind === "offres") url.searchParams.set("metier", job);
+        if(kind === "formation") url.searchParams.set("q", job);
+        if(kind === "immersion") url.searchParams.set("metier", job);
+        if(city) url.searchParams.set("ville", city);
+        if(sourceText) url.searchParams.set("message", sourceText);
+        url.searchParams.set("_", Date.now());
+
+        const res = await fetch(url.toString(), { method:"GET", mode:"cors", cache:"no-store" });
+        const raw = await res.text();
+        let data;
+        try{ data = JSON.parse(raw); }
+        catch(_){ throw new Error("Réponse non JSON : " + raw.slice(0,160)); }
+        if(!res.ok || data.ok === false){ throw new Error(data.error || data.message || "Erreur API " + res.status); }
+
+        if(kind === "offres"){
+          data.intent = "recherche_emploi";
+          data.responseType = "offres_swipe";
+          data.diagnosticLabel = data.diagnosticLabel || "Recherche d’emploi";
+        }else if(kind === "formation"){
+          data.intent = "formation";
+          data.responseType = "formations_swipe";
+          data.diagnosticLabel = data.diagnosticLabel || "Formation";
+        }else if(kind === "immersion"){
+          data.intent = "pmsmp";
+          data.responseType = "immersion_resultats";
+          data.diagnosticLabel = data.diagnosticLabel || "Immersion facilitée";
+          data.immersion = data.immersion || { offers:[], searchUrl: OFFICIAL_ACTIONS.immersion, message:"Aucune entreprise accueillante remontée directement." };
+        }
+
+        remove(loadingId);
+        syncCalendarFromAgentData(data, true);
+        renderMessage("assistant", data.compactReply || data.reply || "Résultats reçus.", data);
+        recordUsage(data, sourceText || job, Math.round(performance.now() - t0), false);
+        return true;
+      }catch(err){
+        remove(loadingId);
+        const fallbackData = { intent:"erreur", diagnosticLabel:"Erreur recherche", responseType: kind };
+        renderMessage("assistant", "Je n’ai pas pu lancer la recherche.\n\nDétail : " + (err.message || String(err)), fallbackData);
+        recordUsage(fallbackData, sourceText || job, Math.round(performance.now() - t0), true);
+        return true;
+      }finally{
+        setBusy(false);
+      }
     }
 
 
@@ -3704,6 +3808,11 @@ function bind(){
 
       try{
         renderMessage("user", text);
+        const directIntent = detectTransactionalIntent(text);
+        if(directIntent){
+          await runDirectSearch(directIntent.kind, directIntent, { renderUser:false });
+          return;
+        }
         const localSheetKey = detectServiceSheetFromText(text);
         if(shouldUseLocalSheet(text, localSheetKey)){
           const localData = buildServiceSheetData(localSheetKey, text);
@@ -4098,6 +4207,11 @@ function renderWelcome(){
     }
 
     function runGuideQuery(prompt){
+      const directIntent = detectTransactionalIntent(prompt);
+      if(directIntent){
+        runDirectSearch(directIntent.kind, directIntent, { renderUser:true });
+        return;
+      }
       const key = detectServiceSheetFromText(prompt);
       if(shouldUseLocalSheet(prompt, key)){
         const data = buildServiceSheetData(key, prompt);
@@ -4255,6 +4369,10 @@ function renderWelcome(){
         prompt = "Je veux faire une immersion facilitée pour tester le métier de " + job + (city ? " à " + city : "") + ". Cherche une entreprise accueillante ou prépare ma demande.";
       }
 
+      if(["offres","formation","immersion"].includes(action)){
+        runDirectSearch(action, { job, city, sourceText: prompt }, { renderUser:true });
+        return;
+      }
       runGuideQuery(personalizePromptFromContext(prompt));
     }
 
