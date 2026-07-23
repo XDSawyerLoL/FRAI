@@ -2882,7 +2882,7 @@
       .guided-choice div{padding:0 !important; width:100% !important;}
       .guided-choice span{font-size:11px !important; line-height:1.22 !important; margin-top:3px !important;}
       .guided-choice-info{right:9px !important; width:30px !important; height:30px !important; font-size:17px !important;}
-      .guided-actions{display:none !important;}
+      .guided-actions{display:flex !important;}
       .advisor-guided{display:none !important;}
       .pilot-pages{display:none !important;}
       .reset-fab{display:none !important;}
@@ -3403,15 +3403,16 @@
       els.guidedPanel.innerHTML = "";
       const head=document.createElement("div");
       head.className="guided-panel-head";
-      head.innerHTML = `<div><div class="guided-kicker">Fiche prestation</div><h2>${escapeHtml(sheet.title)}</h2></div><button class="guided-submit-secondary" type="button" data-back-to-rubriques="1">← Retour</button>`;
+      head.innerHTML = `<div><div class="guided-kicker">Fiche prestation</div><h2>${escapeHtml(sheet.title)}</h2></div>`;
       els.guidedPanel.appendChild(head);
-      head.querySelector("[data-back-to-rubriques]")?.addEventListener("click",()=>renderGuidedPanel("situation"));
       els.guidedPanel.appendChild(renderServiceSheetCard(key, contextText));
       const actions=document.createElement("div");
       actions.className="guided-actions";
-      const back=document.createElement("button");
-      back.type="button"; back.textContent="← Retour aux rubriques"; back.onclick=()=>renderGuidedPanel("situation");
-      actions.appendChild(back);
+      const reset=document.createElement("button");
+      reset.type="button";
+      reset.textContent="Repartir du début";
+      reset.onclick=()=>{ state.guideContext={}; renderGuidedPanel("situation"); };
+      actions.appendChild(reset);
       els.guidedPanel.appendChild(actions);
     }
 
@@ -3956,9 +3957,8 @@ function renderWelcome(){
 
       const head=document.createElement("div");
       head.className="guided-panel-head";
-      head.innerHTML = `<div><div class="guided-kicker">${escapeHtml(cfg.kicker)}</div><h2>${escapeHtml(cfg.title)}</h2></div><button class="guided-submit-secondary" type="button" data-back-to-actions="1">← Retour</button>`;
+      head.innerHTML = `<div><div class="guided-kicker">${escapeHtml(cfg.kicker)}</div><h2>${escapeHtml(cfg.title)}</h2></div>`;
       els.guidedPanel.appendChild(head);
-      head.querySelector("[data-back-to-actions]")?.addEventListener("click",()=>renderGuidedPanel("knownJob"));
 
       const text=document.createElement("p");
       text.textContent=cfg.text;
@@ -4289,9 +4289,8 @@ function renderWelcome(){
 
       const head=document.createElement("div");
       head.className="guided-panel-head";
-      head.innerHTML = `<div><div class="guided-kicker">${escapeHtml(cfg.kicker)}</div><h2>${escapeHtml(cfg.title)}</h2></div><button class="guided-submit-secondary" type="button" data-back-to-actions="1">← Retour</button>`;
+      head.innerHTML = `<div><div class="guided-kicker">${escapeHtml(cfg.kicker)}</div><h2>${escapeHtml(cfg.title)}</h2></div>`;
       els.guidedPanel.appendChild(head);
-      head.querySelector("[data-back-to-actions]")?.addEventListener("click",()=>renderGuidedPanel("knownJob"));
 
       const text=document.createElement("p");
       text.textContent = cfg.text;
@@ -4331,7 +4330,13 @@ function renderWelcome(){
       back.textContent="← Retour aux actions";
       back.onclick=()=>renderGuidedPanel("knownJob");
 
-      row.append(primary, back);
+      const reset=document.createElement("button");
+      reset.type="button";
+      reset.className="guided-submit-secondary";
+      reset.textContent="Repartir du début";
+      reset.onclick=()=>{ state.guideContext={}; renderGuidedPanel("situation"); };
+
+      row.append(primary, back, reset);
       form.appendChild(row);
       els.guidedPanel.appendChild(form);
 
