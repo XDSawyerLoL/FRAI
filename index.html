@@ -4027,13 +4027,13 @@ function renderWelcome(){
         back.textContent="← Étape précédente";
         back.onclick=()=>renderGuidedPanel(previousPanelStep(step));
         actions.appendChild(back);
+        const reset=document.createElement("button");
+        reset.type="button";
+        reset.textContent="Repartir du début";
+        reset.onclick=()=>{ state.guideContext={}; renderGuidedPanel("situation"); };
+        actions.appendChild(reset);
+        els.guidedPanel.appendChild(actions);
       }
-      const reset=document.createElement("button");
-      reset.type="button";
-      reset.textContent="Repartir du début";
-      reset.onclick=()=>{ state.guideContext={}; renderGuidedPanel("situation"); };
-      actions.appendChild(reset);
-      els.guidedPanel.appendChild(actions);
     }
 
 
