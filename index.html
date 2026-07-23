@@ -3022,7 +3022,7 @@
       ateliersCandidature: "https://www.francetravail.fr/candidat/les-ateliers-francetravail/ateliers-sur-les-techniques-de-r.html",
       cv: "https://www.francetravail.fr/candidat/vos-recherches/preparer-votre-candidature/cv-lettre-de-motivation-e-mail/comment-rediger-un-cv-efficace-e.html",
       entretien: "https://www.francetravail.fr/candidat/vos-recherches/preparer-votre-candidature/entretien/des-entretiens-dembauche-100---r.html",
-      formations: "https://candidat.francetravail.fr/formations/recherche",
+      formations: "https://candidat.francetravail.fr/formations/recherche?filtreEstFormationEnCoursOuAVenir=formEnCours&filtreEstFormationTerminee=formEnCours&range=0-9&tri=0",
       projetFormation: "https://www.francetravail.fr/candidat/votre-projet-de-formation.html",
       bonneAlternance: "https://labonnealternance.apprentissage.beta.gouv.fr/",
       alternanceInfo: "https://www.francetravail.fr/candidat/vos-services-en-ligne/la-bonne-alternance.html",
@@ -3328,6 +3328,31 @@
       return box;
     }
 
+    function resolveServiceUrl(key, sheet){
+      const direct = sheet?.url || "";
+      if(direct) return direct;
+      const map = {
+        prepa_competences:"https://messervices.francetravail.fr/",
+        poei:OFFICIAL_ACTIONS.projetFormation || OFFICIAL_ACTIONS.formations,
+        vsi:"https://messervices.francetravail.fr/centre-interet/vsi",
+        organisation_recherche:"https://messervices.francetravail.fr/centre-interet/organiser-et-optimiser-ma-recherche-demploi",
+        offres:"https://candidat.francetravail.fr/offres/recherche",
+        events:"https://mesevenementsemploi.francetravail.fr/mes-evenements-emploi/evenements",
+        mrs:"https://www.francetravail.fr/candidat/vos-recherches/la-methode-de-recrutement-par-si.html",
+        emploi_stable:"https://messervices.francetravail.fr/centre-interet/un-emploi-stable",
+        agil_cadres:"https://messervices.francetravail.fr/",
+        bonne_boite:"https://labonneboite.francetravail.fr/",
+        activ_crea:"https://www.francetravail.fr/candidat/votre-projet-professionnel/creer-votre-entreprise.html",
+        defi_sante_emploi:"https://messervices.francetravail.fr/",
+        mobilite:"https://messervices.francetravail.fr/",
+        garde:"https://messervices.francetravail.fr/",
+        fle:OFFICIAL_ACTIONS.formations,
+        autres_freins:"https://messervices.francetravail.fr/",
+        activ_international:"https://www.francetravail.fr/candidat/votre-projet-professionnel/vous-souhaitez-travailler-a-letr.html"
+      };
+      return map[key] || "https://messervices.francetravail.fr/";
+    }
+
     function renderServiceSheetCard(key, contextText=""){
       const sheet = getServiceSheet(key);
       const card=document.createElement("section");
@@ -3358,9 +3383,10 @@
         run.onclick=()=>runGuideQuery(sheet.agentPrompt || sheet.short || sheet.title, {bypassLocalSheet:true});
       }
       actions.appendChild(run);
-      if(sheet.url){
+      const serviceUrl = resolveServiceUrl(key, sheet);
+      if(serviceUrl){
         const a=document.createElement("a");
-        a.className="btn outline"; a.href=sheet.url; a.target="_blank"; a.rel="noopener noreferrer"; a.textContent="Ouvrir le service";
+        a.className="btn outline"; a.href=serviceUrl; a.target="_blank"; a.rel="noopener noreferrer"; a.textContent="Ouvrir le service";
         actions.appendChild(a);
       }
       card.querySelectorAll("[data-open-sheet]").forEach(btn=>{
@@ -3377,8 +3403,9 @@
       els.guidedPanel.innerHTML = "";
       const head=document.createElement("div");
       head.className="guided-panel-head";
-      head.innerHTML = `<div><div class="guided-kicker">Fiche prestation</div><h2>${escapeHtml(sheet.title)}</h2></div>`;
+      head.innerHTML = `<div><div class="guided-kicker">Fiche prestation</div><h2>${escapeHtml(sheet.title)}</h2></div><button class="guided-submit-secondary" type="button" data-back-to-rubriques="1">← Retour</button>`;
       els.guidedPanel.appendChild(head);
+      head.querySelector("[data-back-to-rubriques]")?.addEventListener("click",()=>renderGuidedPanel("situation"));
       els.guidedPanel.appendChild(renderServiceSheetCard(key, contextText));
       const actions=document.createElement("div");
       actions.className="guided-actions";
@@ -3929,8 +3956,9 @@ function renderWelcome(){
 
       const head=document.createElement("div");
       head.className="guided-panel-head";
-      head.innerHTML = `<div><div class="guided-kicker">${escapeHtml(cfg.kicker)}</div><h2>${escapeHtml(cfg.title)}</h2></div>`;
+      head.innerHTML = `<div><div class="guided-kicker">${escapeHtml(cfg.kicker)}</div><h2>${escapeHtml(cfg.title)}</h2></div><button class="guided-submit-secondary" type="button" data-back-to-actions="1">← Retour</button>`;
       els.guidedPanel.appendChild(head);
+      head.querySelector("[data-back-to-actions]")?.addEventListener("click",()=>renderGuidedPanel("knownJob"));
 
       const text=document.createElement("p");
       text.textContent=cfg.text;
@@ -4261,8 +4289,9 @@ function renderWelcome(){
 
       const head=document.createElement("div");
       head.className="guided-panel-head";
-      head.innerHTML = `<div><div class="guided-kicker">${escapeHtml(cfg.kicker)}</div><h2>${escapeHtml(cfg.title)}</h2></div>`;
+      head.innerHTML = `<div><div class="guided-kicker">${escapeHtml(cfg.kicker)}</div><h2>${escapeHtml(cfg.title)}</h2></div><button class="guided-submit-secondary" type="button" data-back-to-actions="1">← Retour</button>`;
       els.guidedPanel.appendChild(head);
+      head.querySelector("[data-back-to-actions]")?.addEventListener("click",()=>renderGuidedPanel("knownJob"));
 
       const text=document.createElement("p");
       text.textContent = cfg.text;
@@ -4425,7 +4454,7 @@ function renderWelcome(){
           intent:"pmsmp",
           diagnosticLabel:"Immersion facilitée",
           immersion,
-          compactReply:offers.length ? "Entreprises accueillantes repérées. Vérifiez les pistes et préparez la mise en relation." : "Aucune entreprise exploitable remontée par l’API. Ouvrez Immersion Facilitée ou élargissez métier / ville.",
+          compactReply:offers.length ? "Entreprises accueillantes repérées. Vérifiez les pistes et préparez la mise en relation." : "Aucune entreprise fiable remontée. Si le métier n’est pas encore mappé, j’ouvre Immersion Facilitée plutôt que d’afficher des offres hors sujet.",
           reply:offers.length ? "Entreprises accueillantes repérées." : "Aucune entreprise exploitable remontée par l’API.",
           priorityAction:offers.length ? "Contacter une entreprise accueillante" : "Ouvrir Immersion Facilitée",
           actionPlan:[
@@ -5306,7 +5335,8 @@ function renderSelectionDrawer(){
       const ville = zone.city || DEFAULT_CITY;
       const rayon = zone.rayon || 10;
       const query = state.calendarSearch || "";
-      const url = `${WORKER}/api/calendar/events?ville=${encodeURIComponent(ville)}&month=${encodeURIComponent(month)}&rayon=${encodeURIComponent(rayon)}&size=100&maxPages=10&query=${encodeURIComponent(query)}&_=${Date.now()}`;
+      const departmentCode = /^(75|77|78|91|92|93|94|95)$/.test(zone.key) ? zone.key : "";
+      const url = `${WORKER}/api/calendar/events?ville=${encodeURIComponent(ville)}&month=${encodeURIComponent(month)}&rayon=${encodeURIComponent(rayon)}&departmentCode=${encodeURIComponent(departmentCode)}&size=100&maxPages=10&query=${encodeURIComponent(query)}&_=${Date.now()}`;
 
       toast(state.calendarSearch ? `Recherche du mois · ${zone.label}…` : `Synchronisation du mois · ${zone.label}…`);
 
@@ -5337,11 +5367,27 @@ function renderSelectionDrawer(){
       }
     }
 
+
+    function calendarEventMatchesActiveZone(event, zone){
+      if(!zone || zone.key === "idf") return true;
+      if(!/^(75|77|78|91|92|93|94|95)$/.test(zone.key)) return true;
+      const cp = String(event?.codePostal || event?.cp || "").replace(/\D/g, "");
+      if(cp) return cp.startsWith(zone.key);
+      const city = normalizeUiText(event?.ville || event?.commune || event?.city || "");
+      const cityDept = {
+        paris:"75", nanterre:"92", "boulogne billancourt":"92", "issy les moulineaux":"92", courbevoie:"92", "levallois perret":"92",
+        bobigny:"93", "saint denis":"93", "noisy le sec":"93", "noisy le grand":"93", montreuil:"93",
+        creteil:"94", "chevilly larue":"94", "vitry sur seine":"94",
+        versailles:"78", melun:"77", "evry courcouronnes":"91", cergy:"95"
+      }[city] || "";
+      return cityDept ? cityDept === zone.key : false;
+    }
+
     function syncCalendarFromMonthData(data){
       const before = getCalendarItems();
       const zone = getCalendarZone();
       const monthKey = `${state.calendarDate.getFullYear()}-${String(state.calendarDate.getMonth()+1).padStart(2,"0")}`;
-      const mapped = (data.events || []).map(e => {
+      const mapped = (data.events || []).filter(e => calendarEventMatchesActiveZone(e, zone)).map(e => {
         const d = parseEventDate(e.dateEvenement);
         if(!d) return null;
         return {
@@ -5503,7 +5549,23 @@ function renderSelectionDrawer(){
       const active = getCalendarZone().key;
       const itemZone = item.zoneKey || "";
       if(active === "idf") return true;
+      const deptFromText = calendarDepartmentFromItem(item);
+      if(deptFromText) return deptFromText === active;
       return itemZone === active;
+    }
+
+    function calendarDepartmentFromItem(item){
+      const text = normalizeUiText([item.location,item.source,item.title,item.zoneLabel].filter(Boolean).join(" "));
+      const cp = String(item.location || "").match(/\b(75|77|78|91|92|93|94|95)\d{3}\b/);
+      if(cp) return cp[1];
+      const cityMap = {
+        paris:"75", nanterre:"92", boulogne:"92", issy:"92", courbevoie:"92", levallois:"92",
+        bobigny:"93", saintdenis:"93", noisy:"93", montreuil:"93",
+        creteil:"94", chevilly:"94", vitry:"94",
+        versailles:"78", melun:"77", evry:"91", cergy:"95"
+      };
+      for(const [token,dept] of Object.entries(cityMap)){ if(text.includes(token)) return dept; }
+      return "";
     }
 
     function filterCalendarItems(items){
