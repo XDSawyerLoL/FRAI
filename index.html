@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#273b99" />
   <meta name="description" content="Mon compagnon Emploi — assistant France Travail pour orienter vers la bonne action" />
-  <title>Mon compagnon Emploi · France Travail · v9.16.4</title>
+  <title>Mon compagnon Emploi · France Travail · v9.17.1 stable</title>
   <style>
     :root{
       --ft-blue:#273b99;--ft-blue-dark:#1d2b73;--ft-blue-soft:#eef2ff;
@@ -2839,6 +2839,66 @@
       .calendar-map-all{grid-column:1/-1}
     }
 
+
+    /* v9.17.1 — retour stable UI mobile, sans refonte */
+    .selection-fab[hidden]{display:none !important;}
+    @media(max-width:760px){
+      .app{padding:0 !important; max-width:100vw !important; overflow-x:hidden !important;}
+      .shell{width:100% !important; max-width:100vw !important; min-height:100dvh !important; border-radius:0 !important; border:0 !important; overflow-x:hidden !important;}
+      .topbar{min-height:60px !important; padding:8px 10px !important; gap:8px !important; align-items:center !important;}
+      .brand{gap:8px !important; flex:1 1 auto !important; min-width:0 !important; overflow:hidden !important;}
+      .marianne{width:52px !important; height:36px !important; flex:0 0 auto !important; object-fit:contain !important;}
+      .brand-logo{width:142px !important; max-width:48vw !important; height:auto !important; flex:0 0 auto !important; object-fit:contain !important;}
+      .brand-text,.brand-title,.brand-subtitle{display:none !important;}
+      .top-actions{gap:6px !important; flex:0 0 auto !important;}
+      .status{width:36px !important; height:36px !important; padding:0 !important; justify-content:center !important; border-radius:999px !important;}
+      .status span:not(.dot),#statusText{display:none !important;}
+      .icon-btn{width:42px !important; height:42px !important; padding:0 !important; border-radius:999px !important; justify-content:center !important; font-size:20px !important;}
+      .icon-btn span{display:none !important;}
+      .intro{padding:12px 12px 10px !important;}
+      .intro-grid{display:grid !important; grid-template-columns:1fr !important; gap:9px !important; align-items:stretch !important;}
+      .intro h1{font-size:27px !important; line-height:1.05 !important; margin:0 !important; letter-spacing:-.04em !important;}
+      .intro p{font-size:15px !important; line-height:1.33 !important; margin:6px 0 0 !important; max-width:100% !important;}
+      .mission-card{display:none !important;}
+      .hero-flow{display:none !important;}
+      .feature-actions{margin-top:8px !important;}
+      .feature-action{width:100% !important; min-height:54px !important; padding:9px 11px !important; border-radius:17px !important; display:flex !important; align-items:center !important; justify-content:flex-start !important; gap:10px !important;}
+      .feature-action b{font-size:14px !important; line-height:1.15 !important;}
+      .feature-action span{font-size:12px !important; line-height:1.2 !important;}
+      .mode-switch{width:100% !important; margin-top:6px !important; display:grid !important; grid-template-columns:1fr 1fr !important;}
+      .mode-btn{justify-content:center !important; min-height:42px !important; font-size:14px !important; padding:8px 10px !important;}
+      .guided-panel{margin-top:10px !important; padding:12px !important; border-radius:20px !important; gap:9px !important; min-height:0 !important; height:auto !important; overflow:visible !important;}
+      .guided-panel-head{display:block !important;}
+      .guided-kicker{font-size:10px !important; line-height:1.15 !important;}
+      .guided-panel h2{font-size:20px !important; line-height:1.08 !important; margin:3px 0 0 !important;}
+      .guided-panel p{font-size:13px !important; line-height:1.3 !important;}
+      .conseiller-summary{display:none !important;}
+      .guided-progress-line{display:none !important;}
+      .guided-options{gap:8px !important; display:grid !important; width:100% !important;}
+      .guided-choice-line{position:relative !important; width:100% !important;}
+      .guided-choice{height:auto !important; min-height:52px !important; width:100% !important; padding:10px 44px 10px 12px !important; border-radius:15px !important; font-size:14px !important; line-height:1.15 !important; overflow:visible !important; display:flex !important; align-items:center !important;}
+      .guided-choice.has-info{padding-right:52px !important;}
+      .guided-choice::after,.guided-choice.direct::after,.guided-choice.query::after,.guided-choice.has-info::after{content:none !important; display:none !important;}
+      .guided-choice div{padding:0 !important; width:100% !important;}
+      .guided-choice span{font-size:11px !important; line-height:1.22 !important; margin-top:3px !important;}
+      .guided-choice-info{right:9px !important; width:30px !important; height:30px !important; font-size:17px !important;}
+      .guided-actions{display:none !important;}
+      .advisor-guided{display:none !important;}
+      .pilot-pages{display:none !important;}
+      .reset-fab{display:none !important;}
+      .selection-fab{right:10px !important; bottom:74px !important; padding:8px 10px !important; font-size:12px !important; opacity:.95 !important;}
+      .selection-fab span{min-width:20px !important; height:20px !important; font-size:12px !important;}
+      .composer-wrap{position:sticky !important; bottom:0 !important; padding:8px 10px calc(8px + var(--safe)) !important; z-index:45 !important;}
+      .composer{gap:8px !important;}
+      .input-box{border-radius:16px !important; padding:8px 10px !important;}
+      textarea{min-height:34px !important; max-height:92px !important; font-size:16px !important;}
+      .send-btn{min-width:100px !important; min-height:54px !important; border-radius:17px !important; font-size:16px !important; padding:0 14px !important;}
+      .messages{padding:10px 10px 18px !important;}
+      body.chat-started .intro h1{display:block !important; font-size:20px !important;}
+      body.chat-started .intro p{display:none !important;}
+      body.chat-started .feature-actions{display:none !important;}
+    }
+
   </style>
 </head>
 <body data-mode="demandeur">
@@ -2854,7 +2914,7 @@
           </div>
         </div>
         <div class="top-actions">
-          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v9.16.7</span></div>
+          <div class="status"><span class="dot"></span><span id="statusText">Prêt · v9.17.1</span></div>
           <button class="icon-btn" id="resetBtn" type="button" title="Nouvelle conversation">↺ <span>Nouveau</span></button>
         </div>
       </header>
@@ -3222,20 +3282,16 @@
     function detectServiceSheetFromText(text){
       const t = normalizeUiText(text || "");
       if(!t) return "";
-      // Actions transactionnelles en priorité : elles ne doivent jamais être confondues avec création d’entreprise.
-      if(/\b(immersion|pmsmp|stage|tester un metier|tester le metier|decouvrir un metier|entreprise accueillante|entreprises accueillantes)\b/.test(t)) return "immersion";
-      if(/\b(offre|offres|emploi|poste|recrutement|chercher un travail|cherche un travail)\b/.test(t) && !/\b(emploi stable|creation|creer|entrepreneur|entreprise accueillante)\b/.test(t)) return "offres";
-      if(/\b(formation|former|se former|formations|competence|competences)\b/.test(t) && !/\b(formation avant embauche|poei|poec)\b/.test(t)) return "formation";
       if(/\b(sante|maladie|handicap|rqth|fatigue|medical|medecin|psy|depression|anxiete|invalidite)\b/.test(t)) return "defi_sante_emploi";
       if(/\b(mobilite|transport|permis|voiture|trajet|bus|train|deplacement)\b/.test(t)) return "mobilite";
       if(/\b(garde|enfant|familial|famille|horaire|creche|nounou|parent)\b/.test(t)) return "garde";
       if(/\b(fle|francais|langue|allophone|dilf|comprendre|parler francais)\b/.test(t)) return "fle";
-      // Ne pas matcher le mot “entreprise” seul : “entreprise accueillante” relève de l’immersion.
-      if(/\b(creer|creation|auto entrepreneur|micro entreprise|entrepreneur|reprendre une entreprise|activ crea|activ'crea|activ’crea)\b/.test(t)) return "activ_crea";
+      if(/\b(creer|creation|entreprise|auto entrepreneur|micro entreprise|activite|reprendre une entreprise)\b/.test(t)) return "activ_crea";
       if(/\b(international|etranger|europe|mobilite internationale|u1|u2|partir travailler)\b/.test(t)) return "activ_international";
       if(/\b(poei|poec|preparation operationnelle|formation avant embauche|formation prealable)\b/.test(t)) return "poei";
       if(/\b(mrs|simulation|sans cv|habilete|habiletes)\b/.test(t)) return "mrs";
       if(/\b(alternance|apprentissage|contrat pro|contrat de professionnalisation)\b/.test(t)) return "alternance";
+      if(/\b(immersion|stage|tester un metier|decouvrir un metier|entreprise accueillante)\b/.test(t)) return "immersion";
       if(/\b(cv|lettre de motivation|candidature|candidater)\b/.test(t)) return "atelier_cv";
       if(/\b(entretien|recruteur|embauche|se presenter)\b/.test(t)) return "entretien";
       if(/\b(image professionnelle|confiance|posture|valoriser|parler de moi)\b/.test(t)) return "vsi";
@@ -3292,8 +3348,15 @@
       `;
       const actions = card.querySelector(".service-sheet-actions");
       const run = document.createElement("button");
-      run.type="button"; run.className="btn outline"; run.textContent="Lancer avec l’agent";
-      run.onclick=()=>runImmediateQuery(sheet.agentPrompt || sheet.short || sheet.title);
+      run.type="button"; run.className="btn outline";
+      const operationalDetail = ({formation:"formation", immersion:"immersion", atelier_cv:"cv", entretien:"entretien"})[key];
+      if(operationalDetail){
+        run.textContent = key === "formation" ? "Préciser et chercher" : (key === "immersion" ? "Chercher une immersion" : "Préciser l’action");
+        run.onclick=()=>renderGuidedActionDetails(operationalDetail);
+      }else{
+        run.textContent="Lancer avec l’agent";
+        run.onclick=()=>runGuideQuery(sheet.agentPrompt || sheet.short || sheet.title, {bypassLocalSheet:true});
+      }
       actions.appendChild(run);
       if(sheet.url){
         const a=document.createElement("a");
@@ -3327,109 +3390,22 @@
 
     function shouldUseLocalSheet(text, key){
       if(!key) return false;
-      const direct = detectTransactionalIntent(text || "");
-      if(direct) return false;
-      if(["offres","formation","immersion"].includes(key)) return false;
       const t = normalizeUiText(text || "");
-      if(/\b(offre|offres|job dating|evenement|forum|calendrier|boulanger|vendeur|secretaire|conducteur)\b/.test(t) && !/\b(sante|handicap|poei|mrs|immersion|stage|alternance|creation|international)\b/.test(t)) return false;
+
+      // Les fiches servent à expliquer une prestation.
+      // Les demandes concrètes doivent partir vers le Worker pour remonter des résultats réels.
+      if(key === "formation" && (
+        /\b(cherche|chercher|recherche|trouver|affiche|comparer)\b/.test(t) ||
+        /\b(formation en|formation de|formation a|formation à|se former en|formations disponibles)\b/.test(t)
+      )) return false;
+
+      if(key === "immersion" && (
+        /\b(cherche|chercher|recherche|trouver|affiche|tester|entreprise accueillante|entreprises accueillantes)\b/.test(t) ||
+        /\b(metier de|métier de|tester le metier|tester le métier)\b/.test(t)
+      )) return false;
+
+      if(/\b(offre|offres|job dating|evenement|événement|forum|calendrier|boulanger|vendeur|secretaire|secrétaire|conducteur)\b/.test(t) && !/\b(sante|santé|handicap|poei|mrs|immersion|stage|alternance|creation|création|international)\b/.test(t)) return false;
       return true;
-    }
-
-    function detectTransactionalIntent(text){
-      const raw = String(text || "").trim();
-      const t = normalizeUiText(raw);
-      if(!t) return null;
-      const city = extractCity(raw) || state.city || "Paris";
-      if(/\b(immersion|pmsmp|stage|tester un metier|tester le metier|decouvrir un metier|entreprise accueillante|entreprises accueillantes)\b/.test(t)){
-        return { kind:"immersion", job: guessJobFromText(raw, "immersion"), city, sourceText: raw };
-      }
-      if(/\b(offre|offres|emploi|poste|recrutement|chercher un travail|cherche un travail)\b/.test(t) && !/\b(emploi stable|creation|creer|entrepreneur|entreprise accueillante)\b/.test(t)){
-        return { kind:"offres", job: guessJobFromText(raw, "offres"), city, sourceText: raw };
-      }
-      if(/\b(formation|formations|me former|se former|former)\b/.test(t) && !/\b(poei|poec|formation avant embauche|formation prealable)\b/.test(t)){
-        return { kind:"formation", job: guessJobFromText(raw, "formation"), city, sourceText: raw };
-      }
-      return null;
-    }
-
-    function guessJobFromText(text, kind){
-      let v = normalizeUiText(text || "");
-      v = v.replace(/\b(je|j|veux|voudrais|souhaite|cherche|recherche|trouver|faire|une|un|des|de|du|d|la|le|les|en|pour|sur|dans|autour|proche|a|à)\b/g," ");
-      if(kind === "immersion") v = v.replace(/\b(immersion|pmsmp|stage|tester|metier|decouvrir|entreprise|accueillante|accueillantes|facilitee|facilite|demande|convention)\b/g," ");
-      if(kind === "offres") v = v.replace(/\b(offre|offres|emploi|poste|recrutement|travail|job)\b/g," ");
-      if(kind === "formation") v = v.replace(/\b(formation|formations|former|competence|competences)\b/g," ");
-      const city = extractCity(text || "");
-      if(city) v = v.replace(normalizeUiText(city), " ");
-      v = v.replace(/\b(paris|issy les moulineaux|boulogne|nanterre|creteil|bobigny|versailles|evry|pontoise|melun)\b/g," ");
-      v = v.replace(/[^a-z0-9 -]/g," ").replace(/\s+/g," ").trim();
-      return v || "";
-    }
-
-    async function runDirectSearch(kind, params = {}, options = {}){
-      const job = String(params.job || params.metier || "").trim();
-      const city = String(params.city || params.ville || state.city || "Paris").trim();
-      const sourceText = String(params.sourceText || "").trim();
-      if(!job && ["offres","formation","immersion"].includes(kind)){
-        toast("Précisez le métier ou le domaine à rechercher");
-        return false;
-      }
-      if(state.busy){ toast("Une recherche est déjà en cours"); return false; }
-
-      if(options.renderUser){
-        const label = kind === "offres" ? `Je cherche une offre de ${job}${city ? " à " + city : ""}`
-          : kind === "formation" ? `Je cherche une formation en ${job}${city ? " à " + city : ""}`
-          : `Je veux tester le métier de ${job} en immersion facilitée${city ? " à " + city : ""}`;
-        renderMessage("user", sourceText || label);
-      }
-
-      setBusy(true);
-      const loadingId = renderLoading();
-      const t0 = performance.now();
-      try{
-        const url = new URL(WORKER + (kind === "offres" ? "/api/offres" : kind === "formation" ? "/api/formations" : "/api/immersion"));
-        if(kind === "offres") url.searchParams.set("metier", job);
-        if(kind === "formation") url.searchParams.set("q", job);
-        if(kind === "immersion") url.searchParams.set("metier", job);
-        if(city) url.searchParams.set("ville", city);
-        if(sourceText) url.searchParams.set("message", sourceText);
-        url.searchParams.set("_", Date.now());
-
-        const res = await fetch(url.toString(), { method:"GET", mode:"cors", cache:"no-store" });
-        const raw = await res.text();
-        let data;
-        try{ data = JSON.parse(raw); }
-        catch(_){ throw new Error("Réponse non JSON : " + raw.slice(0,160)); }
-        if(!res.ok || data.ok === false){ throw new Error(data.error || data.message || "Erreur API " + res.status); }
-
-        if(kind === "offres"){
-          data.intent = "recherche_emploi";
-          data.responseType = "offres_swipe";
-          data.diagnosticLabel = data.diagnosticLabel || "Recherche d’emploi";
-        }else if(kind === "formation"){
-          data.intent = "formation";
-          data.responseType = "formations_swipe";
-          data.diagnosticLabel = data.diagnosticLabel || "Formation";
-        }else if(kind === "immersion"){
-          data.intent = "pmsmp";
-          data.responseType = "immersion_resultats";
-          data.diagnosticLabel = data.diagnosticLabel || "Immersion facilitée";
-          data.immersion = data.immersion || { offers:[], searchUrl: OFFICIAL_ACTIONS.immersion, message:"Aucune entreprise accueillante remontée directement." };
-        }
-
-        remove(loadingId);
-        syncCalendarFromAgentData(data, true);
-        renderMessage("assistant", data.compactReply || data.reply || "Résultats reçus.", data);
-        recordUsage(data, sourceText || job, Math.round(performance.now() - t0), false);
-        return true;
-      }catch(err){
-        remove(loadingId);
-        const fallbackData = { intent:"erreur", diagnosticLabel:"Erreur recherche", responseType: kind };
-        renderMessage("assistant", "Je n’ai pas pu lancer la recherche.\n\nDétail : " + (err.message || String(err)), fallbackData);
-        recordUsage(fallbackData, sourceText || job, Math.round(performance.now() - t0), true);
-        return true;
-      }finally{
-        setBusy(false);
-      }
     }
 
 
@@ -3808,13 +3784,10 @@ function bind(){
 
       try{
         renderMessage("user", text);
-        const directIntent = detectTransactionalIntent(text);
-        if(directIntent){
-          await runDirectSearch(directIntent.kind, directIntent, { renderUser:false });
-          return;
-        }
+        const bypassLocalSheet = !!state.bypassNextLocalSheet;
+        state.bypassNextLocalSheet = false;
         const localSheetKey = detectServiceSheetFromText(text);
-        if(shouldUseLocalSheet(text, localSheetKey)){
+        if(!bypassLocalSheet && shouldUseLocalSheet(text, localSheetKey)){
           const localData = buildServiceSheetData(localSheetKey, text);
           renderMessage("assistant", localData.compactReply || localData.reply, localData);
           recordUsage(localData, text, Math.round(performance.now() - t0), false);
@@ -4116,10 +4089,8 @@ function renderWelcome(){
       ];
 
       if(step === "creation") return [
-        {label:"Activ’Créa", help:"Tester l’idée", info:"Explorer la création ou reprise d’entreprise et vérifier la faisabilité.", sheetKey:"activ_crea"},
-        {label:"Atelier création d’entreprise", help:"Structurer le projet", info:"Motivations, ressources, étapes clés et posture entrepreneuriale.", sheetKey:"atelier_creation"},
-        {label:"M’imaginer créateur d’entreprise", help:"Atelier court", info:"Première projection avant démarches lourdes.", sheetKey:"atelier_creation"},
-        {label:"Structurer mon projet", help:"Ressources et étapes", info:"Passer d’une idée à un plan d’action clair.", sheetKey:"activ_crea"}
+        {label:"Activ’Créa", help:"Tester et cadrer l’idée", info:"Explorer la création ou reprise d’entreprise, vérifier la faisabilité et décider si Activ’Créa est l’accompagnement adapté.", sheetKey:"activ_crea"},
+        {label:"Atelier création d’entreprise", help:"Premiers repères", info:"Comprendre les premières démarches, ressources, étapes clés et points de vigilance avant de lancer le projet.", sheetKey:"atelier_creation"}
       ];
 
       if(step === "freins") return [
@@ -4206,10 +4177,10 @@ function renderWelcome(){
       }
     }
 
-    function runGuideQuery(prompt){
-      const directIntent = detectTransactionalIntent(prompt);
-      if(directIntent){
-        runDirectSearch(directIntent.kind, directIntent, { renderUser:true });
+    function runGuideQuery(prompt, options = {}){
+      if(options && options.bypassLocalSheet){
+        state.bypassNextLocalSheet = true;
+        runImmediateQuery(prompt);
         return;
       }
       const key = detectServiceSheetFromText(prompt);
@@ -4340,6 +4311,142 @@ function renderWelcome(){
       }
     }
 
+    async function runGuidedOfferSearch(job, city, errorEl){
+      if(state.busy){ toast("Une analyse est déjà en cours"); return; }
+      const prompt = "Je cherche une offre d'emploi de " + job + (city ? " à " + city : "");
+      let id = "";
+      const t0 = performance.now();
+      try{
+        renderMessage("user", prompt);
+        setBusy(true);
+        id = renderLoading();
+        const url = WORKER + "/api/offres?metier=" + encodeURIComponent(job) + (city ? "&ville=" + encodeURIComponent(city) : "") + "&_=" + Date.now();
+        const res = await fetch(url, { method:"GET", mode:"cors", cache:"no-store" });
+        const raw = await res.text();
+        let data;
+        try{ data = JSON.parse(raw); }
+        catch(_){ throw new Error("Réponse non JSON : " + raw.slice(0,160)); }
+        if(!res.ok || data.ok === false){ throw new Error(data.error || "Recherche offres " + res.status); }
+        const normalized = {
+          ...data,
+          ok:true,
+          intent:"recherche_emploi",
+          diagnosticLabel:"Recherche d’emploi",
+          compactReply:data.compactReply || "Offres récupérées. Triez les cartes et gardez les plus pertinentes.",
+          reply:data.reply || data.compactReply || "Offres récupérées. Triez les cartes et gardez les plus pertinentes.",
+          priorityAction:data.priorityAction || "Trier les offres repérées",
+          actionPlan:data.actionPlan || [
+            {title:"Comparer", why:"Vérifier lieu, contrat et missions."},
+            {title:"Garder", why:"Mettre en sélection les offres adaptées."},
+            {title:"Postuler", why:"Ouvrir l’offre complète et candidater."}
+          ]
+        };
+        remove(id);
+        renderMessage("assistant", normalized.compactReply, normalized);
+        recordUsage(normalized, prompt, Math.round(performance.now() - t0), false);
+      }catch(err){
+        if(id) remove(id);
+        const msg = "Je n’ai pas pu récupérer les offres.\n\nDétail : " + (err.message || String(err));
+        renderMessage("assistant", msg, { intent:"erreur", diagnosticLabel:"erreur" });
+        recordUsage({intent:"erreur"}, prompt, Math.round(performance.now() - t0), true);
+      }finally{
+        setBusy(false);
+      }
+    }
+
+
+    async function runGuidedFormationSearch(job, city, errorEl){
+      if(state.busy){ toast("Une analyse est déjà en cours"); return; }
+      const prompt = "Je cherche une formation en " + job + (city ? " à " + city : "");
+      let id = "";
+      const t0 = performance.now();
+      try{
+        renderMessage("user", prompt);
+        setBusy(true);
+        id = renderLoading();
+        const url = WORKER + "/api/formations?q=" + encodeURIComponent(job) + (city ? "&ville=" + encodeURIComponent(city) : "") + "&_=" + Date.now();
+        const res = await fetch(url, { method:"GET", mode:"cors", cache:"no-store" });
+        const raw = await res.text();
+        let data;
+        try{ data = JSON.parse(raw); }
+        catch(_){ throw new Error("Réponse non JSON : " + raw.slice(0,160)); }
+        const list = Array.isArray(data.formations) ? data.formations : [];
+        const searchUrl = data.searchUrl || data.formationSearchUrl || "https://candidat.francetravail.fr/formations/recherche";
+        const normalized = {
+          ...data,
+          ok:true,
+          intent:"formation",
+          diagnosticLabel:"Formation",
+          formations:list,
+          formationSearchUrl:searchUrl,
+          officialLinks:[{label:"Ouvrir la recherche formation", url:searchUrl}],
+          compactReply:list.length ? "Formations récupérées. Comparez les cartes et gardez les plus utiles." : "Aucune formation exploitable remontée par l’API. Lancez la recherche officielle ou élargissez le métier / la ville.",
+          reply:list.length ? "Formations récupérées." : "Aucune formation exploitable remontée par l’API.",
+          priorityAction:list.length ? "Comparer les formations repérées" : "Ouvrir la recherche formation officielle",
+          actionPlan:[
+            {title:"Comparer", why:"Vérifier prérequis, durée et lieu."},
+            {title:"Garder", why:"Mettre en sélection les formations cohérentes."},
+            {title:"Vérifier", why:"Confirmer financement et entrée en formation."}
+          ]
+        };
+        remove(id);
+        renderMessage("assistant", normalized.compactReply, normalized);
+        recordUsage(normalized, prompt, Math.round(performance.now() - t0), false);
+      }catch(err){
+        if(id) remove(id);
+        const msg = "Je n’ai pas pu récupérer les formations.\n\nDétail : " + (err.message || String(err));
+        renderMessage("assistant", msg, { intent:"erreur", diagnosticLabel:"erreur" });
+        recordUsage({intent:"erreur"}, prompt, Math.round(performance.now() - t0), true);
+      }finally{
+        setBusy(false);
+      }
+    }
+
+    async function runGuidedImmersionSearch(job, city, errorEl){
+      if(state.busy){ toast("Une analyse est déjà en cours"); return; }
+      const prompt = "Je veux tester le métier de " + job + " en immersion facilitée" + (city ? " à " + city : "");
+      let id = "";
+      const t0 = performance.now();
+      try{
+        renderMessage("user", prompt);
+        setBusy(true);
+        id = renderLoading();
+        const url = WORKER + "/api/immersion?metier=" + encodeURIComponent(job) + (city ? "&ville=" + encodeURIComponent(city) : "") + "&_=" + Date.now();
+        const res = await fetch(url, { method:"GET", mode:"cors", cache:"no-store" });
+        const raw = await res.text();
+        let data;
+        try{ data = JSON.parse(raw); }
+        catch(_){ throw new Error("Réponse non JSON : " + raw.slice(0,160)); }
+        const immersion = data.immersion || data;
+        const offers = Array.isArray(immersion.offers) ? immersion.offers : [];
+        const normalized = {
+          ...data,
+          ok:true,
+          intent:"pmsmp",
+          diagnosticLabel:"Immersion facilitée",
+          immersion,
+          compactReply:offers.length ? "Entreprises accueillantes repérées. Vérifiez les pistes et préparez la mise en relation." : "Aucune entreprise exploitable remontée par l’API. Ouvrez Immersion Facilitée ou élargissez métier / ville.",
+          reply:offers.length ? "Entreprises accueillantes repérées." : "Aucune entreprise exploitable remontée par l’API.",
+          priorityAction:offers.length ? "Contacter une entreprise accueillante" : "Ouvrir Immersion Facilitée",
+          actionPlan:[
+            {title:"Préciser", why:"Confirmer métier et secteur."},
+            {title:"Repérer", why:"Voir les entreprises accueillantes."},
+            {title:"Contacter", why:"Préparer la demande d’immersion."}
+          ]
+        };
+        remove(id);
+        renderMessage("assistant", normalized.compactReply, normalized);
+        recordUsage(normalized, prompt, Math.round(performance.now() - t0), false);
+      }catch(err){
+        if(id) remove(id);
+        const msg = "Je n’ai pas pu récupérer les immersions.\n\nDétail : " + (err.message || String(err));
+        renderMessage("assistant", msg, { intent:"erreur", diagnosticLabel:"erreur" });
+        recordUsage({intent:"erreur"}, prompt, Math.round(performance.now() - t0), true);
+      }finally{
+        setBusy(false);
+      }
+    }
+
     function submitGuidedAction(action, errorEl){
       const job = (document.getElementById("guidedJob")?.value || "").trim();
       const city = (document.getElementById("guidedCity")?.value || "").trim();
@@ -4351,7 +4458,8 @@ function renderWelcome(){
       let prompt = "";
       if(action === "offres"){
         if(!job){ showGuidedError(errorEl, "Indiquez au moins un métier pour chercher des offres."); return; }
-        prompt = "Je cherche une offre d'emploi de " + job + (city ? " à " + city : "");
+        runGuidedOfferSearch(job, city, errorEl);
+        return;
       } else if(action === "cv"){
         if(!job){ showGuidedError(errorEl, "Indiquez le métier ou le poste visé pour le CV."); return; }
         prompt = "Quels ateliers ou conseils pour améliorer mon CV pour un poste de " + job + " ?";
@@ -4363,17 +4471,15 @@ function renderWelcome(){
         prompt = "Quels événements emploi " + (job ? "sur " + job + " " : "") + (city ? "à " + city : "peuvent m'aider ?");
       } else if(action === "formation"){
         if(!job){ showGuidedError(errorEl, "Indiquez au moins un métier, un domaine ou une compétence."); return; }
-        prompt = "Je cherche une formation en " + job + (city ? " à " + city : "") + ". Propose la bonne prochaine étape France Travail.";
+        runGuidedFormationSearch(job, city, errorEl);
+        return;
       } else if(action === "immersion"){
         if(!job){ showGuidedError(errorEl, "Indiquez au moins le métier à tester."); return; }
-        prompt = "Je veux faire une immersion facilitée pour tester le métier de " + job + (city ? " à " + city : "") + ". Cherche une entreprise accueillante ou prépare ma demande.";
-      }
-
-      if(["offres","formation","immersion"].includes(action)){
-        runDirectSearch(action, { job, city, sourceText: prompt }, { renderUser:true });
+        runGuidedImmersionSearch(job, city, errorEl);
         return;
       }
-      runGuideQuery(personalizePromptFromContext(prompt));
+
+      runGuideQuery(personalizePromptFromContext(prompt), {bypassLocalSheet:true});
     }
 
     function showGuidedError(errorEl, message){
@@ -5233,24 +5339,33 @@ function renderSelectionDrawer(){
 
     function syncCalendarFromMonthData(data){
       const before = getCalendarItems();
+      const zone = getCalendarZone();
+      const monthKey = `${state.calendarDate.getFullYear()}-${String(state.calendarDate.getMonth()+1).padStart(2,"0")}`;
       const mapped = (data.events || []).map(e => {
         const d = parseEventDate(e.dateEvenement);
         if(!d) return null;
         return {
-          id:`event-${e.id || e.url || e.titre}-${toDateKey(d)}`,
+          id:`event-${zone.key}-${e.id || e.url || e.titre}-${toDateKey(d)}`,
           type: inferCalendarType(e),
           title:e.titre || "Événement emploi",
           date:toDateKey(d),
           time:formatTimeForCalendar(e.heureDebut || d),
           location:[e.ville,e.codePostal].filter(Boolean).join(" "),
           source:"Mes événements emploi",
-          url:e.url || ""
+          url:e.url || "",
+          zoneKey: zone.key,
+          zoneLabel: zone.label
         };
       }).filter(Boolean);
 
       if(!mapped.length) return 0;
 
-      const after = dedupeCalendarItems([...before, ...mapped]);
+      const scopedBefore = before.filter(item => {
+        if(item.type === "reminder") return true;
+        if(item.zoneKey !== zone.key) return true;
+        return !String(item.date || "").startsWith(monthKey);
+      });
+      const after = dedupeCalendarItems([...scopedBefore, ...mapped]);
       writeCalendarItems(after);
 
       const first = mapped[0];
@@ -5266,19 +5381,22 @@ function renderSelectionDrawer(){
       if(!data) return 0;
       const before = getCalendarItems();
       const mapped = [];
+      const zone = getCalendarZone();
 
       (data.events || []).forEach(e => {
         const d = parseEventDate(e.dateEvenement);
         if(!d) return;
         mapped.push({
-          id:`event-${e.id || e.url || e.titre}-${toDateKey(d)}`,
+          id:`event-${zone.key}-${e.id || e.url || e.titre}-${toDateKey(d)}`,
           type: inferCalendarType(e),
           title:e.titre || "Événement emploi",
           date:toDateKey(d),
           time:formatTimeForCalendar(e.heureDebut || d),
           location:[e.ville,e.codePostal].filter(Boolean).join(" "),
           source:"Mes événements emploi",
-          url:e.url || ""
+          url:e.url || "",
+          zoneKey: zone.key,
+          zoneLabel: zone.label
         });
       });
 
@@ -5286,28 +5404,32 @@ function renderSelectionDrawer(){
         const d = parseEventDate(f.dateDebut);
         if(!d) return;
         mapped.push({
-          id:`formation-${f.id || f.url || f.titre}-${toDateKey(d)}`,
+          id:`formation-${zone.key}-${f.id || f.url || f.titre}-${toDateKey(d)}`,
           type:"formation",
           title:f.titre || "Formation",
           date:toDateKey(d),
           time:"",
           location:f.ville || "Formation",
           source:f.organisme || "France Travail",
-          url:f.url || ""
+          url:f.url || "",
+          zoneKey: zone.key,
+          zoneLabel: zone.label
         });
       });
 
       (data.poeiItems || []).forEach(p => {
         const d = parseEventDate(p.date) || parseLocalDate(state.calendarSelectedDate);
         mapped.push({
-          id:`poei-${p.url || p.title}-${toDateKey(d)}`,
+          id:`poei-${zone.key}-${p.url || p.title}-${toDateKey(d)}`,
           type:"formation",
           title:`${p.subtype || "POEI"} — ${p.title || "dispositif"}`,
           date:toDateKey(d),
           time:"",
           location:p.meta || "",
           source:p.kind || "POEI / MRS",
-          url:p.url || ""
+          url:p.url || "",
+          zoneKey: zone.key,
+          zoneLabel: zone.label
         });
       });
 
@@ -5363,7 +5485,9 @@ function renderSelectionDrawer(){
         time:String(i.time || ""),
         location:String(i.location || ""),
         source:String(i.source || ""),
-        url:String(i.url || "")
+        url:String(i.url || ""),
+        zoneKey:String(i.zoneKey || ""),
+        zoneLabel:String(i.zoneLabel || "")
       };
     }
 
@@ -5373,8 +5497,18 @@ function renderSelectionDrawer(){
       return [...map.values()].sort((a,b)=>`${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`));
     }
 
+    function shouldShowCalendarItemForActiveZone(item){
+      if(!item) return false;
+      if(item.type === "reminder") return true;
+      const active = getCalendarZone().key;
+      const itemZone = item.zoneKey || "";
+      if(active === "idf") return true;
+      return itemZone === active;
+    }
+
     function filterCalendarItems(items){
       let result = Array.isArray(items) ? items : [];
+      result = result.filter(shouldShowCalendarItemForActiveZone);
       if(state.calendarFilter !== "all") result = result.filter(i => i.type === state.calendarFilter);
       const q = normalizeUiText(state.calendarSearch || "");
       if(q){
@@ -5541,22 +5675,29 @@ function renderSelectionDrawer(){
     }
 
 
+    function resultArray(data, key){
+      const value = data ? data[key] : null;
+      if(Array.isArray(value)) return value;
+      if(value && Array.isArray(value.items)) return value.items;
+      if(value && Array.isArray(value.results)) return value.results;
+      return [];
+    }
+
     function renderResults(wrap,data){
-      const offerIntents = ["recherche_emploi","poe","international"];
-      const offres = Array.isArray(data.offres) ? data.offres.slice(0, 30) : [];
-      const formations = Array.isArray(data.formations) && (data.intent === "formation" || data.responseType === "formations_swipe" || data.formations.length) ? data.formations.slice(0, 30) : [];
+      const offres = resultArray(data, "offres").slice(0, 30);
+      const formations = resultArray(data, "formations").slice(0, 30);
       const otherItems=[];
 
-      (data.events||[]).slice(0,4).forEach(e=>otherItems.push({kind:"Événement",title:e.titre,meta:[formatDate(e.dateEvenement),formatHour(e.heureDebut),e.ville,e.type].filter(Boolean).join(" · "),desc:e.description||e.deroulement,url:e.url,cta:"Voir l’événement"}));
-      if(data.intent !== "formation") (data.formations||[]).slice(0,3).forEach(f=>otherItems.push({kind:"Formation",title:f.titre,meta:[f.organisme,f.ville,f.dateDebut].filter(Boolean).join(" · "),desc:f.description,url:f.url,cta:"Voir la formation"}));
+      resultArray(data, "events").slice(0,4).forEach(e=>otherItems.push({kind:"Événement",title:e.titre,meta:[formatDate(e.dateEvenement),formatHour(e.heureDebut),e.ville,e.type].filter(Boolean).join(" · "),desc:e.description||e.deroulement,url:e.url,cta:"Voir l’événement"}));
+      if(data.intent !== "formation") formations.slice(0,3).forEach(f=>otherItems.push({kind:"Formation",title:f.titre,meta:[f.organisme,f.ville,f.dateDebut].filter(Boolean).join(" · "),desc:f.description,url:f.url,cta:"Voir la formation"}));
       (data.atelierCategories||[]).slice(0,9).forEach(a=>otherItems.push({kind:"Atelier",title:a.title,meta:"France Travail",desc:a.description,url:"",cta:""}));
 
       if(offres.length){
-        wrap.appendChild(sectionHead(offres.length > 8 ? "Offres à trier" : "Offres repérées"));
+        wrap.appendChild(sectionHead(offres.length > 1 ? "Offres à trier" : "Offre repérée"));
         wrap.appendChild(renderOfferSwiper(offres, data));
       }
 
-      if(data.intent === "formation" || data.responseType === "formations_swipe"){
+      if(data.intent === "formation"){
         wrap.appendChild(sectionHead(formations.length ? "Formations à comparer" : "Recherche formation"));
         wrap.appendChild(renderFormationSwiper(formations, data));
       }
@@ -5566,7 +5707,7 @@ function renderSelectionDrawer(){
         wrap.appendChild(renderPoeiItems(data.poeiItems));
       }
 
-      if(data.immersion){
+      if(data.intent === "pmsmp" && data.immersion){
         wrap.appendChild(sectionHead("Immersion facilitée"));
         wrap.appendChild(renderImmersionBox(data.immersion));
       }
@@ -5583,8 +5724,7 @@ function renderSelectionDrawer(){
             card.appendChild(d);
           }
           if(item.url){
-            const a=document.createElement("a"); a.className="btn outline"; a.href=item.url; a.target="_blank"; a.rel="noopener noreferrer"; a.style.marginTop="9px"; a.textContent=item.cta||"Voir";
-            a.addEventListener("click",()=>recordClick(item.kind,item.title));
+            const a=document.createElement("a"); a.className="btn outline"; a.href=item.url; a.target="_blank"; a.rel="noopener noreferrer"; a.textContent=item.cta || "Ouvrir";
             card.appendChild(a);
           }
           list.appendChild(card);
@@ -5592,7 +5732,6 @@ function renderSelectionDrawer(){
         wrap.appendChild(list);
       }
     }
-
 
     function renderPoeiItems(items){
       const box=document.createElement("section");
@@ -6086,7 +6225,7 @@ function renderSelectionDrawer(){
       const el = nodes.find(node => node.dataset.id === id);
       if(el) el.remove();
     }
-    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v9.16.5"; }
+    function setBusy(v){ state.busy=v; els.send.disabled=v; els.status.textContent=v?"Analyse…":"Prêt · v9.17.1"; }
 
     function saveMessage(role,content,extra){ const arr=read("frai_messages",[]); arr.push({role,content,extra}); localStorage.setItem("frai_messages",JSON.stringify(arr.slice(-30))); }
     function recordUsage(data,message,ms,error){ const s=read("frai_stats",{total:0,errors:0,clicks:0,feedback:{},intents:{},times:[]}); s.total++; if(error)s.errors++; const it=data.intent||"diagnostic"; s.intents[it]=(s.intents[it]||0)+1; s.times.push(ms); s.times=s.times.slice(-100); localStorage.setItem("frai_stats",JSON.stringify(s)); }
@@ -6105,6 +6244,16 @@ function renderSelectionDrawer(){
     function formatHour(v){ if(!v)return""; const s=String(v); const m=s.match(/(\d{1,2}):(\d{2})/); return m ? `${m[1].padStart(2,"0")}:${m[2]}` : s; }
     function formatIntent(i){ return ({diagnostic:"besoin à préciser",pmsmp:"immersion facilitée",poe:"POEI (Préparation opérationnelle à l’emploi)",ateliers:"ateliers France Travail",recherche_emploi:"recherche d’emploi",candidature_cv:"CV / candidature",activ_projet:"projet professionnel",events:"événements emploi"})[i]||i||"diagnostic"; }
     function extractCity(t){ const m=String(t||"").match(/\b(?:à|a|sur|près de|pres de)\s+([A-Za-zÀ-ÿ' -]{3,60})/i); return m?m[1].replace(/[?.!,;:].*$/,"").trim():""; }
+
+    /* v9.17.1 — garde-fou : jamais de panneau guidé vide */
+    setTimeout(function(){
+      const gp=document.getElementById("guidedPanel");
+      if(gp && (!gp.textContent || gp.textContent.trim().length < 20)){
+        try{ renderGuidedPanel("situation"); }
+        catch(e){ console.error("Parcours guidé indisponible", e); }
+      }
+    },120);
+
   </script>
 </body>
 </html>
