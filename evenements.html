@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Recherche événements emploi</title>
+  <meta name="description" content="Recherche rapide dans Mes événements France Travail, pensée pour une intégration SharePoint/Teams.">
+  <style>
+    :root{--ft:#0063cb;--ft-dark:#0b2b4b;--bg:#f5f7fa;--line:#d8dee8;--text:#1e2936;--muted:#667085}
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Arial,"Segoe UI",sans-serif}
+    body{min-height:100vh}
+    .app{width:100%;max-width:1400px;margin:0 auto;padding:18px}
+    .panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;box-shadow:0 2px 8px rgba(16,24,40,.05)}
+    .head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px}
+    h1{font-size:22px;line-height:1.2;margin:0;color:var(--ft-dark)}
+    .sub{font-size:13px;color:var(--muted);margin-top:5px}
+    .search{display:grid;grid-template-columns:minmax(180px,1fr) auto;gap:10px}
+    input{width:100%;min-height:46px;border:1px solid #aeb8c5;border-radius:8px;padding:0 14px;font-size:16px;outline:none;background:white}
+    input:focus{border-color:var(--ft);box-shadow:0 0 0 3px rgba(0,99,203,.14)}
+    button,.linkbtn{min-height:46px;border:0;border-radius:8px;padding:0 18px;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+    button{background:var(--ft);color:white}
+    button:hover{background:#004f9f}
+    .quick{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .chip{min-height:34px;padding:0 12px;background:#eef5ff;color:#064f9c;border:1px solid #bed8f3;border-radius:999px;font-size:13px;font-weight:700}
+    .chip:hover{background:#dfeeff}
+    .tools{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:14px;flex-wrap:wrap}
+    .status{font-size:13px;color:var(--muted)}
+    .external{background:#fff;color:var(--ft);border:1px solid var(--ft)}
+    .viewer{margin-top:14px;background:white;border:1px solid var(--line);border-radius:12px;overflow:hidden;min-height:650px}
+    .viewer iframe{display:block;width:100%;height:780px;border:0;background:white}
+    .fallback{padding:16px;font-size:14px;color:var(--muted);display:none}
+    footer{padding:12px 4px 0;text-align:center;font-size:12px;color:var(--muted)}
+    @media(max-width:650px){.app{padding:10px}.panel{padding:14px}.search{grid-template-columns:1fr}.search button{width:100%}.viewer iframe{height:680px}.head{align-items:flex-start;flex-direction:column}}
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="panel" aria-labelledby="title">
+      <div class="head">
+        <div>
+          <h1 id="title">Recherche rapide — événements emploi</h1>
+          <div class="sub">Tapez un mot-clé comme MRS, alternance, job dating ou IA.</div>
+        </div>
+        <a class="linkbtn external" href="https://mesevenementsemploi.francetravail.fr/mes-evenements-emploi/evenements" target="_blank" rel="noopener">Mes événements Emploi ↗</a>
+      </div>
+
+      <form id="searchForm" class="search">
+        <label for="keyword" style="position:absolute;left:-9999px">Mot-clé</label>
+        <input id="keyword" name="keyword" type="search" autocomplete="off" placeholder="MRS, job dating, alternance, IA…" value="MRS">
+        <button type="submit">Rechercher</button>
+      </form>
+
+      <div class="quick" aria-label="Recherches rapides">
+        <button class="chip" type="button" data-q="MRS">MRS</button>
+        <button class="chip" type="button" data-q="Méthode de Recrutement par Simulation">Méthode de recrutement par simulation</button>
+        <button class="chip" type="button" data-q="Recrutement sans CV">Sans CV</button>
+        <button class="chip" type="button" data-q="Job dating">Job dating</button>
+        <button class="chip" type="button" data-q="Alternance">Alternance</button>
+        <button class="chip" type="button" data-q="Intelligence artificielle">IA</button>
+      </div>
+
+      <div class="tools">
+        <div id="status" class="status">Recherche prête.</div>
+        <a id="openResults" class="linkbtn external" href="https://openagenda.com/fr/francetravail?oaq%5Bwhat%5D=MRS" target="_blank" rel="noopener">Ouvrir les résultats ↗</a>
+      </div>
+    </section>
+
+    <section class="viewer" aria-label="Résultats des événements">
+      <iframe id="resultsFrame" title="Résultats Mes événements France Travail" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://openagenda.com/fr/francetravail?oaq%5Bwhat%5D=MRS"></iframe>
+      <div id="fallback" class="fallback">Si l’affichage des résultats est bloqué par le navigateur ou votre environnement SharePoint, utilisez le bouton « Ouvrir les résultats » ci-dessus.</div>
+    </section>
+
+    <footer>Données événementielles : Mes événements France Travail / OpenAgenda. Les inscriptions renvoient vers France Travail.</footer>
+  </main>
+
+  <script>
+    (function(){
+      const form=document.getElementById('searchForm');
+      const input=document.getElementById('keyword');
+      const frame=document.getElementById('resultsFrame');
+      const status=document.getElementById('status');
+      const openResults=document.getElementById('openResults');
+      const fallback=document.getElementById('fallback');
+
+      function normalizedQuery(q){
+        const raw=(q||'').trim();
+        if(!raw) return '';
+        if(raw.toLowerCase()==='mrs') return 'MRS';
+        return raw;
+      }
+
+      function buildUrl(q){
+        const query=normalizedQuery(q);
+        const u=new URL('https://openagenda.com/fr/francetravail');
+        if(query) u.searchParams.set('oaq[what]',query);
+        return u.toString();
+      }
+
+      function run(q){
+        const query=normalizedQuery(q);
+        if(!query){input.focus();return;}
+        input.value=query;
+        const url=buildUrl(query);
+        status.textContent='Résultats pour « '+query+' »';
+        openResults.href=url;
+        frame.src=url;
+        fallback.style.display='none';
+      }
+
+      form.addEventListener('submit',function(e){e.preventDefault();run(input.value)});
+      document.querySelectorAll('[data-q]').forEach(function(btn){
+        btn.addEventListener('click',function(){run(btn.getAttribute('data-q'))});
+      });
+
+      frame.addEventListener('load',function(){
+        status.textContent='Résultats chargés pour « '+input.value+' »';
+      });
+
+      setTimeout(function(){fallback.style.display='block'},5000);
+    })();
+  </script>
+</body>
+</html>
