@@ -11,11 +11,13 @@
 h1{margin:0 0 5px;font-size:22px}.sub{font-size:13px;color:var(--muted);margin-bottom:14px}
 .grid{display:grid;grid-template-columns:1fr 260px auto;gap:10px;align-items:end}.field{display:flex;flex-direction:column;gap:5px}.field label{font-size:12px;font-weight:700}
 input,select,button{height:46px;border-radius:8px;font-size:15px}input,select{border:1px solid #aeb8c5;padding:0 12px;background:#fff}button{border:0;background:var(--blue);color:#fff;font-weight:700;padding:0 18px;cursor:pointer}
-.quick{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}.chip{height:34px;background:#eef5ff;color:#064f9c;border:1px solid #bed8f3;border-radius:999px;font-size:13px;padding:0 12px}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:10px}.quick{display:flex;flex-wrap:wrap;gap:7px}.chip{height:34px;background:#eef5ff;color:#064f9c;border:1px solid #bed8f3;border-radius:999px;font-size:13px;padding:0 12px}
+.view-switch{display:flex;gap:6px}.viewbtn{height:36px;width:42px;padding:0;display:grid;place-items:center;background:#fff;color:#475467;border:1px solid #cbd5e1;border-radius:8px}.viewbtn:hover{background:#f8fafc}.viewbtn.active{background:#e8f2ff;color:#0057b8;border-color:#8ec2f5}.viewbtn svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .info{margin-top:10px;font-size:12px;color:var(--muted)}
-.viewer{margin-top:12px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;height:820px;position:relative}
-.viewer iframe{position:absolute;left:0;top:calc(-1 * var(--oa-crop));width:100%;height:calc(820px + var(--oa-crop));border:0;display:block;background:#fff}
-@media(max-width:760px){:root{--oa-crop:610px}.grid{grid-template-columns:1fr}.viewer{height:720px}.viewer iframe{height:calc(720px + var(--oa-crop))}}
+.agenda{display:none;margin-top:12px;border:1px solid var(--line);border-radius:10px;background:#f8fafc;padding:12px}.agenda.open{display:block}.agenda-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}.agenda-title{font-weight:700;font-size:15px;text-transform:capitalize}.calnav{width:36px;height:34px;padding:0;border:1px solid #cbd5e1;background:#fff;color:#344054;border-radius:7px;font-size:20px;line-height:1}.agenda-actions{display:flex;justify-content:flex-end;margin-top:9px}.clear-date{height:32px;background:#fff;color:#0057b8;border:1px solid #a8cdf2;padding:0 10px;font-size:12px}
+.calendar{display:grid;grid-template-columns:repeat(7,minmax(34px,1fr));gap:5px}.dow{text-align:center;font-size:11px;font-weight:700;color:#667085;padding:4px 0}.day{height:38px;padding:0;border-radius:7px;border:1px solid transparent;background:#fff;color:#344054;font-weight:600}.day:hover{border-color:#9ec5ee;background:#eef6ff}.day.other{opacity:.32}.day.today{border-color:#6caeea}.day.selected{background:#0063cb;color:#fff;border-color:#0063cb}
+.viewer{margin-top:12px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;height:820px;position:relative}.viewer iframe{position:absolute;left:0;top:calc(-1 * var(--oa-crop));width:100%;height:calc(820px + var(--oa-crop));border:0;display:block;background:#fff}
+@media(max-width:760px){:root{--oa-crop:610px}.grid{grid-template-columns:1fr}.toolbar{align-items:flex-start}.viewer{height:720px}.viewer iframe{height:calc(720px + var(--oa-crop))}.calendar{gap:3px}.day{height:34px;font-size:12px}}
 </style>
 </head>
 <body>
@@ -38,12 +40,31 @@ input,select,button{height:46px;border-radius:8px;font-size:15px}input,select{bo
 </select></div>
 <button type="submit">Rechercher</button>
 </form>
+<div class="toolbar">
 <div class="quick">
 <button class="chip" data-q="MRS" type="button">MRS</button>
 <button class="chip" data-q="Job dating" type="button">Job dating</button>
 <button class="chip" data-q="Alternance" type="button">Alternance</button>
 <button class="chip" data-q="Recrutement sans CV" type="button">Sans CV</button>
 <button class="chip" data-q="Intelligence artificielle" type="button">IA</button>
+</div>
+<div class="view-switch" aria-label="Mode d’affichage">
+<button id="listView" class="viewbtn active" type="button" title="Vue liste" aria-label="Vue liste" aria-pressed="true">
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg>
+</button>
+<button id="agendaView" class="viewbtn" type="button" title="Vue agenda" aria-label="Vue agenda" aria-pressed="false">
+<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>
+</button>
+</div>
+</div>
+<div id="agendaPanel" class="agenda" aria-hidden="true">
+<div class="agenda-head">
+<button id="prevMonth" class="calnav" type="button" aria-label="Mois précédent">‹</button>
+<div id="agendaTitle" class="agenda-title"></div>
+<button id="nextMonth" class="calnav" type="button" aria-label="Mois suivant">›</button>
+</div>
+<div id="calendar" class="calendar"></div>
+<div class="agenda-actions"><button id="clearDate" class="clear-date" type="button">Tous les jours</button></div>
 </div>
 <div class="info" id="status">Recherche prête — Île-de-France uniquement.</div>
 </section>
@@ -65,17 +86,35 @@ const q=document.getElementById('q');
 const zone=document.getElementById('zone');
 const frame=document.getElementById('frame');
 const status=document.getElementById('status');
+const listView=document.getElementById('listView');
+const agendaView=document.getElementById('agendaView');
+const agendaPanel=document.getElementById('agendaPanel');
+const calendar=document.getElementById('calendar');
+const agendaTitle=document.getElementById('agendaTitle');
+let selectedDate=null;
+let calendarMonth=new Date();
+calendarMonth=new Date(calendarMonth.getFullYear(),calendarMonth.getMonth(),1);
 
 function cleanKeyword(v){return (v||'').trim()||'MRS'}
+function pad(n){return String(n).padStart(2,'0')}
+function isoDate(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
+function sameDay(a,b){return a&&b&&a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate()}
+function formatDateFr(d){return new Intl.DateTimeFormat('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(d)}
 
-function urlFor(keyword,key){
+function urlFor(keyword,key,date){
  const z=zones[key]||zones.idf;
  const u=new URL('https://openagenda.com/fr/francetravail');
  u.searchParams.set('search',cleanKeyword(keyword));
  u.searchParams.set('adminLevel1','Île-de-France');
  if(z.department){u.searchParams.set('adminLevel2',z.department)}
- u.searchParams.append('relative[]','current');
- u.searchParams.append('relative[]','upcoming');
+ if(date){
+   const iso=isoDate(date);
+   u.searchParams.set('timings[gte]',iso);
+   u.searchParams.set('timings[lte]',iso);
+ }else{
+   u.searchParams.append('relative[]','current');
+   u.searchParams.append('relative[]','upcoming');
+ }
  return u.toString();
 }
 
@@ -83,13 +122,53 @@ function run(keyword,key){
  const z=zones[key]||zones.idf;
  q.value=cleanKeyword(keyword);
  zone.value=key;
- status.textContent='Résultats pour « '+q.value+' » — '+z.label;
- frame.src=urlFor(q.value,key);
+ const suffix=selectedDate?' — '+formatDateFr(selectedDate):'';
+ status.textContent='Résultats pour « '+q.value+' » — '+z.label+suffix;
+ frame.src=urlFor(q.value,key,selectedDate);
+}
+
+function setView(mode){
+ const agenda=mode==='agenda';
+ agendaPanel.classList.toggle('open',agenda);
+ agendaPanel.setAttribute('aria-hidden',String(!agenda));
+ agendaView.classList.toggle('active',agenda);
+ listView.classList.toggle('active',!agenda);
+ agendaView.setAttribute('aria-pressed',String(agenda));
+ listView.setAttribute('aria-pressed',String(!agenda));
+ if(agenda){renderCalendar();}
+ else if(selectedDate){selectedDate=null;run(q.value,zone.value);}
+}
+
+function renderCalendar(){
+ calendar.innerHTML='';
+ agendaTitle.textContent=new Intl.DateTimeFormat('fr-FR',{month:'long',year:'numeric'}).format(calendarMonth);
+ ['L','M','M','J','V','S','D'].forEach(x=>{const e=document.createElement('div');e.className='dow';e.textContent=x;calendar.appendChild(e)});
+ const y=calendarMonth.getFullYear(),m=calendarMonth.getMonth();
+ const first=new Date(y,m,1);
+ const mondayOffset=(first.getDay()+6)%7;
+ const start=new Date(y,m,1-mondayOffset);
+ const today=new Date();
+ for(let i=0;i<42;i++){
+   const d=new Date(start);d.setDate(start.getDate()+i);
+   const b=document.createElement('button');
+   b.type='button';b.className='day';b.textContent=d.getDate();
+   if(d.getMonth()!==m)b.classList.add('other');
+   if(sameDay(d,today))b.classList.add('today');
+   if(sameDay(d,selectedDate))b.classList.add('selected');
+   b.title=formatDateFr(d);
+   b.addEventListener('click',()=>{selectedDate=new Date(d.getFullYear(),d.getMonth(),d.getDate());calendarMonth=new Date(d.getFullYear(),d.getMonth(),1);renderCalendar();run(q.value,zone.value)});
+   calendar.appendChild(b);
+ }
 }
 
 document.getElementById('f').addEventListener('submit',e=>{e.preventDefault();run(q.value,zone.value)});
 zone.addEventListener('change',()=>run(q.value,zone.value));
 document.querySelectorAll('[data-q]').forEach(b=>b.addEventListener('click',()=>run(b.dataset.q,zone.value)));
+listView.addEventListener('click',()=>setView('list'));
+agendaView.addEventListener('click',()=>setView('agenda'));
+document.getElementById('prevMonth').addEventListener('click',()=>{calendarMonth=new Date(calendarMonth.getFullYear(),calendarMonth.getMonth()-1,1);renderCalendar()});
+document.getElementById('nextMonth').addEventListener('click',()=>{calendarMonth=new Date(calendarMonth.getFullYear(),calendarMonth.getMonth()+1,1);renderCalendar()});
+document.getElementById('clearDate').addEventListener('click',()=>{selectedDate=null;renderCalendar();run(q.value,zone.value)});
 run('MRS','idf');
 </script>
 </body>
