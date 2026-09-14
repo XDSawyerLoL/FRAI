@@ -20,52 +20,90 @@ input,select,button{height:46px;border-radius:8px;font-size:15px}input,select{bo
 <main class="app">
 <section class="box">
 <h1>Recherche événements emploi — Île-de-France</h1>
-<div class="sub">Chaque recherche impose la zone francilienne en plus du mot-clé.</div>
+<div class="sub">La région Île-de-France est imposée à chaque recherche. Le département ajoute un second filtre strict.</div>
 <form id="f" class="grid">
 <div class="field"><label for="q">Mot-clé</label><input id="q" value="MRS" placeholder="MRS, alternance, job dating…"></div>
 <div class="field"><label for="zone">Zone</label><select id="zone">
-<option value="idf">Toute l’Île-de-France</option><option value="75">Paris (75)</option><option value="77">Seine-et-Marne (77)</option><option value="78">Yvelines (78)</option><option value="91">Essonne (91)</option><option value="92">Hauts-de-Seine (92)</option><option value="93">Seine-Saint-Denis (93)</option><option value="94">Val-de-Marne (94)</option><option value="95">Val-d’Oise (95)</option>
+<option value="idf">Toute l’Île-de-France</option>
+<option value="75">Paris (75)</option>
+<option value="77">Seine-et-Marne (77)</option>
+<option value="78">Yvelines (78)</option>
+<option value="91">Essonne (91)</option>
+<option value="92">Hauts-de-Seine (92)</option>
+<option value="93">Seine-Saint-Denis (93)</option>
+<option value="94">Val-de-Marne (94)</option>
+<option value="95">Val-d’Oise (95)</option>
 </select></div>
 <button type="submit">Rechercher</button>
 </form>
-<div class="quick"><button class="chip" data-q="MRS" type="button">MRS</button><button class="chip" data-q="Job dating" type="button">Job dating</button><button class="chip" data-q="Alternance" type="button">Alternance</button><button class="chip" data-q="Recrutement sans CV" type="button">Sans CV</button><button class="chip" data-q="Intelligence artificielle" type="button">IA</button></div>
+<div class="quick">
+<button class="chip" data-q="MRS" type="button">MRS</button>
+<button class="chip" data-q="Job dating" type="button">Job dating</button>
+<button class="chip" data-q="Alternance" type="button">Alternance</button>
+<button class="chip" data-q="Recrutement sans CV" type="button">Sans CV</button>
+<button class="chip" data-q="Intelligence artificielle" type="button">IA</button>
+</div>
 <div class="info" id="status">Recherche prête — Île-de-France uniquement.</div>
 </section>
 <section class="viewer"><iframe id="frame" title="Résultats France Travail Île-de-France"></iframe></section>
 </main>
 <script>
 const zones={
- idf:{term:'"Ile-de-France"',label:'Île-de-France',box:[48.12,1.44,49.25,3.56]},
- '75':{term:'"Paris"',label:'Paris (75)',box:[48.815,2.224,48.903,2.470]},
- '77':{term:'"Seine-et-Marne"',label:'Seine-et-Marne (77)',box:[48.12,2.37,49.13,3.56]},
- '78':{term:'"Yvelines"',label:'Yvelines (78)',box:[48.43,1.44,49.10,2.23]},
- '91':{term:'"Essonne"',label:'Essonne (91)',box:[48.28,1.91,48.78,2.59]},
- '92':{term:'"Hauts-de-Seine"',label:'Hauts-de-Seine (92)',box:[48.72,2.14,48.96,2.34]},
- '93':{term:'"Seine-Saint-Denis"',label:'Seine-Saint-Denis (93)',box:[48.86,2.28,49.02,2.61]},
- '94':{term:'"Val-de-Marne"',label:'Val-de-Marne (94)',box:[48.68,2.29,48.87,2.62]},
- '95':{term:'"Val-d’Oise"',label:'Val-d’Oise (95)',box:[48.89,1.61,49.25,2.59]}
+ idf:{label:'Île-de-France',department:null,box:[48.12,1.44,49.25,3.56]},
+ '75':{label:'Paris (75)',department:'Paris',box:[48.815,2.224,48.903,2.470]},
+ '77':{label:'Seine-et-Marne (77)',department:'Seine-et-Marne',box:[48.12,2.37,49.13,3.56]},
+ '78':{label:'Yvelines (78)',department:'Yvelines',box:[48.43,1.44,49.10,2.23]},
+ '91':{label:'Essonne (91)',department:'Essonne',box:[48.28,1.91,48.78,2.59]},
+ '92':{label:'Hauts-de-Seine (92)',department:'Hauts-de-Seine',box:[48.72,2.14,48.96,2.34]},
+ '93':{label:'Seine-Saint-Denis (93)',department:'Seine-Saint-Denis',box:[48.86,2.28,49.02,2.61]},
+ '94':{label:'Val-de-Marne (94)',department:'Val-de-Marne',box:[48.68,2.29,48.87,2.62]},
+ '95':{label:'Val-d’Oise (95)',department:"Val-d'Oise",box:[48.89,1.61,49.25,2.59]}
 };
-const q=document.getElementById('q'),zone=document.getElementById('zone'),frame=document.getElementById('frame'),status=document.getElementById('status');
+const q=document.getElementById('q');
+const zone=document.getElementById('zone');
+const frame=document.getElementById('frame');
+const status=document.getElementById('status');
+
 function cleanKeyword(v){return (v||'').trim()||'MRS'}
+
 function urlFor(keyword,key){
  const z=zones[key]||zones.idf;
  const kw=cleanKeyword(keyword);
- const term=kw+' AND '+z.term;
  const u=new URL('https://openagenda.com/fr/francetravail');
- u.searchParams.set('oaq[what]',term);
- u.searchParams.set('oaq[swLat]',String(z.box[0]));
- u.searchParams.set('oaq[swLng]',String(z.box[1]));
- u.searchParams.set('oaq[neLat]',String(z.box[2]));
- u.searchParams.set('oaq[neLng]',String(z.box[3]));
+
+ // Syntaxe actuelle OpenAgenda / API v2.
+ u.searchParams.set('search',kw);
+ u.searchParams.set('threshold','auto');
+
+ // Filtre régional strict : toujours présent.
+ u.searchParams.set('adminLevel1','Ile-de-France');
+
+ // Filtre départemental strict si un département est choisi.
+ if(z.department){
+   u.searchParams.set('adminLevel2',z.department);
+ }
+
+ // Double sécurité par emprise géographique.
+ u.searchParams.set('geo[northEast][lat]',String(z.box[2]));
+ u.searchParams.set('geo[northEast][lng]',String(z.box[3]));
+ u.searchParams.set('geo[southWest][lat]',String(z.box[0]));
+ u.searchParams.set('geo[southWest][lng]',String(z.box[1]));
+
+ // Uniquement événements en cours ou à venir.
+ u.searchParams.append('relative[]','current');
+ u.searchParams.append('relative[]','upcoming');
+
  return u.toString();
 }
+
 function run(keyword,key){
  const z=zones[key]||zones.idf;
  q.value=cleanKeyword(keyword);
  zone.value=key;
- status.textContent='Résultats pour « '+q.value+' » ET '+z.label;
+ status.textContent='Résultats pour « '+q.value+' » — '+z.label+' uniquement';
  frame.src=urlFor(q.value,key);
 }
+
 document.getElementById('f').addEventListener('submit',e=>{e.preventDefault();run(q.value,zone.value)});
 zone.addEventListener('change',()=>run(q.value,zone.value));
 document.querySelectorAll('[data-q]').forEach(b=>b.addEventListener('click',()=>run(b.dataset.q,zone.value)));
