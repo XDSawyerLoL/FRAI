@@ -1,42 +1,40 @@
-# Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+name: Refresh event calendar data
 
 on:
   push:
     branches: ["main"]
-  # Refresh the event calendar every morning, even when no code changes.
+    paths-ignore:
+      - "events-idf.js"
+      - "events-idf.json"
   schedule:
     - cron: "17 5 * * *"
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  group: "events-data"
+  cancel-in-progress: true
 
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  refresh-events:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Build IDF events calendar data
+      - name: Build IDF events data
         run: |
           python3 scripts/build-events-calendar.py
           python3 scripts/build-events-js.py
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: '.'
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v5
+      - name: Save generated data in the repository
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add events-idf.json events-idf.js
+          if git diff --cached --quiet; then
+            echo "Event data already up to date."
+          else
+            git commit -m "Refresh IDF event data"
+            git push
+          fi
