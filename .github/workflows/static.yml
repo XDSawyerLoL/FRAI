@@ -28,7 +28,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Build IDF events calendar data
-        run: python3 scripts/build-events-calendar.py
+        run: |
+          python3 scripts/build-events-calendar.py
+          python3 scripts/build-events-js.py
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
