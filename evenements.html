@@ -32,12 +32,11 @@
 <div class="view-switch"><button id="listView" class="viewbtn active" type="button" title="Vue liste" aria-pressed="true"><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg></button><button id="agendaView" class="viewbtn" type="button" title="Vue agenda" aria-pressed="false"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01"/></svg></button></div></div>
 <div id="agendaPanel" class="agenda" aria-hidden="true"><div class="agenda-head"><button id="prevMonth" class="calnav" type="button">‹</button><div id="agendaTitle" class="agenda-title"></div><button id="nextMonth" class="calnav" type="button">›</button></div><div id="calendar" class="calendar"></div>
 <div class="legend"><span><i class="dot dot-mrs"></i>MRS</span><span><i class="dot dot-jobdating"></i>Job dating</span><span><i class="dot dot-alternance"></i>Alternance</span><span><i class="dot dot-sanscv"></i>Sans CV</span><span><i class="dot dot-ia"></i>IA</span><span><i class="dot dot-autre"></i>Autre</span></div>
-<div id="agendaData" class="agenda-data">Chargement des événements du calendrier…</div><div id="dayDetails" class="day-details"><div class="day-empty">Cliquez sur un jour pour voir les événements prévus.</div></div><div class="agenda-actions"><button id="clearDate" class="clear-date" type="button">Tous les jours</button></div></div>
+<div id="agendaData" class="agenda-data">Chargement du calendrier…</div><div id="dayDetails" class="day-details"><div class="day-empty">Cliquez sur un jour pour voir ce qui se passe ce jour-là.</div></div><div class="agenda-actions"><button id="clearDate" class="clear-date" type="button">Tous les jours</button></div></div>
 <div class="info" id="status">Recherche prête — Île-de-France uniquement.</div>
 </section>
 <section class="viewer"><iframe id="frame" title="Résultats France Travail Île-de-France" loading="eager"></iframe></section>
 </main>
-<script src="events-idf.js"></script>
-<script src="evenements-app.js"></script>
+<script src="evenements-app-stable.js"></script>
 </body>
 </html>
