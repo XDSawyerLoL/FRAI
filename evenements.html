@@ -20,7 +20,7 @@ input,select,button{height:46px;border-radius:8px;font-size:15px}input,select{bo
 <main class="app">
 <section class="box">
 <h1>Recherche événements emploi — Île-de-France</h1>
-<div class="sub">La région Île-de-France est imposée à chaque recherche. Le département ajoute un second filtre strict.</div>
+<div class="sub">La recherche est limitée à l’Île-de-France. Le département n’est appliqué que si vous en choisissez un.</div>
 <form id="f" class="grid">
 <div class="field"><label for="q">Mot-clé</label><input id="q" value="MRS" placeholder="MRS, alternance, job dating…"></div>
 <div class="field"><label for="zone">Zone</label><select id="zone">
@@ -49,15 +49,15 @@ input,select,button{height:46px;border-radius:8px;font-size:15px}input,select{bo
 </main>
 <script>
 const zones={
- idf:{label:'Île-de-France',department:null,box:[48.12,1.44,49.25,3.56]},
- '75':{label:'Paris (75)',department:'Paris',box:[48.815,2.224,48.903,2.470]},
- '77':{label:'Seine-et-Marne (77)',department:'Seine-et-Marne',box:[48.12,2.37,49.13,3.56]},
- '78':{label:'Yvelines (78)',department:'Yvelines',box:[48.43,1.44,49.10,2.23]},
- '91':{label:'Essonne (91)',department:'Essonne',box:[48.28,1.91,48.78,2.59]},
- '92':{label:'Hauts-de-Seine (92)',department:'Hauts-de-Seine',box:[48.72,2.14,48.96,2.34]},
- '93':{label:'Seine-Saint-Denis (93)',department:'Seine-Saint-Denis',box:[48.86,2.28,49.02,2.61]},
- '94':{label:'Val-de-Marne (94)',department:'Val-de-Marne',box:[48.68,2.29,48.87,2.62]},
- '95':{label:'Val-d’Oise (95)',department:"Val-d'Oise",box:[48.89,1.61,49.25,2.59]}
+ idf:{label:'Île-de-France',department:null},
+ '75':{label:'Paris (75)',department:'Paris'},
+ '77':{label:'Seine-et-Marne (77)',department:'Seine-et-Marne'},
+ '78':{label:'Yvelines (78)',department:'Yvelines'},
+ '91':{label:'Essonne (91)',department:'Essonne'},
+ '92':{label:'Hauts-de-Seine (92)',department:'Hauts-de-Seine'},
+ '93':{label:'Seine-Saint-Denis (93)',department:'Seine-Saint-Denis'},
+ '94':{label:'Val-de-Marne (94)',department:'Val-de-Marne'},
+ '95':{label:'Val-d’Oise (95)',department:"Val-d'Oise"}
 };
 const q=document.getElementById('q');
 const zone=document.getElementById('zone');
@@ -68,28 +68,21 @@ function cleanKeyword(v){return (v||'').trim()||'MRS'}
 
 function urlFor(keyword,key){
  const z=zones[key]||zones.idf;
- const kw=cleanKeyword(keyword);
  const u=new URL('https://openagenda.com/fr/francetravail');
 
- // Syntaxe actuelle OpenAgenda / API v2.
- u.searchParams.set('search',kw);
- u.searchParams.set('threshold','auto');
+ // Recherche textuelle native OpenAgenda.
+ u.searchParams.set('search',cleanKeyword(keyword));
 
- // Filtre régional strict : toujours présent.
- u.searchParams.set('adminLevel1','Ile-de-France');
+ // Filtre géographique exact fourni par l’API OpenAgenda.
+ // Important : conserver l’accent exact dans « Île-de-France ».
+ u.searchParams.set('adminLevel1','Île-de-France');
 
- // Filtre départemental strict si un département est choisi.
+ // Le département est facultatif : il ne s’ajoute que si l’utilisateur le choisit.
  if(z.department){
    u.searchParams.set('adminLevel2',z.department);
  }
 
- // Double sécurité par emprise géographique.
- u.searchParams.set('geo[northEast][lat]',String(z.box[2]));
- u.searchParams.set('geo[northEast][lng]',String(z.box[3]));
- u.searchParams.set('geo[southWest][lat]',String(z.box[0]));
- u.searchParams.set('geo[southWest][lng]',String(z.box[1]));
-
- // Uniquement événements en cours ou à venir.
+ // Événements visibles maintenant ou à venir.
  u.searchParams.append('relative[]','current');
  u.searchParams.append('relative[]','upcoming');
 
@@ -100,7 +93,7 @@ function run(keyword,key){
  const z=zones[key]||zones.idf;
  q.value=cleanKeyword(keyword);
  zone.value=key;
- status.textContent='Résultats pour « '+q.value+' » — '+z.label+' uniquement';
+ status.textContent='Résultats pour « '+q.value+' » — '+z.label;
  frame.src=urlFor(q.value,key);
 }
 
