@@ -15,9 +15,13 @@ input,select,button{height:46px;border-radius:8px;font-size:15px}input,select{bo
 .view-switch{display:flex;gap:6px}.viewbtn{height:36px;width:42px;padding:0;display:grid;place-items:center;background:#fff;color:#475467;border:1px solid #cbd5e1;border-radius:8px}.viewbtn:hover{background:#f8fafc}.viewbtn.active{background:#e8f2ff;color:#0057b8;border-color:#8ec2f5}.viewbtn svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .info{margin-top:10px;font-size:12px;color:var(--muted)}
 .agenda{display:none;margin-top:12px;border:1px solid var(--line);border-radius:10px;background:#f8fafc;padding:12px}.agenda.open{display:block}.agenda-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}.agenda-title{font-weight:700;font-size:15px;text-transform:capitalize}.calnav{width:36px;height:34px;padding:0;border:1px solid #cbd5e1;background:#fff;color:#344054;border-radius:7px;font-size:20px;line-height:1}.agenda-actions{display:flex;justify-content:flex-end;margin-top:9px}.clear-date{height:32px;background:#fff;color:#0057b8;border:1px solid #a8cdf2;padding:0 10px;font-size:12px}
-.calendar{display:grid;grid-template-columns:repeat(7,minmax(34px,1fr));gap:5px}.dow{text-align:center;font-size:11px;font-weight:700;color:#667085;padding:4px 0}.day{height:38px;padding:0;border-radius:7px;border:1px solid transparent;background:#fff;color:#344054;font-weight:600}.day:hover{border-color:#9ec5ee;background:#eef6ff}.day.other{opacity:.32}.day.today{border-color:#6caeea}.day.selected{background:#0063cb;color:#fff;border-color:#0063cb}
+.calendar{display:grid;grid-template-columns:repeat(7,minmax(54px,1fr));gap:5px}.dow{text-align:center;font-size:11px;font-weight:700;color:#667085;padding:4px 0}.day{min-height:58px;height:auto;padding:5px 4px 4px;border-radius:8px;border:1px solid transparent;background:#fff;color:#344054;font-weight:600;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:4px}.day:hover{border-color:#9ec5ee;background:#eef6ff}.day.other{opacity:.32}.day.today{border-color:#6caeea}.day.selected{background:#e7f2ff;color:#003b74;border-color:#0063cb;box-shadow:inset 0 0 0 1px #0063cb}.daynum{line-height:18px}.dots{min-height:14px;display:flex;align-items:center;justify-content:center;gap:3px;flex-wrap:wrap;max-width:46px}.dot{width:7px;height:7px;border-radius:50%;display:block}.more{font-size:9px;line-height:10px;color:#667085;font-weight:700}.day.selected .more{color:#003b74}
+.dot-mrs{background:#d92d20}.dot-jobdating{background:#1570ef}.dot-alternance{background:#079455}.dot-sanscv{background:#f79009}.dot-ia{background:#7f56d9}.dot-autre{background:#667085}
+.legend{display:flex;flex-wrap:wrap;gap:8px 13px;margin:10px 0 2px;font-size:11px;color:#475467}.legend span{display:inline-flex;align-items:center;gap:5px}.legend .dot{width:8px;height:8px}
+.agenda-data{font-size:11px;color:#667085;margin-top:7px}.agenda-data.warn{color:#b54708}
+.day-details{margin-top:12px;background:#fff;border:1px solid #d8dee8;border-radius:9px;padding:12px}.day-details-title{font-size:14px;font-weight:700;margin-bottom:8px;text-transform:capitalize}.day-empty{font-size:12px;color:#667085}.event-day-list{display:grid;gap:7px}.day-event{display:grid;grid-template-columns:8px 52px 1fr auto;gap:8px;align-items:start;padding:8px;border:1px solid #e4e7ec;border-radius:8px;background:#fff}.day-event .edot{width:8px;height:8px;border-radius:50%;margin-top:5px}.etime{font-size:12px;font-weight:700;color:#344054}.etitle{font-size:12px;font-weight:700;color:#101828}.elocation{font-size:11px;color:#667085;margin-top:2px}.elink{font-size:11px;color:#0057b8;text-decoration:none;white-space:nowrap;padding-top:1px}.elink:hover{text-decoration:underline}
 .viewer{margin-top:12px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;height:820px;position:relative}.viewer iframe{position:absolute;left:0;top:calc(-1 * var(--oa-crop));width:100%;height:calc(820px + var(--oa-crop));border:0;display:block;background:#fff}
-@media(max-width:760px){:root{--oa-crop:610px}.grid{grid-template-columns:1fr}.toolbar{align-items:flex-start}.viewer{height:720px}.viewer iframe{height:calc(720px + var(--oa-crop))}.calendar{gap:3px}.day{height:34px;font-size:12px}}
+@media(max-width:760px){:root{--oa-crop:610px}.grid{grid-template-columns:1fr}.toolbar{align-items:flex-start}.viewer{height:720px}.viewer iframe{height:calc(720px + var(--oa-crop))}.calendar{grid-template-columns:repeat(7,minmax(39px,1fr));gap:3px}.day{min-height:54px;font-size:12px;padding:4px 2px}.dots{gap:2px;max-width:34px}.dot{width:6px;height:6px}.day-event{grid-template-columns:7px 42px 1fr}.elink{grid-column:3;margin-top:2px}}
 </style>
 </head>
 <body>
@@ -49,21 +53,18 @@ input,select,button{height:46px;border-radius:8px;font-size:15px}input,select{bo
 <button class="chip" data-q="Intelligence artificielle" type="button">IA</button>
 </div>
 <div class="view-switch" aria-label="Mode d’affichage">
-<button id="listView" class="viewbtn active" type="button" title="Vue liste" aria-label="Vue liste" aria-pressed="true">
-<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg>
-</button>
-<button id="agendaView" class="viewbtn" type="button" title="Vue agenda" aria-label="Vue agenda" aria-pressed="false">
-<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>
-</button>
+<button id="listView" class="viewbtn active" type="button" title="Vue liste" aria-label="Vue liste" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg></button>
+<button id="agendaView" class="viewbtn" type="button" title="Vue agenda" aria-label="Vue agenda" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg></button>
 </div>
 </div>
 <div id="agendaPanel" class="agenda" aria-hidden="true">
-<div class="agenda-head">
-<button id="prevMonth" class="calnav" type="button" aria-label="Mois précédent">‹</button>
-<div id="agendaTitle" class="agenda-title"></div>
-<button id="nextMonth" class="calnav" type="button" aria-label="Mois suivant">›</button>
-</div>
+<div class="agenda-head"><button id="prevMonth" class="calnav" type="button" aria-label="Mois précédent">‹</button><div id="agendaTitle" class="agenda-title"></div><button id="nextMonth" class="calnav" type="button" aria-label="Mois suivant">›</button></div>
 <div id="calendar" class="calendar"></div>
+<div class="legend" aria-label="Légende des événements">
+<span><i class="dot dot-mrs"></i>MRS</span><span><i class="dot dot-jobdating"></i>Job dating</span><span><i class="dot dot-alternance"></i>Alternance</span><span><i class="dot dot-sanscv"></i>Sans CV</span><span><i class="dot dot-ia"></i>IA</span><span><i class="dot dot-autre"></i>Autre</span>
+</div>
+<div id="agendaData" class="agenda-data">Chargement des événements du calendrier…</div>
+<div id="dayDetails" class="day-details"><div class="day-empty">Cliquez sur un jour pour voir les événements prévus.</div></div>
 <div class="agenda-actions"><button id="clearDate" class="clear-date" type="button">Tous les jours</button></div>
 </div>
 <div class="info" id="status">Recherche prête — Île-de-France uniquement.</div>
@@ -72,103 +73,90 @@ input,select,button{height:46px;border-radius:8px;font-size:15px}input,select{bo
 </main>
 <script>
 const zones={
- idf:{label:'Île-de-France',department:null},
- '75':{label:'Paris (75)',department:'Paris'},
- '77':{label:'Seine-et-Marne (77)',department:'Seine-et-Marne'},
- '78':{label:'Yvelines (78)',department:'Yvelines'},
- '91':{label:'Essonne (91)',department:'Essonne'},
- '92':{label:'Hauts-de-Seine (92)',department:'Hauts-de-Seine'},
- '93':{label:'Seine-Saint-Denis (93)',department:'Seine-Saint-Denis'},
- '94':{label:'Val-de-Marne (94)',department:'Val-de-Marne'},
- '95':{label:'Val-d’Oise (95)',department:"Val-d'Oise"}
+ idf:{label:'Île-de-France',department:null,code:null},
+ '75':{label:'Paris (75)',department:'Paris',code:'75'},
+ '77':{label:'Seine-et-Marne (77)',department:'Seine-et-Marne',code:'77'},
+ '78':{label:'Yvelines (78)',department:'Yvelines',code:'78'},
+ '91':{label:'Essonne (91)',department:'Essonne',code:'91'},
+ '92':{label:'Hauts-de-Seine (92)',department:'Hauts-de-Seine',code:'92'},
+ '93':{label:'Seine-Saint-Denis (93)',department:'Seine-Saint-Denis',code:'93'},
+ '94':{label:'Val-de-Marne (94)',department:'Val-de-Marne',code:'94'},
+ '95':{label:'Val-d’Oise (95)',department:"Val-d'Oise",code:'95'}
 };
-const q=document.getElementById('q');
-const zone=document.getElementById('zone');
-const frame=document.getElementById('frame');
-const status=document.getElementById('status');
-const listView=document.getElementById('listView');
-const agendaView=document.getElementById('agendaView');
-const agendaPanel=document.getElementById('agendaPanel');
-const calendar=document.getElementById('calendar');
-const agendaTitle=document.getElementById('agendaTitle');
+const categoryLabels={mrs:'MRS',jobdating:'Job dating',alternance:'Alternance',sanscv:'Sans CV',ia:'IA',autre:'Autre'};
+const q=document.getElementById('q'),zone=document.getElementById('zone'),frame=document.getElementById('frame'),status=document.getElementById('status');
+const listView=document.getElementById('listView'),agendaView=document.getElementById('agendaView'),agendaPanel=document.getElementById('agendaPanel'),calendar=document.getElementById('calendar'),agendaTitle=document.getElementById('agendaTitle'),agendaData=document.getElementById('agendaData'),dayDetails=document.getElementById('dayDetails');
 let selectedDate=null;
-let calendarMonth=new Date();
-calendarMonth=new Date(calendarMonth.getFullYear(),calendarMonth.getMonth(),1);
+let calendarMonth=new Date();calendarMonth=new Date(calendarMonth.getFullYear(),calendarMonth.getMonth(),1);
+let calendarEvents=[];let calendarLoaded=false;let calendarLoading=false;let calendarMeta=null;
 
 function cleanKeyword(v){return (v||'').trim()||'MRS'}
 function pad(n){return String(n).padStart(2,'0')}
 function isoDate(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
 function sameDay(a,b){return a&&b&&a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate()}
 function formatDateFr(d){return new Intl.DateTimeFormat('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(d)}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function zoneEvents(){const z=zones[zone.value]||zones.idf;return calendarEvents.filter(e=>!z.code||e.department===z.code)}
+function eventsForDate(d){const date=isoDate(d);return zoneEvents().filter(e=>e.date===date).sort((a,b)=>(a.time||'').localeCompare(b.time||'')||(a.title||'').localeCompare(b.title||''))}
+
+async function loadCalendarData(){
+ if(calendarLoaded||calendarLoading)return;
+ calendarLoading=true;agendaData.className='agenda-data';agendaData.textContent='Chargement des événements du calendrier…';
+ try{
+   const r=await fetch('events-idf.json?v='+Date.now(),{cache:'no-store'});
+   if(!r.ok)throw new Error('HTTP '+r.status);
+   const data=await r.json();
+   calendarEvents=Array.isArray(data.events)?data.events:[];calendarMeta=data;calendarLoaded=true;
+   agendaData.className='agenda-data';agendaData.textContent=calendarEvents.length+' événements IDF chargés pour le calendrier.';
+ }catch(err){
+   agendaData.className='agenda-data warn';agendaData.textContent='Les points du calendrier sont temporairement indisponibles. La recherche reste utilisable.';
+ }finally{calendarLoading=false;renderCalendar();renderDayDetails()}
+}
 
 function urlFor(keyword,key,date){
- const z=zones[key]||zones.idf;
- const u=new URL('https://openagenda.com/fr/francetravail');
- u.searchParams.set('search',cleanKeyword(keyword));
- u.searchParams.set('adminLevel1','Île-de-France');
- if(z.department){u.searchParams.set('adminLevel2',z.department)}
- if(date){
-   const iso=isoDate(date);
-   u.searchParams.set('timings[gte]',iso);
-   u.searchParams.set('timings[lte]',iso);
- }else{
-   u.searchParams.append('relative[]','current');
-   u.searchParams.append('relative[]','upcoming');
- }
+ const z=zones[key]||zones.idf;const u=new URL('https://openagenda.com/fr/francetravail');
+ u.searchParams.set('search',cleanKeyword(keyword));u.searchParams.set('adminLevel1','Île-de-France');if(z.department)u.searchParams.set('adminLevel2',z.department);
+ if(date){const iso=isoDate(date);u.searchParams.set('timings[gte]',iso);u.searchParams.set('timings[lte]',iso)}else{u.searchParams.append('relative[]','current');u.searchParams.append('relative[]','upcoming')}
  return u.toString();
 }
-
-function run(keyword,key){
- const z=zones[key]||zones.idf;
- q.value=cleanKeyword(keyword);
- zone.value=key;
- const suffix=selectedDate?' — '+formatDateFr(selectedDate):'';
- status.textContent='Résultats pour « '+q.value+' » — '+z.label+suffix;
- frame.src=urlFor(q.value,key,selectedDate);
-}
+function run(keyword,key){const z=zones[key]||zones.idf;q.value=cleanKeyword(keyword);zone.value=key;const suffix=selectedDate?' — '+formatDateFr(selectedDate):'';status.textContent='Résultats pour « '+q.value+' » — '+z.label+suffix;frame.src=urlFor(q.value,key,selectedDate)}
 
 function setView(mode){
- const agenda=mode==='agenda';
- agendaPanel.classList.toggle('open',agenda);
- agendaPanel.setAttribute('aria-hidden',String(!agenda));
- agendaView.classList.toggle('active',agenda);
- listView.classList.toggle('active',!agenda);
- agendaView.setAttribute('aria-pressed',String(agenda));
- listView.setAttribute('aria-pressed',String(!agenda));
- if(agenda){renderCalendar();}
- else if(selectedDate){selectedDate=null;run(q.value,zone.value);}
+ const agenda=mode==='agenda';agendaPanel.classList.toggle('open',agenda);agendaPanel.setAttribute('aria-hidden',String(!agenda));agendaView.classList.toggle('active',agenda);listView.classList.toggle('active',!agenda);agendaView.setAttribute('aria-pressed',String(agenda));listView.setAttribute('aria-pressed',String(!agenda));
+ if(agenda){renderCalendar();renderDayDetails();loadCalendarData()}else if(selectedDate){selectedDate=null;run(q.value,zone.value)}
 }
 
 function renderCalendar(){
- calendar.innerHTML='';
- agendaTitle.textContent=new Intl.DateTimeFormat('fr-FR',{month:'long',year:'numeric'}).format(calendarMonth);
+ calendar.innerHTML='';agendaTitle.textContent=new Intl.DateTimeFormat('fr-FR',{month:'long',year:'numeric'}).format(calendarMonth);
  ['L','M','M','J','V','S','D'].forEach(x=>{const e=document.createElement('div');e.className='dow';e.textContent=x;calendar.appendChild(e)});
- const y=calendarMonth.getFullYear(),m=calendarMonth.getMonth();
- const first=new Date(y,m,1);
- const mondayOffset=(first.getDay()+6)%7;
- const start=new Date(y,m,1-mondayOffset);
- const today=new Date();
+ const y=calendarMonth.getFullYear(),m=calendarMonth.getMonth(),first=new Date(y,m,1),mondayOffset=(first.getDay()+6)%7,start=new Date(y,m,1-mondayOffset),today=new Date();
  for(let i=0;i<42;i++){
-   const d=new Date(start);d.setDate(start.getDate()+i);
-   const b=document.createElement('button');
-   b.type='button';b.className='day';b.textContent=d.getDate();
-   if(d.getMonth()!==m)b.classList.add('other');
-   if(sameDay(d,today))b.classList.add('today');
-   if(sameDay(d,selectedDate))b.classList.add('selected');
-   b.title=formatDateFr(d);
-   b.addEventListener('click',()=>{selectedDate=new Date(d.getFullYear(),d.getMonth(),d.getDate());calendarMonth=new Date(d.getFullYear(),d.getMonth(),1);renderCalendar();run(q.value,zone.value)});
-   calendar.appendChild(b);
+   const d=new Date(start);d.setDate(start.getDate()+i);const evs=eventsForDate(d);const b=document.createElement('button');b.type='button';b.className='day';
+   if(d.getMonth()!==m)b.classList.add('other');if(sameDay(d,today))b.classList.add('today');if(sameDay(d,selectedDate))b.classList.add('selected');
+   const num=document.createElement('span');num.className='daynum';num.textContent=d.getDate();b.appendChild(num);
+   const dots=document.createElement('span');dots.className='dots';
+   evs.slice(0,6).forEach(ev=>{const dot=document.createElement('i');dot.className='dot dot-'+(categoryLabels[ev.category]?ev.category:'autre');dot.title=categoryLabels[ev.category]||'Autre';dots.appendChild(dot)});
+   if(evs.length>6){const more=document.createElement('span');more.className='more';more.textContent='+'+(evs.length-6);dots.appendChild(more)}
+   b.appendChild(dots);b.title=formatDateFr(d)+(evs.length?' — '+evs.length+' événement'+(evs.length>1?'s':''):' — aucun événement chargé');
+   b.addEventListener('click',()=>{selectedDate=new Date(d.getFullYear(),d.getMonth(),d.getDate());calendarMonth=new Date(d.getFullYear(),d.getMonth(),1);renderCalendar();renderDayDetails();run(q.value,zone.value)});calendar.appendChild(b);
  }
 }
 
+function renderDayDetails(){
+ if(!selectedDate){dayDetails.innerHTML='<div class="day-empty">Cliquez sur un jour pour voir les événements prévus.</div>';return}
+ const evs=eventsForDate(selectedDate);let h='<div class="day-details-title">'+esc(formatDateFr(selectedDate))+'</div>';
+ if(!calendarLoaded){h+='<div class="day-empty">Chargement des événements…</div>';dayDetails.innerHTML=h;return}
+ if(!evs.length){h+='<div class="day-empty">Aucun événement IDF chargé pour cette journée'+((zones[zone.value]||zones.idf).code?' dans ce département':'')+'.</div>';dayDetails.innerHTML=h;return}
+ h+='<div class="event-day-list">'+evs.map(e=>'<div class="day-event"><i class="edot dot-'+esc(categoryLabels[e.category]?e.category:'autre')+'"></i><div class="etime">'+esc(e.time||'')+'</div><div><div class="etitle">'+esc(e.title)+'</div><div class="elocation">'+esc(e.location||'Lieu non précisé')+'</div></div>'+(e.url?'<a class="elink" href="'+esc(e.url)+'" target="_blank" rel="noopener">Voir ↗</a>':'')+'</div>').join('')+'</div>';dayDetails.innerHTML=h;
+}
+
 document.getElementById('f').addEventListener('submit',e=>{e.preventDefault();run(q.value,zone.value)});
-zone.addEventListener('change',()=>run(q.value,zone.value));
+zone.addEventListener('change',()=>{renderCalendar();renderDayDetails();run(q.value,zone.value)});
 document.querySelectorAll('[data-q]').forEach(b=>b.addEventListener('click',()=>run(b.dataset.q,zone.value)));
-listView.addEventListener('click',()=>setView('list'));
-agendaView.addEventListener('click',()=>setView('agenda'));
-document.getElementById('prevMonth').addEventListener('click',()=>{calendarMonth=new Date(calendarMonth.getFullYear(),calendarMonth.getMonth()-1,1);renderCalendar()});
-document.getElementById('nextMonth').addEventListener('click',()=>{calendarMonth=new Date(calendarMonth.getFullYear(),calendarMonth.getMonth()+1,1);renderCalendar()});
-document.getElementById('clearDate').addEventListener('click',()=>{selectedDate=null;renderCalendar();run(q.value,zone.value)});
+listView.addEventListener('click',()=>setView('list'));agendaView.addEventListener('click',()=>setView('agenda'));
+document.getElementById('prevMonth').addEventListener('click',()=>{calendarMonth=new Date(calendarMonth.getFullYear(),calendarMonth.getMonth()-1,1);selectedDate=null;renderCalendar();renderDayDetails()});
+document.getElementById('nextMonth').addEventListener('click',()=>{calendarMonth=new Date(calendarMonth.getFullYear(),calendarMonth.getMonth()+1,1);selectedDate=null;renderCalendar();renderDayDetails()});
+document.getElementById('clearDate').addEventListener('click',()=>{selectedDate=null;renderCalendar();renderDayDetails();run(q.value,zone.value)});
 run('MRS','idf');
 </script>
 </body>
