@@ -6,6 +6,7 @@ import json
 import os
 import re
 import sys
+import unicodedata
 import urllib.parse
 import urllib.request
 from zoneinfo import ZoneInfo
@@ -106,6 +107,39 @@ def dept_from_text(text):
     return m.group(1) if m else None
 
 
+def slugify(value):
+    value = unicodedata.normalize('NFKD', value or '').encode('ascii', 'ignore').decode('ascii').lower()
+    value = re.sub(r"[^a-z0-9]+", '-', value).strip('-')
+    return value[:180]
+
+
+def clean_url(value):
+    return (value or '').strip().rstrip('.,;:!?)\]}\'"')
+
+
+def best_event_url(title, desc, explicit_url=''):
+    candidates=[]
+    if explicit_url:
+        candidates.append(clean_url(explicit_url))
+    candidates.extend(clean_url(u) for u in re.findall(r'https?://[^\s<>"\']+', desc or ''))
+
+    # Prefer the official France Travail event page when the import exposes it.
+    for u in candidates:
+        if re.search(r'mesevenementsemploi\.francetravail\.fr/mes-evenements-emploi/evenement/\d+', u, re.I):
+            return u
+    # Otherwise keep an explicit OpenAgenda event page if present.
+    for u in candidates:
+        if re.search(r'openagenda\.com/(?:fr/)?francetravail/events/', u, re.I):
+            return u
+    # Then use any explicit URL supplied by the event itself.
+    for u in candidates:
+        if u.startswith(('http://','https://')):
+            return u
+
+    # Stable fallback: the public agenda filtered on the exact event title.
+    return AGENDA_PAGE + '?' + urllib.parse.urlencode({'search': title})
+
+
 def parse_ics(text):
     lines = unfold_ics(text)
     blocks=[]; cur=None
@@ -131,11 +165,11 @@ def parse_ics(text):
         title = data.get('SUMMARY',('', 'Événement France Travail'))[1]
         desc = data.get('DESCRIPTION',('', ''))[1]
         loc = data.get('LOCATION',('', ''))[1]
-        url = data.get('URL',('', ''))[1]
+        explicit_url = data.get('URL',('', ''))[1]
+        url = best_event_url(title, desc, explicit_url)
         uid = data.get('UID',('', url or title))[1]
         cats = data.get('CATEGORIES',('', ''))[1]
         dep = dept_from_text(' '.join([loc, desc, title]))
-        # When postal code is available, use it as a hard IDF guard.
         if dep and dep not in IDF_CODES:
             continue
         blob=' '.join([title,desc,cats])
@@ -149,7 +183,6 @@ def parse_ics(text):
             'category': classify(blob),
             'url': url,
         })
-    # dedupe
     uniq={}
     for e in events: uniq[e['id']]=e
     return sorted(uniq.values(), key=lambda x:(x['date'],x['time'],x['title'].lower()))
@@ -178,15 +211,16 @@ def jsonld_events_from_page(page):
                 continue
             title=str(o.get('name') or 'Événement France Travail')
             desc=str(o.get('description') or '')
+            raw_url=str(o.get('url') or o.get('@id') or '')
             events.append({
-                'id': str(o.get('@id') or o.get('url') or title) + '|' + start.isoformat(),
+                'id': str(o.get('@id') or raw_url or title) + '|' + start.isoformat(),
                 'date': start.date().isoformat(),
                 'time': start.strftime('%H:%M'),
                 'title': title,
                 'location': str(loc.get('name') or addr.get('addressLocality') or '') if isinstance(loc,dict) else '',
                 'department': dep,
                 'category': classify(title+' '+desc),
-                'url': str(o.get('url') or o.get('@id') or ''),
+                'url': best_event_url(title, desc, raw_url),
             })
     return events
 
