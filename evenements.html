@@ -5,15 +5,17 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Événements emploi — Île-de-France</title>
 <style>
-:root{--blue:#0063cb;--bg:#f5f7fa;--text:#1f2937;--muted:#667085;--line:#d0d5dd}
+:root{--blue:#0063cb;--bg:#f5f7fa;--text:#1f2937;--muted:#667085;--line:#d0d5dd;--oa-crop:245px}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Arial,"Segoe UI",sans-serif;color:var(--text)}
 .app{max-width:1450px;margin:auto;padding:16px}.box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px}
 h1{margin:0 0 5px;font-size:22px}.sub{font-size:13px;color:var(--muted);margin-bottom:14px}
 .grid{display:grid;grid-template-columns:1fr 260px auto;gap:10px;align-items:end}.field{display:flex;flex-direction:column;gap:5px}.field label{font-size:12px;font-weight:700}
 input,select,button{height:46px;border-radius:8px;font-size:15px}input,select{border:1px solid #aeb8c5;padding:0 12px;background:#fff}button{border:0;background:var(--blue);color:#fff;font-weight:700;padding:0 18px;cursor:pointer}
 .quick{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}.chip{height:34px;background:#eef5ff;color:#064f9c;border:1px solid #bed8f3;border-radius:999px;font-size:13px;padding:0 12px}
-.info{margin-top:10px;font-size:12px;color:var(--muted)}.viewer{margin-top:12px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}.viewer iframe{width:100%;height:820px;border:0;display:block}
-@media(max-width:760px){.grid{grid-template-columns:1fr}.viewer iframe{height:720px}}
+.info{margin-top:10px;font-size:12px;color:var(--muted)}
+.viewer{margin-top:12px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;height:820px;position:relative}
+.viewer iframe{position:absolute;left:0;top:calc(-1 * var(--oa-crop));width:100%;height:calc(820px + var(--oa-crop));border:0;display:block;background:#fff}
+@media(max-width:760px){:root{--oa-crop:285px}.grid{grid-template-columns:1fr}.viewer{height:720px}.viewer iframe{height:calc(720px + var(--oa-crop))}}
 </style>
 </head>
 <body>
@@ -45,7 +47,7 @@ input,select,button{height:46px;border-radius:8px;font-size:15px}input,select{bo
 </div>
 <div class="info" id="status">Recherche prête — Île-de-France uniquement.</div>
 </section>
-<section class="viewer"><iframe id="frame" title="Résultats France Travail Île-de-France"></iframe></section>
+<section class="viewer" aria-label="Résultats France Travail"><iframe id="frame" title="Résultats France Travail Île-de-France" loading="eager"></iframe></section>
 </main>
 <script>
 const zones={
@@ -69,23 +71,11 @@ function cleanKeyword(v){return (v||'').trim()||'MRS'}
 function urlFor(keyword,key){
  const z=zones[key]||zones.idf;
  const u=new URL('https://openagenda.com/fr/francetravail');
-
- // Recherche textuelle native OpenAgenda.
  u.searchParams.set('search',cleanKeyword(keyword));
-
- // Filtre géographique exact fourni par l’API OpenAgenda.
- // Important : conserver l’accent exact dans « Île-de-France ».
  u.searchParams.set('adminLevel1','Île-de-France');
-
- // Le département est facultatif : il ne s’ajoute que si l’utilisateur le choisit.
- if(z.department){
-   u.searchParams.set('adminLevel2',z.department);
- }
-
- // Événements visibles maintenant ou à venir.
+ if(z.department){u.searchParams.set('adminLevel2',z.department)}
  u.searchParams.append('relative[]','current');
  u.searchParams.append('relative[]','upcoming');
-
  return u.toString();
 }
 
