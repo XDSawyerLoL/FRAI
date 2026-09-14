@@ -10,10 +10,20 @@
     '94': { label: 'Val-de-Marne (94)', department: 'Val-de-Marne', code: '94' },
     '95': { label: 'Val-d’Oise (95)', department: "Val-d'Oise", code: '95' }
   };
-  const categoryLabels = { mrs: 'MRS', jobdating: 'Job dating', alternance: 'Alternance', sanscv: 'Sans CV', ia: 'IA', autre: 'Autre' };
+
+  const categoryLabels = {
+    mrs: 'MRS',
+    jobdating: 'Job dating',
+    alternance: 'Alternance',
+    sanscv: 'Sans CV',
+    ia: 'IA',
+    autre: 'Autre'
+  };
+
   const q = document.getElementById('q');
   const zone = document.getElementById('zone');
   const frame = document.getElementById('frame');
+  const viewer = document.getElementById('viewer');
   const status = document.getElementById('status');
   const listView = document.getElementById('listView');
   const agendaView = document.getElementById('agendaView');
@@ -22,56 +32,77 @@
   const agendaTitle = document.getElementById('agendaTitle');
   const agendaData = document.getElementById('agendaData');
   const dayDetails = document.getElementById('dayDetails');
+
+  const now = new Date();
+  let activeMode = 'list';
   let selectedDate = null;
-  let calendarMonth = new Date();
-  calendarMonth = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth(), 1);
+  let calendarMonth = new Date(now.getFullYear(), now.getMonth(), 1);
   let calendarEvents = [];
   let calendarLoaded = false;
   let calendarLoading = false;
+  let detailsLimit = 12;
+  let dataMeta = null;
 
   const pad = n => String(n).padStart(2, '0');
   const isoDate = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-  const sameDay = (a, b) => a && b && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+  const sameDay = (a, b) => a && b && isoDate(a) === isoDate(b);
   const cleanKeyword = v => (v || '').trim() || 'MRS';
-  const formatDateFr = d => new Intl.DateTimeFormat('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(d);
-  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const zoneEvents = () => { const z = zones[zone.value] || zones.idf; return calendarEvents.filter(e => !z.code || e.department === z.code); };
-  const eventsForDate = d => zoneEvents().filter(e => e.date === isoDate(d)).sort((a, b) => (a.time || '').localeCompare(b.time || '') || (a.title || '').localeCompare(b.title || ''));
+  const formatDateFr = d => new Intl.DateTimeFormat('fr-FR', {
+    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+  }).format(d);
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+
+  function categoryKey(value) {
+    return categoryLabels[value] ? value : 'autre';
+  }
+
+  function zoneEvents() {
+    const z = zones[zone.value] || zones.idf;
+    return calendarEvents.filter(e => !z.code || e.department === z.code);
+  }
+
+  function eventsForDate(d) {
+    const target = isoDate(d);
+    return zoneEvents()
+      .filter(e => e.date === target)
+      .sort((a, b) => (a.time || '').localeCompare(b.time || '') || (a.title || '').localeCompare(b.title || ''));
+  }
 
   async function loadCalendarData(force = false) {
     if (calendarLoaded && !force) return;
     if (calendarLoading) return;
     calendarLoading = true;
     agendaData.className = 'agenda-data';
-    agendaData.textContent = 'Chargement des événements du calendrier…';
+    agendaData.textContent = 'Chargement des événements…';
+
     try {
       let data = window.FRAI_EVENTS_IDF || null;
       if (!data) {
-        let lastError = null;
-        const urls = [
-          new URL('events-idf.json', window.location.href).toString(),
-          'https://xdsawyerlol.github.io/FRAI/events-idf.json'
-        ];
-        for (const src of urls) {
-          try {
-            const r = await fetch(`${src}?v=${Date.now()}`, { cache: 'no-store' });
-            if (!r.ok) throw new Error(`HTTP ${r.status}`);
-            data = await r.json();
-            break;
-          } catch (err) { lastError = err; }
-        }
-        if (!data) throw lastError || new Error('Données calendrier introuvables');
+        const src = new URL('events-idf.json', window.location.href).toString();
+        const response = await fetch(`${src}?v=${Date.now()}`, { cache: 'no-store' });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        data = await response.json();
       }
+
       calendarEvents = Array.isArray(data.events) ? data.events : [];
+      dataMeta = data;
       calendarLoaded = true;
-      agendaData.className = 'agenda-data';
-      agendaData.textContent = `${calendarEvents.length} événements IDF chargés pour le calendrier.`;
+
+      if (!selectedDate) {
+        selectedDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        calendarMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+      }
+
+      const range = data?.range?.from && data?.range?.to
+        ? ` · ${data.range.from.split('-').reverse().join('/')} → ${data.range.to.split('-').reverse().join('/')}`
+        : '';
+      agendaData.textContent = `${calendarEvents.length} événements IDF disponibles${range}`;
     } catch (err) {
-      console.error('Calendrier FRAI', err);
+      console.error('Agenda FRAI', err);
       calendarLoaded = false;
-      agendaData.className = 'agenda-data warn';
-      agendaData.innerHTML = 'Impossible de charger les points. <button id="retryCalendar" type="button" class="retry">Réessayer</button>';
-      document.getElementById('retryCalendar')?.addEventListener('click', () => loadCalendarData(true));
+      agendaData.textContent = 'Agenda temporairement indisponible. La vue liste reste disponible.';
     } finally {
       calendarLoading = false;
       renderCalendar();
@@ -79,90 +110,208 @@
     }
   }
 
-  function urlFor(keyword, key, date) {
+  function urlFor(keyword, key) {
     const z = zones[key] || zones.idf;
     const u = new URL('https://openagenda.com/fr/francetravail');
     u.searchParams.set('search', cleanKeyword(keyword));
     u.searchParams.set('adminLevel1', 'Île-de-France');
     if (z.department) u.searchParams.set('adminLevel2', z.department);
-    if (date) {
-      const iso = isoDate(date);
-      u.searchParams.set('timings[gte]', iso);
-      u.searchParams.set('timings[lte]', iso);
-    } else {
-      u.searchParams.append('relative[]', 'current');
-      u.searchParams.append('relative[]', 'upcoming');
-    }
+    u.searchParams.append('relative[]', 'current');
+    u.searchParams.append('relative[]', 'upcoming');
     return u.toString();
   }
 
-  function run(keyword, key) {
+  function runList(keyword, key) {
     const z = zones[key] || zones.idf;
     q.value = cleanKeyword(keyword);
     zone.value = key;
-    status.textContent = `Résultats pour « ${q.value} » — ${z.label}${selectedDate ? ` — ${formatDateFr(selectedDate)}` : ''}`;
-    frame.src = urlFor(q.value, key, selectedDate);
-  }
-
-  function setView(mode) {
-    const agenda = mode === 'agenda';
-    agendaPanel.classList.toggle('open', agenda);
-    agendaPanel.setAttribute('aria-hidden', String(!agenda));
-    agendaView.classList.toggle('active', agenda);
-    listView.classList.toggle('active', !agenda);
-    agendaView.setAttribute('aria-pressed', String(agenda));
-    listView.setAttribute('aria-pressed', String(!agenda));
-    if (agenda) {
-      renderCalendar();
-      renderDayDetails();
-      loadCalendarData();
-    } else if (selectedDate) {
-      selectedDate = null;
-      run(q.value, zone.value);
-    }
+    status.textContent = `Résultats pour « ${q.value} » — ${z.label}`;
+    frame.src = urlFor(q.value, key);
   }
 
   function renderCalendar() {
     calendar.innerHTML = '';
-    agendaTitle.textContent = new Intl.DateTimeFormat('fr-FR', { month: 'long', year: 'numeric' }).format(calendarMonth);
-    ['L', 'M', 'M', 'J', 'V', 'S', 'D'].forEach(x => { const e = document.createElement('div'); e.className = 'dow'; e.textContent = x; calendar.appendChild(e); });
-    const y = calendarMonth.getFullYear(), m = calendarMonth.getMonth();
-    const first = new Date(y, m, 1), mondayOffset = (first.getDay() + 6) % 7, start = new Date(y, m, 1 - mondayOffset), today = new Date();
+    agendaTitle.textContent = new Intl.DateTimeFormat('fr-FR', {
+      month: 'long', year: 'numeric'
+    }).format(calendarMonth);
+
+    ['L', 'M', 'M', 'J', 'V', 'S', 'D'].forEach(label => {
+      const e = document.createElement('div');
+      e.className = 'dow';
+      e.textContent = label;
+      calendar.appendChild(e);
+    });
+
+    const y = calendarMonth.getFullYear();
+    const m = calendarMonth.getMonth();
+    const first = new Date(y, m, 1);
+    const mondayOffset = (first.getDay() + 6) % 7;
+    const start = new Date(y, m, 1 - mondayOffset);
+
     for (let i = 0; i < 42; i++) {
-      const d = new Date(start); d.setDate(start.getDate() + i);
-      const evs = eventsForDate(d);
-      const b = document.createElement('button'); b.type = 'button'; b.className = 'day';
+      const d = new Date(start);
+      d.setDate(start.getDate() + i);
+      const evs = calendarLoaded ? eventsForDate(d) : [];
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'day';
       if (d.getMonth() !== m) b.classList.add('other');
-      if (sameDay(d, today)) b.classList.add('today');
+      if (sameDay(d, now)) b.classList.add('today');
       if (sameDay(d, selectedDate)) b.classList.add('selected');
-      const num = document.createElement('span'); num.className = 'daynum'; num.textContent = d.getDate(); b.appendChild(num);
-      const dots = document.createElement('span'); dots.className = 'dots';
-      evs.slice(0, 6).forEach(ev => { const dot = document.createElement('i'); dot.className = `dot dot-${categoryLabels[ev.category] ? ev.category : 'autre'}`; dot.title = categoryLabels[ev.category] || 'Autre'; dots.appendChild(dot); });
-      if (evs.length > 6) { const more = document.createElement('span'); more.className = 'more'; more.textContent = `+${evs.length - 6}`; dots.appendChild(more); }
+
+      const num = document.createElement('span');
+      num.className = 'daynum';
+      num.textContent = d.getDate();
+      b.appendChild(num);
+
+      const dots = document.createElement('span');
+      dots.className = 'dots';
+      const presentCategories = [...new Set(evs.map(e => categoryKey(e.category)))];
+      presentCategories.forEach(cat => {
+        const dot = document.createElement('i');
+        dot.className = `dot dot-${cat}`;
+        dot.title = categoryLabels[cat];
+        dots.appendChild(dot);
+      });
       b.appendChild(dots);
+
+      const count = document.createElement('span');
+      count.className = 'daycount';
+      count.textContent = evs.length ? `${evs.length}` : '';
+      b.appendChild(count);
+
       b.title = `${formatDateFr(d)} — ${evs.length} événement${evs.length > 1 ? 's' : ''}`;
-      b.addEventListener('click', () => { selectedDate = new Date(d.getFullYear(), d.getMonth(), d.getDate()); calendarMonth = new Date(d.getFullYear(), d.getMonth(), 1); renderCalendar(); renderDayDetails(); run(q.value, zone.value); });
+      b.addEventListener('click', () => {
+        selectedDate = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+        calendarMonth = new Date(d.getFullYear(), d.getMonth(), 1);
+        detailsLimit = 12;
+        renderCalendar();
+        renderDayDetails();
+      });
       calendar.appendChild(b);
     }
   }
 
   function renderDayDetails() {
-    if (!selectedDate) { dayDetails.innerHTML = '<div class="day-empty">Cliquez sur un jour pour voir les événements prévus.</div>'; return; }
-    const evs = eventsForDate(selectedDate);
-    let h = `<div class="day-details-title">${esc(formatDateFr(selectedDate))}</div>`;
-    if (!calendarLoaded) { h += '<div class="day-empty">Chargement des événements…</div>'; dayDetails.innerHTML = h; return; }
-    if (!evs.length) { h += '<div class="day-empty">Aucun événement chargé pour cette journée dans la zone sélectionnée.</div>'; dayDetails.innerHTML = h; return; }
-    h += '<div class="event-day-list">' + evs.map(e => `<div class="day-event"><i class="edot dot-${esc(categoryLabels[e.category] ? e.category : 'autre')}"></i><div class="etime">${esc(e.time || '')}</div><div><div class="etitle">${esc(e.title)}</div><div class="elocation">${esc(e.location || 'Lieu non précisé')}</div></div>${e.url ? `<a class="elink" href="${esc(e.url)}" target="_blank" rel="noopener">Voir ↗</a>` : ''}</div>`).join('') + '</div>';
-    dayDetails.innerHTML = h;
+    if (!selectedDate) {
+      dayDetails.innerHTML = '<div class="day-empty">Choisissez un jour dans le calendrier.</div>';
+      return;
+    }
+
+    const evs = calendarLoaded ? eventsForDate(selectedDate) : [];
+    const z = zones[zone.value] || zones.idf;
+    let html = `<div class="day-details-head"><div><div class="day-details-title">${esc(formatDateFr(selectedDate))}</div><div class="day-total">${evs.length} événement${evs.length > 1 ? 's' : ''} · ${esc(z.label)}</div></div></div>`;
+
+    if (!calendarLoaded) {
+      html += '<div class="day-empty">Chargement des événements…</div>';
+      dayDetails.innerHTML = html;
+      return;
+    }
+
+    if (!evs.length) {
+      html += '<div class="day-empty">Aucun événement recensé pour cette journée dans la zone sélectionnée.</div>';
+      dayDetails.innerHTML = html;
+      return;
+    }
+
+    const visible = evs.slice(0, detailsLimit);
+    html += '<div class="event-day-list">' + visible.map(e => {
+      const cat = categoryKey(e.category);
+      return `<article class="day-event">
+        <i class="edot dot-${cat}"></i>
+        <div class="etime">${esc(e.time || '—')}</div>
+        <div>
+          <div class="etitle">${esc(e.title || 'Événement France Travail')}</div>
+          <div class="elocation">${esc(e.location || 'Lieu non précisé')}</div>
+          <div class="ecat"><i class="dot dot-${cat}"></i>${esc(categoryLabels[cat])}</div>
+        </div>
+      </article>`;
+    }).join('') + '</div>';
+
+    if (evs.length > detailsLimit) {
+      html += `<button id="moreEvents" type="button" class="more-events">Afficher ${Math.min(12, evs.length - detailsLimit)} événement${Math.min(12, evs.length - detailsLimit) > 1 ? 's' : ''} de plus</button>`;
+    }
+
+    dayDetails.innerHTML = html;
+    document.getElementById('moreEvents')?.addEventListener('click', () => {
+      detailsLimit += 12;
+      renderDayDetails();
+    });
   }
 
-  document.getElementById('f').addEventListener('submit', e => { e.preventDefault(); run(q.value, zone.value); });
-  zone.addEventListener('change', () => { renderCalendar(); renderDayDetails(); run(q.value, zone.value); });
-  document.querySelectorAll('[data-q]').forEach(b => b.addEventListener('click', () => run(b.dataset.q, zone.value)));
+  function setView(mode) {
+    activeMode = mode;
+    const agenda = mode === 'agenda';
+    agendaPanel.classList.toggle('open', agenda);
+    agendaPanel.setAttribute('aria-hidden', String(!agenda));
+    viewer.classList.toggle('hidden', agenda);
+    agendaView.classList.toggle('active', agenda);
+    listView.classList.toggle('active', !agenda);
+    agendaView.setAttribute('aria-pressed', String(agenda));
+    listView.setAttribute('aria-pressed', String(!agenda));
+
+    if (agenda) {
+      if (!selectedDate) selectedDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      calendarMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
+      detailsLimit = 12;
+      status.textContent = `Agenda — ${(zones[zone.value] || zones.idf).label}`;
+      renderCalendar();
+      renderDayDetails();
+      loadCalendarData();
+    } else {
+      runList(q.value, zone.value);
+    }
+  }
+
+  document.getElementById('f').addEventListener('submit', e => {
+    e.preventDefault();
+    setView('list');
+    runList(q.value, zone.value);
+  });
+
+  zone.addEventListener('change', () => {
+    detailsLimit = 12;
+    if (activeMode === 'agenda') {
+      status.textContent = `Agenda — ${(zones[zone.value] || zones.idf).label}`;
+      renderCalendar();
+      renderDayDetails();
+    } else {
+      runList(q.value, zone.value);
+    }
+  });
+
+  document.querySelectorAll('[data-q]').forEach(b => b.addEventListener('click', () => {
+    q.value = b.dataset.q;
+    setView('list');
+    runList(q.value, zone.value);
+  }));
+
   listView.addEventListener('click', () => setView('list'));
   agendaView.addEventListener('click', () => setView('agenda'));
-  document.getElementById('prevMonth').addEventListener('click', () => { calendarMonth = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() - 1, 1); selectedDate = null; renderCalendar(); renderDayDetails(); });
-  document.getElementById('nextMonth').addEventListener('click', () => { calendarMonth = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() + 1, 1); selectedDate = null; renderCalendar(); renderDayDetails(); });
-  document.getElementById('clearDate').addEventListener('click', () => { selectedDate = null; renderCalendar(); renderDayDetails(); run(q.value, zone.value); });
-  run('MRS', 'idf');
+
+  document.getElementById('prevMonth').addEventListener('click', () => {
+    calendarMonth = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() - 1, 1);
+    selectedDate = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth(), 1);
+    detailsLimit = 12;
+    renderCalendar();
+    renderDayDetails();
+  });
+
+  document.getElementById('nextMonth').addEventListener('click', () => {
+    calendarMonth = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() + 1, 1);
+    selectedDate = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth(), 1);
+    detailsLimit = 12;
+    renderCalendar();
+    renderDayDetails();
+  });
+
+  document.getElementById('clearDate').addEventListener('click', () => {
+    selectedDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    calendarMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    detailsLimit = 12;
+    renderCalendar();
+    renderDayDetails();
+  });
+
+  runList('MRS', 'idf');
 })();
