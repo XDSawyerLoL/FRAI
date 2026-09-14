@@ -20,7 +20,7 @@ input,select,button{height:46px;border-radius:8px;font-size:15px}input,select{bo
 <main class="app">
 <section class="box">
 <h1>Recherche événements emploi — Île-de-France</h1>
-<div class="sub">Les recherches sont forcées sur l’Île-de-France. Sélectionnez éventuellement un département.</div>
+<div class="sub">Chaque recherche impose la zone francilienne en plus du mot-clé.</div>
 <form id="f" class="grid">
 <div class="field"><label for="q">Mot-clé</label><input id="q" value="MRS" placeholder="MRS, alternance, job dating…"></div>
 <div class="field"><label for="zone">Zone</label><select id="zone">
@@ -46,15 +46,26 @@ const zones={
  '95':{term:'"Val-d’Oise"',label:'Val-d’Oise (95)',box:[48.89,1.61,49.25,2.59]}
 };
 const q=document.getElementById('q'),zone=document.getElementById('zone'),frame=document.getElementById('frame'),status=document.getElementById('status');
+function cleanKeyword(v){return (v||'').trim()||'MRS'}
 function urlFor(keyword,key){
  const z=zones[key]||zones.idf;
- const term=((keyword||'').trim()||'MRS')+' '+z.term;
+ const kw=cleanKeyword(keyword);
+ const term=kw+' AND '+z.term;
  const u=new URL('https://openagenda.com/fr/francetravail');
  u.searchParams.set('oaq[what]',term);
- u.searchParams.set('oaq[swLat]',z.box[0]);u.searchParams.set('oaq[swLng]',z.box[1]);u.searchParams.set('oaq[neLat]',z.box[2]);u.searchParams.set('oaq[neLng]',z.box[3]);
+ u.searchParams.set('oaq[swLat]',String(z.box[0]));
+ u.searchParams.set('oaq[swLng]',String(z.box[1]));
+ u.searchParams.set('oaq[neLat]',String(z.box[2]));
+ u.searchParams.set('oaq[neLng]',String(z.box[3]));
  return u.toString();
 }
-function run(keyword,key){const z=zones[key]||zones.idf;q.value=(keyword||'MRS').trim();zone.value=key;status.textContent='Résultats pour « '+q.value+' » — '+z.label+' uniquement';frame.src=urlFor(q.value,key)}
+function run(keyword,key){
+ const z=zones[key]||zones.idf;
+ q.value=cleanKeyword(keyword);
+ zone.value=key;
+ status.textContent='Résultats pour « '+q.value+' » ET '+z.label;
+ frame.src=urlFor(q.value,key);
+}
 document.getElementById('f').addEventListener('submit',e=>{e.preventDefault();run(q.value,zone.value)});
 zone.addEventListener('change',()=>run(q.value,zone.value));
 document.querySelectorAll('[data-q]').forEach(b=>b.addEventListener('click',()=>run(b.dataset.q,zone.value)));
