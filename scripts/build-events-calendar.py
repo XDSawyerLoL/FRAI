@@ -1,0 +1,263 @@
+#!/usr/bin/env python3
+import calendar
+import datetime as dt
+import html as html_lib
+import json
+import os
+import re
+import sys
+import urllib.parse
+import urllib.request
+from zoneinfo import ZoneInfo
+
+ROOT = 'https://openagenda.com'
+AGENDA_PAGE = ROOT + '/fr/francetravail'
+OUT = os.environ.get('EVENTS_OUT', 'events-idf.json')
+TZ = ZoneInfo('Europe/Paris')
+IDF_CODES = {'75','77','78','91','92','93','94','95'}
+UA = 'FRAI-Calendar/1.0 (+https://xdsawyerlol.github.io/FRAI/)'
+
+
+def fetch(url, timeout=35):
+    req = urllib.request.Request(url, headers={
+        'User-Agent': UA,
+        'Accept': 'text/html,application/xhtml+xml,application/xml,text/calendar,*/*',
+    })
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        return r.read().decode('utf-8', errors='replace')
+
+
+def month_window():
+    today = dt.datetime.now(TZ).date()
+    start_month = (today.replace(day=1) - dt.timedelta(days=1)).replace(day=1)
+    y, m = today.year, today.month
+    m += 2
+    y += (m - 1) // 12
+    m = (m - 1) % 12 + 1
+    last = calendar.monthrange(y, m)[1]
+    end = dt.date(y, m, last)
+    return start_month, end
+
+
+def detect_uid(page):
+    patterns = [
+        r'data-agenda-uid=["\'](\d+)',
+        r'["\']agendaUid["\']\s*[:=]\s*["\']?(\d+)',
+        r'["\']uid["\']\s*:\s*(\d+)\s*,\s*["\']slug["\']\s*:\s*["\']francetravail["\']',
+        r'["\']slug["\']\s*:\s*["\']francetravail["\']\s*,\s*["\']uid["\']\s*:\s*(\d+)',
+        r'/agendas/(\d+)/',
+    ]
+    for p in patterns:
+        m = re.search(p, page, re.I)
+        if m:
+            return m.group(1)
+    return None
+
+
+def unfold_ics(text):
+    out=[]
+    for line in text.replace('\r\n','\n').replace('\r','\n').split('\n'):
+        if line.startswith((' ', '\t')) and out:
+            out[-1] += line[1:]
+        else:
+            out.append(line)
+    return out
+
+
+def ics_unescape(v):
+    return (v.replace('\\n','\n').replace('\\N','\n')
+             .replace('\\,',',').replace('\\;',';').replace('\\\\','\\')).strip()
+
+
+def parse_dt(raw, params=''):
+    raw = raw.strip()
+    if not raw:
+        return None
+    try:
+        if re.fullmatch(r'\d{8}', raw):
+            d = dt.datetime.strptime(raw, '%Y%m%d').replace(tzinfo=TZ)
+        elif raw.endswith('Z'):
+            d = dt.datetime.strptime(raw, '%Y%m%dT%H%M%SZ').replace(tzinfo=dt.timezone.utc).astimezone(TZ)
+        else:
+            fmt = '%Y%m%dT%H%M%S' if len(raw) >= 15 else '%Y%m%dT%H%M'
+            d = dt.datetime.strptime(raw[:15] if fmt.endswith('%S') else raw[:13], fmt).replace(tzinfo=TZ)
+        return d
+    except Exception:
+        return None
+
+
+def classify(text):
+    s = text.lower()
+    if re.search(r'\bmrs\b|recrutement par simulation|méthode de recrutement par simulation|methode de recrutement par simulation', s):
+        return 'mrs'
+    if 'job dating' in s or 'jobdating' in s or 'job-dating' in s:
+        return 'jobdating'
+    if 'alternance' in s or 'apprentissage' in s or 'contrat de professionnalisation' in s:
+        return 'alternance'
+    if 'sans cv' in s or 'sans curriculum' in s:
+        return 'sanscv'
+    if re.search(r'\bintelligence artificielle\b|\bia\b', s):
+        return 'ia'
+    return 'autre'
+
+
+def dept_from_text(text):
+    m = re.search(r'\b(75|77|78|91|92|93|94|95)\d{3}\b', text)
+    return m.group(1) if m else None
+
+
+def parse_ics(text):
+    lines = unfold_ics(text)
+    blocks=[]; cur=None
+    for line in lines:
+        if line == 'BEGIN:VEVENT':
+            cur=[]
+        elif line == 'END:VEVENT' and cur is not None:
+            blocks.append(cur); cur=None
+        elif cur is not None:
+            cur.append(line)
+    events=[]
+    for block in blocks:
+        data={}
+        for line in block:
+            if ':' not in line: continue
+            lhs, val = line.split(':',1)
+            key = lhs.split(';',1)[0].upper()
+            params = lhs[len(key):]
+            if key not in data:
+                data[key]=(params, ics_unescape(val))
+        start = parse_dt(data.get('DTSTART',('', ''))[1], data.get('DTSTART',('', ''))[0])
+        if not start: continue
+        title = data.get('SUMMARY',('', 'Événement France Travail'))[1]
+        desc = data.get('DESCRIPTION',('', ''))[1]
+        loc = data.get('LOCATION',('', ''))[1]
+        url = data.get('URL',('', ''))[1]
+        uid = data.get('UID',('', url or title))[1]
+        cats = data.get('CATEGORIES',('', ''))[1]
+        dep = dept_from_text(' '.join([loc, desc, title]))
+        # When postal code is available, use it as a hard IDF guard.
+        if dep and dep not in IDF_CODES:
+            continue
+        blob=' '.join([title,desc,cats])
+        events.append({
+            'id': uid + '|' + start.isoformat(),
+            'date': start.date().isoformat(),
+            'time': start.strftime('%H:%M'),
+            'title': title,
+            'location': loc,
+            'department': dep,
+            'category': classify(blob),
+            'url': url,
+        })
+    # dedupe
+    uniq={}
+    for e in events: uniq[e['id']]=e
+    return sorted(uniq.values(), key=lambda x:(x['date'],x['time'],x['title'].lower()))
+
+
+def jsonld_events_from_page(page):
+    events=[]
+    for raw in re.findall(r'<script[^>]+type=["\']application/ld\+json["\'][^>]*>(.*?)</script>', page, re.I|re.S):
+        try:
+            obj=json.loads(html_lib.unescape(raw.strip()))
+        except Exception:
+            continue
+        candidates=obj if isinstance(obj,list) else [obj]
+        for o in candidates:
+            if not isinstance(o,dict) or o.get('@type')!='Event': continue
+            try:
+                start=dt.datetime.fromisoformat(str(o.get('startDate','')).replace('Z','+00:00')).astimezone(TZ)
+            except Exception:
+                continue
+            loc=o.get('location') or {}
+            addr=(loc.get('address') or {}) if isinstance(loc,dict) else {}
+            region=str(addr.get('addressRegion') or '')
+            postal=str(addr.get('postalCode') or '')
+            dep=dept_from_text(postal+' '+region)
+            if dep not in IDF_CODES and 'ile-de-france' not in region.lower().replace('î','i'):
+                continue
+            title=str(o.get('name') or 'Événement France Travail')
+            desc=str(o.get('description') or '')
+            events.append({
+                'id': str(o.get('@id') or o.get('url') or title) + '|' + start.isoformat(),
+                'date': start.date().isoformat(),
+                'time': start.strftime('%H:%M'),
+                'title': title,
+                'location': str(loc.get('name') or addr.get('addressLocality') or '') if isinstance(loc,dict) else '',
+                'department': dep,
+                'category': classify(title+' '+desc),
+                'url': str(o.get('url') or o.get('@id') or ''),
+            })
+    return events
+
+
+def scrape_fallback(start, end):
+    params={
+        'adminLevel1':'Île-de-France',
+        'timings[gte]': start.isoformat(),
+        'timings[lte]': end.isoformat(),
+    }
+    qs=urllib.parse.urlencode(params)
+    links=[]
+    for page_no in range(1, 13):
+        url = AGENDA_PAGE + ('' if page_no==1 else f'/p/{page_no}') + '?' + qs
+        try: txt=fetch(url)
+        except Exception: break
+        found=re.findall(r'href=["\']([^"\']*/francetravail/events/[^"\'#?]+)', txt, re.I)
+        if not found and page_no>1: break
+        for href in found:
+            if href.startswith('/'): href=ROOT+href
+            elif href.startswith('http'): pass
+            else: href=ROOT+'/'+href.lstrip('/')
+            if href not in links: links.append(href)
+        if len(found) < 5: break
+    events=[]
+    for href in links[:220]:
+        try:
+            events.extend(jsonld_events_from_page(fetch(href)))
+        except Exception:
+            continue
+    uniq={e['id']:e for e in events}
+    return sorted(uniq.values(), key=lambda x:(x['date'],x['time'],x['title'].lower()))
+
+
+def main():
+    start,end=month_window()
+    source='none'; uid=None; events=[]; error=None
+    try:
+        page=fetch(AGENDA_PAGE)
+        uid=detect_uid(page)
+        if uid:
+            params={
+                'timings[gte]': start.isoformat()+'T00:00:00+02:00',
+                'timings[lte]': end.isoformat()+'T23:59:59+02:00',
+                'adminLevel1':'Île-de-France',
+            }
+            ics_url=f'{ROOT}/agendas/{uid}/events.v2.ics?'+urllib.parse.urlencode(params)
+            events=parse_ics(fetch(ics_url))
+            source='openagenda-ics'
+        if not events:
+            events=scrape_fallback(start,end)
+            source='openagenda-public-pages'
+    except Exception as exc:
+        error=f'{type(exc).__name__}: {exc}'
+        try:
+            events=scrape_fallback(start,end)
+            source='openagenda-public-pages'
+        except Exception as exc2:
+            error=(error or '')+' | fallback: '+f'{type(exc2).__name__}: {exc2}'
+    payload={
+        'generatedAt': dt.datetime.now(dt.timezone.utc).isoformat(),
+        'range': {'from':start.isoformat(),'to':end.isoformat()},
+        'agendaUid': uid,
+        'source': source,
+        'error': error,
+        'count': len(events),
+        'events': events,
+    }
+    with open(OUT,'w',encoding='utf-8') as f:
+        json.dump(payload,f,ensure_ascii=False,separators=(',',':'))
+    print(f'Generated {OUT}: {len(events)} events; source={source}; uid={uid}; error={error}')
+
+if __name__=='__main__':
+    main()
