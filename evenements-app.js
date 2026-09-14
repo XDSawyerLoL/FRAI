@@ -12,12 +12,8 @@
   };
 
   const categoryLabels = {
-    mrs: 'MRS',
-    jobdating: 'Job dating',
-    alternance: 'Alternance',
-    sanscv: 'Sans CV',
-    ia: 'IA',
-    autre: 'Autre'
+    mrs: 'MRS', jobdating: 'Job dating', alternance: 'Alternance',
+    sanscv: 'Sans CV', ia: 'IA', autre: 'Autre'
   };
 
   const q = document.getElementById('q');
@@ -34,14 +30,14 @@
   const dayDetails = document.getElementById('dayDetails');
 
   const now = new Date();
+  const PAGE_SIZE = 6;
   let activeMode = 'list';
   let selectedDate = null;
   let calendarMonth = new Date(now.getFullYear(), now.getMonth(), 1);
   let calendarEvents = [];
   let calendarLoaded = false;
   let calendarLoading = false;
-  let detailsLimit = 12;
-  let dataMeta = null;
+  let detailsPage = 0;
 
   const pad = n => String(n).padStart(2, '0');
   const isoDate = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
@@ -87,7 +83,6 @@
       }
 
       calendarEvents = Array.isArray(data.events) ? data.events : [];
-      dataMeta = data;
       calendarLoaded = true;
 
       if (!selectedDate) {
@@ -166,8 +161,7 @@
 
       const dots = document.createElement('span');
       dots.className = 'dots';
-      const presentCategories = [...new Set(evs.map(e => categoryKey(e.category)))];
-      presentCategories.forEach(cat => {
+      [...new Set(evs.map(e => categoryKey(e.category)))].forEach(cat => {
         const dot = document.createElement('i');
         dot.className = `dot dot-${cat}`;
         dot.title = categoryLabels[cat];
@@ -184,7 +178,7 @@
       b.addEventListener('click', () => {
         selectedDate = new Date(d.getFullYear(), d.getMonth(), d.getDate());
         calendarMonth = new Date(d.getFullYear(), d.getMonth(), 1);
-        detailsLimit = 12;
+        detailsPage = 0;
         renderCalendar();
         renderDayDetails();
       });
@@ -214,7 +208,11 @@
       return;
     }
 
-    const visible = evs.slice(0, detailsLimit);
+    const totalPages = Math.max(1, Math.ceil(evs.length / PAGE_SIZE));
+    if (detailsPage >= totalPages) detailsPage = totalPages - 1;
+    const start = detailsPage * PAGE_SIZE;
+    const visible = evs.slice(start, start + PAGE_SIZE);
+
     html += '<div class="event-day-list">' + visible.map(e => {
       const cat = categoryKey(e.category);
       return `<article class="day-event">
@@ -228,14 +226,20 @@
       </article>`;
     }).join('') + '</div>';
 
-    if (evs.length > detailsLimit) {
-      html += `<button id="moreEvents" type="button" class="more-events">Afficher ${Math.min(12, evs.length - detailsLimit)} événement${Math.min(12, evs.length - detailsLimit) > 1 ? 's' : ''} de plus</button>`;
+    if (totalPages > 1) {
+      html += `<div style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;margin-top:10px">
+        <button id="prevEvents" type="button" class="more-events" style="width:auto;margin:0;justify-self:start;padding:0 12px" ${detailsPage === 0 ? 'disabled' : ''}>‹ Précédents</button>
+        <span style="font-size:11px;color:#667085;font-weight:700">${detailsPage + 1} / ${totalPages}</span>
+        <button id="nextEvents" type="button" class="more-events" style="width:auto;margin:0;justify-self:end;padding:0 12px" ${detailsPage >= totalPages - 1 ? 'disabled' : ''}>Suivants ›</button>
+      </div>`;
     }
 
     dayDetails.innerHTML = html;
-    document.getElementById('moreEvents')?.addEventListener('click', () => {
-      detailsLimit += 12;
-      renderDayDetails();
+    document.getElementById('prevEvents')?.addEventListener('click', () => {
+      if (detailsPage > 0) { detailsPage--; renderDayDetails(); }
+    });
+    document.getElementById('nextEvents')?.addEventListener('click', () => {
+      if (detailsPage < totalPages - 1) { detailsPage++; renderDayDetails(); }
     });
   }
 
@@ -253,7 +257,7 @@
     if (agenda) {
       if (!selectedDate) selectedDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
       calendarMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
-      detailsLimit = 12;
+      detailsPage = 0;
       status.textContent = `Agenda — ${(zones[zone.value] || zones.idf).label}`;
       renderCalendar();
       renderDayDetails();
@@ -270,7 +274,7 @@
   });
 
   zone.addEventListener('change', () => {
-    detailsLimit = 12;
+    detailsPage = 0;
     if (activeMode === 'agenda') {
       status.textContent = `Agenda — ${(zones[zone.value] || zones.idf).label}`;
       renderCalendar();
@@ -292,7 +296,7 @@
   document.getElementById('prevMonth').addEventListener('click', () => {
     calendarMonth = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() - 1, 1);
     selectedDate = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth(), 1);
-    detailsLimit = 12;
+    detailsPage = 0;
     renderCalendar();
     renderDayDetails();
   });
@@ -300,7 +304,7 @@
   document.getElementById('nextMonth').addEventListener('click', () => {
     calendarMonth = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() + 1, 1);
     selectedDate = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth(), 1);
-    detailsLimit = 12;
+    detailsPage = 0;
     renderCalendar();
     renderDayDetails();
   });
@@ -308,7 +312,7 @@
   document.getElementById('clearDate').addEventListener('click', () => {
     selectedDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     calendarMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    detailsLimit = 12;
+    detailsPage = 0;
     renderCalendar();
     renderDayDetails();
   });
