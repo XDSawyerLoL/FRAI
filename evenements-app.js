@@ -66,6 +66,13 @@
       .sort((a, b) => (a.time || '').localeCompare(b.time || '') || (a.title || '').localeCompare(b.title || ''));
   }
 
+  function eventPageUrl(event) {
+    if (event?.url) return event.url;
+    const u = new URL('https://openagenda.com/fr/francetravail');
+    u.searchParams.set('search', event?.title || '');
+    return u.toString();
+  }
+
   async function loadCalendarData(force = false) {
     if (calendarLoaded && !force) return;
     if (calendarLoading) return;
@@ -215,15 +222,16 @@
 
     html += '<div class="event-day-list">' + visible.map(e => {
       const cat = categoryKey(e.category);
-      return `<article class="day-event">
+      const href = eventPageUrl(e);
+      return `<a class="day-event day-event-link" href="${esc(href)}" target="_blank" rel="noopener noreferrer" title="Ouvrir la fiche de cet événement">
         <i class="edot dot-${cat}"></i>
         <div class="etime">${esc(e.time || '—')}</div>
         <div>
           <div class="etitle">${esc(e.title || 'Événement France Travail')}</div>
           <div class="elocation">${esc(e.location || 'Lieu non précisé')}</div>
-          <div class="ecat"><i class="dot dot-${cat}"></i>${esc(categoryLabels[cat])}</div>
+          <div class="event-meta-line"><span class="ecat"><i class="dot dot-${cat}"></i>${esc(categoryLabels[cat])}</span><span class="event-open">Voir la fiche ↗</span></div>
         </div>
-      </article>`;
+      </a>`;
     }).join('') + '</div>';
 
     if (totalPages > 1) {
