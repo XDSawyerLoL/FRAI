@@ -12,6 +12,7 @@ from zoneinfo import ZoneInfo
 
 ROOT = 'https://openagenda.com'
 AGENDA_PAGE = ROOT + '/fr/francetravail'
+AGENDA_PORTAL = ROOT + '/francetravail'
 OUT = os.environ.get('EVENTS_OUT', 'events-idf.json')
 TZ = ZoneInfo('Europe/Paris')
 IDF_CODES = {'75','77','78','91','92','93','94','95'}
@@ -300,7 +301,6 @@ def jsonld_events_from_page(page, enforce_idf=True):
 def enrich_images_from_portal(events, start, end):
     if not events:
         return 0, 0
-
     by_title={}
     by_date_title={}
     for event in events:
@@ -323,7 +323,7 @@ def enrich_images_from_portal(events, start, end):
     max_pages=max(2, min(80, (len(events)//20)+5))
 
     for page_no in range(1, max_pages+1):
-        base=AGENDA_PAGE+'/events' if page_no==1 else AGENDA_PAGE+f'/events/p/{page_no}'
+        base=AGENDA_PORTAL+'/events' if page_no==1 else AGENDA_PORTAL+f'/events/p/{page_no}'
         try:
             page=fetch(base+'?'+qs)
         except Exception as exc:
@@ -336,7 +336,6 @@ def enrich_images_from_portal(events, start, end):
         if page_no>1 and signature==previous_signature:
             break
         previous_signature=signature
-
         page_with_images=0
         for source in portal_events:
             image=source.get('image') or ''
@@ -352,11 +351,8 @@ def enrich_images_from_portal(events, start, end):
                     target['image']=image
                     enriched += 1
         print(f'Image enrichment page {page_no}: events={len(portal_events)} images={page_with_images}')
-
-        # When pagination reaches a short final page, no later page is expected.
         if len(portal_events) < 20:
             break
-
     return image_sources, enriched
 
 
@@ -366,7 +362,7 @@ def scrape_fallback(start, end):
     events=[]
     previous_signature=None
     for page_no in range(1,80):
-        base=AGENDA_PAGE+'/events' if page_no==1 else AGENDA_PAGE+f'/events/p/{page_no}'
+        base=AGENDA_PORTAL+'/events' if page_no==1 else AGENDA_PORTAL+f'/events/p/{page_no}'
         try:
             txt=fetch(base+'?'+qs)
         except Exception:
