@@ -1,9 +1,9 @@
 import base64
 import hashlib
+import html
 import json
 import os
 import re
-import time
 import uuid
 from datetime import date, datetime, timedelta, timezone
 from urllib.parse import urlparse
@@ -39,6 +39,30 @@ def cors(resp):
 @app.after_request
 def after_request(resp):
     return cors(resp)
+
+
+def payload_from_request():
+    if request.is_json:
+        return request.get_json(silent=True) or {}
+    return request.form.to_dict(flat=True)
+
+
+def iframe_transport(payload=None):
+    payload = payload or {}
+    return request.form.get('_transport') == 'iframe' or payload.get('_transport') == 'iframe'
+
+
+def reply(data, status=200, payload=None):
+    if iframe_transport(payload):
+        safe = json.dumps(data, ensure_ascii=False).replace('</', '<\\/')
+        body = (
+            '<!doctype html><meta charset="utf-8">'
+            '<script>try{parent.postMessage('
+            + safe
+            + ',"*")}catch(e){}<\/script>'
+        )
+        return Response(body, status=status, mimetype='text/html')
+    return jsonify(data), status
 
 
 def clean_text(value, max_len, required=False):
@@ -172,9 +196,10 @@ def events_route():
         base_url = request.url_root.rstrip('/')
         return jsonify({'events': [public_event(e, base_url) for e in list_events(from_d, to_d)]})
 
-    payload = request.get_json(silent=True) or {}
+    payload = payload_from_request()
+    transport = iframe_transport(payload)
     if payload.get('website'):
-        return jsonify({'ok': True}), 201
+        return reply({'type':'frai-event-created','ok':True}, 201, payload)
 
     ip_hash = client_ip_hash()
     hour = datetime.now(timezone.utc).strftime('%Y%m%d%H')
@@ -184,9 +209,9 @@ def events_route():
         if count == 1:
             store.expire(rate_key, 3700)
         if count > 8:
-            return jsonify({'error': 'Trop de publications récentes. Réessayez plus tard.'}), 429
+            return reply({'type':'frai-event-created','ok':False,'error':'Trop de publications récentes. Réessayez plus tard.'}, 429, payload)
     except Exception:
-        return jsonify({'error': 'Service temporairement indisponible.'}), 503
+        return reply({'type':'frai-event-created','ok':False,'error':'Service temporairement indisponible.'}, 503, payload)
 
     try:
         title = clean_text(payload.get('title'), 160, True)
@@ -217,7 +242,7 @@ def events_route():
             capacity = max(1, min(100000, int(capacity)))
         image_raw, image_mime = parse_image(payload.get('image'))
     except (ValueError, TypeError) as exc:
-        return jsonify({'error': str(exc)}), 400
+        return reply({'type':'frai-event-created','ok':False,'error':str(exc)}, 400, payload)
 
     event_id = str(uuid.uuid4())
     created_at = datetime.now(timezone.utc).isoformat()
@@ -241,15 +266,19 @@ def events_route():
     }
 
     ttl = ttl_for_event(event['date'])
-    pipe = store.pipeline()
-    pipe.set(event_key(event_id), json.dumps(event, ensure_ascii=False).encode('utf-8'), ex=ttl)
-    pipe.zadd(INDEX_KEY, {event_id: event_score(event['date'])})
-    if image_raw:
-        image_payload = json.dumps({'mime': image_mime, 'data': base64.b64encode(image_raw).decode('ascii')}).encode('utf-8')
-        pipe.set(image_key(event_id), image_payload, ex=ttl)
-    pipe.execute()
+    try:
+        pipe = store.pipeline()
+        pipe.set(event_key(event_id), json.dumps(event, ensure_ascii=False).encode('utf-8'), ex=ttl)
+        pipe.zadd(INDEX_KEY, {event_id: event_score(event['date'])})
+        if image_raw:
+            image_payload = json.dumps({'mime': image_mime, 'data': base64.b64encode(image_raw).decode('ascii')}).encode('utf-8')
+            pipe.set(image_key(event_id), image_payload, ex=ttl)
+        pipe.execute()
+    except Exception:
+        return reply({'type':'frai-event-created','ok':False,'error':'Impossible d’enregistrer l’événement pour le moment.'}, 503, payload)
 
-    return jsonify({'ok': True, 'id': event_id, 'url': f'{PUBLIC_SITE}/evenement-agence.html?id={event_id}'}), 201
+    url = f'{PUBLIC_SITE}/evenement-agence.html?id={event_id}'
+    return reply({'type':'frai-event-created','ok':True,'id':event_id,'url':url}, 201, payload)
 
 
 @app.route('/events/<event_id>', methods=['GET'])
