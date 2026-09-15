@@ -13,7 +13,7 @@
 
   const categoryLabels = {
     mrs: 'MRS', jobdating: 'Job dating', alternance: 'Alternance',
-    sanscv: 'Sans CV', ia: 'IA', autre: 'Autre'
+    sanscv: 'Sans CV', ia: 'IA', autre: 'Autre', agency: 'Agence'
   };
 
   const q = document.getElementById('q');
@@ -44,6 +44,8 @@
   let loading = false;
   let listPage = 0;
   let detailsPage = 0;
+  let baseEventCount = 0;
+  let agencyEventCount = 0;
 
   const pad = n => String(n).padStart(2, '0');
   const isoDate = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
@@ -57,9 +59,11 @@
     const d = new Date(`${iso}T12:00:00`);
     return new Intl.DateTimeFormat('fr-FR', { weekday:'short', day:'numeric', month:'short' }).format(d);
   };
-  const categoryKey = value => categoryLabels[value] ? value : 'autre';
-  const eventPageUrl = e => e?.url || `https://openagenda.com/fr/francetravail?search=${encodeURIComponent(e?.title || '')}`;
+  const categoryKey = value => categoryLabels[value] && value !== 'agency' ? value : 'autre';
+  const isAgencyEvent = e => e?.source === 'agency' || e?.agency === true;
+  const eventPageUrl = e => e?.registrationUrl || e?.url || `https://openagenda.com/fr/francetravail?search=${encodeURIComponent(e?.title || '')}`;
   const eventImageUrl = e => /^https?:\/\//i.test(e?.image || '') ? e.image : '';
+  const agencyBadge = e => isAgencyEvent(e) ? '<span class="agency-badge">Agence</span>' : '';
 
   function currentZone() { return zones[zone.value] || zones.idf; }
   function currentCity() { return city.value || ''; }
@@ -79,7 +83,11 @@
     return geographicEvents().filter(e => {
       if (e.date < todayIso) return false;
       if (!term) return true;
-      const hay = normalize([e.title, e.location, e.city, categoryLabels[categoryKey(e.category)]].join(' '));
+      const hay = normalize([
+        e.title, e.location, e.city, e.description,
+        categoryLabels[categoryKey(e.category)],
+        isAgencyEvent(e) ? 'agence france travail issy les moulineaux' : ''
+      ].join(' '));
       return hay.includes(term);
     }).sort((a,b) => a.date.localeCompare(b.date) || (a.time||'').localeCompare(b.time||'') || (a.title||'').localeCompare(b.title||''));
   }
@@ -119,13 +127,18 @@
         if (!r.ok) throw new Error(`HTTP ${r.status}`);
         data = await r.json();
       }
-      events = Array.isArray(data.events) ? data.events : [];
+      const baseEvents = Array.isArray(data.events) ? data.events : [];
+      const agencyData = window.FRAI_AGENCY_EVENTS || { events: [] };
+      const agencyEvents = Array.isArray(agencyData.events) ? agencyData.events : [];
+      baseEventCount = baseEvents.length;
+      agencyEventCount = agencyEvents.length;
+      events = [...baseEvents, ...agencyEvents];
       loaded = true;
       populateCities();
       const range = data?.range?.from && data?.range?.to ? ` · ${data.range.from.split('-').reverse().join('/')} → ${data.range.to.split('-').reverse().join('/')}` : '';
-      agendaData.textContent = `${events.length} événements IDF disponibles${range}`;
+      agendaData.textContent = `${baseEventCount} événements IDF + ${agencyEventCount} agence${agencyEventCount>1?'s':''}${range}`;
       if (!selectedDate) selectedDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-      status.textContent = `${events.length} événements chargés — Île-de-France`;
+      status.textContent = `${events.length} événements chargés — dont ${agencyEventCount} publié${agencyEventCount>1?'s':''} par l’agence`;
     } catch (err) {
       console.error('FRAI events', err);
       loaded = false;
@@ -147,13 +160,14 @@
       return;
     }
     const filtered = searchableEvents();
+    const agencyFiltered = filtered.filter(isAgencyEvent).length;
     const totalPages = Math.max(1, Math.ceil(filtered.length / LIST_PAGE_SIZE));
     if (listPage >= totalPages) listPage = totalPages - 1;
     const start = listPage * LIST_PAGE_SIZE;
     const visible = filtered.slice(start, start + LIST_PAGE_SIZE);
     const z = currentZone();
     const c = currentCity();
-    listSummary.textContent = `${filtered.length} résultat${filtered.length>1?'s':''} · ${z.label}${c ? ` · ${c}` : ''}`;
+    listSummary.textContent = `${filtered.length} résultat${filtered.length>1?'s':''} · ${z.label}${c ? ` · ${c}` : ''}${agencyFiltered ? ` · ${agencyFiltered} agence${agencyFiltered>1?'s':''}` : ''}`;
     status.textContent = `Résultats pour « ${q.value || 'tous les événements'} » — ${z.label}${c ? ` — ${c}` : ''}`;
 
     if (!visible.length) {
@@ -165,13 +179,13 @@
         const media = image
           ? `<div class="event-thumb"><img src="${esc(image)}" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('event-thumb-empty');this.remove()"></div>`
           : `<div class="event-thumb event-thumb-empty" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/><path d="m7 17 3-3 2 2 2-2 3 3"/></svg></div>`;
-        return `<a class="event-card" href="${esc(eventPageUrl(e))}" target="_blank" rel="noopener noreferrer" title="Ouvrir la fiche de cet événement">
+        return `<a class="event-card${isAgencyEvent(e)?' agency-event':''}" href="${esc(eventPageUrl(e))}" target="_blank" rel="noopener noreferrer" title="Ouvrir la fiche de cet événement">
           ${media}
           <div class="event-card-content">
-            <div class="event-card-top"><span class="event-date">${esc(formatCardDate(e.date))}</span><span class="event-time">${esc(e.time || '—')}</span></div>
+            <div class="event-card-top"><span class="event-date">${esc(formatCardDate(e.date))}</span><span class="event-time">${esc(e.time || '—')}${e.endTime ? `–${esc(e.endTime)}` : ''}</span></div>
             <div class="event-card-title">${esc(e.title || 'Événement France Travail')}</div>
             <div class="event-card-location">${esc(e.city || e.location || 'Lieu non précisé')}${e.city && e.location && normalize(e.location)!==normalize(e.city) ? ` · ${esc(e.location)}` : ''}</div>
-            <div class="event-card-bottom"><span class="event-category"><i class="dot dot-${cat}"></i>${esc(categoryLabels[cat])}</span><span class="event-open">Voir ↗</span></div>
+            <div class="event-card-bottom"><span class="event-category"><i class="dot dot-${cat}"></i>${esc(categoryLabels[cat])}${agencyBadge(e)}</span><span class="event-open">Voir ↗</span></div>
           </div>
         </a>`;
       }).join('');
@@ -201,7 +215,12 @@
       if (sameDay(d,selectedDate)) b.classList.add('selected');
       b.innerHTML=`<span class="daynum">${d.getDate()}</span><span class="dots"></span><span class="daycount">${evs.length||''}</span>`;
       const dots=b.querySelector('.dots');
-      [...new Set(evs.map(e=>categoryKey(e.category)))].forEach(cat=>{const dot=document.createElement('i');dot.className=`dot dot-${cat}`;dot.title=categoryLabels[cat];dots.appendChild(dot)});
+      const dotKeys = new Set();
+      evs.forEach(e => {
+        dotKeys.add(categoryKey(e.category));
+        if (isAgencyEvent(e)) dotKeys.add('agency');
+      });
+      [...dotKeys].forEach(cat=>{const dot=document.createElement('i');dot.className=`dot dot-${cat}`;dot.title=categoryLabels[cat] || cat;dots.appendChild(dot)});
       b.title=`${formatDateFr(d)} — ${evs.length} événement${evs.length>1?'s':''}`;
       b.addEventListener('click',()=>{selectedDate=new Date(d.getFullYear(),d.getMonth(),d.getDate());calendarMonth=new Date(d.getFullYear(),d.getMonth(),1);detailsPage=0;renderCalendar();renderDayDetails()});
       calendar.appendChild(b);
@@ -220,7 +239,7 @@
     const start=detailsPage*DAY_PAGE_SIZE;
     html+='<div class="event-day-list">'+evs.slice(start,start+DAY_PAGE_SIZE).map(e=>{
       const cat=categoryKey(e.category);
-      return `<a class="day-event day-event-link" href="${esc(eventPageUrl(e))}" target="_blank" rel="noopener noreferrer"><i class="edot dot-${cat}"></i><div class="etime">${esc(e.time||'—')}</div><div><div class="etitle">${esc(e.title||'Événement France Travail')}</div><div class="elocation">${esc(e.location||e.city||'Lieu non précisé')}</div><div class="event-meta-line"><span class="ecat"><i class="dot dot-${cat}"></i>${esc(categoryLabels[cat])}</span><span class="event-open">Voir la fiche ↗</span></div></div></a>`;
+      return `<a class="day-event day-event-link${isAgencyEvent(e)?' agency-event':''}" href="${esc(eventPageUrl(e))}" target="_blank" rel="noopener noreferrer"><i class="edot dot-${isAgencyEvent(e)?'agency':cat}"></i><div class="etime">${esc(e.time||'—')}${e.endTime ? `<br><small>${esc(e.endTime)}</small>` : ''}</div><div><div class="etitle">${esc(e.title||'Événement France Travail')}</div><div class="elocation">${esc(e.location||e.city||'Lieu non précisé')}</div><div class="event-meta-line"><span class="ecat"><i class="dot dot-${cat}"></i>${esc(categoryLabels[cat])}${agencyBadge(e)}</span><span class="event-open">Voir la fiche ↗</span></div></div></a>`;
     }).join('')+'</div>';
     if (totalPages>1) html+=`<div class="pager"><button id="prevEvents" type="button" ${detailsPage===0?'disabled':''}>‹ Précédents</button><span>${detailsPage+1} / ${totalPages}</span><button id="nextEvents" type="button" ${detailsPage>=totalPages-1?'disabled':''}>Suivants ›</button></div>`;
     dayDetails.innerHTML=html;
