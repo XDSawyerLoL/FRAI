@@ -2,7 +2,7 @@
 import json
 import shutil
 import urllib.request
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import quote
 
@@ -10,10 +10,26 @@ API = 'https://frai-agency-events.onrender.com'
 OUT = Path('agency-events-local.js')
 IMG_DIR = Path('agency-images')
 
+def read_existing_events():
+    if not OUT.exists():
+        return None
+    try:
+        text = OUT.read_text(encoding='utf-8').strip()
+        prefix = 'window.FRAI_AGENCY_EVENTS='
+        if not text.startswith(prefix):
+            return None
+        data = json.loads(text[len(prefix):].rstrip(';'))
+        return data.get('events') if isinstance(data, dict) else None
+    except Exception:
+        return None
+
+def ext_for(content_type):
+    content_type = (content_type or '').lower().split(';')[0].strip()
+    return {'image/jpeg':'.jpg','image/png':'.png','image/webp':'.webp'}.get(content_type, '.jpg')
+
 today = date.today()
 until = today + timedelta(days=730)
 url = f'{API}/events?from={today.isoformat()}&to={until.isoformat()}'
-
 req = urllib.request.Request(url, headers={'User-Agent':'FRAI-agency-sync/1.0'})
 with urllib.request.urlopen(req, timeout=30) as r:
     payload = json.load(r)
@@ -25,10 +41,6 @@ if not isinstance(events, list):
 if IMG_DIR.exists():
     shutil.rmtree(IMG_DIR)
 IMG_DIR.mkdir(parents=True, exist_ok=True)
-
-def ext_for(content_type):
-    content_type = (content_type or '').lower().split(';')[0].strip()
-    return {'image/jpeg':'.jpg','image/png':'.png','image/webp':'.webp'}.get(content_type, '.jpg')
 
 clean = []
 for e in events:
@@ -58,13 +70,16 @@ for e in events:
     item['url'] = f'evenement-agence-local.html?id={quote(event_id)}'
     clean.append(item)
 
-result = {
-    'generatedAt': __import__('datetime').datetime.now(__import__('datetime').timezone.utc).isoformat(),
-    'count': len(clean),
-    'events': clean,
-}
-OUT.write_text(
-    'window.FRAI_AGENCY_EVENTS=' + json.dumps(result, ensure_ascii=False, separators=(',', ':')) + ';\n',
-    encoding='utf-8',
-)
-print(f'Synced {len(clean)} agency events')
+if read_existing_events() == clean:
+    print(f'Agency events unchanged: {len(clean)} events')
+else:
+    result = {
+        'generatedAt': datetime.now(timezone.utc).isoformat(),
+        'count': len(clean),
+        'events': clean,
+    }
+    OUT.write_text(
+        'window.FRAI_AGENCY_EVENTS=' + json.dumps(result, ensure_ascii=False, separators=(',', ':')) + ';\n',
+        encoding='utf-8',
+    )
+    print(f'Synced {len(clean)} agency events')
