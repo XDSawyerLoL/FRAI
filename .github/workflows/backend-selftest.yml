@@ -20,9 +20,24 @@ jobs:
             BODY="$(curl -fsS --max-time 20 https://frai-agency-events.onrender.com/selftest || true)"
             echo "Attempt $i: $BODY"
             if echo "$BODY" | grep -q '"ok":true'; then
-              exit 0
+              break
+            fi
+            if [ "$i" = "18" ]; then
+              echo "Backend self-test failed"
+              exit 1
             fi
             sleep 10
           done
-          echo "Backend self-test failed"
-          exit 1
+
+      - name: Test classic browser form transport
+        shell: bash
+        run: |
+          set -euo pipefail
+          HEADERS="$(mktemp)"
+          curl -sS --max-time 30 -D "$HEADERS" -o /dev/null \
+            -F '_browser_form=1' \
+            -F 'website=selftest-bot' \
+            https://frai-agency-events.onrender.com/events
+          cat "$HEADERS"
+          grep -Eq '^HTTP/.* 303' "$HEADERS"
+          grep -Eiq '^location: https://xdsawyerlol.github.io/FRAI/ajouter-evenement.html\?published=1' "$HEADERS"
