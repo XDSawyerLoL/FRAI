@@ -1,0 +1,36 @@
+name: Build agency events
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "agency-submissions/**"
+      - "scripts/build-agency-events.py"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: "agency-events-build"
+  cancel-in-progress: true
+
+jobs:
+  build-agency-events:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build agency event feed
+        run: python3 scripts/build-agency-events.py
+      - name: Save generated agency feed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add agency-events.js
+          if git diff --cached --quiet; then
+            echo "Agency feed already up to date."
+          else
+            git commit -m "Build agency event feed"
+            git push
+          fi
