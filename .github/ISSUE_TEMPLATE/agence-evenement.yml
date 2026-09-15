@@ -1,0 +1,126 @@
+name: Ajouter un événement agence
+description: Publier un événement de l'agence dans l'agenda FRAI
+title: "[AGENCE] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Remplissez ce formulaire pour publier un événement de l'agence dans la grille et le calendrier FRAI.
+        La publication est automatique après validation de l'issue.
+
+  - type: input
+    id: event_title
+    attributes:
+      label: Titre de l'événement
+      placeholder: Atelier CV & IA
+    validations:
+      required: true
+
+  - type: input
+    id: date
+    attributes:
+      label: Date
+      description: Format AAAA-MM-JJ
+      placeholder: 2026-09-22
+    validations:
+      required: true
+
+  - type: input
+    id: start_time
+    attributes:
+      label: Heure de début
+      description: Format HH:MM
+      placeholder: 14:00
+    validations:
+      required: true
+
+  - type: input
+    id: end_time
+    attributes:
+      label: Heure de fin
+      description: Optionnel — format HH:MM
+      placeholder: 16:00
+
+  - type: dropdown
+    id: department
+    attributes:
+      label: Département
+      options:
+        - Paris (75)
+        - Seine-et-Marne (77)
+        - Yvelines (78)
+        - Essonne (91)
+        - Hauts-de-Seine (92)
+        - Seine-Saint-Denis (93)
+        - Val-de-Marne (94)
+        - Val-d'Oise (95)
+    validations:
+      required: true
+
+  - type: input
+    id: city
+    attributes:
+      label: Ville
+      placeholder: Issy-les-Moulineaux
+    validations:
+      required: true
+
+  - type: input
+    id: address
+    attributes:
+      label: Adresse / lieu
+      placeholder: 12 rue Exemple, 92130 Issy-les-Moulineaux
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Catégorie
+      options:
+        - MRS
+        - Job dating
+        - Alternance
+        - Recrutement sans CV
+        - Intelligence artificielle
+        - Atelier / information
+        - Autre
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      placeholder: Présentez brièvement l'événement, le public visé et le déroulé.
+    validations:
+      required: true
+
+  - type: input
+    id: image
+    attributes:
+      label: Image (URL)
+      description: Optionnel — URL https publique vers l'illustration de l'événement
+      placeholder: https://...
+
+  - type: input
+    id: registration
+    attributes:
+      label: Lien d'inscription
+      description: Optionnel — URL vers la page d'inscription ou d'information
+      placeholder: https://...
+
+  - type: input
+    id: capacity
+    attributes:
+      label: Nombre de places
+      description: Optionnel
+      placeholder: "20"
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Confirmation
+      options:
+        - label: Je confirme que les informations sont prêtes à être publiées dans l'agenda FRAI.
+          required: true
