@@ -1,6 +1,13 @@
 name: Sync agency events
 
 on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/agency-sync.yml"
+      - "scripts/sync-agency-events.py"
+      - "agency-events.js"
+      - "ajouter-evenement.html"
   schedule:
     - cron: "*/5 * * * *"
   workflow_dispatch:
