@@ -47,6 +47,45 @@
     const r=new FileReader();r.onload=()=>resolve(String(r.result||''));r.onerror=()=>reject(new Error('Impossible de lire l’image.'));r.readAsDataURL(file);
   })}
 
+  function postViaIframe(payload){
+    return new Promise((resolve,reject)=>{
+      const token='frai_'+Date.now()+'_'+Math.random().toString(36).slice(2);
+      const frame=document.createElement('iframe');
+      frame.name=token;frame.style.display='none';frame.setAttribute('aria-hidden','true');
+      const form=document.createElement('form');
+      form.method='POST';form.action=`${API_BASE}/events`;form.target=token;form.style.display='none';
+      const values={...payload,_transport:'iframe'};
+      Object.entries(values).forEach(([k,v])=>{const i=document.createElement('input');i.type='hidden';i.name=k;i.value=v==null?'':String(v);form.appendChild(i)});
+      let done=false;
+      const cleanup=()=>{window.removeEventListener('message',onMessage);clearTimeout(timer);setTimeout(()=>{form.remove();frame.remove()},50)};
+      const finish=(fn,val)=>{if(done)return;done=true;cleanup();fn(val)};
+      const onMessage=e=>{
+        if(e.origin!==new URL(API_BASE).origin)return;
+        const d=e.data||{};
+        if(d.type!=='frai-event-created')return;
+        if(d.ok)finish(resolve,d);else finish(reject,new Error(d.error||'Publication impossible.'));
+      };
+      const timer=setTimeout(()=>finish(reject,new Error('Le service de publication ne répond pas depuis Teams.')),20000);
+      window.addEventListener('message',onMessage);
+      document.body.appendChild(frame);document.body.appendChild(form);
+      try{form.submit()}catch(err){finish(reject,err)}
+    });
+  }
+
+  async function sendEvent(payload){
+    try{
+      const body=new URLSearchParams();
+      Object.entries(payload).forEach(([k,v])=>body.append(k,v==null?'':String(v)));
+      const r=await fetch(`${API_BASE}/events`,{method:'POST',body});
+      const data=await r.json().catch(()=>({}));
+      if(!r.ok)throw new Error(data.error||'Publication impossible.');
+      return data;
+    }catch(err){
+      if(err && err.name!=='TypeError' && !/fetch/i.test(String(err.message||'')))throw err;
+      return postViaIframe(payload);
+    }
+  }
+
   async function submit(e){
     e.preventDefault();
     const form=e.currentTarget,msg=document.getElementById('publicMsg'),btn=document.getElementById('publicSubmit');
@@ -55,9 +94,7 @@
       const fd=new FormData(form),p={};
       ['title','date','time','end_time','department','city','location','category','description','registration_url','organizer','capacity','website'].forEach(k=>p[k]=fd.get(k)||'');
       p.image=await readImage(document.getElementById('publicImage')?.files?.[0]);
-      const r=await fetch(`${API_BASE}/events`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p)});
-      const data=await r.json().catch(()=>({}));
-      if(!r.ok)throw new Error(data.error||'Publication impossible.');
+      await sendEvent(p);
       msg.className='public-msg ok';msg.textContent='Événement publié. Actualisation…';
       setTimeout(()=>window.location.reload(),650);
     }catch(err){msg.className='public-msg error';msg.textContent=err.message||'Publication impossible.';btn.disabled=false}
