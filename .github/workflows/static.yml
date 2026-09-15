@@ -6,6 +6,8 @@ on:
     paths-ignore:
       - "events-idf.js"
       - "events-idf.json"
+      - "agency-events.js"
+      - "agency-images/**"
   schedule:
     - cron: "17 5 * * *"
   workflow_dispatch:
