@@ -5,7 +5,6 @@ import html as html_lib
 import json
 import os
 import re
-import sys
 import unicodedata
 import urllib.parse
 import urllib.request
@@ -36,8 +35,7 @@ def month_window():
     y += (m - 1) // 12
     m = (m - 1) % 12 + 1
     last = calendar.monthrange(y, m)[1]
-    end = dt.date(y, m, last)
-    return start_month, end
+    return start_month, dt.date(y, m, last)
 
 
 def detect_uid(page):
@@ -107,10 +105,29 @@ def dept_from_text(text):
     return m.group(1) if m else None
 
 
-def slugify(value):
-    value = unicodedata.normalize('NFKD', value or '').encode('ascii', 'ignore').decode('ascii').lower()
-    value = re.sub(r"[^a-z0-9]+", '-', value).strip('-')
-    return value[:180]
+def clean_city(value):
+    value = re.sub(r'\s+', ' ', (value or '')).strip(' ,;-')
+    value = re.sub(r'^(?:ville de|commune de)\s+', '', value, flags=re.I)
+    return value[:90]
+
+
+def city_from_location(location):
+    text = re.sub(r'\s+', ' ', location or '').strip()
+    if not text:
+        return ''
+    # Prefer the locality written immediately after an IDF postal code.
+    matches = list(re.finditer(r'\b(?:75|77|78|91|92|93|94|95)\d{3}\s+([^,;|]+)', text, re.I))
+    if matches:
+        candidate = matches[-1].group(1)
+        candidate = re.split(r'\s+-\s+|\s+\|\s+', candidate, maxsplit=1)[0]
+        candidate = clean_city(candidate)
+        if candidate:
+            return candidate
+    # Many France Travail locations start with "City - Agence ...".
+    first = clean_city(re.split(r'\s+-\s+|,|;|\|', text, maxsplit=1)[0])
+    if first and not re.match(r'^(agence|france travail|visio|webinaire|en ligne)\b', first, re.I):
+        return first
+    return ''
 
 
 def clean_url(value):
@@ -122,21 +139,15 @@ def best_event_url(title, desc, explicit_url=''):
     if explicit_url:
         candidates.append(clean_url(explicit_url))
     candidates.extend(clean_url(u) for u in re.findall(r'https?://[^\s<>"\']+', desc or ''))
-
-    # Prefer the official France Travail event page when the import exposes it.
     for u in candidates:
         if re.search(r'mesevenementsemploi\.francetravail\.fr/mes-evenements-emploi/evenement/\d+', u, re.I):
             return u
-    # Otherwise keep an explicit OpenAgenda event page if present.
     for u in candidates:
         if re.search(r'openagenda\.com/(?:fr/)?francetravail/events/', u, re.I):
             return u
-    # Then use any explicit URL supplied by the event itself.
     for u in candidates:
         if u.startswith(('http://','https://')):
             return u
-
-    # Stable fallback: the public agenda filtered on the exact event title.
     return AGENDA_PAGE + '?' + urllib.parse.urlencode({'search': title})
 
 
@@ -179,6 +190,7 @@ def parse_ics(text):
             'time': start.strftime('%H:%M'),
             'title': title,
             'location': loc,
+            'city': city_from_location(loc),
             'department': dep,
             'category': classify(blob),
             'url': url,
@@ -212,12 +224,15 @@ def jsonld_events_from_page(page):
             title=str(o.get('name') or 'Événement France Travail')
             desc=str(o.get('description') or '')
             raw_url=str(o.get('url') or o.get('@id') or '')
+            locality = clean_city(str(addr.get('addressLocality') or ''))
+            loc_name = str(loc.get('name') or locality or '') if isinstance(loc,dict) else ''
             events.append({
                 'id': str(o.get('@id') or raw_url or title) + '|' + start.isoformat(),
                 'date': start.date().isoformat(),
                 'time': start.strftime('%H:%M'),
                 'title': title,
-                'location': str(loc.get('name') or addr.get('addressLocality') or '') if isinstance(loc,dict) else '',
+                'location': loc_name,
+                'city': locality or city_from_location(loc_name),
                 'department': dep,
                 'category': classify(title+' '+desc),
                 'url': best_event_url(title, desc, raw_url),
@@ -226,31 +241,24 @@ def jsonld_events_from_page(page):
 
 
 def scrape_fallback(start, end):
-    params={
-        'adminLevel1':'Île-de-France',
-        'timings[gte]': start.isoformat(),
-        'timings[lte]': end.isoformat(),
-    }
+    params={'adminLevel1':'Île-de-France','timings[gte]':start.isoformat(),'timings[lte]':end.isoformat()}
     qs=urllib.parse.urlencode(params)
     links=[]
-    for page_no in range(1, 13):
-        url = AGENDA_PAGE + ('' if page_no==1 else f'/p/{page_no}') + '?' + qs
+    for page_no in range(1,13):
+        url=AGENDA_PAGE+('' if page_no==1 else f'/p/{page_no}')+'?'+qs
         try: txt=fetch(url)
         except Exception: break
-        found=re.findall(r'href=["\']([^"\']*/francetravail/events/[^"\'#?]+)', txt, re.I)
+        found=re.findall(r'href=["\']([^"\']*/francetravail/events/[^"\'#?]+)',txt,re.I)
         if not found and page_no>1: break
         for href in found:
             if href.startswith('/'): href=ROOT+href
-            elif href.startswith('http'): pass
-            else: href=ROOT+'/'+href.lstrip('/')
+            elif not href.startswith('http'): href=ROOT+'/'+href.lstrip('/')
             if href not in links: links.append(href)
-        if len(found) < 5: break
+        if len(found)<5: break
     events=[]
     for href in links[:220]:
-        try:
-            events.extend(jsonld_events_from_page(fetch(href)))
-        except Exception:
-            continue
+        try: events.extend(jsonld_events_from_page(fetch(href)))
+        except Exception: continue
     uniq={e['id']:e for e in events}
     return sorted(uniq.values(), key=lambda x:(x['date'],x['time'],x['title'].lower()))
 
@@ -263,8 +271,8 @@ def main():
         uid=detect_uid(page)
         if uid:
             params={
-                'timings[gte]': start.isoformat()+'T00:00:00+02:00',
-                'timings[lte]': end.isoformat()+'T23:59:59+02:00',
+                'timings[gte]':start.isoformat()+'T00:00:00+02:00',
+                'timings[lte]':end.isoformat()+'T23:59:59+02:00',
                 'adminLevel1':'Île-de-France',
             }
             ics_url=f'{ROOT}/agendas/{uid}/events.v2.ics?'+urllib.parse.urlencode(params)
@@ -281,13 +289,13 @@ def main():
         except Exception as exc2:
             error=(error or '')+' | fallback: '+f'{type(exc2).__name__}: {exc2}'
     payload={
-        'generatedAt': dt.datetime.now(dt.timezone.utc).isoformat(),
-        'range': {'from':start.isoformat(),'to':end.isoformat()},
-        'agendaUid': uid,
-        'source': source,
-        'error': error,
-        'count': len(events),
-        'events': events,
+        'generatedAt':dt.datetime.now(dt.timezone.utc).isoformat(),
+        'range':{'from':start.isoformat(),'to':end.isoformat()},
+        'agendaUid':uid,
+        'source':source,
+        'error':error,
+        'count':len(events),
+        'events':events,
     }
     with open(OUT,'w',encoding='utf-8') as f:
         json.dump(payload,f,ensure_ascii=False,separators=(',',':'))
