@@ -59,6 +59,7 @@
   };
   const categoryKey = value => categoryLabels[value] ? value : 'autre';
   const eventPageUrl = e => e?.url || `https://openagenda.com/fr/francetravail?search=${encodeURIComponent(e?.title || '')}`;
+  const eventImageUrl = e => /^https?:\/\//i.test(e?.image || '') ? e.image : '';
 
   function currentZone() { return zones[zone.value] || zones.idf; }
   function currentCity() { return city.value || ''; }
@@ -160,11 +161,18 @@
     } else {
       listGrid.innerHTML = visible.map(e => {
         const cat = categoryKey(e.category);
+        const image = eventImageUrl(e);
+        const media = image
+          ? `<div class="event-thumb"><img src="${esc(image)}" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('event-thumb-empty');this.remove()"></div>`
+          : `<div class="event-thumb event-thumb-empty" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/><path d="m7 17 3-3 2 2 2-2 3 3"/></svg></div>`;
         return `<a class="event-card" href="${esc(eventPageUrl(e))}" target="_blank" rel="noopener noreferrer" title="Ouvrir la fiche de cet événement">
-          <div class="event-card-top"><span class="event-date">${esc(formatCardDate(e.date))}</span><span class="event-time">${esc(e.time || '—')}</span></div>
-          <div class="event-card-title">${esc(e.title || 'Événement France Travail')}</div>
-          <div class="event-card-location">${esc(e.city || e.location || 'Lieu non précisé')}${e.city && e.location && normalize(e.location)!==normalize(e.city) ? ` · ${esc(e.location)}` : ''}</div>
-          <div class="event-card-bottom"><span class="event-category"><i class="dot dot-${cat}"></i>${esc(categoryLabels[cat])}</span><span class="event-open">Voir ↗</span></div>
+          ${media}
+          <div class="event-card-content">
+            <div class="event-card-top"><span class="event-date">${esc(formatCardDate(e.date))}</span><span class="event-time">${esc(e.time || '—')}</span></div>
+            <div class="event-card-title">${esc(e.title || 'Événement France Travail')}</div>
+            <div class="event-card-location">${esc(e.city || e.location || 'Lieu non précisé')}${e.city && e.location && normalize(e.location)!==normalize(e.city) ? ` · ${esc(e.location)}` : ''}</div>
+            <div class="event-card-bottom"><span class="event-category"><i class="dot dot-${cat}"></i>${esc(categoryLabels[cat])}</span><span class="event-open">Voir ↗</span></div>
+          </div>
         </a>`;
       }).join('');
     }
