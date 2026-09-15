@@ -6,12 +6,21 @@
   const liveEvents = data.events;
   const allEvents = liveEvents.slice();
   const label = document.getElementById('agencyOnlyLabel');
+  const q = document.getElementById('q');
+  let previousQuery = q ? q.value : '';
   const today = new Date();
   const todayIso = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
   const agencyCount = allEvents.filter(e => e && e.source === 'agency' && (!e.date || e.date >= todayIso)).length;
   if (label) label.textContent = `Événements agence uniquement${agencyCount ? ` (${agencyCount})` : ''}`;
 
   function rerender() {
+    if (checkbox.checked && q) {
+      previousQuery = q.value;
+      q.value = '';
+    } else if (!checkbox.checked && q && !q.value && previousQuery) {
+      q.value = previousQuery;
+    }
+
     const filtered = checkbox.checked ? allEvents.filter(e => e && e.source === 'agency') : allEvents;
     liveEvents.splice(0, liveEvents.length, ...filtered);
     checkbox.closest('.agency-filter')?.classList.toggle('active', checkbox.checked);
