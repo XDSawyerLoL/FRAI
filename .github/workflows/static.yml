@@ -26,6 +26,7 @@ jobs:
       - name: Build IDF events data
         run: |
           python3 scripts/build-events-calendar.py
+          python3 scripts/enrich-event-images.py
           python3 scripts/build-events-js.py
       - name: Save generated data in the repository
         run: |
