@@ -12,8 +12,14 @@ def valid_event(data):
     return isinstance(data, dict) and all(str(data.get(k, "")).strip() for k in required)
 
 
+def duplicate_key(data):
+    return tuple(str(data.get(k, "")).strip().casefold() for k in (
+        "title", "date", "time", "end_time", "department", "city", "registration_url"
+    ))
+
+
 def main():
-    events = []
+    unique = {}
     if SUBMISSIONS.exists():
         for path in sorted(SUBMISSIONS.glob("*.json")):
             try:
@@ -29,8 +35,9 @@ def main():
             data["source"] = "agency"
             data.setdefault("category", "autre")
             data.setdefault("url", f"evenement-agence.html?id={data['id']}")
-            events.append(data)
+            unique[duplicate_key(data)] = data
 
+    events = list(unique.values())
     events.sort(key=lambda e: (e.get("date", ""), e.get("time", ""), e.get("title", "")))
     payload = {"generatedAt": "", "count": len(events), "events": events}
     js = "window.FRAI_AGENCY_EVENTS=" + json.dumps(payload, ensure_ascii=False, separators=(",", ":")) + ";\n"
