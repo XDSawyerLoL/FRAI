@@ -5,6 +5,7 @@ import html as html_lib
 import json
 import os
 import re
+import unicodedata
 import urllib.parse
 import urllib.request
 from zoneinfo import ZoneInfo
@@ -131,6 +132,11 @@ def clean_url(value):
     return (value or '').strip().rstrip(".,;:!?)\\]}\'\"")
 
 
+def normalized_key(value):
+    value = unicodedata.normalize('NFKD', value or '').encode('ascii', 'ignore').decode('ascii')
+    return re.sub(r'[^a-z0-9]+', ' ', value.lower()).strip()
+
+
 def best_event_url(title, desc, explicit_url=''):
     candidates=[]
     if explicit_url:
@@ -153,11 +159,11 @@ def looks_like_image_url(url):
         return False
     lower = url.lower()
     return ('cdn.openagenda.com/' in lower
+            or 'img.openagenda.com/' in lower
             or re.search(r'\.(?:jpe?g|png|webp|gif)(?:[?#].*)?$', lower) is not None)
 
 
 def image_from_ics(data, description=''):
-    # RFC 7986 IMAGE is preferred. Some calendar exporters use ATTACH instead.
     for key in ('IMAGE', 'ATTACH'):
         params, raw = data.get(key, ('', ''))
         url = clean_url(raw)
@@ -166,8 +172,6 @@ def image_from_ics(data, description=''):
         is_image_attachment = 'FMTTYPE=IMAGE/' in params.upper()
         if key == 'IMAGE' or is_image_attachment or looks_like_image_url(url):
             return url
-
-    # Imported events sometimes expose the image URL inside their description.
     for raw in re.findall(r'https?://[^\s<>"\']+', description or ''):
         url = clean_url(raw)
         if looks_like_image_url(url):
@@ -246,7 +250,7 @@ def parse_ics(text):
     return sorted(uniq.values(), key=lambda x:(x['date'],x['time'],x['title'].lower()))
 
 
-def jsonld_events_from_page(page):
+def jsonld_events_from_page(page, enforce_idf=True):
     events=[]
     for raw in re.findall(r'<script[^>]+type=["\']application/ld\+json["\'][^>]*>(.*?)</script>', page, re.I|re.S):
         try:
@@ -258,7 +262,11 @@ def jsonld_events_from_page(page):
             if not isinstance(o,dict) or o.get('@type')!='Event':
                 continue
             try:
-                start=dt.datetime.fromisoformat(str(o.get('startDate','')).replace('Z','+00:00')).astimezone(TZ)
+                start=dt.datetime.fromisoformat(str(o.get('startDate','')).replace('Z','+00:00'))
+                if start.tzinfo is None:
+                    start=start.replace(tzinfo=TZ)
+                else:
+                    start=start.astimezone(TZ)
             except Exception:
                 continue
             loc=o.get('location') or {}
@@ -266,7 +274,8 @@ def jsonld_events_from_page(page):
             region=str(addr.get('addressRegion') or '')
             postal=str(addr.get('postalCode') or '')
             dep=dept_from_text(postal+' '+region)
-            if dep not in IDF_CODES and 'ile-de-france' not in region.lower().replace('î','i'):
+            region_ascii=normalized_key(region)
+            if enforce_idf and dep not in IDF_CODES and 'ile de france' not in region_ascii:
                 continue
             title=str(o.get('name') or 'Événement France Travail')
             desc=str(o.get('description') or '')
@@ -288,34 +297,90 @@ def jsonld_events_from_page(page):
     return events
 
 
+def enrich_images_from_portal(events, start, end):
+    if not events:
+        return 0, 0
+
+    by_title={}
+    by_date_title={}
+    for event in events:
+        title_key=normalized_key(event.get('title'))
+        if not title_key:
+            continue
+        by_title.setdefault(title_key, []).append(event)
+        by_date_title.setdefault((event.get('date'), title_key), []).append(event)
+
+    params={
+        'limit':'100',
+        'adminLevel1':'Île-de-France',
+        'timings[gte]':start.isoformat()+'T00:00:00+02:00',
+        'timings[lte]':end.isoformat()+'T23:59:59+02:00',
+    }
+    qs=urllib.parse.urlencode(params)
+    image_sources=0
+    enriched=0
+    previous_signature=None
+    max_pages=max(2, min(80, (len(events)//20)+5))
+
+    for page_no in range(1, max_pages+1):
+        base=AGENDA_PAGE+'/events' if page_no==1 else AGENDA_PAGE+f'/events/p/{page_no}'
+        try:
+            page=fetch(base+'?'+qs)
+        except Exception as exc:
+            print(f'Image enrichment stopped on page {page_no}: {type(exc).__name__}: {exc}')
+            break
+        portal_events=jsonld_events_from_page(page, enforce_idf=False)
+        if not portal_events:
+            break
+        signature=tuple((e.get('date'), normalized_key(e.get('title'))) for e in portal_events[:10])
+        if page_no>1 and signature==previous_signature:
+            break
+        previous_signature=signature
+
+        page_with_images=0
+        for source in portal_events:
+            image=source.get('image') or ''
+            if not image:
+                continue
+            page_with_images += 1
+            image_sources += 1
+            title_key=normalized_key(source.get('title'))
+            exact=by_date_title.get((source.get('date'), title_key), [])
+            targets=exact or by_title.get(title_key, [])
+            for target in targets:
+                if not target.get('image'):
+                    target['image']=image
+                    enriched += 1
+        print(f'Image enrichment page {page_no}: events={len(portal_events)} images={page_with_images}')
+
+        # When pagination reaches a short final page, no later page is expected.
+        if len(portal_events) < 20:
+            break
+
+    return image_sources, enriched
+
+
 def scrape_fallback(start, end):
     params={'adminLevel1':'Île-de-France','timings[gte]':start.isoformat(),'timings[lte]':end.isoformat()}
     qs=urllib.parse.urlencode(params)
-    links=[]
-    for page_no in range(1,13):
-        url=AGENDA_PAGE+('' if page_no==1 else f'/p/{page_no}')+'?'+qs
-        try:
-            txt=fetch(url)
-        except Exception:
-            break
-        found=re.findall(r'href=["\']([^"\']*/francetravail/events/[^"\'#?]+)',txt,re.I)
-        if not found and page_no>1:
-            break
-        for href in found:
-            if href.startswith('/'):
-                href=ROOT+href
-            elif not href.startswith('http'):
-                href=ROOT+'/'+href.lstrip('/')
-            if href not in links:
-                links.append(href)
-        if len(found)<5:
-            break
     events=[]
-    for href in links[:220]:
+    previous_signature=None
+    for page_no in range(1,80):
+        base=AGENDA_PAGE+'/events' if page_no==1 else AGENDA_PAGE+f'/events/p/{page_no}'
         try:
-            events.extend(jsonld_events_from_page(fetch(href)))
+            txt=fetch(base+'?'+qs)
         except Exception:
-            continue
+            break
+        found=jsonld_events_from_page(txt, enforce_idf=False)
+        if not found:
+            break
+        signature=tuple((e.get('date'), normalized_key(e.get('title'))) for e in found[:10])
+        if page_no>1 and signature==previous_signature:
+            break
+        previous_signature=signature
+        events.extend(found)
+        if len(found)<20:
+            break
     uniq={e['id']:e for e in events}
     return sorted(uniq.values(), key=lambda x:(x['date'],x['time'],x['title'].lower()))
 
@@ -335,6 +400,8 @@ def main():
             ics_url=f'{ROOT}/agendas/{uid}/events.v2.ics?'+urllib.parse.urlencode(params)
             events=parse_ics(fetch(ics_url))
             source='openagenda-ics'
+            image_sources,enriched=enrich_images_from_portal(events,start,end)
+            print(f'OpenAgenda image enrichment: sources={image_sources}; enriched_timings={enriched}')
         if not events:
             events=scrape_fallback(start,end)
             source='openagenda-public-pages'
