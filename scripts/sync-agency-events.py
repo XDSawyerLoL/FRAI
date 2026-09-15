@@ -67,6 +67,7 @@ if not isinstance(events, list):
 if IMG_DIR.exists():
     shutil.rmtree(IMG_DIR)
 IMG_DIR.mkdir(parents=True, exist_ok=True)
+(IMG_DIR / '.gitkeep').write_text('', encoding='utf-8')
 
 clean = []
 for e in events:
