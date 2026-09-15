@@ -5,7 +5,6 @@ import html as html_lib
 import json
 import os
 import re
-import unicodedata
 import urllib.parse
 import urllib.request
 from zoneinfo import ZoneInfo
@@ -115,7 +114,6 @@ def city_from_location(location):
     text = re.sub(r'\s+', ' ', location or '').strip()
     if not text:
         return ''
-    # Prefer the locality written immediately after an IDF postal code.
     matches = list(re.finditer(r'\b(?:75|77|78|91|92|93|94|95)\d{3}\s+([^,;|]+)', text, re.I))
     if matches:
         candidate = matches[-1].group(1)
@@ -123,7 +121,6 @@ def city_from_location(location):
         candidate = clean_city(candidate)
         if candidate:
             return candidate
-    # Many France Travail locations start with "City - Agence ...".
     first = clean_city(re.split(r'\s+-\s+|,|;|\|', text, maxsplit=1)[0])
     if first and not re.match(r'^(agence|france travail|visio|webinaire|en ligne)\b', first, re.I):
         return first
@@ -131,7 +128,7 @@ def city_from_location(location):
 
 
 def clean_url(value):
-    return (value or '').strip().rstrip('.,;:!?)\]}\'"')
+    return (value or '').strip().rstrip(".,;:!?)\\]}\'\"")
 
 
 def best_event_url(title, desc, explicit_url=''):
@@ -151,6 +148,50 @@ def best_event_url(title, desc, explicit_url=''):
     return AGENDA_PAGE + '?' + urllib.parse.urlencode({'search': title})
 
 
+def looks_like_image_url(url):
+    if not url.startswith(('http://', 'https://')):
+        return False
+    lower = url.lower()
+    return ('cdn.openagenda.com/' in lower
+            or re.search(r'\.(?:jpe?g|png|webp|gif)(?:[?#].*)?$', lower) is not None)
+
+
+def image_from_ics(data, description=''):
+    # RFC 7986 IMAGE is preferred. Some calendar exporters use ATTACH instead.
+    for key in ('IMAGE', 'ATTACH'):
+        params, raw = data.get(key, ('', ''))
+        url = clean_url(raw)
+        if not url.startswith(('http://', 'https://')):
+            continue
+        is_image_attachment = 'FMTTYPE=IMAGE/' in params.upper()
+        if key == 'IMAGE' or is_image_attachment or looks_like_image_url(url):
+            return url
+
+    # Imported events sometimes expose the image URL inside their description.
+    for raw in re.findall(r'https?://[^\s<>"\']+', description or ''):
+        url = clean_url(raw)
+        if looks_like_image_url(url):
+            return url
+    return ''
+
+
+def image_from_jsonld(value):
+    if isinstance(value, str):
+        return clean_url(value) if value.startswith(('http://', 'https://')) else ''
+    if isinstance(value, list):
+        for item in value:
+            url = image_from_jsonld(item)
+            if url:
+                return url
+        return ''
+    if isinstance(value, dict):
+        for key in ('url', 'contentUrl', '@id'):
+            url = image_from_jsonld(value.get(key))
+            if url:
+                return url
+    return ''
+
+
 def parse_ics(text):
     lines = unfold_ics(text)
     blocks=[]; cur=None
@@ -165,19 +206,22 @@ def parse_ics(text):
     for block in blocks:
         data={}
         for line in block:
-            if ':' not in line: continue
+            if ':' not in line:
+                continue
             lhs, val = line.split(':',1)
             key = lhs.split(';',1)[0].upper()
             params = lhs[len(key):]
             if key not in data:
                 data[key]=(params, ics_unescape(val))
         start = parse_dt(data.get('DTSTART',('', ''))[1], data.get('DTSTART',('', ''))[0])
-        if not start: continue
+        if not start:
+            continue
         title = data.get('SUMMARY',('', 'Événement France Travail'))[1]
         desc = data.get('DESCRIPTION',('', ''))[1]
         loc = data.get('LOCATION',('', ''))[1]
         explicit_url = data.get('URL',('', ''))[1]
         url = best_event_url(title, desc, explicit_url)
+        image = image_from_ics(data, desc)
         uid = data.get('UID',('', url or title))[1]
         cats = data.get('CATEGORIES',('', ''))[1]
         dep = dept_from_text(' '.join([loc, desc, title]))
@@ -194,9 +238,11 @@ def parse_ics(text):
             'department': dep,
             'category': classify(blob),
             'url': url,
+            'image': image,
         })
     uniq={}
-    for e in events: uniq[e['id']]=e
+    for e in events:
+        uniq[e['id']]=e
     return sorted(uniq.values(), key=lambda x:(x['date'],x['time'],x['title'].lower()))
 
 
@@ -209,7 +255,8 @@ def jsonld_events_from_page(page):
             continue
         candidates=obj if isinstance(obj,list) else [obj]
         for o in candidates:
-            if not isinstance(o,dict) or o.get('@type')!='Event': continue
+            if not isinstance(o,dict) or o.get('@type')!='Event':
+                continue
             try:
                 start=dt.datetime.fromisoformat(str(o.get('startDate','')).replace('Z','+00:00')).astimezone(TZ)
             except Exception:
@@ -236,6 +283,7 @@ def jsonld_events_from_page(page):
                 'department': dep,
                 'category': classify(title+' '+desc),
                 'url': best_event_url(title, desc, raw_url),
+                'image': image_from_jsonld(o.get('image')),
             })
     return events
 
@@ -246,19 +294,28 @@ def scrape_fallback(start, end):
     links=[]
     for page_no in range(1,13):
         url=AGENDA_PAGE+('' if page_no==1 else f'/p/{page_no}')+'?'+qs
-        try: txt=fetch(url)
-        except Exception: break
+        try:
+            txt=fetch(url)
+        except Exception:
+            break
         found=re.findall(r'href=["\']([^"\']*/francetravail/events/[^"\'#?]+)',txt,re.I)
-        if not found and page_no>1: break
+        if not found and page_no>1:
+            break
         for href in found:
-            if href.startswith('/'): href=ROOT+href
-            elif not href.startswith('http'): href=ROOT+'/'+href.lstrip('/')
-            if href not in links: links.append(href)
-        if len(found)<5: break
+            if href.startswith('/'):
+                href=ROOT+href
+            elif not href.startswith('http'):
+                href=ROOT+'/'+href.lstrip('/')
+            if href not in links:
+                links.append(href)
+        if len(found)<5:
+            break
     events=[]
     for href in links[:220]:
-        try: events.extend(jsonld_events_from_page(fetch(href)))
-        except Exception: continue
+        try:
+            events.extend(jsonld_events_from_page(fetch(href)))
+        except Exception:
+            continue
     uniq={e['id']:e for e in events}
     return sorted(uniq.values(), key=lambda x:(x['date'],x['time'],x['title'].lower()))
 
@@ -299,7 +356,8 @@ def main():
     }
     with open(OUT,'w',encoding='utf-8') as f:
         json.dump(payload,f,ensure_ascii=False,separators=(',',':'))
-    print(f'Generated {OUT}: {len(events)} events; source={source}; uid={uid}; error={error}')
+    image_count=sum(1 for e in events if e.get('image'))
+    print(f'Generated {OUT}: {len(events)} events; images={image_count}; source={source}; uid={uid}; error={error}')
 
 if __name__=='__main__':
     main()
