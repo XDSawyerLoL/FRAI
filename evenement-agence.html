@@ -1,31 +1,25 @@
 <!doctype html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Événement agence</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Événement agence — FRAI</title>
 <style>
-body{margin:0;background:#f5f7fa;font-family:Arial,"Segoe UI",sans-serif;color:#101828}.wrap{max-width:840px;margin:30px auto;padding:16px}.card{background:#fff;border:1px solid #d0d5dd;border-radius:16px;overflow:hidden}.hero{width:100%;max-height:340px;object-fit:cover;background:#eef2f6}.body{padding:22px}h1{margin:0 0 12px;font-size:28px}.meta{color:#667085;font-size:14px;line-height:1.6;margin-bottom:16px}.desc{white-space:pre-wrap;line-height:1.6}.btn{display:inline-flex;height:42px;align-items:center;padding:0 16px;border-radius:9px;background:#0063cb;color:#fff;text-decoration:none;font-weight:800;margin-top:16px}.back{display:inline-flex;margin-top:14px;color:#0057b8;text-decoration:none;font-weight:700}
+body{margin:0;background:#f5f7fa;font-family:Arial,"Segoe UI",sans-serif;color:#101828}.wrap{max-width:860px;margin:30px auto;padding:14px}.card{background:#fff;border:1px solid #d0d5dd;border-radius:16px;overflow:hidden}.hero{max-height:340px;background:#eef2f6;overflow:hidden}.hero img{width:100%;display:block;object-fit:cover;max-height:340px}.body{padding:22px}h1{margin:0 0 10px;font-size:28px}.meta{color:#667085;font-size:13px;line-height:1.7}.desc{margin-top:18px;white-space:pre-wrap;line-height:1.55}.actions{margin-top:22px;display:flex;gap:10px;flex-wrap:wrap}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 15px;border-radius:8px;text-decoration:none;font-weight:700}.primary{background:#0063cb;color:white}.secondary{background:#eef2f6;color:#344054}.error{color:#b42318;font-weight:700}
 </style>
 </head>
-<body>
-<div class="wrap"><div id="card" class="card"><div class="body">Chargement…</div></div></div>
+<body><div class="wrap"><div id="card" class="card"><div class="body">Chargement…</div></div></div>
 <script src="agency-events.js"></script>
 <script>
 (() => {
-  const id=new URLSearchParams(location.search).get('id');
-  const e=(window.FRAI_AGENCY_EVENTS?.events||[]).find(x=>String(x.id)===String(id));
-  const card=document.getElementById('card');
-  const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  if(!e){
-    card.innerHTML='<div class="body"><h1>Événement introuvable</h1><p>La fiche n’est pas encore synchronisée ou n’existe plus.</p><a class="back" href="evenements.html">← Retour à l’agenda</a></div>';
-    return;
-  }
-  const img=e.image?`<img class="hero" src="${esc(e.image)}" alt="">`:'';
-  const times=[e.time,e.endTime].filter(Boolean).join(' – ');
-  const reg=e.registrationUrl?`<a class="btn" href="${esc(e.registrationUrl)}" target="_blank" rel="noopener noreferrer">S’inscrire</a>`:'';
-  card.innerHTML=`${img}<div class="body"><h1>${esc(e.title)}</h1><div class="meta">${esc(e.date)}${times?' · '+esc(times):''}<br>${esc(e.location||e.city||'')}${e.organizer?'<br>Organisateur : '+esc(e.organizer):''}${e.capacity?'<br>Places : '+esc(e.capacity):''}</div><div class="desc">${esc(e.description||'')}</div>${reg}<br><a class="back" href="evenements.html">← Retour à l’agenda</a></div>`;
+ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const id=new URLSearchParams(location.search).get('id')||'';
+ const e=(window.FRAI_AGENCY_EVENTS?.events||[]).find(x=>String(x.id)===id);
+ const card=document.getElementById('card');
+ if(!e){card.innerHTML='<div class="body"><p class="error">Événement introuvable.</p><p><a href="evenements.html">Retour à l’agenda</a></p></div>';return}
+ document.title=(e.title||'Événement agence')+' — FRAI';
+ const date=e.date?new Intl.DateTimeFormat('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(new Date(e.date+'T12:00:00')):'';
+ const time=[e.time,e.end_time].filter(Boolean).join(' – ');
+ const img=e.image?`<div class="hero"><img src="${esc(e.image)}" alt=""></div>`:'';
+ card.innerHTML=img+`<div class="body"><h1>${esc(e.title||'Événement agence')}</h1><div class="meta">${esc(date)}${time?` · ${esc(time)}`:''}<br>${esc(e.location||e.city||'')}${e.organizer?`<br>Organisateur : ${esc(e.organizer)}`:''}${e.capacity?`<br>Places : ${esc(e.capacity)}`:''}</div>${e.description?`<div class="desc">${esc(e.description)}</div>`:''}<div class="actions">${e.registration_url?`<a class="btn primary" href="${esc(e.registration_url)}" target="_blank" rel="noopener noreferrer">S’inscrire</a>`:''}<a class="btn secondary" href="evenements.html">Retour à l’agenda</a></div></div>`;
 })();
-</script>
-</body>
-</html>
+</script></body></html>
