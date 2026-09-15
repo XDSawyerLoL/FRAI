@@ -1,0 +1,1 @@
+window.FRAI_AGENCY_BRIDGE_URL='';
