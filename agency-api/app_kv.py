@@ -1,15 +1,14 @@
 import base64
 import hashlib
-import html
 import json
 import os
 import re
 import uuid
 from datetime import date, datetime, timedelta, timezone
-from urllib.parse import urlparse
+from urllib.parse import quote, urlparse
 
 import redis
-from flask import Flask, Response, jsonify, make_response, request
+from flask import Flask, Response, jsonify, make_response, redirect, request
 
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024
@@ -17,15 +16,20 @@ app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024
 REDIS_URL = os.environ.get('REDIS_URL', 'redis://red-dakgqdh594qs73e1enn0:6379').strip()
 PUBLIC_SITE = os.environ.get('PUBLIC_SITE', 'https://xdsawyerlol.github.io/FRAI').rstrip('/')
 IP_SALT = os.environ.get('IP_SALT', 'frai-public-events').strip()
-ALLOWED_DEPARTMENTS = {'75','77','78','91','92','93','94','95'}
-ALLOWED_CATEGORIES = {'mrs','jobdating','alternance','sanscv','ia','autre'}
-ALLOWED_IMAGE_TYPES = {'image/jpeg','image/png','image/webp'}
+ALLOWED_DEPARTMENTS = {'75', '77', '78', '91', '92', '93', '94', '95'}
+ALLOWED_CATEGORIES = {'mrs', 'jobdating', 'alternance', 'sanscv', 'ia', 'autre'}
+ALLOWED_IMAGE_TYPES = {'image/jpeg', 'image/png', 'image/webp'}
 EVENT_PREFIX = 'frai:event:'
 IMAGE_PREFIX = 'frai:image:'
 INDEX_KEY = 'frai:events:index'
 RATE_PREFIX = 'frai:rate:'
 
-store = redis.Redis.from_url(REDIS_URL, decode_responses=False, socket_timeout=5, socket_connect_timeout=5)
+store = redis.Redis.from_url(
+    REDIS_URL,
+    decode_responses=False,
+    socket_timeout=5,
+    socket_connect_timeout=5,
+)
 
 
 def cors(resp):
@@ -47,21 +51,21 @@ def payload_from_request():
     return request.form.to_dict(flat=True)
 
 
-def iframe_transport(payload=None):
+def browser_form(payload=None):
     payload = payload or {}
-    return request.form.get('_transport') == 'iframe' or payload.get('_transport') == 'iframe'
+    return (not request.is_json) and str(payload.get('_browser_form') or '') == '1'
+
+
+def redirect_back(params):
+    query = '&'.join(f'{quote(str(k))}={quote(str(v))}' for k, v in params.items() if v not in (None, ''))
+    return redirect(f'{PUBLIC_SITE}/ajouter-evenement.html?{query}', code=303)
 
 
 def reply(data, status=200, payload=None):
-    if iframe_transport(payload):
-        safe = json.dumps(data, ensure_ascii=False).replace('</', '<\\/')
-        body = (
-            '<!doctype html><meta charset="utf-8">'
-            '<script>try{parent.postMessage('
-            + safe
-            + ',"*")}catch(e){}<\/script>'
-        )
-        return Response(body, status=status, mimetype='text/html')
+    if browser_form(payload):
+        if data.get('ok'):
+            return redirect_back({'published': '1', 'id': data.get('id', '')})
+        return redirect_back({'error': data.get('error', 'Publication impossible')})
     return jsonify(data), status
 
 
@@ -77,8 +81,8 @@ def valid_url(value):
     if not value:
         return ''
     parsed = urlparse(value)
-    if parsed.scheme not in {'http','https'} or not parsed.netloc:
-        raise ValueError('Lien invalide')
+    if parsed.scheme not in {'http', 'https'} or not parsed.netloc:
+        raise ValueError('Lien d’inscription invalide')
     return value[:1200]
 
 
@@ -88,7 +92,7 @@ def client_ip_hash():
     return hashlib.sha256(f'{IP_SALT}:{ip}'.encode()).hexdigest()
 
 
-def parse_image(data_uri):
+def parse_image_data_uri(data_uri):
     if not data_uri:
         return b'', ''
     if not isinstance(data_uri, str) or not data_uri.startswith('data:') or ';base64,' not in data_uri:
@@ -104,6 +108,19 @@ def parse_image(data_uri):
     if len(raw) > 800_000:
         raise ValueError('Image trop lourde (800 Ko max)')
     return raw, mime
+
+
+def parse_image(payload):
+    upload = request.files.get('image_file')
+    if upload and upload.filename:
+        mime = (upload.mimetype or '').lower().strip()
+        if mime not in ALLOWED_IMAGE_TYPES:
+            raise ValueError('Format image non autorisé')
+        raw = upload.stream.read(800_001)
+        if len(raw) > 800_000:
+            raise ValueError('Image trop lourde (800 Ko max)')
+        return raw, mime
+    return parse_image_data_uri(payload.get('image'))
 
 
 def event_key(event_id):
@@ -139,7 +156,7 @@ def agency_event(e, base_url):
     out['source'] = 'agency'
     out['agency'] = True
     out['endTime'] = out.pop('end_time', '')
-    out['registrationUrl'] = ''
+    out['registrationUrl'] = out.pop('registration_url', '')
     return out
 
 
@@ -168,8 +185,18 @@ def list_events(from_d, to_d):
             stale.append(event_id)
     if stale:
         store.zrem(INDEX_KEY, *stale)
-    events.sort(key=lambda e: (e.get('date',''), e.get('time','99:99'), e.get('title','').lower()))
+    events.sort(key=lambda e: (e.get('date', ''), e.get('time', '99:99'), e.get('title', '').lower()))
     return events
+
+
+@app.route('/', methods=['GET'])
+def index():
+    return Response(
+        '<!doctype html><meta charset="utf-8"><title>FRAI événements</title>'
+        '<body style="font-family:Arial;padding:30px">'
+        '<h1>Service événements FRAI</h1><p>Service opérationnel.</p></body>',
+        mimetype='text/html',
+    )
 
 
 @app.route('/health', methods=['GET'])
@@ -181,7 +208,19 @@ def health():
         return jsonify({'ok': False}), 503
 
 
-@app.route('/events', methods=['GET','POST','OPTIONS'])
+@app.route('/selftest', methods=['GET'])
+def selftest():
+    key = f'frai:selftest:{uuid.uuid4()}'
+    try:
+        store.set(key, b'ok', ex=30)
+        value = store.get(key)
+        store.delete(key)
+        return jsonify({'ok': value == b'ok', 'storage': 'read-write'})
+    except Exception as exc:
+        return jsonify({'ok': False, 'error': str(exc)[:160]}), 503
+
+
+@app.route('/events', methods=['GET', 'POST', 'OPTIONS'])
 def events_route():
     if request.method == 'OPTIONS':
         return make_response('', 204)
@@ -197,9 +236,10 @@ def events_route():
         return jsonify({'events': [public_event(e, base_url) for e in list_events(from_d, to_d)]})
 
     payload = payload_from_request()
-    transport = iframe_transport(payload)
+
+    # Honeypot: les vrais utilisateurs ne remplissent jamais ce champ caché.
     if payload.get('website'):
-        return reply({'type':'frai-event-created','ok':True}, 201, payload)
+        return reply({'ok': True, 'id': ''}, 201, payload)
 
     ip_hash = client_ip_hash()
     hour = datetime.now(timezone.utc).strftime('%Y%m%d%H')
@@ -209,9 +249,9 @@ def events_route():
         if count == 1:
             store.expire(rate_key, 3700)
         if count > 8:
-            return reply({'type':'frai-event-created','ok':False,'error':'Trop de publications récentes. Réessayez plus tard.'}, 429, payload)
+            return reply({'ok': False, 'error': 'Trop de publications récentes. Réessayez plus tard.'}, 429, payload)
     except Exception:
-        return reply({'type':'frai-event-created','ok':False,'error':'Service temporairement indisponible.'}, 503, payload)
+        return reply({'ok': False, 'error': 'Service temporairement indisponible.'}, 503, payload)
 
     try:
         title = clean_text(payload.get('title'), 160, True)
@@ -240,12 +280,11 @@ def events_route():
             capacity = None
         else:
             capacity = max(1, min(100000, int(capacity)))
-        image_raw, image_mime = parse_image(payload.get('image'))
+        image_raw, image_mime = parse_image(payload)
     except (ValueError, TypeError) as exc:
-        return reply({'type':'frai-event-created','ok':False,'error':str(exc)}, 400, payload)
+        return reply({'ok': False, 'error': str(exc)}, 400, payload)
 
     event_id = str(uuid.uuid4())
-    created_at = datetime.now(timezone.utc).isoformat()
     event = {
         'id': event_id,
         'title': title,
@@ -261,8 +300,8 @@ def events_route():
         'organizer': organizer,
         'capacity': capacity,
         'has_image': bool(image_raw),
-        'created_at': created_at,
-        'status': 'published'
+        'created_at': datetime.now(timezone.utc).isoformat(),
+        'status': 'published',
     }
 
     ttl = ttl_for_event(event['date'])
@@ -271,14 +310,20 @@ def events_route():
         pipe.set(event_key(event_id), json.dumps(event, ensure_ascii=False).encode('utf-8'), ex=ttl)
         pipe.zadd(INDEX_KEY, {event_id: event_score(event['date'])})
         if image_raw:
-            image_payload = json.dumps({'mime': image_mime, 'data': base64.b64encode(image_raw).decode('ascii')}).encode('utf-8')
+            image_payload = json.dumps({
+                'mime': image_mime,
+                'data': base64.b64encode(image_raw).decode('ascii'),
+            }).encode('utf-8')
             pipe.set(image_key(event_id), image_payload, ex=ttl)
         pipe.execute()
     except Exception:
-        return reply({'type':'frai-event-created','ok':False,'error':'Impossible d’enregistrer l’événement pour le moment.'}, 503, payload)
+        return reply({'ok': False, 'error': 'Impossible d’enregistrer l’événement pour le moment.'}, 503, payload)
 
-    url = f'{PUBLIC_SITE}/evenement-agence.html?id={event_id}'
-    return reply({'type':'frai-event-created','ok':True,'id':event_id,'url':url}, 201, payload)
+    return reply({
+        'ok': True,
+        'id': event_id,
+        'url': f'{PUBLIC_SITE}/evenement-agence.html?id={event_id}',
+    }, 201, payload)
 
 
 @app.route('/events/<event_id>', methods=['GET'])
@@ -302,7 +347,7 @@ def events_js():
     payload = {
         'generatedAt': datetime.now(timezone.utc).isoformat(),
         'count': len(items),
-        'events': items
+        'events': items,
     }
     js = 'window.FRAI_AGENCY_EVENTS=' + json.dumps(payload, ensure_ascii=False, separators=(',', ':')) + ';\n'
     resp = Response(js, mimetype='application/javascript; charset=utf-8')
@@ -321,7 +366,7 @@ def event_image(event_id):
         return '', 404
     try:
         item = json.loads(raw.decode('utf-8'))
-        data = base64.b64decode(item.get('data',''))
+        data = base64.b64decode(item.get('data', ''))
         mime = item.get('mime') or 'application/octet-stream'
     except Exception:
         return '', 404
