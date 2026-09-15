@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Événement agence</title>
+<style>
+body{margin:0;background:#f5f7fa;font-family:Arial,"Segoe UI",sans-serif;color:#101828}.wrap{max-width:840px;margin:30px auto;padding:16px}.card{background:#fff;border:1px solid #d0d5dd;border-radius:16px;overflow:hidden}.hero{width:100%;max-height:340px;object-fit:cover;background:#eef2f6}.body{padding:22px}h1{margin:0 0 12px;font-size:28px}.meta{color:#667085;font-size:14px;line-height:1.6;margin-bottom:16px}.desc{white-space:pre-wrap;line-height:1.6}.btn{display:inline-flex;height:42px;align-items:center;padding:0 16px;border-radius:9px;background:#0063cb;color:#fff;text-decoration:none;font-weight:800;margin-top:16px}.back{display:inline-flex;margin-top:14px;color:#0057b8;text-decoration:none;font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap"><div id="card" class="card"><div class="body">Chargement…</div></div></div>
+<script src="agency-events.js"></script>
+<script>
+(() => {
+  const id=new URLSearchParams(location.search).get('id');
+  const e=(window.FRAI_AGENCY_EVENTS?.events||[]).find(x=>String(x.id)===String(id));
+  const card=document.getElementById('card');
+  const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  if(!e){
+    card.innerHTML='<div class="body"><h1>Événement introuvable</h1><p>La fiche n’est pas encore synchronisée ou n’existe plus.</p><a class="back" href="evenements.html">← Retour à l’agenda</a></div>';
+    return;
+  }
+  const img=e.image?`<img class="hero" src="${esc(e.image)}" alt="">`:'';
+  const times=[e.time,e.endTime].filter(Boolean).join(' – ');
+  const reg=e.registrationUrl?`<a class="btn" href="${esc(e.registrationUrl)}" target="_blank" rel="noopener noreferrer">S’inscrire</a>`:'';
+  card.innerHTML=`${img}<div class="body"><h1>${esc(e.title)}</h1><div class="meta">${esc(e.date)}${times?' · '+esc(times):''}<br>${esc(e.location||e.city||'')}${e.organizer?'<br>Organisateur : '+esc(e.organizer):''}${e.capacity?'<br>Places : '+esc(e.capacity):''}</div><div class="desc">${esc(e.description||'')}</div>${reg}<br><a class="back" href="evenements.html">← Retour à l’agenda</a></div>`;
+})();
+</script>
+</body>
+</html>
