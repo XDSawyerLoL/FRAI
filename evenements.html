@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Événements emploi — Île-de-France</title>
+<link rel="stylesheet" href="agency-filter.css">
 <style>
 :root{--blue:#0063cb;--bg:#f5f7fa;--text:#1f2937;--muted:#667085;--line:#d0d5dd}
 *{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{margin:0;background:var(--bg);font-family:Arial,"Segoe UI",sans-serif;color:var(--text)}
@@ -31,7 +32,7 @@
 <button type="submit">Rechercher</button>
 </form>
 <div class="toolbar">
-<div class="quick"><button class="chip" data-q="MRS" type="button">MRS</button><button class="chip" data-q="Job dating" type="button">Job dating</button><button class="chip" data-q="Alternance" type="button">Alternance</button><button class="chip" data-q="Recrutement sans CV" type="button">Sans CV</button><button class="chip" data-q="Intelligence artificielle" type="button">IA</button></div>
+<div class="quick"><button class="chip" data-q="MRS" type="button">MRS</button><button class="chip" data-q="Job dating" type="button">Job dating</button><button class="chip" data-q="Alternance" type="button">Alternance</button><button class="chip" data-q="Recrutement sans CV" type="button">Sans CV</button><button class="chip" data-q="Intelligence artificielle" type="button">IA</button><label class="agency-filter" for="agencyOnly"><input id="agencyOnly" type="checkbox"><span id="agencyOnlyLabel">Événements agence uniquement</span></label></div>
 <div class="toolbar-actions"><a class="add-event" href="ajouter-evenement.html" target="_blank" rel="noopener noreferrer">+ Ajouter un événement</a><div class="view-switch" aria-label="Mode d’affichage"><button id="listView" class="viewbtn active" type="button" title="Vue grille" aria-label="Vue grille" aria-pressed="true"><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg></button><button id="agendaView" class="viewbtn" type="button" title="Vue agenda" aria-label="Vue agenda" aria-pressed="false"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01"/></svg></button></div></div>
 </div>
 <div class="info" id="status">Chargement des événements…</div>
@@ -61,5 +62,6 @@
 <script src="events-idf.js"></script>
 <script src="agency-events.js"></script>
 <script src="evenements-app.js"></script>
+<script src="agency-filter.js"></script>
 </body>
 </html>
